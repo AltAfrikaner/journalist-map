@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA Media Network Map | Alt Afrikaner Intelligence</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a12;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;width:100vw}
+#canvas-container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1}
+#ui-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
+
+/* Title bar */
+#title-bar{position:fixed;top:0;left:0;right:0;height:48px;background:linear-gradient(180deg,rgba(10,10,18,0.95),rgba(10,10,18,0.7));
+  display:flex;align-items:center;padding:0 20px;pointer-events:auto;z-index:100;border-bottom:1px solid rgba(197,150,12,0.3)}
+#title-bar h1{font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c5960c}
+#title-bar .subtitle{font-size:11px;color:#667;margin-left:12px;letter-spacing:1px}
+.toolbar{margin-left:auto;display:flex;gap:8px}
+.toolbar button{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#aaa;padding:6px 14px;
+  font-size:11px;border-radius:4px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s}
+.toolbar button:hover{background:rgba(197,150,12,0.15);border-color:rgba(197,150,12,0.4);color:#c5960c}
+
+/* Legend panel */
+#legend{position:fixed;top:56px;left:0;width:260px;bottom:0;background:rgba(10,10,18,0.92);
+  border-right:1px solid rgba(255,255,255,0.06);overflow-y:auto;pointer-events:auto;z-index:50;
+  padding:12px 14px;font-size:11px;scrollbar-width:thin;scrollbar-color:#333 transparent}
+#legend h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c5960c;margin:14px 0 8px;
+  border-bottom:1px solid rgba(197,150,12,0.2);padding-bottom:4px}
+#legend h3:first-child{margin-top:0}
+.legend-item{display:flex;align-items:center;gap:6px;padding:3px 0;cursor:pointer}
+.legend-item:hover{opacity:0.8}
+.legend-swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-item input{width:12px;height:12px;accent-color:#c5960c;cursor:pointer}
+.legend-item label{font-size:11px;color:#bbb;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Tooltip */
+#tooltip{position:fixed;display:none;background:rgba(12,12,20,0.96);border:1px solid rgba(197,150,12,0.3);
+  border-radius:8px;padding:14px 16px;max-width:340px;pointer-events:none;z-index:200;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);backdrop-filter:blur(12px)}
+#tooltip .tt-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+#tooltip .tt-house{font-size:11px;color:#c5960c;margin-bottom:6px}
+#tooltip .tt-meta{font-size:10px;color:#888;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+#tooltip .tt-flag{font-size:16px}
+#tooltip .tt-topics{font-size:10px;color:#7eb8da;margin-bottom:6px}
+#tooltip .tt-desc{font-size:10px;color:#999;line-height:1.4;margin-bottom:6px}
+#tooltip .tt-articles a{font-size:10px;color:#6ea8f0;text-decoration:none;display:block;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tooltip .tt-articles a:hover{text-decoration:underline}
+
+/* Side panel */
+#side-panel{position:fixed;top:48px;right:-380px;width:360px;bottom:0;background:rgba(10,10,18,0.96);
+  border-left:1px solid rgba(197,150,12,0.2);z-index:80;pointer-events:auto;transition:right 0.4s ease;
+  padding:20px;overflow-y:auto;scrollbar-width:thin}
+#side-panel.open{right:0}
+#side-panel .sp-close{position:absolute;top:10px;right:14px;background:none;border:none;color:#666;
+  font-size:18px;cursor:pointer}
+#side-panel .sp-close:hover{color:#c5960c}
+#side-panel .sp-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;margin-top:8px}
+#side-panel .sp-house{font-size:12px;color:#c5960c;margin-bottom:10px}
+#side-panel .sp-section{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#666;margin:12px 0 4px}
+#side-panel .sp-text{font-size:12px;color:#bbb;line-height:1.5}
+#side-panel .sp-tag{display:inline-block;background:rgba(126,184,218,0.12);color:#7eb8da;
+  padding:2px 8px;border-radius:10px;font-size:10px;margin:2px 4px 2px 0}
+#side-panel .sp-link{display:block;color:#6ea8f0;font-size:11px;margin:4px 0;text-decoration:none}
+#side-panel .sp-link:hover{text-decoration:underline}
+
+/* Node labels (CSS2DObject) */
+.node-label{color:#ccc;font-size:10px;font-family:'Segoe UI',sans-serif;text-align:center;
+  pointer-events:none;text-shadow:0 1px 4px rgba(0,0,0,0.8);white-space:nowrap;transition:opacity 0.3s}
+.node-label .nl-name{font-weight:600;font-size:10px}
+.node-label .nl-house{font-size:8px;color:#999}
+.node-label.dimmed{opacity:0.15}
+
+/* Import/Export modal */
+#modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);
+  display:none;z-index:300;justify-content:center;align-items:center;pointer-events:auto}
+#modal-overlay.show{display:flex}
+#modal-box{background:#14141e;border:1px solid rgba(197,150,12,0.3);border-radius:8px;padding:20px;
+  width:500px;max-height:80vh;display:flex;flex-direction:column}
+#modal-box h3{font-size:13px;color:#c5960c;margin-bottom:10px}
+#modal-box textarea{width:100%;height:300px;background:#0a0a12;border:1px solid #333;color:#ccc;
+  font-family:monospace;font-size:11px;padding:10px;border-radius:4px;resize:vertical}
+#modal-box .modal-btns{margin-top:10px;display:flex;gap:8px;justify-content:flex-end}
+#modal-box button{padding:6px 16px;border-radius:4px;border:1px solid #444;background:#1a1a28;
+  color:#ccc;font-size:11px;cursor:pointer}
+#modal-box button.primary{background:rgba(197,150,12,0.2);border-color:rgba(197,150,12,0.4);color:#c5960c}
+
+/* Stats */
+#stats{position:fixed;bottom:10px;left:270px;font-size:10px;color:#444;z-index:50;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div id="title-bar">
+  <h1>SA Media Network</h1>
+  <span class="subtitle">Inside & Outside South Africa</span>
+  <div class="toolbar">
+    <button onclick="exportJSON()">Export JSON</button>
+    <button onclick="showImport()">Import JSON</button>
+    <button onclick="resetView()">Reset View</button>
+  </div>
+</div>
+
+<div id="legend"></div>
+<div id="tooltip"></div>
+<div id="side-panel"><button class="sp-close" onclick="closeSidePanel()">&times;</button><div id="sp-content"></div></div>
+<div id="modal-overlay"><div id="modal-box"></div></div>
+<div id="stats"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+// ======================== DATA ========================
+const MEDIA_COLORS = {
+  "SABC":"#2e86de","eNCA":"#e74c3c","News24":"#f39c12","Daily Maverick":"#8e44ad",
+  "amaBhungane":"#27ae60","Mail & Guardian":"#1abc9c","Africa Check":"#e67e22",
+  "The Conversation Africa":"#3498db","Carte Blanche":"#9b59b6","Netwerk24":"#e55039",
+  "EWN":"#fa983a","ISS Africa":"#78e08f",
+  "CNN":"#cc0000","BBC":"#b71c1c","Al Jazeera":"#d4a017","AFP":"#0277bd",
+  "Reuters":"#f57f17","AP":"#1565c0","New York Times":"#212121","The Guardian":"#1b5e20",
+  "France 24":"#0d47a1","CGTN":"#c62828","Deutsche Welle":"#283593",
+  "Washington Post":"#1a1a1a","TRT World":"#00695c","New Lines":"#4a148c",
+  "The Continent":"#00838f","Poynter/IFCN":"#4e342e","CBS":"#37474f","NPR":"#01579b","RT":"#b71c1c"
+};
+
+const FLAG = {za:"🇿🇦",gb:"🇬🇧",qa:"🇶🇦",us:"🇺🇸",ae:"🇦🇪",fr:"🇫🇷",de:"🇩🇪",cn:"🇨🇳",ru:"🇷🇺",tr:"🇹🇷",ke:"🇰🇪",ng:"🇳🇬"};
+
+let nodesData = [
+  // ===== INSIDE SA: Media Houses =====
+  {id:"sabc",type:"media_house",name:"SABC",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.SABC,weight:8,desc:"State broadcaster. Most-watched news. Expected R590m loss 2025.",connections:["bryce_pease","enca","news24"]},
+  {id:"enca",type:"media_house",name:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:7,desc:"24-hour news channel. SA's first & most-trusted per Reuters DNR 2025.",connections:["thathiah","goge","herd","sabc","dm"]},
+  {id:"news24",type:"media_house",name:"News24",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.News24,weight:7,desc:"SA's leading news website. 73% weekly access. Naspers/Media24.",connections:["basson","amab","dm"]},
+  {id:"dm",type:"media_house",name:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:7,desc:"Independent online news. Founded 2009. Scorpio investigations. DM168 print.",connections:["brkic","haffajee","dougan","amab","news24"]},
+  {id:"amab",type:"media_house",name:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:6,desc:"Non-profit investigative centre. Founded 2010. #GuptaLeaks. Donor-funded.",connections:["sole","comrie","timse","dm","news24"]},
+  {id:"mg",type:"media_house",name:"Mail & Guardian",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Mail & Guardian"],weight:5,desc:"Weekly newspaper. Founded 1985 as anti-apartheid Weekly Mail.",connections:["allison","amab"]},
+  {id:"ac",type:"media_house",name:"Africa Check",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Africa Check"],weight:6,desc:"Fact-checking org at Wits. IFCN-certified. Former Meta partner. OSF/Gates/Luminate funded.",connections:["cunliffe","ifcn","bbc_h","cnn_h"]},
+  {id:"conv",type:"media_house",name:"The Conversation Africa",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["The Conversation Africa"],weight:4,desc:"Academic-to-media bridge. Syndicated to Guardian. Founded by ex-FT editor.",connections:["southey","guardian_h"]},
+  {id:"cb",type:"media_house",name:"Carte Blanche",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Carte Blanche"],weight:4,desc:"Investigative TV magazine. M-Net/DStv. Sunday prime time.",connections:["l_naidoo"]},
+  {id:"nw24",type:"media_house",name:"Netwerk24",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.Netwerk24,weight:3,desc:"Afrikaans digital platform. Media24. ZERO international connections. Language silo.",connections:["basson"]},
+  {id:"iss",type:"media_house",name:"ISS Africa",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["ISS Africa"],weight:4,desc:"Think tank. Analysis cited by BBC, CNN, Al Jazeera, AFP.",connections:["allison","bbc_h","aje_h"]},
+
+  // ===== INSIDE SA: Journalists =====
+  {id:"bryce_pease",type:"journalist",name:"Sherwin Bryce-Pease",media_house:"SABC",location:"inside_sa",country:"USA (UN Bureau)",flag:FLAG.us,color:MEDIA_COLORS.SABC,weight:6,
+    topics:["UN affairs","US politics","multilateral diplomacy","G20"],desc:"SABC Bureau Chief & US Correspondent at UN HQ New York since 2008. First African UNCA president. Gold Medal 2025.",
+    articles:[{t:"SABC wins UNCA Gold Medal",u:"https://www.sabcnews.com/sabcnews/1090036-2/"}],connections:["sabc"]},
+  {id:"thathiah",type:"journalist",name:"Dasen Thathiah",media_house:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:5,
+    topics:["breaking news","KZN floods","disasters"],desc:"Senior Reporter KZN/Mpumalanga. 21-time Vodacom JoY award winner.",articles:[],connections:["enca"]},
+  {id:"goge",type:"journalist",name:"Siphamandla Goge",media_house:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:5,
+    topics:["politics","Zulu monarchy","succession"],desc:"Vodacom Journalist of the Year 2021.",articles:[],connections:["enca"]},
+  {id:"herd",type:"journalist",name:"Francis Herd",media_house:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:4,
+    topics:["business","economics","B20/G20"],desc:"Business anchor. Corporate SA coverage.",articles:[],connections:["enca"]},
+  {id:"basson",type:"journalist",name:"Adriaan Basson",media_house:"News24",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.News24,weight:6,
+    topics:["editorial direction","investigations","politics"],desc:"Editor-in-Chief since 2016. Former amaBhungane co-founder. Stellenbosch trained. Former Beeld/Netwerk24 editor.",
+    articles:[],connections:["news24","amab","nw24"]},
+  {id:"brkic",type:"journalist",name:"Branko Brkic",media_house:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:6,
+    topics:["editorial direction","media strategy","investigations"],desc:"Founder & Editor-in-Chief. Nat Nakasa Award 2018.",articles:[],connections:["dm"]},
+  {id:"haffajee",type:"journalist",name:"Ferial Haffajee",media_house:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:5,
+    topics:["politics","governance","race","media"],desc:"Associate Editor. Former M&G and City Press editor.",articles:[],connections:["dm","mg"]},
+  {id:"dougan",type:"journalist",name:"Leila Dougan",media_house:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:4,
+    topics:["multi-platform investigations","Scorpio"],desc:"Vodacom JoY 2019.",articles:[],connections:["dm"]},
+  {id:"sole",type:"journalist",name:"Sam Sole",media_house:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:6,
+    topics:["state capture","corruption","surveillance","RICA"],desc:"Co-founder & Managing Partner. #GuptaLeaks. RICA surveillance challenge.",articles:[],connections:["amab","dm","news24"]},
+  {id:"comrie",type:"journalist",name:"Susan Comrie",media_house:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:5,
+    topics:["financial flows","state capture","money trails"],desc:"Investigative journalist. #GuptaLeaks money reconstruction.",articles:[],connections:["amab"]},
+  {id:"timse",type:"journalist",name:"Tabelo Timse",media_house:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:5,
+    topics:["SADC region","politics","corruption"],desc:"Former AFP JHB (2009-2012). Franco-German Prize 2021. #GuptaLeaks.",articles:[],connections:["amab","afp_h"]},
+  {id:"allison",type:"journalist",name:"Simon Allison",media_house:"The Continent",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["The Continent"],weight:6,
+    topics:["African continental affairs","governance","conflict"],desc:"Revolving door: DM→ISS→M&G→The Continent. SOAS London MA. Guardian contributor. Pulitzer Center.",
+    articles:[],connections:["mg","iss","guardian_h","dm"]},
+  {id:"l_naidoo",type:"journalist",name:"Latashia Naidoo",media_house:"Carte Blanche",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Carte Blanche"],weight:5,
+    topics:["crime","politics","investigations"],desc:"Former eNCA, TRT World, BBC Africa, CNN, Business Insider US. OSF/Wits Fellow 2020. Reuters Changemaker 2021.",
+    articles:[],connections:["cb","enca","bbc_h","cnn_h","trt_h"]},
+  {id:"southey",type:"journalist",name:"Caroline Southey",media_house:"The Conversation Africa",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["The Conversation Africa"],weight:4,
+    topics:["editorial direction","academic-media bridge"],desc:"Founding Editor. 17 years at FT London. Former Financial Mail SA editor.",articles:[],connections:["conv","guardian_h"]},
+  {id:"cunliffe",type:"journalist",name:"Peter Cunliffe-Jones",media_house:"Poynter/IFCN",location:"inside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["Africa Check"],weight:5,
+    topics:["fact-checking standards","certification"],desc:"Founded Africa Check 2012 London. Ran from Wits to 2019. Now IFCN Senior Adviser at Poynter. Revolving door.",
+    articles:[],connections:["ac","ifcn"]},
+
+  // ===== OUTSIDE SA: Media Houses =====
+  {id:"cnn_h",type:"media_house",name:"CNN",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.CNN,weight:8,desc:"Largest global TV news network. JHB bureau. Atlanta HQ.",connections:["mckenzie","curnow","giokos","l_naidoo","ac"]},
+  {id:"bbc_h",type:"media_house",name:"BBC",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.BBC,weight:8,desc:"British state broadcaster. BBC World Service/News. Prescott Memo (2025) documented editorial breaches.",connections:["mbele","tlhabi","l_naidoo","ac","iss"]},
+  {id:"aje_h",type:"media_house",name:"Al Jazeera",location:"outside_sa",country:"Qatar",flag:FLAG.qa,color:MEDIA_COLORS["Al Jazeera"],weight:7,desc:"Doha HQ. 300M+ reach. More Africa bureaus than any global broadcaster. JHB bureau.",connections:["mutasa","dutton","a_naidoo","muirhead","iss"]},
+  {id:"afp_h",type:"media_house",name:"AFP",location:"outside_sa",country:"France",flag:FLAG.fr,color:MEDIA_COLORS.AFP,weight:7,desc:"French wire service. JHB bureau. Sets initial framing adopted by thousands of outlets.",connections:["timse"]},
+  {id:"reuters_h",type:"media_house",name:"Reuters",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.Reuters,weight:7,desc:"Global wire service. JHB bureau. Thomson Reuters Foundation SA correspondent.",connections:["harrisberg"]},
+  {id:"ap_h",type:"media_house",name:"AP",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.AP,weight:6,desc:"World's oldest wire service. JHB bureau.",connections:[]},
+  {id:"nyt_h",type:"media_house",name:"New York Times",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["New York Times"],weight:7,desc:"Maintained JHB bureau. Rotating foreign correspondents.",connections:["onishi"]},
+  {id:"guardian_h",type:"media_house",name:"The Guardian",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS["The Guardian"],weight:6,desc:"Former Africa corr. JHB 2010-2015. Syndicates Conversation Africa.",connections:["d_smith","allison","conv"]},
+  {id:"f24_h",type:"media_house",name:"France 24",location:"outside_sa",country:"France",flag:FLAG.fr,color:MEDIA_COLORS["France 24"],weight:4,desc:"French state international broadcaster. IFCN fact-checking partner.",connections:["afp_h"]},
+  {id:"cgtn_h",type:"media_house",name:"CGTN",location:"outside_sa",country:"China",flag:FLAG.cn,color:MEDIA_COLORS.CGTN,weight:5,desc:"Chinese state media. Nairobi bureau. Growing African influence.",connections:["a_naidoo"]},
+  {id:"dw_h",type:"media_house",name:"Deutsche Welle",location:"outside_sa",country:"Germany",flag:FLAG.de,color:MEDIA_COLORS["Deutsche Welle"],weight:4,desc:"German international broadcaster. DW Africa strong presence.",connections:[]},
+  {id:"trt_h",type:"media_house",name:"TRT World",location:"outside_sa",country:"Turkey",flag:FLAG.tr,color:MEDIA_COLORS["TRT World"],weight:3,desc:"Turkish state broadcaster. English-language.",connections:["l_naidoo"]},
+  {id:"ifcn",type:"media_house",name:"Poynter/IFCN",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["Poynter/IFCN"],weight:5,desc:"Certifies fact-checkers. Controlled Meta's fact-checking programme access. Gates/OSF/Meta funded.",connections:["cunliffe","ac"]},
+
+  // ===== OUTSIDE SA: Journalists =====
+  {id:"mckenzie",type:"journalist",name:"David McKenzie",media_house:"CNN",location:"outside_sa",country:"South Africa (JHB bureau)",flag:FLAG.za,color:MEDIA_COLORS.CNN,weight:6,
+    topics:["Africa conflicts","politics","Covid-19","Ramaphosa"],desc:"Senior International Correspondent JHB. 30+ African countries. RTS Award 2019. Former UNICEF, freelance BBC/Reuters.",
+    articles:[{t:"CNN Profile",u:"https://www.cnn.com/profiles/david-mckenzie"}],connections:["cnn_h"]},
+  {id:"curnow",type:"journalist",name:"Robyn Curnow",media_house:"CNN (former)",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.CNN,weight:6,
+    topics:["Africa","US politics","Mandela","Pistorius"],desc:"SA-born. SABC pipeline. CNN anchor 2001-2022. Africa corr. JHB 2006-2014. Chevening Scholar. Left CNN 2022.",
+    articles:[],connections:["cnn_h","sabc"]},
+  {id:"giokos",type:"journalist",name:"Eleni Giokos",media_house:"CNN",location:"outside_sa",country:"UAE",flag:FLAG.ae,color:MEDIA_COLORS.CNN,weight:5,
+    topics:["business","markets","economics","Middle East/Africa"],desc:"Born Greece, raised SA. Former CNBC Africa, eNCA. Abu Dhabi bureau.",
+    articles:[],connections:["cnn_h","enca"]},
+  {id:"mbele",type:"journalist",name:"Lerato Mbele",media_house:"BBC",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.BBC,weight:5,
+    topics:["African business","economics","markets"],desc:"Presenter Africa Business Report. SA-born. SABC→CNBC Africa→BBC. London.",
+    articles:[],connections:["bbc_h","sabc"]},
+  {id:"tlhabi",type:"journalist",name:"Redi Tlhabi",media_house:"BBC (former)",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.BBC,weight:5,
+    topics:["global morning news","SA politics","social justice"],desc:"Former BBC Newsday presenter. SABC/eNCA pipeline. Board Atlantic Fellows Columbia/Mandela Foundation. UN Global Journalists Corps.",
+    articles:[],connections:["bbc_h","sabc","enca"]},
+  {id:"mutasa",type:"journalist",name:"Haru Mutasa",media_house:"Al Jazeera",location:"outside_sa",country:"South Africa (JHB)",flag:FLAG.za,color:MEDIA_COLORS["Al Jazeera"],weight:5,
+    topics:["Southern Africa","Zimbabwe","Mozambique","politics"],desc:"AJE Africa Correspondent JHB. Zimbabwean. SABC/CNN/APTN pipeline. RTS nominee.",
+    articles:[],connections:["aje_h","sabc"]},
+  {id:"dutton",type:"journalist",name:"Jane Dutton",media_house:"Al Jazeera",location:"outside_sa",country:"Qatar",flag:FLAG.qa,color:MEDIA_COLORS["Al Jazeera"],weight:5,
+    topics:["current affairs","refugee crises","geopolitics"],desc:"Host Inside Story. SA-born. SABC→CNN→CNBC→AJE founding journalist 2005. Doha.",
+    articles:[],connections:["aje_h","sabc","cnn_h"]},
+  {id:"a_naidoo",type:"journalist",name:"Anand Naidoo",media_house:"CGTN",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.CGTN,weight:5,
+    topics:["global affairs","economics","US politics"],desc:"SA-born. SABC→10yr CNN→6yr AJE→now CGTN Atlanta. The revolving door personified.",
+    articles:[],connections:["cgtn_h","sabc","cnn_h","aje_h"]},
+  {id:"muirhead",type:"journalist",name:"Nic Muirhead",media_house:"Al Jazeera",location:"outside_sa",country:"Qatar",flag:FLAG.qa,color:MEDIA_COLORS["Al Jazeera"],weight:4,
+    topics:["African media landscape","political/cultural debates"],desc:"Producer The Listening Post (media review). Meta-level: shapes how audiences understand SA media.",
+    articles:[],connections:["aje_h"]},
+  {id:"harrisberg",type:"journalist",name:"Kim Harrisberg",media_house:"Reuters (TRF)",location:"outside_sa",country:"South Africa (JHB)",flag:FLAG.za,color:MEDIA_COLORS.Reuters,weight:4,
+    topics:["technology","climate change","inequality"],desc:"Southern Africa Correspondent Thomson Reuters Foundation. Social justice framing in Reuters ecosystem.",
+    articles:[],connections:["reuters_h"]},
+  {id:"onishi",type:"journalist",name:"Norimitsu Onishi",media_house:"New York Times",location:"outside_sa",country:"Canada",flag:FLAG.us,color:MEDIA_COLORS["New York Times"],weight:5,
+    topics:["SA politics","society","race","global affairs"],desc:"Japanese-Canadian. Former JHB Bureau Chief. Princeton. Pulitzer 2015. Now Canada corr.",
+    articles:[],connections:["nyt_h"]},
+  {id:"d_smith",type:"journalist",name:"David Smith",media_house:"The Guardian",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["The Guardian"],weight:5,
+    topics:["Africa","SA politics","US politics"],desc:"Guardian Africa corr. JHB 2010-2015. Now DC Bureau Chief. Key node for Trump-era SA coverage.",
+    articles:[],connections:["guardian_h"]},
+];
+
+// ======================== THREE.JS SETUP ========================
+const container = document.getElementById('canvas-container');
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0a0a12, 0.006);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 30, 60);
+
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+container.appendChild(renderer.domElement);
+
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0';
+labelRenderer.domElement.style.pointerEvents = 'none';
+container.appendChild(labelRenderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.minDistance = 10;
+controls.maxDistance = 150;
+
+// Bloom
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.4, 0.85);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// Ambient light
+scene.add(new THREE.AmbientLight(0x334466, 0.8));
+const pLight = new THREE.PointLight(0xc5960c, 0.6, 200);
+pLight.position.set(0, 40, 0);
+scene.add(pLight);
+
+// ======================== BUILD NETWORK ========================
+const nodeMeshes = new Map(); // id -> mesh
+const nodeLabels = new Map(); // id -> CSS2DObject
+const edgeLines = []; // {line, from, to}
+let selectedNode = null;
+
+function hexToThreeColor(hex) {
+  return new THREE.Color(hex);
+}
+
+function layoutNodes() {
+  const insideNodes = nodesData.filter(n => n.location === 'inside_sa');
+  const outsideNodes = nodesData.filter(n => n.location === 'outside_sa');
+
+  const insideMedia = insideNodes.filter(n => n.type === 'media_house');
+  const insideJourn = insideNodes.filter(n => n.type === 'journalist');
+  const outsideMedia = outsideNodes.filter(n => n.type === 'media_house');
+  const outsideJourn = outsideNodes.filter(n => n.type === 'journalist');
+
+  function placeRing(nodes, baseRadius, yOffset, startAngle=0) {
+    const count = nodes.length;
+    nodes.forEach((n, i) => {
+      const angle = startAngle + (i / count) * Math.PI * 2;
+      const jitter = (Math.random() - 0.5) * 2;
+      n._x = Math.cos(angle) * (baseRadius + jitter);
+      n._y = yOffset + (Math.random() - 0.5) * 2;
+      n._z = Math.sin(angle) * (baseRadius + jitter);
+    });
+  }
+
+  placeRing(insideMedia, 12, 2, 0);
+  placeRing(insideJourn, 22, 0, 0.3);
+  placeRing(outsideMedia, 36, 2, 0.1);
+  placeRing(outsideJourn, 46, 0, 0.5);
+}
+
+function buildScene() {
+  // Clear existing
+  nodeMeshes.forEach(m => { scene.remove(m); });
+  nodeLabels.forEach(l => { scene.remove(l); });
+  edgeLines.forEach(e => { scene.remove(e.line); });
+  nodeMeshes.clear();
+  nodeLabels.clear();
+  edgeLines.length = 0;
+
+  layoutNodes();
+
+  // Create spheres
+  nodesData.forEach(n => {
+    const radius = 0.5 + (n.weight || 3) * 0.18;
+    const geo = new THREE.SphereGeometry(radius, 32, 32);
+    const col = hexToThreeColor(n.color || '#888');
+    const mat = new THREE.MeshStandardMaterial({
+      color: col,
+      emissive: col,
+      emissiveIntensity: 0.3 + (n.weight || 3) * 0.05,
+      roughness: 0.3,
+      metalness: 0.1
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(n._x, n._y, n._z);
+    mesh.userData = { nodeId: n.id, nodeData: n };
+    scene.add(mesh);
+    nodeMeshes.set(n.id, mesh);
+
+    // Label
+    const labelDiv = document.createElement('div');
+    labelDiv.className = 'node-label';
+    labelDiv.innerHTML = `<div class="nl-name">${n.name}</div>${n.type==='journalist'?`<div class="nl-house">${n.media_house||''}</div>`:''}`;
+    const label = new CSS2DObject(labelDiv);
+    label.position.set(0, radius + 0.6, 0);
+    mesh.add(label);
+    nodeLabels.set(n.id, label);
+  });
+
+  // Create edges
+  const edgeSet = new Set();
+  nodesData.forEach(n => {
+    (n.connections || []).forEach(cid => {
+      const key = [n.id, cid].sort().join('|');
+      if (edgeSet.has(key)) return;
+      edgeSet.add(key);
+      const fromMesh = nodeMeshes.get(n.id);
+      const toMesh = nodeMeshes.get(cid);
+      if (!fromMesh || !toMesh) return;
+
+      const points = [fromMesh.position.clone(), toMesh.position.clone()];
+      const geo = new THREE.BufferGeometry().setFromPoints(points);
+      const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08 });
+      const line = new THREE.Line(geo, mat);
+      scene.add(line);
+      edgeLines.push({ line, from: n.id, to: cid });
+    });
+  });
+
+  // Concentric ring guides (subtle)
+  [12, 22, 36, 46].forEach(r => {
+    const pts = [];
+    for (let i = 0; i <= 64; i++) {
+      const a = (i / 64) * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(a) * r, -1, Math.sin(a) * r));
+    }
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.03 });
+    scene.add(new THREE.Line(geo, mat));
+  });
+
+  buildLegend();
+  updateStats();
+}
+
+// ======================== LEGEND ========================
+function buildLegend() {
+  const el = document.getElementById('legend');
+  el.innerHTML = '';
+
+  const insideHouses = [...new Set(nodesData.filter(n => n.location === 'inside_sa' && n.type === 'media_house').map(n => n.name))];
+  const outsideHouses = [...new Set(nodesData.filter(n => n.location === 'outside_sa' && n.type === 'media_house').map(n => n.name))];
+
+  function addSection(title, houses) {
+    const h3 = document.createElement('h3');
+    h3.textContent = title;
+    el.appendChild(h3);
+
+    houses.forEach(name => {
+      const color = MEDIA_COLORS[name] || '#888';
+      const div = document.createElement('div');
+      div.className = 'legend-item';
+      div.innerHTML = `<span class="legend-swatch" style="background:${color}"></span>
+        <input type="checkbox" checked data-house="${name}">
+        <label>${name}</label>`;
+      div.querySelector('input').addEventListener('change', e => toggleMediaHouse(name, e.target.checked));
+      el.appendChild(div);
+    });
+  }
+
+  addSection('Inside South Africa', insideHouses);
+  addSection('Outside South Africa', outsideHouses);
+}
+
+function toggleMediaHouse(name, visible) {
+  nodesData.forEach(n => {
+    const isMatch = n.name === name || n.media_house === name;
+    if (!isMatch) return;
+    const mesh = nodeMeshes.get(n.id);
+    const label = nodeLabels.get(n.id);
+    if (mesh) mesh.visible = visible;
+    if (label) label.visible = visible;
+  });
+  edgeLines.forEach(e => {
+    const fromD = nodesData.find(n => n.id === e.from);
+    const toD = nodesData.find(n => n.id === e.to);
+    const fromM = nodeMeshes.get(e.from);
+    const toM = nodeMeshes.get(e.to);
+    if (fromM && toM) e.line.visible = fromM.visible && toM.visible;
+  });
+}
+
+// ======================== INTERACTION ========================
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const tooltip = document.getElementById('tooltip');
+let hoveredMesh = null;
+
+function onMouseMove(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = [];
+  nodeMeshes.forEach(m => { if (m.visible) meshes.push(m); });
+  const hits = raycaster.intersectObjects(meshes);
+
+  if (hits.length > 0) {
+    const mesh = hits[0].object;
+    if (hoveredMesh !== mesh) {
+      hoveredMesh = mesh;
+      const d = mesh.userData.nodeData;
+      showTooltip(d, e.clientX, e.clientY);
+    } else {
+      tooltip.style.left = (e.clientX + 16) + 'px';
+      tooltip.style.top = (e.clientY + 16) + 'px';
+    }
+    document.body.style.cursor = 'pointer';
+  } else {
+    hoveredMesh = null;
+    tooltip.style.display = 'none';
+    document.body.style.cursor = 'default';
+  }
+}
+
+function showTooltip(d, x, y) {
+  let html = `<div class="tt-name">${d.name}</div>`;
+  if (d.type === 'journalist') html += `<div class="tt-house">${d.media_house}</div>`;
+  html += `<div class="tt-meta"><span class="tt-flag">${d.flag||''}</span> ${d.country}</div>`;
+  if (d.topics) html += `<div class="tt-topics">${d.topics.join(' · ')}</div>`;
+  if (d.desc) html += `<div class="tt-desc">${d.desc}</div>`;
+  if (d.articles && d.articles.length) {
+    html += '<div class="tt-articles">';
+    d.articles.forEach(a => { html += `<a href="${a.u}" target="_blank">${a.t}</a>`; });
+    html += '</div>';
+  }
+  tooltip.innerHTML = html;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (x + 16) + 'px';
+  tooltip.style.top = (y + 16) + 'px';
+}
+
+function onClick(e) {
+  if (e.target.closest('#legend') || e.target.closest('#title-bar') || e.target.closest('#side-panel') || e.target.closest('#modal-overlay')) return;
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = [];
+  nodeMeshes.forEach(m => { if (m.visible) meshes.push(m); });
+  const hits = raycaster.intersectObjects(meshes);
+
+  if (hits.length > 0) {
+    const mesh = hits[0].object;
+    const d = mesh.userData.nodeData;
+    selectNode(d, mesh);
+  } else {
+    deselectAll();
+  }
+}
+
+function selectNode(d, mesh) {
+  selectedNode = d.id;
+  const connSet = new Set(d.connections || []);
+  connSet.add(d.id);
+
+  // Dim non-connected
+  nodeMeshes.forEach((m, id) => {
+    const label = nodeLabels.get(id);
+    if (connSet.has(id)) {
+      m.material.opacity = 1;
+      if (label) label.element.classList.remove('dimmed');
+    } else {
+      m.material.opacity = 0.15;
+      m.material.transparent = true;
+      if (label) label.element.classList.add('dimmed');
+    }
+  });
+
+  edgeLines.forEach(e => {
+    const connected = (e.from === d.id || e.to === d.id);
+    e.line.material.opacity = connected ? 0.5 : 0.02;
+  });
+
+  // Zoom to node
+  const target = mesh.position.clone();
+  const dir = camera.position.clone().sub(target).normalize();
+  const dest = target.clone().add(dir.multiplyScalar(15));
+  animateCamera(dest, target);
+
+  // Side panel
+  showSidePanel(d);
+}
+
+function deselectAll() {
+  selectedNode = null;
+  nodeMeshes.forEach((m, id) => {
+    m.material.opacity = 1;
+    m.material.transparent = false;
+    const label = nodeLabels.get(id);
+    if (label) label.element.classList.remove('dimmed');
+  });
+  edgeLines.forEach(e => { e.line.material.opacity = 0.08; });
+  closeSidePanel();
+}
+
+function animateCamera(destPos, destTarget) {
+  const startPos = camera.position.clone();
+  const startTarget = controls.target.clone();
+  const dur = 800;
+  const start = performance.now();
+
+  function step(t) {
+    const elapsed = t - start;
+    const progress = Math.min(elapsed / dur, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+
+    camera.position.lerpVectors(startPos, destPos, ease);
+    controls.target.lerpVectors(startTarget, destTarget, ease);
+    controls.update();
+
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function showSidePanel(d) {
+  const el = document.getElementById('sp-content');
+  let html = `<div class="sp-name">${d.flag||''} ${d.name}</div>`;
+  if (d.type === 'journalist') html += `<div class="sp-house">${d.media_house}</div>`;
+  else html += `<div class="sp-house">${d.type === 'media_house' ? 'Media House' : ''}</div>`;
+
+  html += `<div class="sp-section">Location</div><div class="sp-text">${d.country}</div>`;
+
+  if (d.topics) {
+    html += `<div class="sp-section">Topics</div><div>`;
+    d.topics.forEach(t => { html += `<span class="sp-tag">${t}</span>`; });
+    html += '</div>';
+  }
+
+  if (d.desc) html += `<div class="sp-section">Profile</div><div class="sp-text">${d.desc}</div>`;
+
+  if (d.articles && d.articles.length) {
+    html += '<div class="sp-section">Articles</div>';
+    d.articles.forEach(a => { html += `<a class="sp-link" href="${a.u}" target="_blank">${a.t}</a>`; });
+  }
+
+  if (d.connections && d.connections.length) {
+    html += '<div class="sp-section">Connections</div>';
+    d.connections.forEach(cid => {
+      const cn = nodesData.find(n => n.id === cid);
+      if (cn) html += `<div class="sp-text" style="margin:2px 0;cursor:pointer;color:#6ea8f0" onclick="window._selectById('${cid}')">${cn.name}</div>`;
+    });
+  }
+
+  el.innerHTML = html;
+  document.getElementById('side-panel').classList.add('open');
+}
+
+window._selectById = function(id) {
+  const d = nodesData.find(n => n.id === id);
+  const m = nodeMeshes.get(id);
+  if (d && m) selectNode(d, m);
+};
+
+window.closeSidePanel = function() {
+  document.getElementById('side-panel').classList.remove('open');
+};
+
+// ======================== TOOLBAR ========================
+window.exportJSON = function() {
+  const modal = document.getElementById('modal-overlay');
+  const box = document.getElementById('modal-box');
+  box.innerHTML = `<h3>Export Network JSON</h3>
+    <textarea id="export-text" readonly>${JSON.stringify(nodesData, null, 2)}</textarea>
+    <div class="modal-btns">
+      <button onclick="navigator.clipboard.writeText(document.getElementById('export-text').value);this.textContent='Copied!'">Copy</button>
+      <button onclick="document.getElementById('modal-overlay').classList.remove('show')">Close</button>
+    </div>`;
+  modal.classList.add('show');
+};
+
+window.showImport = function() {
+  const modal = document.getElementById('modal-overlay');
+  const box = document.getElementById('modal-box');
+  box.innerHTML = `<h3>Import Network JSON</h3>
+    <textarea id="import-text" placeholder="Paste JSON array here..."></textarea>
+    <div class="modal-btns">
+      <button class="primary" onclick="importData()">Import</button>
+      <button onclick="document.getElementById('modal-overlay').classList.remove('show')">Cancel</button>
+    </div>`;
+  modal.classList.add('show');
+};
+
+window.importData = function() {
+  try {
+    const data = JSON.parse(document.getElementById('import-text').value);
+    if (Array.isArray(data)) {
+      nodesData.length = 0;
+      data.forEach(d => nodesData.push(d));
+      buildScene();
+      document.getElementById('modal-overlay').classList.remove('show');
+    }
+  } catch(e) { alert('Invalid JSON: ' + e.message); }
+};
+
+window.resetView = function() {
+  deselectAll();
+  animateCamera(new THREE.Vector3(0, 30, 60), new THREE.Vector3(0, 0, 0));
+};
+
+function updateStats() {
+  const j = nodesData.filter(n => n.type === 'journalist').length;
+  const m = nodesData.filter(n => n.type === 'media_house').length;
+  document.getElementById('stats').textContent = `${j} journalists · ${m} media houses · ${edgeLines.length} connections`;
+}
+
+// ======================== ANIMATION LOOP ========================
+let time = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  time += 0.005;
+
+  // Gentle floating
+  nodeMeshes.forEach((mesh, id) => {
+    const d = mesh.userData.nodeData;
+    if (!d) return;
+    mesh.position.y = d._y + Math.sin(time + d._x * 0.5) * 0.3;
+  });
+
+  // Update edge positions
+  edgeLines.forEach(e => {
+    const fromM = nodeMeshes.get(e.from);
+    const toM = nodeMeshes.get(e.to);
+    if (fromM && toM) {
+      const positions = e.line.geometry.attributes.position.array;
+      positions[0] = fromM.position.x; positions[1] = fromM.position.y; positions[2] = fromM.position.z;
+      positions[3] = toM.position.x; positions[4] = toM.position.y; positions[5] = toM.position.z;
+      e.line.geometry.attributes.position.needsUpdate = true;
+    }
+  });
+
+  controls.update();
+  composer.render();
+  labelRenderer.render(scene, camera);
+}
+
+// ======================== EVENTS ========================
+window.addEventListener('mousemove', onMouseMove);
+window.addEventListener('click', onClick);
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ======================== INIT ========================
+buildScene();
+animate();
+</script>
+</body>
+</html>
