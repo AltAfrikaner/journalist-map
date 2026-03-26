@@ -3,90 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SA Media Network Map | Alt Afrikaner Intelligence</title>
+<title>SA Media Network | Alt Afrikaner Intelligence</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a12;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;width:100vw}
+body{background:#08080f;color:#e0e0e0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow:hidden;height:100vh;width:100vw}
 #canvas-container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1}
-#ui-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
 
-/* Title bar */
-#title-bar{position:fixed;top:0;left:0;right:0;height:48px;background:linear-gradient(180deg,rgba(10,10,18,0.95),rgba(10,10,18,0.7));
-  display:flex;align-items:center;padding:0 20px;pointer-events:auto;z-index:100;border-bottom:1px solid rgba(197,150,12,0.3)}
-#title-bar h1{font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c5960c}
-#title-bar .subtitle{font-size:11px;color:#667;margin-left:12px;letter-spacing:1px}
-.toolbar{margin-left:auto;display:flex;gap:8px}
-.toolbar button{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#aaa;padding:6px 14px;
-  font-size:11px;border-radius:4px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s}
-.toolbar button:hover{background:rgba(197,150,12,0.15);border-color:rgba(197,150,12,0.4);color:#c5960c}
+/* TITLE BAR */
+#title-bar{position:fixed;top:0;left:0;right:0;height:44px;background:linear-gradient(180deg,rgba(8,8,15,0.97),rgba(8,8,15,0.8));
+display:flex;align-items:center;padding:0 16px;z-index:100;border-bottom:1px solid rgba(197,150,12,0.25)}
+#title-bar h1{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#c5960c}
+#title-bar .sub{font-size:10px;color:#556;margin-left:10px;letter-spacing:1px}
+.tb-right{margin-left:auto;display:flex;gap:6px}
+.tb-right button{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#888;
+padding:5px 12px;font-size:10px;border-radius:3px;cursor:pointer;letter-spacing:0.4px;transition:all 0.2s}
+.tb-right button:hover{background:rgba(197,150,12,0.12);border-color:rgba(197,150,12,0.35);color:#c5960c}
 
-/* Legend panel */
-#legend{position:fixed;top:56px;left:0;width:260px;bottom:0;background:rgba(10,10,18,0.92);
-  border-right:1px solid rgba(255,255,255,0.06);overflow-y:auto;pointer-events:auto;z-index:50;
-  padding:12px 14px;font-size:11px;scrollbar-width:thin;scrollbar-color:#333 transparent}
-#legend h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c5960c;margin:14px 0 8px;
-  border-bottom:1px solid rgba(197,150,12,0.2);padding-bottom:4px}
+/* LEGEND */
+#legend{position:fixed;top:44px;left:0;width:240px;bottom:0;background:rgba(8,8,15,0.94);
+border-right:1px solid rgba(255,255,255,0.05);overflow-y:auto;z-index:50;padding:10px 12px;font-size:10px;
+scrollbar-width:thin;scrollbar-color:#222 transparent}
+#legend::-webkit-scrollbar{width:4px}
+#legend::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+#legend h3{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c5960c;margin:12px 0 6px;
+border-bottom:1px solid rgba(197,150,12,0.15);padding-bottom:3px}
 #legend h3:first-child{margin-top:0}
-.legend-item{display:flex;align-items:center;gap:6px;padding:3px 0;cursor:pointer}
-.legend-item:hover{opacity:0.8}
-.legend-swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.legend-item input{width:12px;height:12px;accent-color:#c5960c;cursor:pointer}
-.legend-item label{font-size:11px;color:#bbb;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li{display:flex;align-items:center;gap:5px;padding:2px 0;cursor:pointer;transition:opacity 0.2s}
+.li:hover{opacity:0.7}
+.li-sw{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.li input{width:11px;height:11px;accent-color:#c5960c;cursor:pointer;flex-shrink:0}
+.li img{width:14px;height:14px;border-radius:2px;object-fit:contain;background:#fff;flex-shrink:0}
+.li label{font-size:10px;color:#aaa;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* Tooltip */
-#tooltip{position:fixed;display:none;background:rgba(12,12,20,0.96);border:1px solid rgba(197,150,12,0.3);
-  border-radius:8px;padding:14px 16px;max-width:340px;pointer-events:none;z-index:200;
-  box-shadow:0 8px 32px rgba(0,0,0,0.6);backdrop-filter:blur(12px)}
-#tooltip .tt-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
-#tooltip .tt-house{font-size:11px;color:#c5960c;margin-bottom:6px}
-#tooltip .tt-meta{font-size:10px;color:#888;margin-bottom:4px;display:flex;align-items:center;gap:4px}
-#tooltip .tt-flag{font-size:16px}
-#tooltip .tt-topics{font-size:10px;color:#7eb8da;margin-bottom:6px}
-#tooltip .tt-desc{font-size:10px;color:#999;line-height:1.4;margin-bottom:6px}
-#tooltip .tt-articles a{font-size:10px;color:#6ea8f0;text-decoration:none;display:block;margin-bottom:2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#tooltip .tt-articles a:hover{text-decoration:underline}
+/* TOOLTIP */
+#tt{position:fixed;display:none;background:rgba(10,10,18,0.97);border:1px solid rgba(197,150,12,0.25);
+border-radius:6px;padding:12px 14px;max-width:320px;pointer-events:none;z-index:200;
+box-shadow:0 6px 24px rgba(0,0,0,0.7);backdrop-filter:blur(10px)}
+.tt-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.tt-logo{width:22px;height:22px;border-radius:4px;object-fit:contain;background:#fff}
+.tt-info{flex:1}
+.tt-name{font-size:13px;font-weight:700;color:#fff;line-height:1.2}
+.tt-house{font-size:10px;color:#c5960c}
+.tt-loc{font-size:10px;color:#778;display:flex;align-items:center;gap:4px;margin-bottom:5px}
+.tt-loc img{width:18px;height:13px;border-radius:1px}
+.tt-topics{font-size:9px;color:#6aadcc;margin-bottom:5px;line-height:1.4}
+.tt-desc{font-size:9px;color:#889;line-height:1.4;margin-bottom:5px}
+.tt-arts a{font-size:9px;color:#5e9be6;text-decoration:none;display:block;margin:1px 0;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
 
-/* Side panel */
-#side-panel{position:fixed;top:48px;right:-380px;width:360px;bottom:0;background:rgba(10,10,18,0.96);
-  border-left:1px solid rgba(197,150,12,0.2);z-index:80;pointer-events:auto;transition:right 0.4s ease;
-  padding:20px;overflow-y:auto;scrollbar-width:thin}
-#side-panel.open{right:0}
-#side-panel .sp-close{position:absolute;top:10px;right:14px;background:none;border:none;color:#666;
-  font-size:18px;cursor:pointer}
-#side-panel .sp-close:hover{color:#c5960c}
-#side-panel .sp-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;margin-top:8px}
-#side-panel .sp-house{font-size:12px;color:#c5960c;margin-bottom:10px}
-#side-panel .sp-section{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#666;margin:12px 0 4px}
-#side-panel .sp-text{font-size:12px;color:#bbb;line-height:1.5}
-#side-panel .sp-tag{display:inline-block;background:rgba(126,184,218,0.12);color:#7eb8da;
-  padding:2px 8px;border-radius:10px;font-size:10px;margin:2px 4px 2px 0}
-#side-panel .sp-link{display:block;color:#6ea8f0;font-size:11px;margin:4px 0;text-decoration:none}
-#side-panel .sp-link:hover{text-decoration:underline}
+/* SIDE PANEL */
+#sp{position:fixed;top:44px;right:-370px;width:350px;bottom:0;background:rgba(8,8,15,0.97);
+border-left:1px solid rgba(197,150,12,0.15);z-index:80;transition:right 0.35s ease;
+padding:16px;overflow-y:auto;scrollbar-width:thin}
+#sp.open{right:0}
+.sp-x{position:absolute;top:8px;right:12px;background:none;border:none;color:#555;font-size:16px;cursor:pointer}
+.sp-x:hover{color:#c5960c}
+.sp-top{display:flex;align-items:center;gap:10px;margin:6px 0 10px}
+.sp-logo{width:32px;height:32px;border-radius:6px;object-fit:contain;background:#fff}
+.sp-flag{width:24px;height:17px;border-radius:2px;margin-left:auto}
+.sp-nm{font-size:16px;font-weight:700;color:#fff}
+.sp-mh{font-size:11px;color:#c5960c;margin-bottom:8px}
+.sp-sec{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#556;margin:10px 0 3px}
+.sp-txt{font-size:11px;color:#aab;line-height:1.5}
+.sp-tag{display:inline-block;background:rgba(106,173,204,0.1);color:#6aadcc;padding:1px 7px;border-radius:8px;font-size:9px;margin:2px 3px 2px 0}
+.sp-lnk{display:block;color:#5e9be6;font-size:10px;margin:3px 0;text-decoration:none}
+.sp-lnk:hover{text-decoration:underline}
+.sp-conn{font-size:10px;color:#5e9be6;padding:2px 0;cursor:pointer}
+.sp-conn:hover{color:#c5960c}
 
-/* Node labels (CSS2DObject) */
-.node-label{color:#ccc;font-size:10px;font-family:'Segoe UI',sans-serif;text-align:center;
-  pointer-events:none;text-shadow:0 1px 4px rgba(0,0,0,0.8);white-space:nowrap;transition:opacity 0.3s}
-.node-label .nl-name{font-weight:600;font-size:10px}
-.node-label .nl-house{font-size:8px;color:#999}
-.node-label.dimmed{opacity:0.15}
+/* NODE LABELS */
+.nl{color:#bbb;font-size:9px;text-align:center;pointer-events:none;
+text-shadow:0 1px 6px rgba(0,0,0,0.9),0 0 2px rgba(0,0,0,0.5);white-space:nowrap;transition:opacity 0.3s}
+.nl-n{font-weight:600;font-size:9px}
+.nl-h{font-size:7px;color:#889}
+.nl-i{width:16px;height:16px;border-radius:50%;object-fit:contain;background:#fff;display:block;margin:2px auto 1px;
+box-shadow:0 0 4px rgba(0,0,0,0.5)}
+.nl.dim{opacity:0.1}
 
-/* Import/Export modal */
-#modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);
-  display:none;z-index:300;justify-content:center;align-items:center;pointer-events:auto}
-#modal-overlay.show{display:flex}
-#modal-box{background:#14141e;border:1px solid rgba(197,150,12,0.3);border-radius:8px;padding:20px;
-  width:500px;max-height:80vh;display:flex;flex-direction:column}
-#modal-box h3{font-size:13px;color:#c5960c;margin-bottom:10px}
-#modal-box textarea{width:100%;height:300px;background:#0a0a12;border:1px solid #333;color:#ccc;
-  font-family:monospace;font-size:11px;padding:10px;border-radius:4px;resize:vertical}
-#modal-box .modal-btns{margin-top:10px;display:flex;gap:8px;justify-content:flex-end}
-#modal-box button{padding:6px 16px;border-radius:4px;border:1px solid #444;background:#1a1a28;
-  color:#ccc;font-size:11px;cursor:pointer}
-#modal-box button.primary{background:rgba(197,150,12,0.2);border-color:rgba(197,150,12,0.4);color:#c5960c}
+/* MODAL */
+#mo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:none;z-index:300;
+justify-content:center;align-items:center}
+#mo.show{display:flex}
+#mb{background:#12121c;border:1px solid rgba(197,150,12,0.25);border-radius:6px;padding:16px;width:480px;max-height:80vh;display:flex;flex-direction:column}
+#mb h3{font-size:12px;color:#c5960c;margin-bottom:8px}
+#mb textarea{width:100%;height:280px;background:#08080f;border:1px solid #2a2a3a;color:#bbb;font-family:monospace;font-size:10px;padding:8px;border-radius:3px;resize:vertical}
+.mb-b{margin-top:8px;display:flex;gap:6px;justify-content:flex-end}
+.mb-b button{padding:5px 14px;border-radius:3px;border:1px solid #333;background:#18182a;color:#aaa;font-size:10px;cursor:pointer}
+.mb-b .pr{background:rgba(197,150,12,0.15);border-color:rgba(197,150,12,0.35);color:#c5960c}
 
-/* Stats */
-#stats{position:fixed;bottom:10px;left:270px;font-size:10px;color:#444;z-index:50;pointer-events:none}
+/* STATS */
+#st{position:fixed;bottom:8px;left:248px;font-size:9px;color:#333;z-index:50;pointer-events:none;letter-spacing:0.5px}
+
+/* ZONE LABELS */
+.zone-label{position:fixed;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(197,150,12,0.25);
+z-index:5;pointer-events:none;font-weight:600}
 </style>
 </head>
 <body>
@@ -95,625 +105,668 @@ body{background:#0a0a12;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-seri
 
 <div id="title-bar">
   <h1>SA Media Network</h1>
-  <span class="subtitle">Inside & Outside South Africa</span>
-  <div class="toolbar">
-    <button onclick="exportJSON()">Export JSON</button>
-    <button onclick="showImport()">Import JSON</button>
-    <button onclick="resetView()">Reset View</button>
+  <span class="sub">Inside &amp; Outside South Africa &middot; 3D Intelligence Map</span>
+  <div class="tb-right">
+    <button onclick="doExport()">Export JSON</button>
+    <button onclick="doImport()">Import JSON</button>
+    <button onclick="doReset()">Reset View</button>
   </div>
 </div>
 
 <div id="legend"></div>
-<div id="tooltip"></div>
-<div id="side-panel"><button class="sp-close" onclick="closeSidePanel()">&times;</button><div id="sp-content"></div></div>
-<div id="modal-overlay"><div id="modal-box"></div></div>
-<div id="stats"></div>
+<div id="tt"></div>
+<div id="sp"><button class="sp-x" onclick="closePanel()">&times;</button><div id="spc"></div></div>
+<div id="mo"><div id="mb"></div></div>
+<div id="st"></div>
 
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
-
 <script type="module">
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {CSS2DRenderer,CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 
-// ======================== DATA ========================
-const MEDIA_COLORS = {
-  "SABC":"#2e86de","eNCA":"#e74c3c","News24":"#f39c12","Daily Maverick":"#8e44ad",
-  "amaBhungane":"#27ae60","Mail & Guardian":"#1abc9c","Africa Check":"#e67e22",
-  "The Conversation Africa":"#3498db","Carte Blanche":"#9b59b6","Netwerk24":"#e55039",
-  "EWN":"#fa983a","ISS Africa":"#78e08f",
-  "CNN":"#cc0000","BBC":"#b71c1c","Al Jazeera":"#d4a017","AFP":"#0277bd",
-  "Reuters":"#f57f17","AP":"#1565c0","New York Times":"#212121","The Guardian":"#1b5e20",
-  "France 24":"#0d47a1","CGTN":"#c62828","Deutsche Welle":"#283593",
-  "Washington Post":"#1a1a1a","TRT World":"#00695c","New Lines":"#4a148c",
-  "The Continent":"#00838f","Poynter/IFCN":"#4e342e","CBS":"#37474f","NPR":"#01579b","RT":"#b71c1c"
+/* ============ LOGO + FLAG MAPS ============ */
+const LOGO={
+"SABC":"https://logo.clearbit.com/sabc.co.za",
+"eNCA":"https://logo.clearbit.com/enca.com",
+"News24":"https://logo.clearbit.com/news24.com",
+"Daily Maverick":"https://logo.clearbit.com/dailymaverick.co.za",
+"amaBhungane":"https://logo.clearbit.com/amabhungane.org",
+"Mail & Guardian":"https://logo.clearbit.com/mg.co.za",
+"Africa Check":"https://logo.clearbit.com/africacheck.org",
+"The Conversation Africa":"https://logo.clearbit.com/theconversation.com",
+"Carte Blanche":"https://logo.clearbit.com/mnet.dstv.com",
+"Netwerk24":"https://logo.clearbit.com/netwerk24.com",
+"EWN":"https://logo.clearbit.com/ewn.co.za",
+"ISS Africa":"https://logo.clearbit.com/issafrica.org",
+"CNN":"https://logo.clearbit.com/cnn.com",
+"BBC":"https://logo.clearbit.com/bbc.com",
+"Al Jazeera":"https://logo.clearbit.com/aljazeera.com",
+"AFP":"https://logo.clearbit.com/afp.com",
+"Reuters":"https://logo.clearbit.com/reuters.com",
+"AP":"https://logo.clearbit.com/apnews.com",
+"New York Times":"https://logo.clearbit.com/nytimes.com",
+"The Guardian":"https://logo.clearbit.com/theguardian.com",
+"France 24":"https://logo.clearbit.com/france24.com",
+"Deutsche Welle":"https://logo.clearbit.com/dw.com",
+"CGTN":"https://logo.clearbit.com/cgtn.com",
+"RT":"https://logo.clearbit.com/rt.com",
+"NPR":"https://logo.clearbit.com/npr.org",
+"CBS":"https://logo.clearbit.com/cbsnews.com",
+"TRT World":"https://logo.clearbit.com/trtworld.com",
+"New Lines":"https://logo.clearbit.com/newlinesmag.com",
+"The Continent":"https://logo.clearbit.com/thecontinent.org",
+"Washington Post":"https://logo.clearbit.com/washingtonpost.com",
+"Poynter/IFCN":"https://logo.clearbit.com/poynter.org"
+};
+const FAVI={
+"SABC":"https://www.google.com/s2/favicons?domain=sabc.co.za&sz=64",
+"eNCA":"https://www.google.com/s2/favicons?domain=enca.com&sz=64",
+"News24":"https://www.google.com/s2/favicons?domain=news24.com&sz=64",
+"Daily Maverick":"https://www.google.com/s2/favicons?domain=dailymaverick.co.za&sz=64",
+"amaBhungane":"https://www.google.com/s2/favicons?domain=amabhungane.org&sz=64",
+"Mail & Guardian":"https://www.google.com/s2/favicons?domain=mg.co.za&sz=64",
+"Africa Check":"https://www.google.com/s2/favicons?domain=africacheck.org&sz=64",
+"The Conversation Africa":"https://www.google.com/s2/favicons?domain=theconversation.com&sz=64",
+"Carte Blanche":"https://www.google.com/s2/favicons?domain=carteblanche.dstv.com&sz=64",
+"Netwerk24":"https://www.google.com/s2/favicons?domain=netwerk24.com&sz=64",
+"EWN":"https://www.google.com/s2/favicons?domain=ewn.co.za&sz=64",
+"ISS Africa":"https://www.google.com/s2/favicons?domain=issafrica.org&sz=64",
+"CNN":"https://www.google.com/s2/favicons?domain=cnn.com&sz=64",
+"BBC":"https://www.google.com/s2/favicons?domain=bbc.com&sz=64",
+"Al Jazeera":"https://www.google.com/s2/favicons?domain=aljazeera.com&sz=64",
+"AFP":"https://www.google.com/s2/favicons?domain=afp.com&sz=64",
+"Reuters":"https://www.google.com/s2/favicons?domain=reuters.com&sz=64",
+"AP":"https://www.google.com/s2/favicons?domain=apnews.com&sz=64",
+"New York Times":"https://www.google.com/s2/favicons?domain=nytimes.com&sz=64",
+"The Guardian":"https://www.google.com/s2/favicons?domain=theguardian.com&sz=64",
+"France 24":"https://www.google.com/s2/favicons?domain=france24.com&sz=64",
+"Deutsche Welle":"https://www.google.com/s2/favicons?domain=dw.com&sz=64",
+"CGTN":"https://www.google.com/s2/favicons?domain=cgtn.com&sz=64",
+"RT":"https://www.google.com/s2/favicons?domain=rt.com&sz=64",
+"NPR":"https://www.google.com/s2/favicons?domain=npr.org&sz=64",
+"CBS":"https://www.google.com/s2/favicons?domain=cbsnews.com&sz=64",
+"TRT World":"https://www.google.com/s2/favicons?domain=trtworld.com&sz=64",
+"New Lines":"https://www.google.com/s2/favicons?domain=newlinesmag.com&sz=64",
+"The Continent":"https://www.google.com/s2/favicons?domain=thecontinent.org&sz=64",
+"Washington Post":"https://www.google.com/s2/favicons?domain=washingtonpost.com&sz=64",
+"Poynter/IFCN":"https://www.google.com/s2/favicons?domain=poynter.org&sz=64"
+};
+function logoUrl(name){return LOGO[name]||FAVI[name]||''}
+function logoFallback(name){return FAVI[name]||''}
+function flagUrl(code){return code?`https://flagcdn.com/w80/${code}.png`:'';}
+
+const CC={"South Africa":"za","USA":"us","United States":"us","UK":"gb","United Kingdom":"gb",
+"Qatar":"qa","UAE":"ae","United Arab Emirates":"ae","France":"fr","Germany":"de","China":"cn",
+"Russia":"ru","Turkey":"tr","Kenya":"ke","Nigeria":"ng","Canada":"ca"};
+function countryCode(c){
+  if(!c)return'za';
+  for(const[k,v]of Object.entries(CC)){if(c.includes(k))return v;}
+  return'za';
+}
+
+/* ============ COLOUR MAP ============ */
+const COL={
+"SABC":"#2e86de","eNCA":"#e74c3c","News24":"#f39c12","Daily Maverick":"#8e44ad",
+"amaBhungane":"#27ae60","Mail & Guardian":"#1abc9c","Africa Check":"#e67e22",
+"The Conversation Africa":"#3498db","Carte Blanche":"#9b59b6","Netwerk24":"#e55039",
+"EWN":"#fa983a","ISS Africa":"#78e08f",
+"CNN":"#cc0000","BBC":"#b71c1c","Al Jazeera":"#d4a017","AFP":"#0277bd",
+"Reuters":"#ff8f00","AP":"#1565c0","New York Times":"#444","The Guardian":"#1b5e20",
+"France 24":"#0d47a1","CGTN":"#c62828","Deutsche Welle":"#283593","RT":"#5d4037",
+"NPR":"#01579b","CBS":"#37474f","TRT World":"#00695c","New Lines":"#4a148c",
+"The Continent":"#00838f","Washington Post":"#222","Poynter/IFCN":"#4e342e"
 };
 
-const FLAG = {za:"🇿🇦",gb:"🇬🇧",qa:"🇶🇦",us:"🇺🇸",ae:"🇦🇪",fr:"🇫🇷",de:"🇩🇪",cn:"🇨🇳",ru:"🇷🇺",tr:"🇹🇷",ke:"🇰🇪",ng:"🇳🇬"};
+/* ============ FULL DATA ============ */
+let DATA=[
+// ====== INSIDE SA: MEDIA HOUSES ======
+{id:"sabc",type:"media_house",name:"SABC",media_house:"SABC",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.SABC,w:8,
+desc:"State broadcaster. Most-watched news in SA. Expected R590m loss to end March 2025. TV channels SABC 1/2/3 plus multiple radio stations.",
+conns:["bryce_pease","enca","news24"]},
 
-let nodesData = [
-  // ===== INSIDE SA: Media Houses =====
-  {id:"sabc",type:"media_house",name:"SABC",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.SABC,weight:8,desc:"State broadcaster. Most-watched news. Expected R590m loss 2025.",connections:["bryce_pease","enca","news24"]},
-  {id:"enca",type:"media_house",name:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:7,desc:"24-hour news channel. SA's first & most-trusted per Reuters DNR 2025.",connections:["thathiah","goge","herd","sabc","dm"]},
-  {id:"news24",type:"media_house",name:"News24",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.News24,weight:7,desc:"SA's leading news website. 73% weekly access. Naspers/Media24.",connections:["basson","amab","dm"]},
-  {id:"dm",type:"media_house",name:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:7,desc:"Independent online news. Founded 2009. Scorpio investigations. DM168 print.",connections:["brkic","haffajee","dougan","amab","news24"]},
-  {id:"amab",type:"media_house",name:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:6,desc:"Non-profit investigative centre. Founded 2010. #GuptaLeaks. Donor-funded.",connections:["sole","comrie","timse","dm","news24"]},
-  {id:"mg",type:"media_house",name:"Mail & Guardian",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Mail & Guardian"],weight:5,desc:"Weekly newspaper. Founded 1985 as anti-apartheid Weekly Mail.",connections:["allison","amab"]},
-  {id:"ac",type:"media_house",name:"Africa Check",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Africa Check"],weight:6,desc:"Fact-checking org at Wits. IFCN-certified. Former Meta partner. OSF/Gates/Luminate funded.",connections:["cunliffe","ifcn","bbc_h","cnn_h"]},
-  {id:"conv",type:"media_house",name:"The Conversation Africa",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["The Conversation Africa"],weight:4,desc:"Academic-to-media bridge. Syndicated to Guardian. Founded by ex-FT editor.",connections:["southey","guardian_h"]},
-  {id:"cb",type:"media_house",name:"Carte Blanche",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Carte Blanche"],weight:4,desc:"Investigative TV magazine. M-Net/DStv. Sunday prime time.",connections:["l_naidoo"]},
-  {id:"nw24",type:"media_house",name:"Netwerk24",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.Netwerk24,weight:3,desc:"Afrikaans digital platform. Media24. ZERO international connections. Language silo.",connections:["basson"]},
-  {id:"iss",type:"media_house",name:"ISS Africa",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["ISS Africa"],weight:4,desc:"Think tank. Analysis cited by BBC, CNN, Al Jazeera, AFP.",connections:["allison","bbc_h","aje_h"]},
+{id:"enca",type:"media_house",name:"eNCA",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.eNCA,w:7,
+desc:"24-hour news channel owned by e.tv. Launched 2008. SA's most-trusted TV news channel per Reuters DNR 2025. JHB & CPT studios.",
+conns:["thathiah","goge","herd","mtimkulu","sabc","dm"]},
 
-  // ===== INSIDE SA: Journalists =====
-  {id:"bryce_pease",type:"journalist",name:"Sherwin Bryce-Pease",media_house:"SABC",location:"inside_sa",country:"USA (UN Bureau)",flag:FLAG.us,color:MEDIA_COLORS.SABC,weight:6,
-    topics:["UN affairs","US politics","multilateral diplomacy","G20"],desc:"SABC Bureau Chief & US Correspondent at UN HQ New York since 2008. First African UNCA president. Gold Medal 2025.",
-    articles:[{t:"SABC wins UNCA Gold Medal",u:"https://www.sabcnews.com/sabcnews/1090036-2/"}],connections:["sabc"]},
-  {id:"thathiah",type:"journalist",name:"Dasen Thathiah",media_house:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:5,
-    topics:["breaking news","KZN floods","disasters"],desc:"Senior Reporter KZN/Mpumalanga. 21-time Vodacom JoY award winner.",articles:[],connections:["enca"]},
-  {id:"goge",type:"journalist",name:"Siphamandla Goge",media_house:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:5,
-    topics:["politics","Zulu monarchy","succession"],desc:"Vodacom Journalist of the Year 2021.",articles:[],connections:["enca"]},
-  {id:"herd",type:"journalist",name:"Francis Herd",media_house:"eNCA",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.eNCA,weight:4,
-    topics:["business","economics","B20/G20"],desc:"Business anchor. Corporate SA coverage.",articles:[],connections:["enca"]},
-  {id:"basson",type:"journalist",name:"Adriaan Basson",media_house:"News24",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.News24,weight:6,
-    topics:["editorial direction","investigations","politics"],desc:"Editor-in-Chief since 2016. Former amaBhungane co-founder. Stellenbosch trained. Former Beeld/Netwerk24 editor.",
-    articles:[],connections:["news24","amab","nw24"]},
-  {id:"brkic",type:"journalist",name:"Branko Brkic",media_house:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:6,
-    topics:["editorial direction","media strategy","investigations"],desc:"Founder & Editor-in-Chief. Nat Nakasa Award 2018.",articles:[],connections:["dm"]},
-  {id:"haffajee",type:"journalist",name:"Ferial Haffajee",media_house:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:5,
-    topics:["politics","governance","race","media"],desc:"Associate Editor. Former M&G and City Press editor.",articles:[],connections:["dm","mg"]},
-  {id:"dougan",type:"journalist",name:"Leila Dougan",media_house:"Daily Maverick",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Daily Maverick"],weight:4,
-    topics:["multi-platform investigations","Scorpio"],desc:"Vodacom JoY 2019.",articles:[],connections:["dm"]},
-  {id:"sole",type:"journalist",name:"Sam Sole",media_house:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:6,
-    topics:["state capture","corruption","surveillance","RICA"],desc:"Co-founder & Managing Partner. #GuptaLeaks. RICA surveillance challenge.",articles:[],connections:["amab","dm","news24"]},
-  {id:"comrie",type:"journalist",name:"Susan Comrie",media_house:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:5,
-    topics:["financial flows","state capture","money trails"],desc:"Investigative journalist. #GuptaLeaks money reconstruction.",articles:[],connections:["amab"]},
-  {id:"timse",type:"journalist",name:"Tabelo Timse",media_house:"amaBhungane",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS.amaBhungane,weight:5,
-    topics:["SADC region","politics","corruption"],desc:"Former AFP JHB (2009-2012). Franco-German Prize 2021. #GuptaLeaks.",articles:[],connections:["amab","afp_h"]},
-  {id:"allison",type:"journalist",name:"Simon Allison",media_house:"The Continent",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["The Continent"],weight:6,
-    topics:["African continental affairs","governance","conflict"],desc:"Revolving door: DM→ISS→M&G→The Continent. SOAS London MA. Guardian contributor. Pulitzer Center.",
-    articles:[],connections:["mg","iss","guardian_h","dm"]},
-  {id:"l_naidoo",type:"journalist",name:"Latashia Naidoo",media_house:"Carte Blanche",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["Carte Blanche"],weight:5,
-    topics:["crime","politics","investigations"],desc:"Former eNCA, TRT World, BBC Africa, CNN, Business Insider US. OSF/Wits Fellow 2020. Reuters Changemaker 2021.",
-    articles:[],connections:["cb","enca","bbc_h","cnn_h","trt_h"]},
-  {id:"southey",type:"journalist",name:"Caroline Southey",media_house:"The Conversation Africa",location:"inside_sa",country:"South Africa",flag:FLAG.za,color:MEDIA_COLORS["The Conversation Africa"],weight:4,
-    topics:["editorial direction","academic-media bridge"],desc:"Founding Editor. 17 years at FT London. Former Financial Mail SA editor.",articles:[],connections:["conv","guardian_h"]},
-  {id:"cunliffe",type:"journalist",name:"Peter Cunliffe-Jones",media_house:"Poynter/IFCN",location:"inside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["Africa Check"],weight:5,
-    topics:["fact-checking standards","certification"],desc:"Founded Africa Check 2012 London. Ran from Wits to 2019. Now IFCN Senior Adviser at Poynter. Revolving door.",
-    articles:[],connections:["ac","ifcn"]},
+{id:"news24",type:"media_house",name:"News24",media_house:"News24",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.News24,w:7,
+desc:"SA's leading news website. 73% weekly access. Naspers/Media24. Paywall launched Aug 2020. Joint most-trusted brand with BBC in SA.",
+conns:["basson","amab","dm"]},
 
-  // ===== OUTSIDE SA: Media Houses =====
-  {id:"cnn_h",type:"media_house",name:"CNN",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.CNN,weight:8,desc:"Largest global TV news network. JHB bureau. Atlanta HQ.",connections:["mckenzie","curnow","giokos","l_naidoo","ac"]},
-  {id:"bbc_h",type:"media_house",name:"BBC",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.BBC,weight:8,desc:"British state broadcaster. BBC World Service/News. Prescott Memo (2025) documented editorial breaches.",connections:["mbele","tlhabi","l_naidoo","ac","iss"]},
-  {id:"aje_h",type:"media_house",name:"Al Jazeera",location:"outside_sa",country:"Qatar",flag:FLAG.qa,color:MEDIA_COLORS["Al Jazeera"],weight:7,desc:"Doha HQ. 300M+ reach. More Africa bureaus than any global broadcaster. JHB bureau.",connections:["mutasa","dutton","a_naidoo","muirhead","iss"]},
-  {id:"afp_h",type:"media_house",name:"AFP",location:"outside_sa",country:"France",flag:FLAG.fr,color:MEDIA_COLORS.AFP,weight:7,desc:"French wire service. JHB bureau. Sets initial framing adopted by thousands of outlets.",connections:["timse"]},
-  {id:"reuters_h",type:"media_house",name:"Reuters",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.Reuters,weight:7,desc:"Global wire service. JHB bureau. Thomson Reuters Foundation SA correspondent.",connections:["harrisberg"]},
-  {id:"ap_h",type:"media_house",name:"AP",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.AP,weight:6,desc:"World's oldest wire service. JHB bureau.",connections:[]},
-  {id:"nyt_h",type:"media_house",name:"New York Times",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["New York Times"],weight:7,desc:"Maintained JHB bureau. Rotating foreign correspondents.",connections:["onishi"]},
-  {id:"guardian_h",type:"media_house",name:"The Guardian",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS["The Guardian"],weight:6,desc:"Former Africa corr. JHB 2010-2015. Syndicates Conversation Africa.",connections:["d_smith","allison","conv"]},
-  {id:"f24_h",type:"media_house",name:"France 24",location:"outside_sa",country:"France",flag:FLAG.fr,color:MEDIA_COLORS["France 24"],weight:4,desc:"French state international broadcaster. IFCN fact-checking partner.",connections:["afp_h"]},
-  {id:"cgtn_h",type:"media_house",name:"CGTN",location:"outside_sa",country:"China",flag:FLAG.cn,color:MEDIA_COLORS.CGTN,weight:5,desc:"Chinese state media. Nairobi bureau. Growing African influence.",connections:["a_naidoo"]},
-  {id:"dw_h",type:"media_house",name:"Deutsche Welle",location:"outside_sa",country:"Germany",flag:FLAG.de,color:MEDIA_COLORS["Deutsche Welle"],weight:4,desc:"German international broadcaster. DW Africa strong presence.",connections:[]},
-  {id:"trt_h",type:"media_house",name:"TRT World",location:"outside_sa",country:"Turkey",flag:FLAG.tr,color:MEDIA_COLORS["TRT World"],weight:3,desc:"Turkish state broadcaster. English-language.",connections:["l_naidoo"]},
-  {id:"ifcn",type:"media_house",name:"Poynter/IFCN",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["Poynter/IFCN"],weight:5,desc:"Certifies fact-checkers. Controlled Meta's fact-checking programme access. Gates/OSF/Meta funded.",connections:["cunliffe","ac"]},
+{id:"dm",type:"media_house",name:"Daily Maverick",media_house:"Daily Maverick",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["Daily Maverick"],w:7,
+desc:"Independent online news. Founded 2009 by Branko Brkic. DM168 print weekly. Scorpio investigations. Cut 15% costs Dec 2024.",
+conns:["brkic","haffajee","dougan","amab","news24"]},
 
-  // ===== OUTSIDE SA: Journalists =====
-  {id:"mckenzie",type:"journalist",name:"David McKenzie",media_house:"CNN",location:"outside_sa",country:"South Africa (JHB bureau)",flag:FLAG.za,color:MEDIA_COLORS.CNN,weight:6,
-    topics:["Africa conflicts","politics","Covid-19","Ramaphosa"],desc:"Senior International Correspondent JHB. 30+ African countries. RTS Award 2019. Former UNICEF, freelance BBC/Reuters.",
-    articles:[{t:"CNN Profile",u:"https://www.cnn.com/profiles/david-mckenzie"}],connections:["cnn_h"]},
-  {id:"curnow",type:"journalist",name:"Robyn Curnow",media_house:"CNN (former)",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.CNN,weight:6,
-    topics:["Africa","US politics","Mandela","Pistorius"],desc:"SA-born. SABC pipeline. CNN anchor 2001-2022. Africa corr. JHB 2006-2014. Chevening Scholar. Left CNN 2022.",
-    articles:[],connections:["cnn_h","sabc"]},
-  {id:"giokos",type:"journalist",name:"Eleni Giokos",media_house:"CNN",location:"outside_sa",country:"UAE",flag:FLAG.ae,color:MEDIA_COLORS.CNN,weight:5,
-    topics:["business","markets","economics","Middle East/Africa"],desc:"Born Greece, raised SA. Former CNBC Africa, eNCA. Abu Dhabi bureau.",
-    articles:[],connections:["cnn_h","enca"]},
-  {id:"mbele",type:"journalist",name:"Lerato Mbele",media_house:"BBC",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.BBC,weight:5,
-    topics:["African business","economics","markets"],desc:"Presenter Africa Business Report. SA-born. SABC→CNBC Africa→BBC. London.",
-    articles:[],connections:["bbc_h","sabc"]},
-  {id:"tlhabi",type:"journalist",name:"Redi Tlhabi",media_house:"BBC (former)",location:"outside_sa",country:"UK",flag:FLAG.gb,color:MEDIA_COLORS.BBC,weight:5,
-    topics:["global morning news","SA politics","social justice"],desc:"Former BBC Newsday presenter. SABC/eNCA pipeline. Board Atlantic Fellows Columbia/Mandela Foundation. UN Global Journalists Corps.",
-    articles:[],connections:["bbc_h","sabc","enca"]},
-  {id:"mutasa",type:"journalist",name:"Haru Mutasa",media_house:"Al Jazeera",location:"outside_sa",country:"South Africa (JHB)",flag:FLAG.za,color:MEDIA_COLORS["Al Jazeera"],weight:5,
-    topics:["Southern Africa","Zimbabwe","Mozambique","politics"],desc:"AJE Africa Correspondent JHB. Zimbabwean. SABC/CNN/APTN pipeline. RTS nominee.",
-    articles:[],connections:["aje_h","sabc"]},
-  {id:"dutton",type:"journalist",name:"Jane Dutton",media_house:"Al Jazeera",location:"outside_sa",country:"Qatar",flag:FLAG.qa,color:MEDIA_COLORS["Al Jazeera"],weight:5,
-    topics:["current affairs","refugee crises","geopolitics"],desc:"Host Inside Story. SA-born. SABC→CNN→CNBC→AJE founding journalist 2005. Doha.",
-    articles:[],connections:["aje_h","sabc","cnn_h"]},
-  {id:"a_naidoo",type:"journalist",name:"Anand Naidoo",media_house:"CGTN",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS.CGTN,weight:5,
-    topics:["global affairs","economics","US politics"],desc:"SA-born. SABC→10yr CNN→6yr AJE→now CGTN Atlanta. The revolving door personified.",
-    articles:[],connections:["cgtn_h","sabc","cnn_h","aje_h"]},
-  {id:"muirhead",type:"journalist",name:"Nic Muirhead",media_house:"Al Jazeera",location:"outside_sa",country:"Qatar",flag:FLAG.qa,color:MEDIA_COLORS["Al Jazeera"],weight:4,
-    topics:["African media landscape","political/cultural debates"],desc:"Producer The Listening Post (media review). Meta-level: shapes how audiences understand SA media.",
-    articles:[],connections:["aje_h"]},
-  {id:"harrisberg",type:"journalist",name:"Kim Harrisberg",media_house:"Reuters (TRF)",location:"outside_sa",country:"South Africa (JHB)",flag:FLAG.za,color:MEDIA_COLORS.Reuters,weight:4,
-    topics:["technology","climate change","inequality"],desc:"Southern Africa Correspondent Thomson Reuters Foundation. Social justice framing in Reuters ecosystem.",
-    articles:[],connections:["reuters_h"]},
-  {id:"onishi",type:"journalist",name:"Norimitsu Onishi",media_house:"New York Times",location:"outside_sa",country:"Canada",flag:FLAG.us,color:MEDIA_COLORS["New York Times"],weight:5,
-    topics:["SA politics","society","race","global affairs"],desc:"Japanese-Canadian. Former JHB Bureau Chief. Princeton. Pulitzer 2015. Now Canada corr.",
-    articles:[],connections:["nyt_h"]},
-  {id:"d_smith",type:"journalist",name:"David Smith",media_house:"The Guardian",location:"outside_sa",country:"USA",flag:FLAG.us,color:MEDIA_COLORS["The Guardian"],weight:5,
-    topics:["Africa","SA politics","US politics"],desc:"Guardian Africa corr. JHB 2010-2015. Now DC Bureau Chief. Key node for Trump-era SA coverage.",
-    articles:[],connections:["guardian_h"]},
+{id:"amab",type:"media_house",name:"amaBhungane",media_house:"amaBhungane",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.amaBhungane,w:6,
+desc:"Non-profit investigative centre. Founded 2010 by Sam Sole & Stefaans Brummer. #GuptaLeaks. Donor-funded. JHB/CPT/Durban.",
+conns:["sole","comrie","timse","dm","news24"]},
+
+{id:"mg",type:"media_house",name:"Mail & Guardian",media_house:"Mail & Guardian",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["Mail & Guardian"],w:5,
+desc:"Weekly newspaper. Founded 1985 as anti-apartheid Weekly Mail. Owned by MDIF.",
+conns:["allison","amab"]},
+
+{id:"ac",type:"media_house",name:"Africa Check",media_house:"Africa Check",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["Africa Check"],w:6,
+desc:"Fact-checking org at Wits University. IFCN-certified. Former Meta partner 2018-2025. Funded by Shuttleworth, Gates, Luminate, OSF.",
+conns:["cunliffe","ifcn","bbc_h","cnn_h"]},
+
+{id:"conv",type:"media_house",name:"The Conversation Africa",media_house:"The Conversation Africa",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["The Conversation Africa"],w:4,
+desc:"Academic-to-media bridge. Syndicated to Guardian and other international outlets.",
+conns:["southey","guardian_h"]},
+
+{id:"cb",type:"media_house",name:"Carte Blanche",media_house:"Carte Blanche",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["Carte Blanche"],w:4,
+desc:"Investigative TV magazine. M-Net/DStv. Sunday prime time.",
+conns:["l_naidoo"]},
+
+{id:"nw24",type:"media_house",name:"Netwerk24",media_house:"Netwerk24",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.Netwerk24,w:3,
+desc:"Afrikaans digital platform. Media24. ZERO international connections. Complete language silo.",
+conns:["basson"]},
+
+{id:"ewn",type:"media_house",name:"EWN",media_house:"EWN",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.EWN,w:4,
+desc:"Multi-platform news. Partnered with 702, CapeTalk, KFM. Primedia group. Strong breaking news.",
+conns:["enca","sabc"]},
+
+{id:"iss",type:"media_house",name:"ISS Africa",media_house:"ISS Africa",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["ISS Africa"],w:4,
+desc:"Think tank. JHB/Pretoria/Nairobi/Dakar/Addis. Analysis cited by BBC, CNN, Al Jazeera, AFP.",
+conns:["allison","bbc_h","aje_h"]},
+
+// ====== INSIDE SA: JOURNALISTS ======
+{id:"bryce_pease",type:"journalist",name:"Sherwin Bryce-Pease",media_house:"SABC",loc:"inside_sa",country:"USA (UN Bureau, New York)",cc:"us",
+color:COL.SABC,w:6,topics:["UN affairs","US politics","multilateral diplomacy","G20","UNGA"],
+desc:"SABC Bureau Chief & US Correspondent at UN HQ New York since 2008. First African UNCA president. Gold Medal Ricardo Ortega Prize 2025.",
+arts:[{t:"SABC wins UNCA Gold Medal",u:"https://www.sabcnews.com/sabcnews/1090036-2/"}],conns:["sabc"]},
+
+{id:"thathiah",type:"journalist",name:"Dasen Thathiah",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.eNCA,w:5,topics:["breaking news","KZN floods","disasters","live reporting"],
+desc:"Senior Reporter KZN/Mpumalanga. 21-time Vodacom Journalist of the Year award winner.",arts:[],conns:["enca"]},
+
+{id:"goge",type:"journalist",name:"Siphamandla Goge",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.eNCA,w:5,topics:["politics","Zulu monarchy","succession"],
+desc:"Overall Vodacom Journalist of the Year 2021.",arts:[],conns:["enca"]},
+
+{id:"herd",type:"journalist",name:"Francis Herd",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.eNCA,w:4,topics:["business","economics","B20/G20","corporate SA"],
+desc:"Business anchor.",arts:[],conns:["enca"]},
+
+{id:"mtimkulu",type:"journalist",name:"Hloni Mtimkulu",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.eNCA,w:4,topics:["sports abuse","women in sport","infrastructure"],
+desc:"National Sports Journalist of the Year. Covers sports abuse and women in sport.",arts:[],conns:["enca"]},
+
+{id:"basson",type:"journalist",name:"Adriaan Basson",media_house:"News24",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.News24,w:6,topics:["editorial direction","investigations","politics"],
+desc:"Editor-in-Chief since 2016. Former amaBhungane co-founder. Stellenbosch trained. Former Beeld & Netwerk24 editor.",arts:[],conns:["news24","amab","nw24"]},
+
+{id:"brkic",type:"journalist",name:"Branko Brkic",media_house:"Daily Maverick",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL["Daily Maverick"],w:6,topics:["editorial direction","media strategy","investigations"],
+desc:"Founder & Editor-in-Chief. Nat Nakasa Award for Media Integrity 2018.",arts:[],conns:["dm"]},
+
+{id:"haffajee",type:"journalist",name:"Ferial Haffajee",media_house:"Daily Maverick",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL["Daily Maverick"],w:5,topics:["politics","governance","race","media criticism"],
+desc:"Associate Editor. Former Mail & Guardian and City Press editor.",arts:[],conns:["dm","mg"]},
+
+{id:"dougan",type:"journalist",name:"Leila Dougan",media_house:"Daily Maverick",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL["Daily Maverick"],w:4,topics:["multi-platform investigations","Scorpio"],
+desc:"Vodacom Journalist of the Year 2019.",arts:[],conns:["dm"]},
+
+{id:"sole",type:"journalist",name:"Sam Sole",media_house:"amaBhungane",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.amaBhungane,w:6,topics:["state capture","corruption","surveillance","RICA challenge"],
+desc:"Co-founder & Managing Partner. #GuptaLeaks. Landmark RICA surveillance law challenge.",arts:[],conns:["amab","dm","news24"]},
+
+{id:"comrie",type:"journalist",name:"Susan Comrie",media_house:"amaBhungane",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.amaBhungane,w:5,topics:["financial flows","state capture","money trails"],
+desc:"Investigative journalist. #GuptaLeaks money flow reconstruction.",arts:[],conns:["amab"]},
+
+{id:"timse",type:"journalist",name:"Tabelo Timse",media_house:"amaBhungane",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.amaBhungane,w:5,topics:["SADC region","politics","corruption"],
+desc:"Former AFP Johannesburg (2009-2012). Franco-German Prize for Human Rights 2021. #GuptaLeaks.",arts:[],conns:["amab","afp_h"]},
+
+{id:"allison",type:"journalist",name:"Simon Allison",media_house:"The Continent",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL["The Continent"],w:6,topics:["African continental affairs","governance","conflict","AU"],
+desc:"Revolving door: Daily Maverick → ISS → Mail & Guardian → The Continent. SOAS London MA. Guardian contributor. Pulitzer Center.",
+arts:[],conns:["mg","iss","guardian_h","dm"]},
+
+{id:"l_naidoo",type:"journalist",name:"Latashia Naidoo",media_house:"Carte Blanche",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL["Carte Blanche"],w:5,topics:["crime","politics","investigations"],
+desc:"Former eNCA, TRT World, BBC Africa, CNN, Business Insider US. OSF/Wits Investigative Journalism Fellow 2020. Reuters Changemaker 2021.",
+arts:[],conns:["cb","enca","bbc_h","cnn_h","trt_h"]},
+
+{id:"southey",type:"journalist",name:"Caroline Southey",media_house:"The Conversation Africa",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL["The Conversation Africa"],w:4,topics:["editorial direction","academic-media bridge"],
+desc:"Founding Editor. 17 years at Financial Times London (World Desk Editor, EU correspondent). Former Financial Mail SA editor.",
+arts:[],conns:["conv","guardian_h"]},
+
+{id:"cunliffe",type:"journalist",name:"Peter Cunliffe-Jones",media_house:"Poynter/IFCN",loc:"inside_sa",country:"USA (Florida)",cc:"us",
+color:COL["Africa Check"],w:5,topics:["fact-checking standards","certification","content moderation"],
+desc:"Founded Africa Check 2012 in London. Ran it from Wits to 2019. Now IFCN Senior Adviser at Poynter Institute. Key revolving door.",
+arts:[],conns:["ac","ifcn"]},
+
+// ====== OUTSIDE SA: MEDIA HOUSES ======
+{id:"cnn_h",type:"media_house",name:"CNN",media_house:"CNN",loc:"outside_sa",country:"USA",cc:"us",color:COL.CNN,w:8,
+desc:"Largest global TV news network. Atlanta HQ. Johannesburg Africa bureau.",
+conns:["mckenzie","curnow","giokos","l_naidoo","ac"]},
+
+{id:"bbc_h",type:"media_house",name:"BBC",media_house:"BBC",loc:"outside_sa",country:"United Kingdom",cc:"gb",color:COL.BBC,w:8,
+desc:"British state broadcaster. BBC World Service/News. Prescott Memo (2025) documented editorial guideline breaches. No permanent SA bureau.",
+conns:["mbele","tlhabi","l_naidoo","ac","iss"]},
+
+{id:"aje_h",type:"media_house",name:"Al Jazeera",media_house:"Al Jazeera",loc:"outside_sa",country:"Qatar",cc:"qa",color:COL["Al Jazeera"],w:7,
+desc:"Doha HQ. 300M+ global reach. More Africa bureaus than any other global broadcaster. JHB bureau.",
+conns:["mutasa","dutton","a_naidoo","muirhead","iss"]},
+
+{id:"afp_h",type:"media_house",name:"AFP",media_house:"AFP",loc:"outside_sa",country:"France",cc:"fr",color:COL.AFP,w:7,
+desc:"French wire service. Paris HQ. Johannesburg bureau. Sets initial framing adopted by thousands of downstream outlets.",
+conns:["timse"]},
+
+{id:"reuters_h",type:"media_house",name:"Reuters",media_house:"Reuters",loc:"outside_sa",country:"United Kingdom",cc:"gb",color:COL.Reuters,w:7,
+desc:"Global wire service. London HQ. Johannesburg bureau. Thomson Reuters Foundation SA correspondent.",
+conns:["harrisberg"]},
+
+{id:"ap_h",type:"media_house",name:"AP",media_house:"AP",loc:"outside_sa",country:"USA",cc:"us",color:COL.AP,w:6,
+desc:"World's oldest wire service. New York HQ. Johannesburg bureau covers Southern Africa.",
+conns:[]},
+
+{id:"nyt_h",type:"media_house",name:"New York Times",media_house:"New York Times",loc:"outside_sa",country:"USA",cc:"us",color:COL["New York Times"],w:7,
+desc:"Maintained Johannesburg bureau (Southern Africa Bureau Chief). Rotating correspondents, 3-5 year postings.",
+conns:["onishi"]},
+
+{id:"guardian_h",type:"media_house",name:"The Guardian",media_house:"The Guardian",loc:"outside_sa",country:"United Kingdom",cc:"gb",color:COL["The Guardian"],w:6,
+desc:"London HQ. Former Africa correspondent JHB 2010-2015. Syndicates The Conversation Africa.",
+conns:["d_smith","allison","conv"]},
+
+{id:"f24_h",type:"media_house",name:"France 24",media_house:"France 24",loc:"outside_sa",country:"France",cc:"fr",color:COL["France 24"],w:4,
+desc:"French state international broadcaster. English/French/Arabic/Spanish. IFCN fact-checking partner (Les Observateurs).",
+conns:["afp_h"]},
+
+{id:"dw_h",type:"media_house",name:"Deutsche Welle",media_house:"Deutsche Welle",loc:"outside_sa",country:"Germany",cc:"de",color:COL["Deutsche Welle"],w:4,
+desc:"German international broadcaster. Bonn/Berlin HQ. DW Africa strong presence.",
+conns:[]},
+
+{id:"cgtn_h",type:"media_house",name:"CGTN",media_house:"CGTN",loc:"outside_sa",country:"China",cc:"cn",color:COL.CGTN,w:5,
+desc:"Chinese state media. Nairobi bureau (largest outside Beijing). CGTN Africa est. 2012. Growing continental influence.",
+conns:["a_naidoo"]},
+
+{id:"rt_h",type:"media_house",name:"RT",media_house:"RT",loc:"outside_sa",country:"Russia",cc:"ru",color:COL.RT,w:3,
+desc:"Russian state media. Moscow HQ. Covers SA through BRICS framing and anti-Western narrative.",
+conns:[]},
+
+{id:"trt_h",type:"media_house",name:"TRT World",media_house:"TRT World",loc:"outside_sa",country:"Turkey",cc:"tr",color:COL["TRT World"],w:3,
+desc:"Turkish state international broadcaster. Istanbul HQ. English-language.",
+conns:["l_naidoo"]},
+
+{id:"npr_h",type:"media_house",name:"NPR",media_house:"NPR",loc:"outside_sa",country:"USA",cc:"us",color:COL.NPR,w:4,
+desc:"US public radio. Washington DC. Africa correspondent based in West Africa.",
+conns:[]},
+
+{id:"cbs_h",type:"media_house",name:"CBS",media_house:"CBS",loc:"outside_sa",country:"USA",cc:"us",color:COL.CBS,w:4,
+desc:"CBS News / 60 Minutes. New York HQ. No Africa bureau.",
+conns:["logan"]},
+
+{id:"wapo_h",type:"media_house",name:"Washington Post",media_house:"Washington Post",loc:"outside_sa",country:"USA",cc:"us",color:COL["Washington Post"],w:5,
+desc:"No dedicated SA bureau. Africa coverage from Nairobi and freelancers.",
+conns:[]},
+
+{id:"ifcn",type:"media_house",name:"Poynter/IFCN",media_house:"Poynter/IFCN",loc:"outside_sa",country:"USA",cc:"us",color:COL["Poynter/IFCN"],w:5,
+desc:"Certifies fact-checkers. Controlled Meta's fact-checking access. Funded by Gates, OSF, Meta, US State Dept, NED.",
+conns:["cunliffe","ac"]},
+
+{id:"nl_h",type:"media_house",name:"New Lines",media_house:"New Lines",loc:"outside_sa",country:"USA",cc:"us",color:COL["New Lines"],w:3,
+desc:"Independent international affairs magazine. Washington DC / London.",
+conns:["liwewe"]},
+
+// ====== OUTSIDE SA: JOURNALISTS ======
+{id:"mckenzie",type:"journalist",name:"David McKenzie",media_house:"CNN",loc:"outside_sa",country:"South Africa (JHB bureau)",cc:"za",
+color:COL.CNN,w:6,topics:["Africa conflicts","politics","Covid-19","Ramaphosa","Mugabe"],
+desc:"CNN Senior International Correspondent JHB. 30+ African countries. RTS Award 2019. Former UNICEF, freelance BBC/Reuters NYC.",
+arts:[{t:"CNN Profile",u:"https://www.cnn.com/profiles/david-mckenzie"}],conns:["cnn_h"]},
+
+{id:"curnow",type:"journalist",name:"Robyn Curnow",media_house:"CNN (former)",loc:"outside_sa",country:"USA (Atlanta)",cc:"us",
+color:COL.CNN,w:6,topics:["Africa","US politics","Mandela","Pistorius","Mugabe"],
+desc:"SA-born. SABC pipeline→CNN 2001-2022. Africa corr. JHB 2006-2014. Chevening Scholar Cambridge. Left CNN May 2022.",
+arts:[],conns:["cnn_h","sabc"]},
+
+{id:"giokos",type:"journalist",name:"Eleni Giokos",media_house:"CNN",loc:"outside_sa",country:"UAE (Abu Dhabi)",cc:"ae",
+color:COL.CNN,w:5,topics:["business","markets","economics","Middle East","Africa"],
+desc:"Born Greece, raised South Africa. Former CNBC Africa, eNCA. CNN Abu Dhabi bureau.",
+arts:[],conns:["cnn_h","enca"]},
+
+{id:"mbele",type:"journalist",name:"Lerato Mbele",media_house:"BBC",loc:"outside_sa",country:"United Kingdom (London)",cc:"gb",
+color:COL.BBC,w:5,topics:["African business","economics","markets"],
+desc:"Presenter Africa Business Report on BBC World News. SA-born. SABC→CNBC Africa→BBC 2012. London-based.",
+arts:[],conns:["bbc_h","sabc"]},
+
+{id:"tlhabi",type:"journalist",name:"Redi Tlhabi",media_house:"BBC (former)",loc:"outside_sa",country:"United Kingdom (London)",cc:"gb",
+color:COL.BBC,w:5,topics:["global morning news","SA politics","social justice"],
+desc:"Former BBC Newsday presenter London. SABC/eNCA pipeline. Board Atlantic Fellows for Racial Equity (Columbia/Mandela Foundation). UN Global Journalists Corps. MA Westminster.",
+arts:[],conns:["bbc_h","sabc","enca"]},
+
+{id:"mutasa",type:"journalist",name:"Haru Mutasa",media_house:"Al Jazeera",loc:"outside_sa",country:"South Africa (JHB bureau)",cc:"za",
+color:COL["Al Jazeera"],w:5,topics:["Southern Africa","Zimbabwe","Mozambique","politics"],
+desc:"AJE Africa Correspondent JHB. Zimbabwean. SABC/CNN/APTN pipeline. RTS Young Journalist nominee.",
+arts:[],conns:["aje_h","sabc"]},
+
+{id:"dutton",type:"journalist",name:"Jane Dutton",media_house:"Al Jazeera",loc:"outside_sa",country:"Qatar (Doha)",cc:"qa",
+color:COL["Al Jazeera"],w:5,topics:["current affairs","refugee crises","geopolitics"],
+desc:"Host Inside Story. SA-born. SABC→CNN→CNBC→AJE founding journalist 2005. Doha-based.",
+arts:[],conns:["aje_h","sabc","cnn_h"]},
+
+{id:"a_naidoo",type:"journalist",name:"Anand Naidoo",media_house:"CGTN",loc:"outside_sa",country:"USA (Atlanta)",cc:"us",
+color:COL.CGTN,w:5,topics:["global affairs","economics","US politics"],
+desc:"SA-born. SABC→10yr CNN→6yr Al Jazeera→now CGTN Atlanta. The revolving door personified.",
+arts:[],conns:["cgtn_h","sabc","cnn_h","aje_h"]},
+
+{id:"muirhead",type:"journalist",name:"Nic Muirhead",media_house:"Al Jazeera",loc:"outside_sa",country:"Qatar (Doha)",cc:"qa",
+color:COL["Al Jazeera"],w:4,topics:["African media landscape","political/cultural debates","media criticism"],
+desc:"Producer The Listening Post (weekly media review). Meta-level: shapes how audiences understand SA media itself.",
+arts:[],conns:["aje_h"]},
+
+{id:"harrisberg",type:"journalist",name:"Kim Harrisberg",media_house:"Reuters",loc:"outside_sa",country:"South Africa (JHB)",cc:"za",
+color:COL.Reuters,w:4,topics:["technology","climate change","inequality","social justice"],
+desc:"Southern Africa Correspondent Thomson Reuters Foundation (Context). Social justice framing distributed through Reuters ecosystem. JHB-based.",
+arts:[],conns:["reuters_h"]},
+
+{id:"onishi",type:"journalist",name:"Norimitsu Onishi",media_house:"New York Times",loc:"outside_sa",country:"Canada",cc:"ca",
+color:COL["New York Times"],w:5,topics:["SA politics","society","race","global affairs"],
+desc:"Japanese-Canadian. Former JHB Bureau Chief. Princeton. Pulitzer 2015. Bureau chief JHB→Jakarta→Abidjan→Paris→now Canada.",
+arts:[],conns:["nyt_h"]},
+
+{id:"d_smith",type:"journalist",name:"David Smith",media_house:"The Guardian",loc:"outside_sa",country:"USA (Washington DC)",cc:"us",
+color:COL["The Guardian"],w:5,topics:["Africa","SA politics","US politics","Trump-SA relations"],
+desc:"Guardian Africa correspondent JHB 2010-2015. Now Washington DC Bureau Chief. Key node for Trump-era SA coverage.",
+arts:[],conns:["guardian_h"]},
+
+{id:"logan",type:"journalist",name:"Lara Logan",media_house:"CBS (former)",loc:"outside_sa",country:"USA",cc:"us",
+color:COL.CBS,w:4,topics:["war reporting","foreign affairs"],
+desc:"SA-born (Durban). Former 60 Minutes correspondent. War correspondent. Left CBS. Now independent media.",
+arts:[],conns:["cbs_h"]},
+
+{id:"liwewe",type:"journalist",name:"Kwangu Liwewe",media_house:"New Lines",loc:"outside_sa",country:"South Africa",cc:"za",
+color:COL["New Lines"],w:4,topics:["Southern Africa politics","identity","coups","migration"],
+desc:"Africa Editor at New Lines Magazine. Zambian/Zimbabwean/Malawian. Former eNCA West Africa Bureau Chief & host Africa 360.",
+arts:[],conns:["nl_h","enca"]},
 ];
 
-// ======================== THREE.JS SETUP ========================
-const container = document.getElementById('canvas-container');
-const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x0a0a12, 0.006);
+/* ============ THREE.JS SETUP ============ */
+const W=window.innerWidth, H=window.innerHeight;
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x08080f,0.005);
+const camera=new THREE.PerspectiveCamera(55,W/H,0.1,1000);
+camera.position.set(0,30,65);
 
-const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.set(0, 30, 60);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(W,H);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
-container.appendChild(renderer.domElement);
+const labelR=new CSS2DRenderer();
+labelR.setSize(W,H);
+labelR.domElement.style.position='absolute';
+labelR.domElement.style.top='0';
+labelR.domElement.style.pointerEvents='none';
+document.getElementById('canvas-container').appendChild(labelR.domElement);
 
-const labelRenderer = new CSS2DRenderer();
-labelRenderer.setSize(window.innerWidth, window.innerHeight);
-labelRenderer.domElement.style.position = 'absolute';
-labelRenderer.domElement.style.top = '0';
-labelRenderer.domElement.style.pointerEvents = 'none';
-container.appendChild(labelRenderer.domElement);
+const ctrl=new OrbitControls(camera,renderer.domElement);
+ctrl.enableDamping=true;ctrl.dampingFactor=0.05;ctrl.minDistance=8;ctrl.maxDistance=160;
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-controls.minDistance = 10;
-controls.maxDistance = 150;
-
-// Bloom
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.4, 0.85);
-composer.addPass(bloom);
+const composer=new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene,camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),0.5,0.4,0.88));
 composer.addPass(new OutputPass());
 
-// Ambient light
-scene.add(new THREE.AmbientLight(0x334466, 0.8));
-const pLight = new THREE.PointLight(0xc5960c, 0.6, 200);
-pLight.position.set(0, 40, 0);
-scene.add(pLight);
+scene.add(new THREE.AmbientLight(0x334466,0.7));
+const pl=new THREE.PointLight(0xc5960c,0.5,200);pl.position.set(0,40,0);scene.add(pl);
 
-// ======================== BUILD NETWORK ========================
-const nodeMeshes = new Map(); // id -> mesh
-const nodeLabels = new Map(); // id -> CSS2DObject
-const edgeLines = []; // {line, from, to}
-let selectedNode = null;
+/* ============ BUILD ============ */
+const meshes=new Map(),labels=new Map(),edges=[];
+let selId=null;
 
-function hexToThreeColor(hex) {
-  return new THREE.Color(hex);
+function layout(){
+  const iM=DATA.filter(n=>n.loc==='inside_sa'&&n.type==='media_house');
+  const iJ=DATA.filter(n=>n.loc==='inside_sa'&&n.type==='journalist');
+  const oM=DATA.filter(n=>n.loc==='outside_sa'&&n.type==='media_house');
+  const oJ=DATA.filter(n=>n.loc==='outside_sa'&&n.type==='journalist');
+  function ring(arr,r,y,off=0){arr.forEach((n,i)=>{
+    const a=off+(i/arr.length)*Math.PI*2;const j=(Math.random()-0.5)*1.5;
+    n._x=Math.cos(a)*(r+j);n._y=y+(Math.random()-0.5)*1.5;n._z=Math.sin(a)*(r+j);
+  });}
+  ring(iM,11,2,0);ring(iJ,21,0,0.25);ring(oM,35,2,0.08);ring(oJ,47,0,0.4);
 }
 
-function layoutNodes() {
-  const insideNodes = nodesData.filter(n => n.location === 'inside_sa');
-  const outsideNodes = nodesData.filter(n => n.location === 'outside_sa');
+function build(){
+  meshes.forEach(m=>scene.remove(m));labels.forEach(l=>scene.remove(l));
+  edges.forEach(e=>scene.remove(e.line));meshes.clear();labels.clear();edges.length=0;
+  layout();
 
-  const insideMedia = insideNodes.filter(n => n.type === 'media_house');
-  const insideJourn = insideNodes.filter(n => n.type === 'journalist');
-  const outsideMedia = outsideNodes.filter(n => n.type === 'media_house');
-  const outsideJourn = outsideNodes.filter(n => n.type === 'journalist');
+  DATA.forEach(n=>{
+    const r=0.4+(n.w||3)*0.18;
+    const c=new THREE.Color(n.color||'#888');
+    const mesh=new THREE.Mesh(
+      new THREE.SphereGeometry(r,32,32),
+      new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.25+(n.w||3)*0.04,roughness:0.3,metalness:0.1})
+    );
+    mesh.position.set(n._x,n._y,n._z);
+    mesh.userData={id:n.id,d:n};
+    scene.add(mesh);meshes.set(n.id,mesh);
 
-  function placeRing(nodes, baseRadius, yOffset, startAngle=0) {
-    const count = nodes.length;
-    nodes.forEach((n, i) => {
-      const angle = startAngle + (i / count) * Math.PI * 2;
-      const jitter = (Math.random() - 0.5) * 2;
-      n._x = Math.cos(angle) * (baseRadius + jitter);
-      n._y = yOffset + (Math.random() - 0.5) * 2;
-      n._z = Math.sin(angle) * (baseRadius + jitter);
-    });
-  }
-
-  placeRing(insideMedia, 12, 2, 0);
-  placeRing(insideJourn, 22, 0, 0.3);
-  placeRing(outsideMedia, 36, 2, 0.1);
-  placeRing(outsideJourn, 46, 0, 0.5);
-}
-
-function buildScene() {
-  // Clear existing
-  nodeMeshes.forEach(m => { scene.remove(m); });
-  nodeLabels.forEach(l => { scene.remove(l); });
-  edgeLines.forEach(e => { scene.remove(e.line); });
-  nodeMeshes.clear();
-  nodeLabels.clear();
-  edgeLines.length = 0;
-
-  layoutNodes();
-
-  // Create spheres
-  nodesData.forEach(n => {
-    const radius = 0.5 + (n.weight || 3) * 0.18;
-    const geo = new THREE.SphereGeometry(radius, 32, 32);
-    const col = hexToThreeColor(n.color || '#888');
-    const mat = new THREE.MeshStandardMaterial({
-      color: col,
-      emissive: col,
-      emissiveIntensity: 0.3 + (n.weight || 3) * 0.05,
-      roughness: 0.3,
-      metalness: 0.1
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(n._x, n._y, n._z);
-    mesh.userData = { nodeId: n.id, nodeData: n };
-    scene.add(mesh);
-    nodeMeshes.set(n.id, mesh);
-
-    // Label
-    const labelDiv = document.createElement('div');
-    labelDiv.className = 'node-label';
-    labelDiv.innerHTML = `<div class="nl-name">${n.name}</div>${n.type==='journalist'?`<div class="nl-house">${n.media_house||''}</div>`:''}`;
-    const label = new CSS2DObject(labelDiv);
-    label.position.set(0, radius + 0.6, 0);
-    mesh.add(label);
-    nodeLabels.set(n.id, label);
+    // Label with logo icon
+    const el=document.createElement('div');el.className='nl';
+    const mh=n.type==='journalist'?n.media_house:n.name;
+    const lu=logoUrl(mh);const fu=logoFallback(mh);
+    el.innerHTML=`<img class="nl-i" src="${lu}" onerror="this.src='${fu}'" alt="">
+      <div class="nl-n">${n.name}</div>${n.type==='journalist'?`<div class="nl-h">${n.media_house}</div>`:''}`;
+    const lbl=new CSS2DObject(el);
+    lbl.position.set(0,r+0.8,0);
+    mesh.add(lbl);labels.set(n.id,lbl);
   });
 
-  // Create edges
-  const edgeSet = new Set();
-  nodesData.forEach(n => {
-    (n.connections || []).forEach(cid => {
-      const key = [n.id, cid].sort().join('|');
-      if (edgeSet.has(key)) return;
-      edgeSet.add(key);
-      const fromMesh = nodeMeshes.get(n.id);
-      const toMesh = nodeMeshes.get(cid);
-      if (!fromMesh || !toMesh) return;
+  // Edges
+  const eset=new Set();
+  DATA.forEach(n=>{(n.conns||[]).forEach(cid=>{
+    const k=[n.id,cid].sort().join('|');if(eset.has(k))return;eset.add(k);
+    const fm=meshes.get(n.id),tm=meshes.get(cid);if(!fm||!tm)return;
+    const g=new THREE.BufferGeometry().setFromPoints([fm.position.clone(),tm.position.clone()]);
+    const line=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.06}));
+    scene.add(line);edges.push({line,from:n.id,to:cid});
+  });});
 
-      const points = [fromMesh.position.clone(), toMesh.position.clone()];
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08 });
-      const line = new THREE.Line(geo, mat);
-      scene.add(line);
-      edgeLines.push({ line, from: n.id, to: cid });
-    });
-  });
-
-  // Concentric ring guides (subtle)
-  [12, 22, 36, 46].forEach(r => {
-    const pts = [];
-    for (let i = 0; i <= 64; i++) {
-      const a = (i / 64) * Math.PI * 2;
-      pts.push(new THREE.Vector3(Math.cos(a) * r, -1, Math.sin(a) * r));
-    }
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.03 });
-    scene.add(new THREE.Line(geo, mat));
+  // Rings
+  [11,21,35,47].forEach(r=>{
+    const pts=[];for(let i=0;i<=80;i++){const a=(i/80)*Math.PI*2;pts.push(new THREE.Vector3(Math.cos(a)*r,-1.5,Math.sin(a)*r));}
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
+      new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.025})));
   });
 
   buildLegend();
-  updateStats();
+  document.getElementById('st').textContent=
+    `${DATA.filter(n=>n.type==='journalist').length} journalists · ${DATA.filter(n=>n.type==='media_house').length} media houses · ${edges.length} connections`;
 }
 
-// ======================== LEGEND ========================
-function buildLegend() {
-  const el = document.getElementById('legend');
-  el.innerHTML = '';
-
-  const insideHouses = [...new Set(nodesData.filter(n => n.location === 'inside_sa' && n.type === 'media_house').map(n => n.name))];
-  const outsideHouses = [...new Set(nodesData.filter(n => n.location === 'outside_sa' && n.type === 'media_house').map(n => n.name))];
-
-  function addSection(title, houses) {
-    const h3 = document.createElement('h3');
-    h3.textContent = title;
-    el.appendChild(h3);
-
-    houses.forEach(name => {
-      const color = MEDIA_COLORS[name] || '#888';
-      const div = document.createElement('div');
-      div.className = 'legend-item';
-      div.innerHTML = `<span class="legend-swatch" style="background:${color}"></span>
-        <input type="checkbox" checked data-house="${name}">
+/* ============ LEGEND ============ */
+function buildLegend(){
+  const el=document.getElementById('legend');el.innerHTML='';
+  const iH=[...new Set(DATA.filter(n=>n.loc==='inside_sa'&&n.type==='media_house').map(n=>n.name))];
+  const oH=[...new Set(DATA.filter(n=>n.loc==='outside_sa'&&n.type==='media_house').map(n=>n.name))];
+  function sec(title,arr){
+    const h=document.createElement('h3');h.textContent=title;el.appendChild(h);
+    arr.forEach(name=>{
+      const c=COL[name]||'#888';const lu=logoUrl(name);const fu=logoFallback(name);
+      const d=document.createElement('div');d.className='li';
+      d.innerHTML=`<span class="li-sw" style="background:${c}"></span>
+        <input type="checkbox" checked data-h="${name}">
+        <img src="${lu}" onerror="this.src='${fu}'" alt="">
         <label>${name}</label>`;
-      div.querySelector('input').addEventListener('change', e => toggleMediaHouse(name, e.target.checked));
-      el.appendChild(div);
+      d.querySelector('input').addEventListener('change',e=>toggleH(name,e.target.checked));
+      el.appendChild(d);
     });
   }
-
-  addSection('Inside South Africa', insideHouses);
-  addSection('Outside South Africa', outsideHouses);
+  sec('Inside South Africa',iH);sec('Outside South Africa',oH);
 }
 
-function toggleMediaHouse(name, visible) {
-  nodesData.forEach(n => {
-    const isMatch = n.name === name || n.media_house === name;
-    if (!isMatch) return;
-    const mesh = nodeMeshes.get(n.id);
-    const label = nodeLabels.get(n.id);
-    if (mesh) mesh.visible = visible;
-    if (label) label.visible = visible;
+function toggleH(name,vis){
+  DATA.forEach(n=>{
+    if(n.name!==name&&n.media_house!==name)return;
+    const m=meshes.get(n.id),l=labels.get(n.id);
+    if(m)m.visible=vis;if(l)l.visible=vis;
   });
-  edgeLines.forEach(e => {
-    const fromD = nodesData.find(n => n.id === e.from);
-    const toD = nodesData.find(n => n.id === e.to);
-    const fromM = nodeMeshes.get(e.from);
-    const toM = nodeMeshes.get(e.to);
-    if (fromM && toM) e.line.visible = fromM.visible && toM.visible;
+  edges.forEach(e=>{
+    const fm=meshes.get(e.from),tm=meshes.get(e.to);
+    if(fm&&tm)e.line.visible=fm.visible&&tm.visible;
   });
 }
 
-// ======================== INTERACTION ========================
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-const tooltip = document.getElementById('tooltip');
-let hoveredMesh = null;
+/* ============ INTERACTION ============ */
+const rc=new THREE.Raycaster(),mouse=new THREE.Vector2();
+const tt=document.getElementById('tt');
+let hov=null;
 
-function onMouseMove(e) {
-  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera);
-  const meshes = [];
-  nodeMeshes.forEach(m => { if (m.visible) meshes.push(m); });
-  const hits = raycaster.intersectObjects(meshes);
-
-  if (hits.length > 0) {
-    const mesh = hits[0].object;
-    if (hoveredMesh !== mesh) {
-      hoveredMesh = mesh;
-      const d = mesh.userData.nodeData;
-      showTooltip(d, e.clientX, e.clientY);
-    } else {
-      tooltip.style.left = (e.clientX + 16) + 'px';
-      tooltip.style.top = (e.clientY + 16) + 'px';
-    }
-    document.body.style.cursor = 'pointer';
-  } else {
-    hoveredMesh = null;
-    tooltip.style.display = 'none';
-    document.body.style.cursor = 'default';
-  }
+function onMM(e){
+  mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  rc.setFromCamera(mouse,camera);
+  const arr=[];meshes.forEach(m=>{if(m.visible)arr.push(m);});
+  const hits=rc.intersectObjects(arr);
+  if(hits.length){
+    const m=hits[0].object;
+    if(hov!==m){hov=m;showTT(m.userData.d,e.clientX,e.clientY);}
+    else{tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY+14)+'px';}
+    document.body.style.cursor='pointer';
+  }else{hov=null;tt.style.display='none';document.body.style.cursor='default';}
 }
 
-function showTooltip(d, x, y) {
-  let html = `<div class="tt-name">${d.name}</div>`;
-  if (d.type === 'journalist') html += `<div class="tt-house">${d.media_house}</div>`;
-  html += `<div class="tt-meta"><span class="tt-flag">${d.flag||''}</span> ${d.country}</div>`;
-  if (d.topics) html += `<div class="tt-topics">${d.topics.join(' · ')}</div>`;
-  if (d.desc) html += `<div class="tt-desc">${d.desc}</div>`;
-  if (d.articles && d.articles.length) {
-    html += '<div class="tt-articles">';
-    d.articles.forEach(a => { html += `<a href="${a.u}" target="_blank">${a.t}</a>`; });
-    html += '</div>';
-  }
-  tooltip.innerHTML = html;
-  tooltip.style.display = 'block';
-  tooltip.style.left = (x + 16) + 'px';
-  tooltip.style.top = (y + 16) + 'px';
+function showTT(d,x,y){
+  const mh=d.type==='journalist'?d.media_house:d.name;
+  const lu=logoUrl(mh),fu=logoFallback(mh),fl=flagUrl(d.cc);
+  let h=`<div class="tt-top"><img class="tt-logo" src="${lu}" onerror="this.src='${fu}'" alt="">
+    <div class="tt-info"><div class="tt-name">${d.name}</div>`;
+  if(d.type==='journalist')h+=`<div class="tt-house">${d.media_house}</div>`;
+  h+=`</div></div>`;
+  h+=`<div class="tt-loc"><img src="${fl}" alt="">${d.country}</div>`;
+  if(d.topics)h+=`<div class="tt-topics">${d.topics.join(' · ')}</div>`;
+  if(d.desc)h+=`<div class="tt-desc">${d.desc}</div>`;
+  if(d.arts&&d.arts.length){h+='<div class="tt-arts">';d.arts.forEach(a=>{h+=`<a href="${a.u}" target="_blank">${a.t}</a>`;});h+='</div>';}
+  tt.innerHTML=h;tt.style.display='block';
+  // Position with bounds check
+  const tx=Math.min(x+14,innerWidth-340),ty=Math.min(y+14,innerHeight-300);
+  tt.style.left=tx+'px';tt.style.top=ty+'px';
 }
 
-function onClick(e) {
-  if (e.target.closest('#legend') || e.target.closest('#title-bar') || e.target.closest('#side-panel') || e.target.closest('#modal-overlay')) return;
-  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-  const meshes = [];
-  nodeMeshes.forEach(m => { if (m.visible) meshes.push(m); });
-  const hits = raycaster.intersectObjects(meshes);
-
-  if (hits.length > 0) {
-    const mesh = hits[0].object;
-    const d = mesh.userData.nodeData;
-    selectNode(d, mesh);
-  } else {
-    deselectAll();
-  }
+function onClick(e){
+  if(e.target.closest('#legend')||e.target.closest('#title-bar')||e.target.closest('#sp')||e.target.closest('#mo'))return;
+  mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  rc.setFromCamera(mouse,camera);
+  const arr=[];meshes.forEach(m=>{if(m.visible)arr.push(m);});
+  const hits=rc.intersectObjects(arr);
+  if(hits.length){const d=hits[0].object.userData.d;selNode(d,hits[0].object);}
+  else desel();
 }
 
-function selectNode(d, mesh) {
-  selectedNode = d.id;
-  const connSet = new Set(d.connections || []);
-  connSet.add(d.id);
-
-  // Dim non-connected
-  nodeMeshes.forEach((m, id) => {
-    const label = nodeLabels.get(id);
-    if (connSet.has(id)) {
-      m.material.opacity = 1;
-      if (label) label.element.classList.remove('dimmed');
-    } else {
-      m.material.opacity = 0.15;
-      m.material.transparent = true;
-      if (label) label.element.classList.add('dimmed');
-    }
+function selNode(d,mesh){
+  selId=d.id;const cs=new Set(d.conns||[]);cs.add(d.id);
+  meshes.forEach((m,id)=>{
+    const l=labels.get(id);
+    if(cs.has(id)){m.material.opacity=1;m.material.transparent=false;if(l)l.element.classList.remove('dim');}
+    else{m.material.opacity=0.12;m.material.transparent=true;if(l)l.element.classList.add('dim');}
   });
-
-  edgeLines.forEach(e => {
-    const connected = (e.from === d.id || e.to === d.id);
-    e.line.material.opacity = connected ? 0.5 : 0.02;
-  });
-
-  // Zoom to node
-  const target = mesh.position.clone();
-  const dir = camera.position.clone().sub(target).normalize();
-  const dest = target.clone().add(dir.multiplyScalar(15));
-  animateCamera(dest, target);
-
-  // Side panel
-  showSidePanel(d);
+  edges.forEach(e=>{e.line.material.opacity=(e.from===d.id||e.to===d.id)?0.45:0.015;});
+  // Zoom
+  const t=mesh.position.clone(),dir=camera.position.clone().sub(t).normalize();
+  animCam(t.clone().add(dir.multiplyScalar(14)),t);
+  showPanel(d);
 }
 
-function deselectAll() {
-  selectedNode = null;
-  nodeMeshes.forEach((m, id) => {
-    m.material.opacity = 1;
-    m.material.transparent = false;
-    const label = nodeLabels.get(id);
-    if (label) label.element.classList.remove('dimmed');
-  });
-  edgeLines.forEach(e => { e.line.material.opacity = 0.08; });
-  closeSidePanel();
+function desel(){
+  selId=null;
+  meshes.forEach((m,id)=>{m.material.opacity=1;m.material.transparent=false;labels.get(id)?.element.classList.remove('dim');});
+  edges.forEach(e=>{e.line.material.opacity=0.06;});
+  closePanel();
 }
 
-function animateCamera(destPos, destTarget) {
-  const startPos = camera.position.clone();
-  const startTarget = controls.target.clone();
-  const dur = 800;
-  const start = performance.now();
-
-  function step(t) {
-    const elapsed = t - start;
-    const progress = Math.min(elapsed / dur, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-
-    camera.position.lerpVectors(startPos, destPos, ease);
-    controls.target.lerpVectors(startTarget, destTarget, ease);
-    controls.update();
-
-    if (progress < 1) requestAnimationFrame(step);
+function animCam(dp,dt){
+  const sp=camera.position.clone(),st=ctrl.target.clone();
+  const dur=700,t0=performance.now();
+  function step(t){
+    const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);
+    camera.position.lerpVectors(sp,dp,e);ctrl.target.lerpVectors(st,dt,e);ctrl.update();
+    if(p<1)requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 
-function showSidePanel(d) {
-  const el = document.getElementById('sp-content');
-  let html = `<div class="sp-name">${d.flag||''} ${d.name}</div>`;
-  if (d.type === 'journalist') html += `<div class="sp-house">${d.media_house}</div>`;
-  else html += `<div class="sp-house">${d.type === 'media_house' ? 'Media House' : ''}</div>`;
-
-  html += `<div class="sp-section">Location</div><div class="sp-text">${d.country}</div>`;
-
-  if (d.topics) {
-    html += `<div class="sp-section">Topics</div><div>`;
-    d.topics.forEach(t => { html += `<span class="sp-tag">${t}</span>`; });
-    html += '</div>';
-  }
-
-  if (d.desc) html += `<div class="sp-section">Profile</div><div class="sp-text">${d.desc}</div>`;
-
-  if (d.articles && d.articles.length) {
-    html += '<div class="sp-section">Articles</div>';
-    d.articles.forEach(a => { html += `<a class="sp-link" href="${a.u}" target="_blank">${a.t}</a>`; });
-  }
-
-  if (d.connections && d.connections.length) {
-    html += '<div class="sp-section">Connections</div>';
-    d.connections.forEach(cid => {
-      const cn = nodesData.find(n => n.id === cid);
-      if (cn) html += `<div class="sp-text" style="margin:2px 0;cursor:pointer;color:#6ea8f0" onclick="window._selectById('${cid}')">${cn.name}</div>`;
+function showPanel(d){
+  const mh=d.type==='journalist'?d.media_house:d.name;
+  const lu=logoUrl(mh),fu=logoFallback(mh),fl=flagUrl(d.cc);
+  let h=`<div class="sp-top"><img class="sp-logo" src="${lu}" onerror="this.src='${fu}'" alt="">
+    <div><div class="sp-nm">${d.name}</div></div><img class="sp-flag" src="${fl}" alt=""></div>`;
+  if(d.type==='journalist')h+=`<div class="sp-mh">${d.media_house}</div>`;
+  else h+=`<div class="sp-mh">Media House</div>`;
+  h+=`<div class="sp-sec">Location</div><div class="sp-txt">${d.country}</div>`;
+  if(d.topics){h+=`<div class="sp-sec">Topics</div><div>`;d.topics.forEach(t=>{h+=`<span class="sp-tag">${t}</span>`;});h+=`</div>`;}
+  if(d.desc)h+=`<div class="sp-sec">Profile</div><div class="sp-txt">${d.desc}</div>`;
+  if(d.arts&&d.arts.length){h+=`<div class="sp-sec">Articles</div>`;d.arts.forEach(a=>{h+=`<a class="sp-lnk" href="${a.u}" target="_blank">${a.t}</a>`;});}
+  if(d.conns&&d.conns.length){
+    h+=`<div class="sp-sec">Connections</div>`;
+    d.conns.forEach(cid=>{const cn=DATA.find(n=>n.id===cid);
+      if(cn)h+=`<div class="sp-conn" onclick="window._sel('${cid}')">${cn.name}</div>`;
     });
   }
-
-  el.innerHTML = html;
-  document.getElementById('side-panel').classList.add('open');
+  document.getElementById('spc').innerHTML=h;
+  document.getElementById('sp').classList.add('open');
 }
 
-window._selectById = function(id) {
-  const d = nodesData.find(n => n.id === id);
-  const m = nodeMeshes.get(id);
-  if (d && m) selectNode(d, m);
+window._sel=id=>{const d=DATA.find(n=>n.id===id),m=meshes.get(id);if(d&&m)selNode(d,m);};
+window.closePanel=()=>document.getElementById('sp').classList.remove('open');
+
+/* ============ TOOLBAR ============ */
+window.doExport=()=>{
+  const mo=document.getElementById('mo'),mb=document.getElementById('mb');
+  mb.innerHTML=`<h3>Export Network JSON</h3><textarea id="etx" readonly>${JSON.stringify(DATA,null,2)}</textarea>
+    <div class="mb-b"><button onclick="navigator.clipboard.writeText(document.getElementById('etx').value);this.textContent='Copied!'">Copy</button>
+    <button onclick="document.getElementById('mo').classList.remove('show')">Close</button></div>`;
+  mo.classList.add('show');
 };
-
-window.closeSidePanel = function() {
-  document.getElementById('side-panel').classList.remove('open');
+window.doImport=()=>{
+  const mo=document.getElementById('mo'),mb=document.getElementById('mb');
+  mb.innerHTML=`<h3>Import Network JSON</h3><textarea id="itx" placeholder="Paste JSON array..."></textarea>
+    <div class="mb-b"><button class="pr" onclick="impData()">Import</button>
+    <button onclick="document.getElementById('mo').classList.remove('show')">Cancel</button></div>`;
+  mo.classList.add('show');
 };
+window.impData=()=>{try{const d=JSON.parse(document.getElementById('itx').value);
+  if(Array.isArray(d)){DATA.length=0;d.forEach(x=>DATA.push(x));build();document.getElementById('mo').classList.remove('show');}
+}catch(e){alert('Invalid JSON: '+e.message);}};
+window.doReset=()=>{desel();animCam(new THREE.Vector3(0,30,65),new THREE.Vector3(0,0,0));};
 
-// ======================== TOOLBAR ========================
-window.exportJSON = function() {
-  const modal = document.getElementById('modal-overlay');
-  const box = document.getElementById('modal-box');
-  box.innerHTML = `<h3>Export Network JSON</h3>
-    <textarea id="export-text" readonly>${JSON.stringify(nodesData, null, 2)}</textarea>
-    <div class="modal-btns">
-      <button onclick="navigator.clipboard.writeText(document.getElementById('export-text').value);this.textContent='Copied!'">Copy</button>
-      <button onclick="document.getElementById('modal-overlay').classList.remove('show')">Close</button>
-    </div>`;
-  modal.classList.add('show');
-};
-
-window.showImport = function() {
-  const modal = document.getElementById('modal-overlay');
-  const box = document.getElementById('modal-box');
-  box.innerHTML = `<h3>Import Network JSON</h3>
-    <textarea id="import-text" placeholder="Paste JSON array here..."></textarea>
-    <div class="modal-btns">
-      <button class="primary" onclick="importData()">Import</button>
-      <button onclick="document.getElementById('modal-overlay').classList.remove('show')">Cancel</button>
-    </div>`;
-  modal.classList.add('show');
-};
-
-window.importData = function() {
-  try {
-    const data = JSON.parse(document.getElementById('import-text').value);
-    if (Array.isArray(data)) {
-      nodesData.length = 0;
-      data.forEach(d => nodesData.push(d));
-      buildScene();
-      document.getElementById('modal-overlay').classList.remove('show');
-    }
-  } catch(e) { alert('Invalid JSON: ' + e.message); }
-};
-
-window.resetView = function() {
-  deselectAll();
-  animateCamera(new THREE.Vector3(0, 30, 60), new THREE.Vector3(0, 0, 0));
-};
-
-function updateStats() {
-  const j = nodesData.filter(n => n.type === 'journalist').length;
-  const m = nodesData.filter(n => n.type === 'media_house').length;
-  document.getElementById('stats').textContent = `${j} journalists · ${m} media houses · ${edgeLines.length} connections`;
-}
-
-// ======================== ANIMATION LOOP ========================
-let time = 0;
-function animate() {
-  requestAnimationFrame(animate);
-  time += 0.005;
-
-  // Gentle floating
-  nodeMeshes.forEach((mesh, id) => {
-    const d = mesh.userData.nodeData;
-    if (!d) return;
-    mesh.position.y = d._y + Math.sin(time + d._x * 0.5) * 0.3;
+/* ============ ANIMATE ============ */
+let t=0;
+function animate(){
+  requestAnimationFrame(animate);t+=0.004;
+  meshes.forEach((m,id)=>{const d=m.userData.d;if(d)m.position.y=d._y+Math.sin(t+d._x*0.4)*0.25;});
+  edges.forEach(e=>{
+    const fm=meshes.get(e.from),tm=meshes.get(e.to);
+    if(fm&&tm){const p=e.line.geometry.attributes.position.array;
+      p[0]=fm.position.x;p[1]=fm.position.y;p[2]=fm.position.z;
+      p[3]=tm.position.x;p[4]=tm.position.y;p[5]=tm.position.z;
+      e.line.geometry.attributes.position.needsUpdate=true;}
   });
-
-  // Update edge positions
-  edgeLines.forEach(e => {
-    const fromM = nodeMeshes.get(e.from);
-    const toM = nodeMeshes.get(e.to);
-    if (fromM && toM) {
-      const positions = e.line.geometry.attributes.position.array;
-      positions[0] = fromM.position.x; positions[1] = fromM.position.y; positions[2] = fromM.position.z;
-      positions[3] = toM.position.x; positions[4] = toM.position.y; positions[5] = toM.position.z;
-      e.line.geometry.attributes.position.needsUpdate = true;
-    }
-  });
-
-  controls.update();
-  composer.render();
-  labelRenderer.render(scene, camera);
+  ctrl.update();composer.render();labelR.render(scene,camera);
 }
 
-// ======================== EVENTS ========================
-window.addEventListener('mousemove', onMouseMove);
-window.addEventListener('click', onClick);
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  labelRenderer.setSize(window.innerWidth, window.innerHeight);
-  composer.setSize(window.innerWidth, window.innerHeight);
+/* ============ EVENTS ============ */
+addEventListener('mousemove',onMM);
+addEventListener('click',onClick);
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);labelR.setSize(innerWidth,innerHeight);
+  composer.setSize(innerWidth,innerHeight);
 });
 
-// ======================== INIT ========================
-buildScene();
-animate();
+/* ============ INIT ============ */
+build();animate();
 </script>
 </body>
 </html>
