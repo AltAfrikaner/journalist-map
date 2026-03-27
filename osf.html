@@ -152,18 +152,14 @@ const LOGO={
 "Patrick Gaspard":"https://logo.clearbit.com/usembassy.gov",
 "Fatima Hassan":"https://logo.clearbit.com/osf.org.za",
 "Cunliffe-Jones":"https://logo.clearbit.com/africacheck.org",
+"Wasserman":"https://logo.clearbit.com/sun.ac.za",
 "Andrew Feinstein":"https://logo.clearbit.com/declassifieduk.org",
 "Namibia Ops":"https://logo.clearbit.com/osisa.org",
 "Zimbabwe Ops":"https://logo.clearbit.com/osisa.org",
 "Mozambique Ops":"https://logo.clearbit.com/osisa.org",
 "Const. Fund":"https://logo.clearbit.com/opensocietyfoundations.org",
 };
-const FAVI={};
-for(const[k,v]of Object.entries(LOGO)){
-  try{const d=new URL(v).hostname;FAVI[k]=`https://www.google.com/s2/favicons?domain=${d}&sz=64`;}catch(e){FAVI[k]='';}
-}
-function logoUrl(name){return LOGO[name]||FAVI[name]||''}
-function logoFallback(name){return FAVI[name]||''}
+function logoUrl(name){return LOGO[name]||''}
 function flagUrl(code){return code?`https://flagcdn.com/w80/${code}.png`:'';}
 
 /* ============ COLOURS ============ */
@@ -318,7 +314,7 @@ conns:["osf_sa","pij","anf"]},
 {id:"ac",type:"media_sa",name:"Africa Check",media_house:"SA Media",loc:"sa_media",country:"South Africa (at Wits)",cc:"za",color:COL.media_sa,w:7,
 topics:["THE chokepoint","OSF 12%","Gates 13%","Luminate 8%","Cited by CNN/PBS/BBC/Wikipedia"],
 desc:"THE chokepoint. Determines what is 'debunked.' Housed at Wits ($3.9M OSF). Founded by Cunliffe-Jones who went on to co-write global fact-checking standards. Former Meta partner for content moderation.",
-conns:["osf_sa","wits","ifcn","gates","luminate","cunliffe"]},
+conns:["osf_sa","wits","ifcn","gates","luminate","cunliffe","wasserman"]},
 
 {id:"iss",type:"media_sa",name:"ISS Africa",media_house:"SA Think Tank",loc:"sa_media",country:"South Africa (Pretoria)",cc:"za",color:COL.media_sa,w:6,
 topics:["$5.1M from OSF","$2.9M rule of law","Gareth Newham farm murder expert"],
@@ -382,7 +378,7 @@ conns:["osf_sa","osf"]},
 {id:"stel",type:"academic",name:"Stellenbosch",media_house:"SA Academia",loc:"academic",country:"South Africa",cc:"za",color:COL.academic,w:5,
 topics:["$1,032,602 OSF (ACCAI leaked)","De Vos alma mater","Wasserman was professor"],
 desc:"First confirmed as direct OSF grantee through leaked ACCAI presidential portfolio review. Pierre de Vos's alma mater. Wasserman was professor here before UCT.",
-conns:["osf_sa"]},
+conns:["osf_sa","wasserman"]},
 
 // ===== SOUTHERN AFRICA OPERATIONS =====
 {id:"nam",type:"southafrica_ops",name:"Namibia Ops",media_house:"Southern Africa Ops",loc:"sa_ops",country:"Namibia",cc:"na",color:COL.southafrica_ops,w:4,
@@ -436,6 +432,11 @@ conns:["ac","ifcn"]},
 topics:["OSF fellowship","Declassified UK board","Arms deal researcher"],
 desc:"OSF fellowship funded his arms deal book. Board of Declassified UK (launched as DM sub-site). Arms deal money trail: BAE → Hlongwane → Guptas → Bell Pottinger built the narrative machinery.",
 conns:["decl","osf"]},
+
+{id:"wasserman",type:"personnel",name:"Wasserman",media_house:"Personnel Bridge",loc:"personnel",country:"South Africa",cc:"za",color:COL.personnel,w:6,
+topics:["Defines 'disinformation' for Africa","IDRC R4.5M","Edits African Journalism Studies","Edits Annals of ICA"],
+desc:"Prof Herman Wasserman. Stellenbosch → UCT Centre for Film and Media Studies director 2015-2022 → Dir. Centre for Information Integrity in Africa. Defines 'disinformation' for the continent. His framework flows: academic definition → Africa Check commissions his research → IFCN certifies Africa Check → Meta applies at scale → Afrikaner farm attack posts suppressed. Called Afrikaner refugees 'fake' and 'props' on Democracy Now! May 2025. Published 'Trump's fake refugees' on Africa Is a Country (OSF-funded). UCT department classified farm murder Facebook pages as 'problematic information.' The man who decides what counts as truth for an entire continent.",
+conns:["ac","stel","uct","aiac"]},
 ];
 
 /* ============ THREE.JS SETUP ============ */
@@ -500,8 +501,8 @@ function build(){
     mesh.position.set(n._x,n._y,n._z);mesh.userData={id:n.id,d:n};
     scene.add(mesh);meshes.set(n.id,mesh);
     const el=document.createElement('div');el.className='nl';
-    const lu=logoUrl(n.name);const fu=logoFallback(n.name);
-    el.innerHTML=`<img class="nl-i" src="${lu}" onerror="this.src='${fu}'" alt="">
+    const lu=logoUrl(n.name);
+    el.innerHTML=`<img class="nl-i" src="${lu}" onerror="this.style.display='none'" alt="">
       <div class="nl-n">${n.name}</div><div class="nl-h">${n.media_house}</div>`;
     const lbl=new CSS2DObject(el);lbl.position.set(0,r+0.8,0);
     mesh.add(lbl);labels.set(n.id,lbl);
@@ -543,10 +544,10 @@ function buildLegend(){
     const items=DATA.filter(fn);if(!items.length)return;
     const h=document.createElement('h3');h.textContent=title;el.appendChild(h);
     items.forEach(n=>{
-      const lu=logoUrl(n.name);const fu=logoFallback(n.name);const fl=flagUrl(n.cc);
+      const lu=logoUrl(n.name);const fl=flagUrl(n.cc);
       const d=document.createElement('div');d.className='li';
       d.innerHTML=`<span class="li-sw" style="background:${n.color}"></span>
-        <img src="${lu}" onerror="this.src='${fu}'" alt="">
+        <img src="${lu}" onerror="this.style.display='none'" alt="">
         <img class="li-fl" src="${fl}" onerror="this.style.display='none'" alt="">
         <label>${n.name}</label>`;
       d.addEventListener('click',()=>{const m=meshes.get(n.id);if(m)selNode(n,m);});
@@ -573,8 +574,8 @@ function onMM(e){
 }
 
 function showTT(d,x,y){
-  const lu=logoUrl(d.name),fu=logoFallback(d.name),fl=flagUrl(d.cc);
-  let h=`<div class="tt-top"><img class="tt-logo" src="${lu}" onerror="this.src='${fu}'" alt="">
+  const lu=logoUrl(d.name),fl=flagUrl(d.cc);
+  let h=`<div class="tt-top"><img class="tt-logo" src="${lu}" onerror="this.style.display='none'" alt="">
     <div class="tt-info"><div class="tt-name">${d.name}</div>
     <div class="tt-house">${d.media_house}</div></div></div>`;
   h+=`<div class="tt-loc"><img src="${fl}" alt="">${d.country}</div>`;
@@ -627,8 +628,8 @@ function animCam(dp,dt){
 }
 
 function showPanel(d){
-  const lu=logoUrl(d.name),fu=logoFallback(d.name),fl=flagUrl(d.cc);
-  let h=`<div class="sp-top"><img class="sp-logo" src="${lu}" onerror="this.src='${fu}'" alt="">
+  const lu=logoUrl(d.name),fl=flagUrl(d.cc);
+  let h=`<div class="sp-top"><img class="sp-logo" src="${lu}" onerror="this.style.display='none'" alt="">
     <div><div class="sp-nm">${d.name}</div></div><img class="sp-flag" src="${fl}" alt=""></div>`;
   h+=`<div class="sp-mh">${d.media_house}</div>`;
   h+=`<div class="sp-sec">Location</div><div class="sp-txt">${d.country}</div>`;
