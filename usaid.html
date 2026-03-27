@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSF Funding Network | Alt Afrikaner Intelligence</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#08080f;color:#e0e0e0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow:hidden;height:100vh;width:100vw}
+#canvas-container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1}
+#title-bar{position:fixed;top:0;left:0;right:0;height:44px;background:linear-gradient(180deg,rgba(8,8,15,0.97),rgba(8,8,15,0.8));
+display:flex;align-items:center;padding:0 16px;z-index:100;border-bottom:1px solid rgba(197,150,12,0.25)}
+#title-bar h1{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#c5960c}
+#title-bar .sub{font-size:10px;color:#556;margin-left:10px;letter-spacing:1px}
+.tb-right{margin-left:auto;display:flex;gap:6px}
+.tb-right button{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#888;
+padding:5px 12px;font-size:10px;border-radius:3px;cursor:pointer;letter-spacing:0.4px;transition:all 0.2s}
+.tb-right button:hover{background:rgba(197,150,12,0.12);border-color:rgba(197,150,12,0.35);color:#c5960c}
+#legend{position:fixed;top:44px;left:0;width:240px;bottom:0;background:rgba(8,8,15,0.94);
+border-right:1px solid rgba(255,255,255,0.05);overflow-y:auto;z-index:50;padding:10px 12px;font-size:10px;
+scrollbar-width:thin;scrollbar-color:#222 transparent}
+#legend::-webkit-scrollbar{width:4px}
+#legend::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+#legend h3{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c5960c;margin:12px 0 6px;
+border-bottom:1px solid rgba(197,150,12,0.15);padding-bottom:3px}
+#legend h3:first-child{margin-top:0}
+.li{display:flex;align-items:center;gap:5px;padding:2px 0;cursor:pointer;transition:opacity 0.2s}
+.li:hover{opacity:0.7}
+.li-sw{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.li input{width:11px;height:11px;accent-color:#c5960c;cursor:pointer;flex-shrink:0}
+.li img{width:14px;height:14px;border-radius:2px;object-fit:contain;background:#fff;flex-shrink:0}
+.li-fl{width:14px;height:10px;border-radius:1px;object-fit:cover;flex-shrink:0}
+.li label{font-size:10px;color:#aaa;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tt{position:fixed;display:none;background:rgba(10,10,18,0.97);border:1px solid rgba(197,150,12,0.25);
+border-radius:6px;padding:12px 14px;max-width:340px;pointer-events:none;z-index:200;
+box-shadow:0 6px 24px rgba(0,0,0,0.7);backdrop-filter:blur(10px)}
+.tt-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.tt-logo{width:22px;height:22px;border-radius:4px;object-fit:contain;background:#fff}
+.tt-info{flex:1}
+.tt-name{font-size:13px;font-weight:700;color:#fff;line-height:1.2}
+.tt-house{font-size:10px;color:#c5960c}
+.tt-loc{font-size:10px;color:#778;display:flex;align-items:center;gap:4px;margin-bottom:5px}
+.tt-loc img{width:18px;height:13px;border-radius:1px}
+.tt-money{font-size:11px;color:#4CAF50;font-weight:700;margin:4px 0}
+.tt-desc{font-size:9px;color:#889;line-height:1.4;margin-bottom:5px}
+#sp{position:fixed;top:44px;right:-370px;width:350px;bottom:0;background:rgba(8,8,15,0.97);
+border-left:1px solid rgba(197,150,12,0.15);z-index:80;transition:right 0.35s ease;
+padding:16px;overflow-y:auto;scrollbar-width:thin}
+#sp.open{right:0}
+.sp-x{position:absolute;top:8px;right:12px;background:none;border:none;color:#555;font-size:16px;cursor:pointer}
+.sp-x:hover{color:#c5960c}
+.sp-top{display:flex;align-items:center;gap:10px;margin:6px 0 10px}
+.sp-logo{width:32px;height:32px;border-radius:6px;object-fit:contain;background:#fff}
+.sp-flag{width:24px;height:17px;border-radius:2px;margin-left:auto}
+.sp-nm{font-size:16px;font-weight:700;color:#fff}
+.sp-mh{font-size:11px;color:#c5960c;margin-bottom:8px}
+.sp-sec{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#556;margin:10px 0 3px}
+.sp-txt{font-size:11px;color:#aab;line-height:1.5}
+.sp-tag{display:inline-block;background:rgba(106,173,204,0.1);color:#6aadcc;padding:1px 7px;border-radius:8px;font-size:9px;margin:2px 3px 2px 0}
+.sp-conn{font-size:10px;color:#5e9be6;padding:2px 0;cursor:pointer}
+.sp-conn:hover{color:#c5960c}
+.nl{color:#bbb;font-size:9px;text-align:center;pointer-events:none;
+text-shadow:0 1px 6px rgba(0,0,0,0.9),0 0 2px rgba(0,0,0,0.5);white-space:nowrap;transition:opacity 0.3s}
+.nl-n{font-weight:600;font-size:9px}
+.nl-h{font-size:7px;color:#889}
+.nl-i{width:16px;height:16px;border-radius:50%;object-fit:contain;background:#fff;display:block;margin:2px auto 1px;
+box-shadow:0 0 4px rgba(0,0,0,0.5)}
+.nl.dim{opacity:0.1}
+#mo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:none;z-index:300;
+justify-content:center;align-items:center}
+#mo.show{display:flex}
+#mb{background:#12121c;border:1px solid rgba(197,150,12,0.25);border-radius:6px;padding:16px;width:480px;max-height:80vh;display:flex;flex-direction:column}
+#mb h3{font-size:12px;color:#c5960c;margin-bottom:8px}
+#mb textarea{width:100%;height:280px;background:#08080f;border:1px solid #2a2a3a;color:#bbb;font-family:monospace;font-size:10px;padding:8px;border-radius:3px;resize:vertical}
+.mb-b{margin-top:8px;display:flex;gap:6px;justify-content:flex-end}
+.mb-b button{padding:5px 14px;border-radius:3px;border:1px solid #333;background:#18182a;color:#aaa;font-size:10px;cursor:pointer}
+.mb-b .pr{background:rgba(197,150,12,0.15);border-color:rgba(197,150,12,0.35);color:#c5960c}
+#st{position:fixed;bottom:8px;left:248px;font-size:9px;color:#444;z-index:50;pointer-events:none;letter-spacing:0.5px}
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<div id="title-bar">
+  <h1>OSF Funding Network</h1>
+  <span class="sub">Southern Africa &middot; USAID &middot; Money Flows &middot; 3D Intelligence Map</span>
+  <div class="tb-right">
+    <button onclick="doExport()">Export JSON</button>
+    <button onclick="doImport()">Import JSON</button>
+    <button onclick="doReset()">Reset View</button>
+  </div>
+</div>
+<div id="legend"></div>
+<div id="tt"></div>
+<div id="sp"><button class="sp-x" onclick="closePanel()">&times;</button><div id="spc"></div></div>
+<div id="mo"><div id="mb"></div></div>
+<div id="st"></div>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {CSS2DRenderer,CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+
+/* ============ LOGO + FLAG MAPS ============ */
+const LOGO={
+"Open Society Foundations":"https://logo.clearbit.com/opensocietyfoundations.org",
+"OSI New York":"https://logo.clearbit.com/opensocietyfoundations.org",
+"FPOS":"https://logo.clearbit.com/opensocietyfoundations.org",
+"AOSI":"https://logo.clearbit.com/opensocietyfoundations.org",
+"OSPC":"https://logo.clearbit.com/opensocietyfoundations.org",
+"FOSI-Zug":"https://logo.clearbit.com/opensocietyfoundations.org",
+"OSF-SA":"https://logo.clearbit.com/osf.org.za",
+"OSISA":"https://logo.clearbit.com/osisa.org",
+"OSIEA":"https://logo.clearbit.com/opensocietyfoundations.org",
+"OSIFE":"https://logo.clearbit.com/opensocietyfoundations.org",
+"PIJ":"https://logo.clearbit.com/opensocietyfoundations.org",
+"USAID":"https://logo.clearbit.com/usaid.gov",
+"PEPFAR":"https://logo.clearbit.com/usaid.gov",
+"World Bank":"https://logo.clearbit.com/worldbank.org",
+"NED":"https://logo.clearbit.com/ned.org",
+"US Embassy Pretoria":"https://logo.clearbit.com/usembassy.gov",
+"Ford Foundation":"https://logo.clearbit.com/fordfoundation.org",
+"Gates Foundation":"https://logo.clearbit.com/gatesfoundation.org",
+"Atlantic Philanthropies":"https://logo.clearbit.com/atlanticphilanthropies.org",
+"Tides Network":"https://logo.clearbit.com/tides.org",
+"Luminate":"https://logo.clearbit.com/luminategroup.com",
+"Daily Maverick":"https://logo.clearbit.com/dailymaverick.co.za",
+"amaBhungane":"https://logo.clearbit.com/amabhungane.org",
+"Africa Check":"https://logo.clearbit.com/africacheck.org",
+"Africa Is a Country":"https://logo.clearbit.com/africasacountry.com",
+"ISS Africa":"https://logo.clearbit.com/issafrica.org",
+"Poynter/IFCN":"https://logo.clearbit.com/poynter.org",
+"Declassified UK":"https://logo.clearbit.com/declassifieduk.org",
+"SOS Coalition":"https://logo.clearbit.com/sabc.co.za",
+"Right2Know":"https://logo.clearbit.com/r2k.org.za",
+"Section27":"https://logo.clearbit.com/section27.org.za",
+"Ndifuna Ukwazi":"https://logo.clearbit.com/nu.org.za",
+"HRW":"https://logo.clearbit.com/hrw.org",
+"Wits University":"https://logo.clearbit.com/wits.ac.za",
+"UCT":"https://logo.clearbit.com/uct.ac.za",
+"Stellenbosch":"https://logo.clearbit.com/sun.ac.za",
+"Ramaphosa Foundation":"https://logo.clearbit.com/cyrilramaphosafoundation.org",
+"Kagiso Trust":"https://logo.clearbit.com/kagiso.co.za",
+"AfricaNoFilter":"https://logo.clearbit.com/africanofilter.org",
+"Binaifer Nowrojee":"https://logo.clearbit.com/opensocietyfoundations.org",
+"Patrick Gaspard":"https://logo.clearbit.com/usembassy.gov",
+"Fatima Hassan":"https://logo.clearbit.com/osf.org.za",
+"Cunliffe-Jones":"https://logo.clearbit.com/africacheck.org",
+"Andrew Feinstein":"https://logo.clearbit.com/declassifieduk.org",
+"Namibia Ops":"https://logo.clearbit.com/osisa.org",
+"Zimbabwe Ops":"https://logo.clearbit.com/osisa.org",
+"Mozambique Ops":"https://logo.clearbit.com/osisa.org",
+"Const. Fund":"https://logo.clearbit.com/opensocietyfoundations.org",
+};
+const FAVI={};
+for(const[k,v]of Object.entries(LOGO)){
+  try{const d=new URL(v).hostname;FAVI[k]=`https://www.google.com/s2/favicons?domain=${d}&sz=64`;}catch(e){FAVI[k]='';}
+}
+function logoUrl(name){return LOGO[name]||FAVI[name]||''}
+function logoFallback(name){return FAVI[name]||''}
+function flagUrl(code){return code?`https://flagcdn.com/w80/${code}.png`:'';}
+
+/* ============ COLOURS ============ */
+const COL={
+osf_core:"#2E5090",osf_legal:"#4169B0",osf_regional:"#D4760A",
+govt_us:"#B22222",govt_multi:"#8B0000",
+fdn_other:"#1565c0",passthru:"#8B6914",
+media_sa:"#2D6A2D",media_intl:"#1B5E20",
+civil_sa:"#E65100",academic:"#00838f",
+personnel:"#7B2D8E",southafrica_ops:"#BF360C",
+political:"#5D4037"
+};
+
+/* ============ FULL DATA ============ */
+let DATA=[
+// ===== APEX =====
+{id:"osf",type:"osf_core",name:"Open Society Foundations",media_house:"OSF Apex",loc:"apex",country:"USA (New York)",cc:"us",color:COL.osf_core,w:12,
+topics:["$25B+ assets","$24.2B disbursed","120+ countries"],
+desc:"World's largest private funder of human rights & democracy. Founded by George Soros 1993. Current president: Binaifer Nowrojee (June 2024). Leaked internal docs from 2016 DCLeaks reveal operational methodology.",
+conns:["osi_ny","fpos","aosi","ospc","fosi_zug","osf_sa","osisa","osiea","osife","pij","usaid","wb","ford","gates","atlantic","tides","hrw","nowrojee","gaspard"]},
+
+// ===== US LEGAL ENTITIES =====
+{id:"osi_ny",type:"osf_legal",name:"OSI New York",media_house:"OSF Legal Entities",loc:"legal",country:"USA (New York)",cc:"us",color:COL.osf_legal,w:6,
+topics:["Operating foundation","Post-2012 funding shift"],
+desc:"Main operating foundation. Grants >$100K processed here after the $150M funding shift from Switzerland in 2012.",
+conns:["osf","fpos","fosi_zug"]},
+
+{id:"fpos",type:"osf_legal",name:"FPOS",media_house:"OSF Legal Entities",loc:"legal",country:"USA (New York)",cc:"us",color:COL.osf_legal,w:6,
+topics:["$2M auto-approve","48-hour silence rule","Weekly spreadsheet"],
+desc:"Foundation to Promote Open Society. Private foundation. Grants up to $2M approved via weekly spreadsheet with 48hr silence = approval. No board vote required.",
+conns:["osf","osi_ny"]},
+
+{id:"aosi",type:"osf_legal",name:"AOSI",media_house:"OSF Legal Entities",loc:"legal",country:"USA (New York)",cc:"us",color:COL.osf_legal,w:5,
+topics:["501(c)(3)","Receives govt funding","Bridge to USAID"],
+desc:"Alliance for Open Society International. Only OSF entity that receives government money. Runs the Constitutionalism Fund (joint Atlantic/Ford/OSF). Bridge between govt Track 2 and private Track 3.",
+conns:["osf","usaid","const_fund","ndifuna"]},
+
+{id:"ospc",type:"osf_legal",name:"OSPC",media_house:"OSF Legal Entities",loc:"legal",country:"USA (Washington DC)",cc:"us",color:COL.osf_legal,w:4,
+topics:["501(c)(4)","Lobbying entity"],
+desc:"Open Society Policy Center. Only OSF entity legally permitted to lobby US politicians.",conns:["osf"]},
+
+{id:"fosi_zug",type:"osf_legal",name:"FOSI-Zug",media_house:"OSF Legal Entities",loc:"legal",country:"Switzerland (Zug)",cc:"ch",color:COL.passthru,w:6,
+topics:["$150M shifted 2012","Lobbying money","Bifurcated budgets"],
+desc:"Swiss entity handles money US tax law restricts. In 2012, all foundations worldwide restructured: 50% NY / 50% Zug. Rachel Gillette email instructed every ED globally. Six-month research timing loophole documented.",
+conns:["osf","osi_ny"]},
+
+// ===== REGIONAL FOUNDATIONS =====
+{id:"osf_sa",type:"osf_regional",name:"OSF-SA",media_house:"OSF Regional",loc:"regional",country:"South Africa",cc:"za",color:COL.osf_regional,w:9,
+topics:["R1B+ ($55M+)","750+ grantees","25 years","Fatima Hassan ED 2013-19"],
+desc:"Open Society Foundation for South Africa. Founded 1993 with Van Zyl Slabbert. Merged into global OSF 2022-2024 under Nowrojee restructuring. Funded all major SA NGOs advancing socio-economic rights.",
+conns:["osf","dm","amab","aiac","ac","iss","sos","r2k","media_innov","radio60","wits","uct","stel","s27","ndifuna","hassan","nam","zim","moz"]},
+
+{id:"osisa",type:"osf_regional",name:"OSISA",media_house:"OSF Regional",loc:"regional",country:"South Africa (JHB)",cc:"za",color:COL.osf_regional,w:7,
+topics:["$5M/year","11 countries","Braamfontein HQ"],
+desc:"Open Society Initiative for Southern Africa. Est. 1997. Angola, Botswana, DRC, Lesotho, Madagascar, Malawi, Mozambique, Namibia, eSwatini, Zambia, Zimbabwe. Merged into global OSF 2022-2024.",
+conns:["osf","osf_sa","nam","zim","moz"]},
+
+{id:"osiea",type:"osf_regional",name:"OSIEA",media_house:"OSF Regional",loc:"regional",country:"Kenya (Nairobi)",cc:"ke",color:COL.osf_regional,w:6,
+topics:["$12.9M/year","Founded 2004 by Nowrojee","Leaked docs from here"],
+desc:"Open Society Initiative for Eastern Africa. Founded by Binaifer Nowrojee. Kenya, Uganda, Tanzania, Sudan, South Sudan. The leaked 2016 documents are primarily from this office.",
+conns:["osf","nowrojee"]},
+
+{id:"osife",type:"osf_regional",name:"OSIFE",media_house:"OSF Regional",loc:"regional",country:"Europe",cc:"eu",color:COL.osf_regional,w:5,
+topics:["$6.16M elections 2014","90+ grantees","Fund to Counter Xenophobia"],
+desc:"Open Society Initiative for Europe. Spent $6.16M in single EU election cycle. Created Fund to Counter Xenophobia targeting Netherlands/Wilders. 48-hour intelligence monitoring operations.",
+conns:["osf"]},
+
+{id:"pij",type:"osf_legal",name:"PIJ",media_house:"OSF Programmes",loc:"legal",country:"USA / Global",cc:"us",color:COL.osf_legal,w:5,
+topics:["$4.5M/yr journalism","Asymmetric response","Non-profit investigative blueprint"],
+desc:"Programme on Independent Journalism. Internal strategy: replace dying mainstream media with OSF-funded non-profit investigative outlets. Blueprint for Daily Maverick/amaBhungane/Declassified UK network.",
+conns:["osf","dm","amab","aiac","decl"]},
+
+// ===== US GOVERNMENT =====
+{id:"usaid",type:"govt_us",name:"USAID",media_house:"US Government",loc:"govt",country:"USA (Washington DC)",cc:"us",color:COL.govt_us,w:8,
+topics:["$1.2B to SA since 1994","$27M to Tides","28 entities at SA mission"],
+desc:"US Agency for International Development. CAAA mandate. Trump dismantled USAID Feb 2025. AOSI (OSF entity) designed to receive USAID funding. Parallel funding streams reach same recipient organisations.",
+conns:["osf","aosi","pepfar","us_emb","tides","wb","ned"]},
+
+{id:"pepfar",type:"govt_us",name:"PEPFAR",media_house:"US Government",loc:"govt",country:"USA",cc:"us",color:COL.govt_us,w:7,
+topics:["$8B to SA since 2003","$439M current year","15,000+ healthcare workers","17-18% of HIV response"],
+desc:"President's Emergency Plan for AIDS Relief. SA is largest global recipient. Trump froze Jan 2025. 601,000 projected deaths if withdrawn. 8,000+ SA healthcare workers lost jobs. Structural dependency lever.",
+conns:["usaid","us_emb","gates"]},
+
+{id:"wb",type:"govt_multi",name:"World Bank",media_house:"Multilateral",loc:"govt",country:"International (Washington DC)",cc:"us",color:COL.govt_multi,w:6,
+topics:["GPSA $9.6M grants","30 countries","OSF observer seat","$3M parallel funding"],
+desc:"OSF holds observer seat on GPSA steering committee. WB President Jim Kim attended OSF all-staff meeting July 2013. Eva Bakonyi (OSF Hungary → IFC) is inside bridge.",
+conns:["osf","usaid","moz"]},
+
+{id:"ned",type:"govt_us",name:"NED",media_house:"US Government",loc:"govt",country:"USA (Washington DC)",cc:"us",color:COL.govt_us,w:4,
+topics:["$4.7M to SA 1984-1994","CIA successor"],
+desc:"National Endowment for Democracy. Allen Weinstein: 'Much of what we do today was done covertly by the CIA 25 years ago.' Also funds Poynter/IFCN.",
+conns:["usaid","ifcn"]},
+
+{id:"us_emb",type:"govt_us",name:"US Embassy Pretoria",media_house:"US Government",loc:"govt",country:"South Africa (Pretoria)",cc:"za",color:COL.govt_us,w:6,
+topics:["28 US entities","318 US positions","570 local staff","Continental hub"],
+desc:"40% of staff serve other African embassies. Mo Shaik (SSA head) cultivated as intelligence source on Zuma. Gaspard was ambassador 2013-2016 then went directly to OSF presidency.",
+conns:["usaid","pepfar","gaspard"]},
+
+// ===== OTHER FOUNDATIONS =====
+{id:"ford",type:"fdn_other",name:"Ford Foundation",media_house:"US Foundations",loc:"foundations",country:"USA (New York)",cc:"us",color:COL.fdn_other,w:6,
+topics:["$16B endowment","Constitutionalism Fund partner","Higher education in SA"],
+desc:"Higher education in SA (WikiLeaks cable). Joint Constitutionalism Fund with OSF/Atlantic. McGeorge Bundy (NSA) was president. $7M to CIA's Congress for Cultural Freedom.",
+conns:["osf","const_fund","anf","wits"]},
+
+{id:"gates",type:"fdn_other",name:"Gates Foundation",media_house:"US Foundations",loc:"foundations",country:"USA (Seattle)",cc:"us",color:COL.fdn_other,w:5,
+topics:["HIV/AIDS in SA","Africa Check 13%","IFCN funder"],
+desc:"HIV/AIDS programmes in SA (named in WikiLeaks cable). Funds Africa Check (13%). Named in US Embassy scene-setter cable alongside Ford and Rockefeller.",
+conns:["ac","pepfar","ifcn"]},
+
+{id:"atlantic",type:"fdn_other",name:"Atlantic Philanthropies",media_house:"US Foundations",loc:"foundations",country:"USA (New York)",cc:"us",color:COL.fdn_other,w:4,
+topics:["$8B spent down by 2020","Constitutionalism Fund partner"],
+desc:"Founded by Chuck Feeney. Wound down entire $8B endowment. Joint Constitutionalism Fund with Ford/OSF. Grantees moved to OSF/Ford after wind-down, concentrating dependency.",
+conns:["const_fund","osf"]},
+
+{id:"tides",type:"passthru",name:"Tides Network",media_house:"Pass-Through",loc:"foundations",country:"USA (San Francisco)",cc:"us",color:COL.passthru,w:5,
+topics:["$1.4B assets","$27M from USAID","$121.6M unexplained salary gap"],
+desc:"Dark money pass-through hub. Receives from USAID, OSF, Ford. Anonymises donor-to-recipient connections. Congressional testimony documented USAID-Tides pipeline.",
+conns:["usaid","osf"]},
+
+{id:"luminate",type:"fdn_other",name:"Luminate",media_house:"US Foundations",loc:"foundations",country:"USA",cc:"us",color:COL.fdn_other,w:4,
+topics:["Omidyar Network","Africa Check 8%","AfricaNoFilter co-funder"],
+desc:"Part of Pierre Omidyar's philanthropic network. Funds Africa Check (8%). Co-funder of AfricaNoFilter ($7.5M). Connected to same ecosystem as OSF.",
+conns:["ac","anf"]},
+
+// ===== JOINT MECHANISMS =====
+{id:"const_fund",type:"passthru",name:"Const. Fund",media_house:"Joint Mechanisms",loc:"mechanisms",country:"South Africa",cc:"za",color:COL.passthru,w:4,
+topics:["Atlantic + Ford + OSF","Via AOSI","Funds Ndifuna Ukwazi"],
+desc:"Constitutionalism Fund. Joint Atlantic Philanthropies / Ford Foundation / OSF. Administered through AOSI (the entity that receives govt money). Physical evidence of multi-foundation convergence at operational level in SA.",
+conns:["aosi","ford","atlantic","ndifuna"]},
+
+{id:"anf",type:"passthru",name:"AfricaNoFilter",media_house:"Joint Mechanisms",loc:"mechanisms",country:"South Africa",cc:"za",color:COL.passthru,w:4,
+topics:["$7.5M donor collaborative","Ford + OSF + Luminate"],
+desc:"Same funders as apex network. Sean Jacobs (Africa Is a Country) was Ford ANF Fellow. Narrative-change initiative for how Africa is portrayed globally.",
+conns:["ford","luminate","aiac","osf"]},
+
+// ===== SA MEDIA =====
+{id:"dm",type:"media_sa",name:"Daily Maverick",media_house:"SA Media",loc:"sa_media",country:"South Africa",cc:"za",color:COL.media_sa,w:7,
+topics:["OSF seed funded","Central publication hub","ISS exclusive rights"],
+desc:"Hosts amaBhungane (OSF grantee). Published Fatima Hassan, Pierre de Vos. Interviewed Malloch-Brown. Launched Declassified UK as sub-site. ISS exclusive SA republication rights. All funded streams converge here.",
+conns:["osf_sa","pij","amab","iss","decl","hassan"]},
+
+{id:"amab",type:"media_sa",name:"amaBhungane",media_house:"SA Media",loc:"sa_media",country:"South Africa",cc:"za",color:COL.media_sa,w:6,
+topics:["Confirmed OSF grantee","#GuptaLeaks","Non-profit investigative"],
+desc:"Non-profit investigative centre. Founded 2010. #GuptaLeaks. Publishes through Daily Maverick and News24. Their own 2022 article confirmed OSF funding.",
+conns:["osf_sa","pij","dm"]},
+
+{id:"aiac",type:"media_sa",name:"Africa Is a Country",media_house:"SA Media",loc:"sa_media",country:"USA (New York)",cc:"us",color:COL.media_sa,w:5,
+topics:["OSF confirmed Nov 2024","New African Intellectuals grant","Wasserman published here"],
+desc:"Founded 2009 by Sean Jacobs at The New School NYC. OSF confirmed funding in November 2024 Q&A on their website. Wasserman published 'Trump's fake refugees' dismissing Afrikaner concerns here.",
+conns:["osf_sa","pij","anf"]},
+
+{id:"ac",type:"media_sa",name:"Africa Check",media_house:"SA Media",loc:"sa_media",country:"South Africa (at Wits)",cc:"za",color:COL.media_sa,w:7,
+topics:["THE chokepoint","OSF 12%","Gates 13%","Luminate 8%","Cited by CNN/PBS/BBC/Wikipedia"],
+desc:"THE chokepoint. Determines what is 'debunked.' Housed at Wits ($3.9M OSF). Founded by Cunliffe-Jones who went on to co-write global fact-checking standards. Former Meta partner for content moderation.",
+conns:["osf_sa","wits","ifcn","gates","luminate","cunliffe"]},
+
+{id:"iss",type:"media_sa",name:"ISS Africa",media_house:"SA Think Tank",loc:"sa_media",country:"South Africa (Pretoria)",cc:"za",color:COL.media_sa,w:6,
+topics:["$5.1M from OSF","$2.9M rule of law","Gareth Newham farm murder expert"],
+desc:"Institute for Security Studies. Largest single OSF grantee in SA. Gareth Newham quoted internationally denying farm murder racial patterns. Exclusive Daily Maverick republication rights. Simon Allison revolving door.",
+conns:["osf_sa","dm"]},
+
+{id:"decl",type:"media_intl",name:"Declassified UK",media_house:"Intl Media",loc:"sa_media",country:"UK (London)",cc:"gb",color:COL.media_intl,w:4,
+topics:["Launched as DM sub-site","Feinstein on board","OSF fellowship funded"],
+desc:"Andrew Feinstein on board. His arms deal book funded by OSF fellowship. BAE → Hlongwane → Guptas → Bell Pottinger money trail. Launched as Daily Maverick sub-site.",
+conns:["dm","pij","feinstein"]},
+
+{id:"ifcn",type:"media_intl",name:"Poynter/IFCN",media_house:"Intl Media",loc:"sa_media",country:"USA (Florida)",cc:"us",color:COL.media_intl,w:5,
+topics:["Global fact-checking standards","Certifies Meta partners","Funded by Gates, OSF, NED"],
+desc:"International Fact-Checking Network. Certifies who Facebook/Meta uses for content moderation. Cunliffe-Jones co-wrote Code of Principles. Pipeline: Africa Check → IFCN → Meta → Afrikaner content suppressed.",
+conns:["ac","cunliffe","ned","gates"]},
+
+{id:"sos",type:"media_sa",name:"SOS Coalition",media_house:"SA Media",loc:"sa_media",country:"South Africa",cc:"za",color:COL.media_sa,w:3,
+topics:["Conceptualised with OSF support","SABC watchdog"],
+desc:"SABC watchdog. Their own website states it was 'conceptualised as a short-term, single-issue campaign with Open Society Foundation support.' Monitors and litigates SABC editorial policy.",
+conns:["osf_sa"]},
+
+{id:"r2k",type:"media_sa",name:"Right2Know",media_house:"SA Media",loc:"sa_media",country:"South Africa",cc:"za",color:COL.media_sa,w:3,
+topics:["OSF-SA notable grantee","Information access","Media freedom"],
+desc:"Campaigns on information access and media freedom. Listed as OSF-SA notable grantee in 25th anniversary press release.",conns:["osf_sa"]},
+
+{id:"media_innov",type:"media_sa",name:"SA Media Innovation",media_house:"SA Media",loc:"sa_media",country:"South Africa",cc:"za",color:COL.media_sa,w:3,
+topics:["Seed-funded by OSF-SA"],
+desc:"South Africa Media Innovation Program. Seed-funded by OSF-SA (25th anniversary release).",conns:["osf_sa"]},
+
+{id:"radio60",type:"media_sa",name:"60+ Community Radios",media_house:"SA Media",loc:"sa_media",country:"South Africa",cc:"za",color:COL.media_sa,w:3,
+topics:["OSF startup support","60+ stations"],
+desc:"Community radio stations across SA receiving OSF startup funding and training support (OSF fact sheet).",conns:["osf_sa"]},
+
+// ===== SA CIVIL SOCIETY =====
+{id:"ndifuna",type:"civil_sa",name:"Ndifuna Ukwazi",media_house:"SA Civil Society",loc:"civil",country:"South Africa (Cape Town)",cc:"za",color:COL.civil_sa,w:5,
+topics:["AOSI Constitutionalism Fund","Co-founded by Hassan","Urban land justice"],
+desc:"Co-founded by Fatima Hassan 2011 (2 years before becoming OSF-SA director). Stops sale of public land. Directly in land expropriation debate that triggered Trump funding freeze.",
+conns:["const_fund","aosi","hassan"]},
+
+{id:"s27",type:"civil_sa",name:"Section27",media_house:"SA Civil Society",loc:"civil",country:"South Africa",cc:"za",color:COL.civil_sa,w:4,
+topics:["Health/education litigation","Successor to AIDS Law Project","TAC pipeline"],
+desc:"Successor to AIDS Law Project where Hassan worked. Health and education rights litigation. TAC pipeline. OSF funded the demand side, PEPFAR funded the supply side.",
+conns:["osf_sa","hassan"]},
+
+{id:"hrw",type:"civil_sa",name:"HRW",media_house:"Intl Civil Society",loc:"civil",country:"USA (New York)",cc:"us",color:COL.civil_sa,w:5,
+topics:["Co-founded by Aryeh Neier","Nowrojee worked 11 years","OSF personnel pipeline"],
+desc:"Human Rights Watch. Co-founded by Aryeh Neier (OSF president 1993-2012). Nowrojee worked here 11 years before founding OSIEA. Major personnel pipeline to OSF.",
+conns:["osf","nowrojee"]},
+
+// ===== ACADEMIA =====
+{id:"wits",type:"academic",name:"Wits University",media_house:"SA Academia",loc:"academic",country:"South Africa (JHB)",cc:"za",color:COL.academic,w:6,
+topics:["$3.9M OSF (16 grants)","$931K ACCAI","Africa Check housed here"],
+desc:"University of the Witwatersrand. Africa Check physically housed in Journalism Dept. 16 grants from OSF. Additional $931,650 from ACCAI presidential portfolio review (leaked). Academic frameworks characterising Afrikaner identity produced here.",
+conns:["osf_sa","ac"]},
+
+{id:"uct",type:"academic",name:"UCT",media_house:"SA Academia",loc:"academic",country:"South Africa (Cape Town)",cc:"za",color:COL.academic,w:6,
+topics:["$2.6M OSF (7 grants)","Where Soros began 1979","$503K constitutionalism","Nowrojee 2025 lecture"],
+desc:"University of Cape Town. Soros's first-ever philanthropic act was scholarships here (1979). $503K to 'advance constitutionalism.' De Vos holds Constitutional Governance chair. Wasserman directed media studies 2015-2022. #RhodesMustFall origin.",
+conns:["osf_sa","osf"]},
+
+{id:"stel",type:"academic",name:"Stellenbosch",media_house:"SA Academia",loc:"academic",country:"South Africa",cc:"za",color:COL.academic,w:5,
+topics:["$1,032,602 OSF (ACCAI leaked)","De Vos alma mater","Wasserman was professor"],
+desc:"First confirmed as direct OSF grantee through leaked ACCAI presidential portfolio review. Pierre de Vos's alma mater. Wasserman was professor here before UCT.",
+conns:["osf_sa"]},
+
+// ===== SOUTHERN AFRICA OPERATIONS =====
+{id:"nam",type:"southafrica_ops",name:"Namibia Ops",media_house:"Southern Africa Ops",loc:"sa_ops",country:"Namibia",cc:"na",color:COL.southafrica_ops,w:4,
+topics:["Part of OSISA $5M/year","GPSA member","Civil society/media/governance"],
+desc:"OSISA operated in Namibia. GPSA member country. Civil society, media, LGBTIQ, governance programmes. WikiLeaks: Namibia allegedly settled 5,000 Chinese families for defaulted loan.",
+conns:["osisa","osf_sa","wb"]},
+
+{id:"zim",type:"southafrica_ops",name:"Zimbabwe Ops",media_house:"Southern Africa Ops",loc:"sa_ops",country:"Zimbabwe",cc:"zw",color:COL.southafrica_ops,w:4,
+topics:["Part of OSISA $5M/year","Land reform template","Civil society/media"],
+desc:"OSISA operated in Zimbabwe. Land reform is template/predecessor for SA expropriation debate. Civil society, media, governance. WikiLeaks cables documented extensive US engagement with Zimbabwe.",
+conns:["osisa","osf_sa"]},
+
+{id:"moz",type:"southafrica_ops",name:"Mozambique Ops",media_house:"Southern Africa Ops",loc:"sa_ops",country:"Mozambique",cc:"mz",color:COL.southafrica_ops,w:4,
+topics:["GPSA $1M Save the Children","OSF reviewing WB rejects","Part of OSISA"],
+desc:"GPSA member country. Save the Children consortium $1M grant. OSF reviewing proposals World Bank rejected to fund independently. Shanduka had energy interests here.",
+conns:["osisa","wb"]},
+
+// ===== POLITICAL / COMMERCIAL =====
+{id:"ramaphosa_f",type:"political",name:"Ramaphosa Foundation",media_house:"SA Political",loc:"political",country:"South Africa",cc:"za",color:COL.political,w:5,
+topics:["R576M education","Shanduka → CIC $243M","SEACOM/USAID","Lonmin/Marikana"],
+desc:"Formerly Shanduka Foundation. Shanduka: CIC (China) $243M for 25%, SEACOM 12.5% (offered subsidized access for USAID projects), Lonmin empowerment partner (Marikana), Paradise Papers. KST with Kagiso Trust.",
+conns:["kagiso"]},
+
+{id:"kagiso",type:"political",name:"Kagiso Trust",media_house:"SA Political",loc:"political",country:"South Africa",cc:"za",color:COL.political,w:4,
+topics:["R2B invested","Founded 1985","Beyers Naudé programme"],
+desc:"Founded 1985 during apartheid. R2B invested over 40 years. Education, governance. KST partnership with Ramaphosa Foundation (R576M). Beyers Naudé Schools Development Programme.",
+conns:["ramaphosa_f"]},
+
+// ===== PERSONNEL BRIDGES =====
+{id:"nowrojee",type:"personnel",name:"Binaifer Nowrojee",media_house:"Personnel Bridge",loc:"personnel",country:"USA / Kenya",cc:"ke",color:COL.personnel,w:7,
+topics:["OSF President 2024-present","Built OSIEA from scratch","Led 40% staff cuts"],
+desc:"HRW 1993-2004 → Founded OSIEA 2004 → Asia Pacific 2014 → VP Transformation (merged OSISA/OSIEA/OSIWA) → President June 2024. The woman who built the machine now runs it globally.",
+conns:["osf","osiea","hrw","uct"]},
+
+{id:"gaspard",type:"personnel",name:"Patrick Gaspard",media_house:"Personnel Bridge",loc:"personnel",country:"USA",cc:"us",color:COL.personnel,w:6,
+topics:["US Ambassador SA 2013-16","OSF President 2018-20","$220M racial justice"],
+desc:"US Ambassador to South Africa under Obama 2013-2016 → OSF President 2018-2020. Diplomatic knowledge → foundation. $220M US racial justice commitment under his presidency. Revolving door turned in under 2 years.",
+conns:["osf","us_emb"]},
+
+{id:"hassan",type:"personnel",name:"Fatima Hassan",media_house:"Personnel Bridge",loc:"personnel",country:"South Africa",cc:"za",color:COL.personnel,w:5,
+topics:["OSF-SA Director 2013-19","Co-founded Ndifuna Ukwazi","AIDS Law Project/TAC"],
+desc:"Wits/Duke → ConCourt clerk → AIDS Law Project/TAC → Special Advisor Min. Hogan → Co-founded Ndifuna Ukwazi 2011 → Yale → OSF-SA Director 2013-2019 → Health Justice Initiative 2020. Published through Daily Maverick. Raith Foundation board.",
+conns:["osf_sa","ndifuna","s27","dm"]},
+
+{id:"cunliffe",type:"personnel",name:"Cunliffe-Jones",media_house:"Personnel Bridge",loc:"personnel",country:"UK / USA",cc:"gb",color:COL.personnel,w:5,
+topics:["Founded Africa Check","IFCN Senior Adviser","TikTok safety council"],
+desc:"Founded Africa Check 2012 at Wits. Ran it to 2019. Now IFCN Senior Adviser at Poynter Institute. TikTok African safety council. UK Foreign Office fellowship. Co-wrote global fact-checking standards that determine Meta content moderation.",
+conns:["ac","ifcn"]},
+
+{id:"feinstein",type:"personnel",name:"Andrew Feinstein",media_house:"Personnel Bridge",loc:"personnel",country:"UK (London)",cc:"gb",color:COL.personnel,w:4,
+topics:["OSF fellowship","Declassified UK board","Arms deal researcher"],
+desc:"OSF fellowship funded his arms deal book. Board of Declassified UK (launched as DM sub-site). Arms deal money trail: BAE → Hlongwane → Guptas → Bell Pottinger built the narrative machinery.",
+conns:["decl","osf"]},
+];
+
+/* ============ THREE.JS SETUP ============ */
+const W=window.innerWidth, H=window.innerHeight;
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x08080f,0.005);
+const camera=new THREE.PerspectiveCamera(55,W/H,0.1,1000);
+camera.position.set(0,30,65);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(W,H);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+const labelR=new CSS2DRenderer();
+labelR.setSize(W,H);labelR.domElement.style.position='absolute';labelR.domElement.style.top='0';labelR.domElement.style.pointerEvents='none';
+document.getElementById('canvas-container').appendChild(labelR.domElement);
+const ctrl=new OrbitControls(camera,renderer.domElement);
+ctrl.enableDamping=true;ctrl.dampingFactor=0.05;ctrl.minDistance=8;ctrl.maxDistance=160;
+const composer=new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene,camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),0.5,0.4,0.88));
+composer.addPass(new OutputPass());
+scene.add(new THREE.AmbientLight(0x334466,0.7));
+const pl=new THREE.PointLight(0xc5960c,0.5,200);pl.position.set(0,40,0);scene.add(pl);
+
+/* ============ BUILD ============ */
+const meshes=new Map(),labels=new Map(),edges=[];
+let selId=null;
+
+function layout(){
+  const locs={apex:[],legal:[],regional:[],govt:[],foundations:[],mechanisms:[],
+    sa_media:[],civil:[],academic:[],sa_ops:[],political:[],personnel:[]};
+  DATA.forEach(n=>{if(locs[n.loc])locs[n.loc].push(n);});
+  function ring(arr,r,y,off=0){arr.forEach((n,i)=>{
+    const a=off+(i/Math.max(arr.length,1))*Math.PI*2;const j=(Math.random()-0.5)*1.5;
+    n._x=Math.cos(a)*(r+j);n._y=y+(Math.random()-0.5)*1.5;n._z=Math.sin(a)*(r+j);
+  });}
+  locs.apex.forEach(n=>{n._x=0;n._y=3;n._z=0;});
+  ring(locs.legal,9,1,0.2);
+  ring(locs.regional,17,3,0.15);
+  ring(locs.govt,20,-4,0.7);
+  ring(locs.foundations,18,7,1.2);
+  ring(locs.mechanisms,14,-2,2.5);
+  ring(locs.sa_media,32,1,0.08);
+  ring(locs.civil,36,-2,0.5);
+  ring(locs.academic,28,5,0.9);
+  ring(locs.sa_ops,40,3,1.6);
+  ring(locs.political,44,0,0.3);
+  ring(locs.personnel,12,-6,1.0);
+}
+
+function build(){
+  meshes.forEach(m=>scene.remove(m));labels.forEach(l=>scene.remove(l));
+  edges.forEach(e=>scene.remove(e.line));meshes.clear();labels.clear();edges.length=0;
+  layout();
+  DATA.forEach(n=>{
+    const r=0.4+(n.w||3)*0.18;
+    const c=new THREE.Color(n.color||'#888');
+    const mesh=new THREE.Mesh(
+      new THREE.SphereGeometry(r,32,32),
+      new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.25+(n.w||3)*0.04,roughness:0.3,metalness:0.1})
+    );
+    mesh.position.set(n._x,n._y,n._z);mesh.userData={id:n.id,d:n};
+    scene.add(mesh);meshes.set(n.id,mesh);
+    const el=document.createElement('div');el.className='nl';
+    const lu=logoUrl(n.name);const fu=logoFallback(n.name);
+    el.innerHTML=`<img class="nl-i" src="${lu}" onerror="this.src='${fu}'" alt="">
+      <div class="nl-n">${n.name}</div><div class="nl-h">${n.media_house}</div>`;
+    const lbl=new CSS2DObject(el);lbl.position.set(0,r+0.8,0);
+    mesh.add(lbl);labels.set(n.id,lbl);
+  });
+  const eset=new Set();
+  DATA.forEach(n=>{(n.conns||[]).forEach(cid=>{
+    const k=[n.id,cid].sort().join('|');if(eset.has(k))return;eset.add(k);
+    const fm=meshes.get(n.id),tm=meshes.get(cid);if(!fm||!tm)return;
+    const g=new THREE.BufferGeometry().setFromPoints([fm.position.clone(),tm.position.clone()]);
+    const line=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.06}));
+    scene.add(line);edges.push({line,from:n.id,to:cid});
+  });});
+  [9,17,20,32,40].forEach(r=>{
+    const pts=[];for(let i=0;i<=80;i++){const a=(i/80)*Math.PI*2;pts.push(new THREE.Vector3(Math.cos(a)*r,-1.5,Math.sin(a)*r));}
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
+      new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.025})));
+  });
+  buildLegend();
+  document.getElementById('st').textContent=`${DATA.length} nodes · ${edges.length} connections · Alt Afrikaner Intelligence`;
+}
+
+/* ============ LEGEND ============ */
+function buildLegend(){
+  const el=document.getElementById('legend');el.innerHTML='';
+  const groups=[
+    ["OSF Core",n=>n.type==='osf_core'],
+    ["OSF Legal Entities",n=>n.type==='osf_legal'],
+    ["Regional Foundations",n=>n.type==='osf_regional'],
+    ["US Government",n=>n.type==='govt_us'||n.type==='govt_multi'],
+    ["Other Foundations",n=>n.type==='fdn_other'||n.type==='passthru'],
+    ["SA Media & Think Tanks",n=>n.type==='media_sa'||n.type==='media_intl'],
+    ["SA Civil Society",n=>n.type==='civil_sa'],
+    ["SA Academia",n=>n.type==='academic'],
+    ["Southern Africa Ops",n=>n.type==='southafrica_ops'],
+    ["Political / Commercial",n=>n.type==='political'],
+    ["Personnel Bridges",n=>n.type==='personnel'],
+  ];
+  groups.forEach(([title,fn])=>{
+    const items=DATA.filter(fn);if(!items.length)return;
+    const h=document.createElement('h3');h.textContent=title;el.appendChild(h);
+    items.forEach(n=>{
+      const lu=logoUrl(n.name);const fu=logoFallback(n.name);const fl=flagUrl(n.cc);
+      const d=document.createElement('div');d.className='li';
+      d.innerHTML=`<span class="li-sw" style="background:${n.color}"></span>
+        <img src="${lu}" onerror="this.src='${fu}'" alt="">
+        <img class="li-fl" src="${fl}" onerror="this.style.display='none'" alt="">
+        <label>${n.name}</label>`;
+      d.addEventListener('click',()=>{const m=meshes.get(n.id);if(m)selNode(n,m);});
+      el.appendChild(d);
+    });
+  });
+}
+
+/* ============ INTERACTION ============ */
+const rc=new THREE.Raycaster(),mouse=new THREE.Vector2();
+const tt=document.getElementById('tt');let hov=null;
+
+function onMM(e){
+  mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  rc.setFromCamera(mouse,camera);
+  const arr=[];meshes.forEach(m=>{if(m.visible)arr.push(m);});
+  const hits=rc.intersectObjects(arr);
+  if(hits.length){
+    const m=hits[0].object;
+    if(hov!==m){hov=m;showTT(m.userData.d,e.clientX,e.clientY);}
+    else{tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY+14)+'px';}
+    document.body.style.cursor='pointer';
+  }else{hov=null;tt.style.display='none';document.body.style.cursor='default';}
+}
+
+function showTT(d,x,y){
+  const lu=logoUrl(d.name),fu=logoFallback(d.name),fl=flagUrl(d.cc);
+  let h=`<div class="tt-top"><img class="tt-logo" src="${lu}" onerror="this.src='${fu}'" alt="">
+    <div class="tt-info"><div class="tt-name">${d.name}</div>
+    <div class="tt-house">${d.media_house}</div></div></div>`;
+  h+=`<div class="tt-loc"><img src="${fl}" alt="">${d.country}</div>`;
+  if(d.topics)h+=`<div style="font-size:9px;color:#4CAF50;margin-bottom:5px;line-height:1.4">${d.topics.join(' · ')}</div>`;
+  if(d.desc)h+=`<div class="tt-desc">${d.desc}</div>`;
+  tt.innerHTML=h;tt.style.display='block';
+  const tx=Math.min(x+14,innerWidth-360),ty=Math.min(y+14,innerHeight-300);
+  tt.style.left=tx+'px';tt.style.top=ty+'px';
+}
+
+function onClick(e){
+  if(e.target.closest('#legend')||e.target.closest('#title-bar')||e.target.closest('#sp')||e.target.closest('#mo'))return;
+  mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  rc.setFromCamera(mouse,camera);
+  const arr=[];meshes.forEach(m=>{if(m.visible)arr.push(m);});
+  const hits=rc.intersectObjects(arr);
+  if(hits.length){const d=hits[0].object.userData.d;selNode(d,hits[0].object);}
+  else desel();
+}
+
+function selNode(d,mesh){
+  selId=d.id;const cs=new Set(d.conns||[]);cs.add(d.id);
+  meshes.forEach((m,id)=>{
+    const l=labels.get(id);
+    if(cs.has(id)){m.material.opacity=1;m.material.transparent=false;if(l)l.element.classList.remove('dim');}
+    else{m.material.opacity=0.12;m.material.transparent=true;if(l)l.element.classList.add('dim');}
+  });
+  edges.forEach(e=>{e.line.material.opacity=(e.from===d.id||e.to===d.id)?0.45:0.015;});
+  const t=mesh.position.clone(),dir=camera.position.clone().sub(t).normalize();
+  animCam(t.clone().add(dir.multiplyScalar(14)),t);
+  showPanel(d);
+}
+
+function desel(){
+  selId=null;
+  meshes.forEach((m,id)=>{m.material.opacity=1;m.material.transparent=false;labels.get(id)?.element.classList.remove('dim');});
+  edges.forEach(e=>{e.line.material.opacity=0.06;});
+  closePanel();
+}
+
+function animCam(dp,dt){
+  const sp=camera.position.clone(),st=ctrl.target.clone();
+  const dur=700,t0=performance.now();
+  function step(t){
+    const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);
+    camera.position.lerpVectors(sp,dp,e);ctrl.target.lerpVectors(st,dt,e);ctrl.update();
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function showPanel(d){
+  const lu=logoUrl(d.name),fu=logoFallback(d.name),fl=flagUrl(d.cc);
+  let h=`<div class="sp-top"><img class="sp-logo" src="${lu}" onerror="this.src='${fu}'" alt="">
+    <div><div class="sp-nm">${d.name}</div></div><img class="sp-flag" src="${fl}" alt=""></div>`;
+  h+=`<div class="sp-mh">${d.media_house}</div>`;
+  h+=`<div class="sp-sec">Location</div><div class="sp-txt">${d.country}</div>`;
+  if(d.topics){h+=`<div class="sp-sec">Key Data</div><div>`;d.topics.forEach(t=>{h+=`<span class="sp-tag">${t}</span>`;});h+=`</div>`;}
+  if(d.desc)h+=`<div class="sp-sec">Profile</div><div class="sp-txt">${d.desc}</div>`;
+  if(d.conns&&d.conns.length){
+    h+=`<div class="sp-sec">Connections (${d.conns.length})</div>`;
+    d.conns.forEach(cid=>{const cn=DATA.find(n=>n.id===cid);
+      if(cn)h+=`<div class="sp-conn" onclick="window._sel('${cid}')">${cn.name}</div>`;
+    });
+  }
+  document.getElementById('spc').innerHTML=h;
+  document.getElementById('sp').classList.add('open');
+}
+
+window._sel=id=>{const d=DATA.find(n=>n.id===id),m=meshes.get(id);if(d&&m)selNode(d,m);};
+window.closePanel=()=>document.getElementById('sp').classList.remove('open');
+
+/* ============ TOOLBAR ============ */
+window.doExport=()=>{
+  const mo=document.getElementById('mo'),mb=document.getElementById('mb');
+  mb.innerHTML=`<h3>Export Network JSON</h3><textarea id="etx" readonly>${JSON.stringify(DATA,null,2)}</textarea>
+    <div class="mb-b"><button onclick="navigator.clipboard.writeText(document.getElementById('etx').value);this.textContent='Copied!'">Copy</button>
+    <button onclick="document.getElementById('mo').classList.remove('show')">Close</button></div>`;
+  mo.classList.add('show');
+};
+window.doImport=()=>{
+  const mo=document.getElementById('mo'),mb=document.getElementById('mb');
+  mb.innerHTML=`<h3>Import Network JSON</h3><textarea id="itx" placeholder="Paste JSON array..."></textarea>
+    <div class="mb-b"><button class="pr" onclick="impData()">Import</button>
+    <button onclick="document.getElementById('mo').classList.remove('show')">Cancel</button></div>`;
+  mo.classList.add('show');
+};
+window.impData=()=>{try{const d=JSON.parse(document.getElementById('itx').value);
+  if(Array.isArray(d)){DATA.length=0;d.forEach(x=>DATA.push(x));build();document.getElementById('mo').classList.remove('show');}
+}catch(e){alert('Invalid JSON: '+e.message);}};
+window.doReset=()=>{desel();animCam(new THREE.Vector3(0,30,65),new THREE.Vector3(0,0,0));};
+
+/* ============ ANIMATE ============ */
+let t=0;
+function animate(){
+  requestAnimationFrame(animate);t+=0.004;
+  meshes.forEach((m,id)=>{const d=m.userData.d;if(d)m.position.y=d._y+Math.sin(t+d._x*0.4)*0.25;});
+  edges.forEach(e=>{
+    const fm=meshes.get(e.from),tm=meshes.get(e.to);
+    if(fm&&tm){const p=e.line.geometry.attributes.position.array;
+      p[0]=fm.position.x;p[1]=fm.position.y;p[2]=fm.position.z;
+      p[3]=tm.position.x;p[4]=tm.position.y;p[5]=tm.position.z;
+      e.line.geometry.attributes.position.needsUpdate=true;}
+  });
+  ctrl.update();composer.render();labelR.render(scene,camera);
+}
+
+/* ============ EVENTS ============ */
+addEventListener('mousemove',onMM);
+addEventListener('click',onClick);
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);labelR.setSize(innerWidth,innerHeight);
+  composer.setSize(innerWidth,innerHeight);
+});
+
+/* ============ INIT ============ */
+build();animate();
+</script>
+</body>
+</html>
