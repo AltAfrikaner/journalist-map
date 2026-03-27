@@ -229,7 +229,7 @@ let DATA=[
 // ====== INSIDE SA: MEDIA HOUSES ======
 {id:"sabc",type:"media_house",name:"SABC",media_house:"SABC",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.SABC,w:8,
 desc:"State broadcaster. Most-watched news in SA. Expected R590m loss to end March 2025. TV channels SABC 1/2/3 plus multiple radio stations.",
-conns:["bryce_pease","enca","news24"]},
+conns:["bryce_pease","mokoena","enca","news24"]},
 
 {id:"enca",type:"media_house",name:"eNCA",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.eNCA,w:7,
 desc:"24-hour news channel owned by e.tv. Launched 2008. SA's most-trusted TV news channel per Reuters DNR 2025. JHB & CPT studios.",
@@ -269,17 +269,23 @@ conns:["basson"]},
 
 {id:"ewn",type:"media_house",name:"EWN",media_house:"EWN",loc:"inside_sa",country:"South Africa",cc:"za",color:COL.EWN,w:4,
 desc:"Multi-platform news. Partnered with 702, CapeTalk, KFM. Primedia group. Strong breaking news.",
-conns:["enca","sabc"]},
+conns:["enca","sabc","mokoena"]},
 
 {id:"iss",type:"media_house",name:"ISS Africa",media_house:"ISS Africa",loc:"inside_sa",country:"South Africa",cc:"za",color:COL["ISS Africa"],w:4,
 desc:"Think tank. JHB/Pretoria/Nairobi/Dakar/Addis. Analysis cited by BBC, CNN, Al Jazeera, AFP.",
 conns:["allison","bbc_h","aje_h"]},
 
 // ====== INSIDE SA: JOURNALISTS ======
+{id:"mokoena",type:"journalist",name:"Sophie Mokoena",media_house:"SABC",loc:"inside_sa",country:"South Africa",cc:"za",
+color:COL.SABC,w:7,topics:["international news","BRICS","AU summits","Palestine/Israel","Russia/Ukraine","foreign policy","ANC politics"],
+desc:"SABC International News Editor & Senior Foreign Editor (1994-2025, retired July 2025). 31 years. Controlled what foreign news 52 African countries received through SABC. Former Political Editor. Former SANEF president. Started Lesedi FM 1994. Covered BRICS, AU, G20 summits. Alleged 'Hlaudi enforcer' during Motsoeneng censorship era. R2.5M FSN irregular expenditure charges. The editorial gatekeeper who shaped how the continent's largest broadcaster framed every international story.",
+arts:[{t:"Parliament honours Sophie Mokoena on retirement",u:"https://www.parliament.gov.za/press-releases/media-statement-communications-committee-chairperson-honours-mme-sophie-mokoena-she-retires-sabc"}],
+conns:["sabc","bryce_pease","bbc_h","cnn_h","aje_h","ewn"]},
+
 {id:"bryce_pease",type:"journalist",name:"Sherwin Bryce-Pease",media_house:"SABC",loc:"inside_sa",country:"USA (UN Bureau, New York)",cc:"us",
 color:COL.SABC,w:6,topics:["UN affairs","US politics","multilateral diplomacy","G20","UNGA"],
 desc:"SABC Bureau Chief & US Correspondent at UN HQ New York since 2008. First African UNCA president. Gold Medal Ricardo Ortega Prize 2025.",
-arts:[{t:"SABC wins UNCA Gold Medal",u:"https://www.sabcnews.com/sabcnews/1090036-2/"}],conns:["sabc"]},
+arts:[{t:"SABC wins UNCA Gold Medal",u:"https://www.sabcnews.com/sabcnews/1090036-2/"}],conns:["sabc","mokoena"]},
 
 {id:"thathiah",type:"journalist",name:"Dasen Thathiah",media_house:"eNCA",loc:"inside_sa",country:"South Africa",cc:"za",
 color:COL.eNCA,w:5,topics:["breaking news","KZN floods","disasters","live reporting"],
@@ -348,15 +354,15 @@ arts:[],conns:["ac","ifcn"]},
 // ====== OUTSIDE SA: MEDIA HOUSES ======
 {id:"cnn_h",type:"media_house",name:"CNN",media_house:"CNN",loc:"outside_sa",country:"USA",cc:"us",color:COL.CNN,w:8,
 desc:"Largest global TV news network. Atlanta HQ. Johannesburg Africa bureau.",
-conns:["mckenzie","curnow","giokos","l_naidoo","ac"]},
+conns:["mckenzie","curnow","giokos","l_naidoo","ac","mokoena"]},
 
 {id:"bbc_h",type:"media_house",name:"BBC",media_house:"BBC",loc:"outside_sa",country:"United Kingdom",cc:"gb",color:COL.BBC,w:8,
 desc:"British state broadcaster. BBC World Service/News. Prescott Memo (2025) documented editorial guideline breaches. No permanent SA bureau.",
-conns:["mbele","tlhabi","l_naidoo","ac","iss"]},
+conns:["mbele","tlhabi","l_naidoo","ac","iss","mokoena"]},
 
 {id:"aje_h",type:"media_house",name:"Al Jazeera",media_house:"Al Jazeera",loc:"outside_sa",country:"Qatar",cc:"qa",color:COL["Al Jazeera"],w:7,
 desc:"Doha HQ. 300M+ global reach. More Africa bureaus than any other global broadcaster. JHB bureau.",
-conns:["mutasa","dutton","a_naidoo","muirhead","iss"]},
+conns:["mutasa","dutton","a_naidoo","muirhead","iss","mokoena"]},
 
 {id:"afp_h",type:"media_house",name:"AFP",media_house:"AFP",loc:"outside_sa",country:"France",cc:"fr",color:COL.AFP,w:7,
 desc:"French wire service. Paris HQ. Johannesburg bureau. Sets initial framing adopted by thousands of downstream outlets.",
