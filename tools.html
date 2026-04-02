@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production Guide | KALAHARI</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="kalahari.html" class="nav-brand">Kalahari <span class="classified-stamp">File Open</span></a>
+      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="kalahari.html">Home</a></li>
+        <li><a href="chapter1.html">The Intercept</a></li>
+        <li><a href="chapter2.html">The Recovery</a></li>
+        <li><a href="chapter3.html">The Documents</a></li>
+        <li><a href="chapter4.html">Nuclear Shadow</a></li>
+        <li><a href="chapter5.html">Truth?</a></li>
+        <li><a href="tools.html" class="active">Create</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero chapter-hero">
+    <div class="hero-bg" style="background: radial-gradient(ellipse at 60% 40%, #141218 0%, #0a0a0c 70%);"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="chapter-number" style="opacity:0; animation: fadeUp 0.8s ease 0.2s forwards; color: var(--amber);">Production Guide</div>
+      <h1 class="chapter-title" style="opacity:0; animation: fadeUp 0.8s ease 0.5s forwards;">Bring It to Life</h1>
+      <p class="hero-subtitle" style="max-width: 600px;">
+        Free and affordable AI tools for images, video, narration, and sound design — plus detailed prompts for every scene in the Kalahari story.
+      </p>
+    </div>
+  </section>
+
+  <!-- IMAGE GENERATION -->
+  <section class="content-section wide">
+    <div class="fade-in">
+      <div class="section-label">Image Generation</div>
+      <h2>Create the Stills</h2>
+      <p style="margin-bottom: 2rem;">These tools can generate the photorealistic and cinematic stills described in each chapter. Use the detailed prompts embedded throughout the story pages.</p>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127912;</div>
+      <div class="tool-info">
+        <h4>Leonardo.ai</h4>
+        <div class="tool-url">leonardo.ai</div>
+        <p>Excellent for photorealistic military scenes, desert landscapes, and dark cinematic compositions. The Phoenix model handles complex multi-element scenes well. Free tier gives 150 daily tokens.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Photorealistic</span> <span class="tool-tag">Custom Models</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#128308;</div>
+      <div class="tool-info">
+        <h4>Midjourney</h4>
+        <div class="tool-url">midjourney.com</div>
+        <p>The gold standard for atmospheric, film-quality imagery. Best for hero shots — the desert vistas, dramatic lighting, and cinematic compositions. V6+ handles military hardware and landscapes exceptionally. Paid from $10/month.</p>
+        <span class="tool-tag">Best Quality</span> <span class="tool-tag">Cinematic</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#9889;</div>
+      <div class="tool-info">
+        <h4>FLUX.2 (via getimg.ai or Freepik)</h4>
+        <div class="tool-url">getimg.ai / freepik.com</div>
+        <p>Open-source model available on multiple platforms with free tiers. Strong at photorealism and prompt adherence. Great for generating large volumes of reference images before selecting the best.</p>
+        <span class="tool-tag free">Free Access</span> <span class="tool-tag">Open Source</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#128142;</div>
+      <div class="tool-info">
+        <h4>Ideogram 3.0</h4>
+        <div class="tool-url">ideogram.ai</div>
+        <p>Best-in-class for text rendering. Use this for generating "classified document" stills, typewritten pages, stamps, and any image requiring readable text overlays. Free tier available.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Text Rendering</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127755;</div>
+      <div class="tool-info">
+        <h4>Adobe Firefly</h4>
+        <div class="tool-url">firefly.adobe.com</div>
+        <p>Commercially safe with IP indemnification. Best for professional output that needs to be publish-ready. Free for 2 generations; included in Creative Cloud subscriptions.</p>
+        <span class="tool-tag free">Limited Free</span> <span class="tool-tag">Commercial Safe</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- VIDEO GENERATION -->
+  <section class="content-section wide">
+    <div class="fade-in">
+      <div class="section-label">Video Generation</div>
+      <h2>Animate the Story</h2>
+      <p style="margin-bottom: 2rem;">Best workflow: generate a perfect still image first, then use image-to-video to add motion. Specify camera movement precisely.</p>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127909;</div>
+      <div class="tool-info">
+        <h4>Kling 3.0</h4>
+        <div class="tool-url">klingai.com</div>
+        <p>Currently the leader in physics-aware generation. Ideal for: aerial desert flyovers, military vehicle movement, atmospheric effects like dust and heat haze. Free daily credits (~66). Character consistency across shots is excellent.</p>
+        <span class="tool-tag free">Free Credits Daily</span> <span class="tool-tag">Best Physics</span> <span class="tool-tag">Character Consistency</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127916;</div>
+      <div class="tool-info">
+        <h4>Runway Gen-4</h4>
+        <div class="tool-url">runwayml.com</div>
+        <p>Advanced camera controls (pan, tilt, zoom, orbit). Multi-Motion Brush for animating specific regions. Best for the radar room sequences, document close-ups, and any shot requiring precise camera choreography. Standard plan: $15/month.</p>
+        <span class="tool-tag">Camera Control</span> <span class="tool-tag">Pro Tools</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127775;</div>
+      <div class="tool-info">
+        <h4>Google Veo 3.1</h4>
+        <div class="tool-url">Available via Gemini</div>
+        <p>High visual stability and cinematic 1080p output. Strong for dramatic landscape shots and establishing sequences. Free monthly credits through Google's AI platform.</p>
+        <span class="tool-tag free">Free Credits</span> <span class="tool-tag">Cinematic</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#128171;</div>
+      <div class="tool-info">
+        <h4>Vidu Q3</h4>
+        <div class="tool-url">vidu.com</div>
+        <p>Master of multi-shot sequences — can generate 16-second "directed" clips with wide-to-close-up transitions in a single generation. Built-in audio sync. Ideal for storytelling sequences.</p>
+        <span class="tool-tag free">Free Trial</span> <span class="tool-tag">Multi-Shot</span> <span class="tool-tag">Audio Sync</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127773;</div>
+      <div class="tool-info">
+        <h4>Luma Dream Machine</h4>
+        <div class="tool-url">lumalabs.ai</div>
+        <p>Excellent for short, high-action clips with realistic physics. Best for: jet scramble sequences, explosions, impact shots, and dramatic B-roll. Free tier with watermark.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Action Clips</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#128640;</div>
+      <div class="tool-info">
+        <h4>Pika</h4>
+        <div class="tool-url">pika.art</div>
+        <p>Best for stylised effects — melting, glowing, distortion. Perfect for the "MASER beam" effect, electromagnetic disturbances, and alien-tech visual flourishes. Credit system refreshes regularly.</p>
+        <span class="tool-tag free">Free Credits</span> <span class="tool-tag">VFX Effects</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- NARRATION & SOUND -->
+  <section class="content-section wide">
+    <div class="fade-in">
+      <div class="section-label">Narration & Sound</div>
+      <h2>Voice and Atmosphere</h2>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127908;</div>
+      <div class="tool-info">
+        <h4>ElevenLabs</h4>
+        <div class="tool-url">elevenlabs.io</div>
+        <p>Industry-leading AI voice synthesis. Generate documentary-style narration in multiple languages. The "Story" voice preset works perfectly for investigative content. Free tier: 10,000 characters/month.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Narration</span> <span class="tool-tag">50+ Languages</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127925;</div>
+      <div class="tool-info">
+        <h4>Suno</h4>
+        <div class="tool-url">suno.com</div>
+        <p>AI music generation. Create atmospheric soundscapes, tension-building scores, and ambient desert soundscapes. Prompt with mood descriptions: "dark cinematic ambient, military tension, low synth drone, Kalahari desert night." Free daily generations.</p>
+        <span class="tool-tag free">Free Daily</span> <span class="tool-tag">Score</span> <span class="tool-tag">Ambient</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127911;</div>
+      <div class="tool-info">
+        <h4>Freesound.org</h4>
+        <div class="tool-url">freesound.org</div>
+        <p>Massive library of free Creative Commons sound effects. Search: "radar beep," "jet engine scramble," "desert wind," "radio static," "military radio chatter." Essential for sound design layers.</p>
+        <span class="tool-tag free">Completely Free</span> <span class="tool-tag">CC Licensed</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#127926;</div>
+      <div class="tool-info">
+        <h4>Soundverse</h4>
+        <div class="tool-url">soundverse.ai</div>
+        <p>AI-powered sound design and music generation. Good for creating custom sound effects — electromagnetic hums, alien atmospherics, tension stingers. Free tier available.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Sound FX</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- EDITING -->
+  <section class="content-section wide">
+    <div class="fade-in">
+      <div class="section-label">Editing & Assembly</div>
+      <h2>Put It Together</h2>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#9999;&#65039;</div>
+      <div class="tool-info">
+        <h4>CapCut</h4>
+        <div class="tool-url">capcut.com</div>
+        <p>Free video editing with AI-powered features: auto-captions, transitions, colour grading, speed ramping. Handles the full edit pipeline from rough cut to export. Desktop and mobile.</p>
+        <span class="tool-tag free">Completely Free</span> <span class="tool-tag">Full Editor</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#128221;</div>
+      <div class="tool-info">
+        <h4>Descript</h4>
+        <div class="tool-url">descript.com</div>
+        <p>Edit video by editing text — Descript generates a transcript and lets you cut footage by deleting words. Perfect for documentary narration editing. Free tier with some limitations.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Transcript Editing</span>
+      </div>
+    </div>
+
+    <div class="tool-card fade-in">
+      <div class="tool-emoji">&#128247;</div>
+      <div class="tool-info">
+        <h4>VEED.io</h4>
+        <div class="tool-url">veed.io</div>
+        <p>Browser-based video editor with auto-subtitles, AI noise removal, and text-to-video generation. Good for producing social media cuts of the documentary. Free tier available.</p>
+        <span class="tool-tag free">Free Tier</span> <span class="tool-tag">Web-Based</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- PRODUCTION WORKFLOW -->
+  <section class="content-section">
+    <div class="fade-in">
+      <div class="section-label">Recommended Workflow</div>
+      <h2>How to Produce This Documentary</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Step 1</div>
+          <div class="timeline-title">Script & Storyboard</div>
+          <div class="timeline-desc">Use the chapter narratives as your script. Each image placeholder in the story is a shot in your storyboard. List every scene with its AI image prompt.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Step 2</div>
+          <div class="timeline-title">Generate Still Frames</div>
+          <div class="timeline-desc">Run each prompt through Leonardo.ai or Midjourney. Generate 4-8 variations per scene. Select the best. This is your cheapest creative phase — perfect the stills before adding motion.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Step 3</div>
+          <div class="timeline-title">Animate with Image-to-Video</div>
+          <div class="timeline-desc">Feed your selected stills into Kling 3.0, Runway, or Veo. Add camera movement: slow zoom on documents, aerial push across desert, dolly around crash site. 5-10 second clips.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Step 4</div>
+          <div class="timeline-title">Record or Generate Narration</div>
+          <div class="timeline-desc">Use ElevenLabs with a deep, measured documentary voice. Alternatively, record your own narration and use ElevenLabs for voice enhancement/translation.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Step 5</div>
+          <div class="timeline-title">Sound Design</div>
+          <div class="timeline-desc">Layer Suno-generated ambient score underneath. Add Freesound effects — radar beeps, radio static, jet engines, desert wind. Build tension through sound.</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Step 6</div>
+          <div class="timeline-title">Edit & Assemble</div>
+          <div class="timeline-desc">Bring everything into CapCut or Descript. Cut to narration rhythm. Add classified-document overlays, text transitions, and colour grading (desaturated, amber-tinted, film grain).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <!-- SCENE-BY-SCENE PROMPTS -->
+  <section class="content-section">
+    <div class="fade-in">
+      <div class="section-label">Quick Reference</div>
+      <h2>Key Scene Prompts</h2>
+      <p style="margin-bottom: 2rem;">Each chapter page contains detailed prompts embedded in the story. Here's a condensed shot list:</p>
+
+      <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 2; color: var(--text-secondary);">
+        <p><span style="color: var(--amber);">01</span> &nbsp; Kalahari aerial at golden hour — establishing shot</p>
+        <p><span style="color: var(--amber);">02</span> &nbsp; Naval radar room — green CRT, tense operators</p>
+        <p><span style="color: var(--amber);">03</span> &nbsp; Mirage jets scrambling at sunset</p>
+        <p><span style="color: var(--amber);">04</span> &nbsp; The chase — jets pursuing luminous disc</p>
+        <p><span style="color: var(--amber);">05</span> &nbsp; Thor-2 beam firing — energy distortion</p>
+        <p><span style="color: var(--amber);">06</span> &nbsp; Impact crater in fused sand at dusk</p>
+        <p><span style="color: var(--amber);">07</span> &nbsp; Recovery team approaching with floodlights</p>
+        <p><span style="color: var(--amber);">08</span> &nbsp; The entity under harsh military light</p>
+        <p><span style="color: var(--amber);">09</span> &nbsp; C-5 Galaxy loading at desert airstrip, night</p>
+        <p><span style="color: var(--amber);">10</span> &nbsp; Faxed classified documents — close-up</p>
+        <p><span style="color: var(--amber);">11</span> &nbsp; Motel meeting — the informant</p>
+        <p><span style="color: var(--amber);">12</span> &nbsp; Vastrap shafts — satellite reconnaissance view</p>
+        <p><span style="color: var(--amber);">13</span> &nbsp; Vela double flash — orbital view</p>
+        <p><span style="color: var(--amber);">14</span> &nbsp; Empty Kalahari at dawn — final shot, open question</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="separator"></div>
+
+  <section class="content-section" style="text-align: center;">
+    <div class="fade-in">
+      <p style="color: var(--text-dim); font-style: italic; margin-bottom: 2rem;">The tools exist. The story is written. The prompts are ready.</p>
+      <a href="kalahari.html" class="btn">Return to the Investigation &#8594;</a>
+    </div>
+  </section>
+
+  <div class="chapter-nav">
+    <a href="chapter5.html">&#8592; Chapter V: Truth?</a>
+    <a href="kalahari.html">Home &#8594;</a>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand">KALAHARI — THE UNTOLD FILE</div>
+    <p>An investigative multimedia project by Henri Le Riche.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
