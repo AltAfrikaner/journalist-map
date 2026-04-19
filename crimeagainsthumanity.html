@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Deal That Disappeared | Alt Afrikaner Investigation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2A4A;--red:#8B0000;--gold:#9A7B3A;--dark:#f7f5f0;--darker:#faf8f4;--text:#2a2a2a;--text-muted:#5a5a5a;--card-bg:rgba(27,42,74,0.04);--border:rgba(27,42,74,0.12);--glow:rgba(197,162,88,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--darker);color:var(--text);font-family:'Source Sans 3',sans-serif;line-height:1.7;overflow-x:hidden}
+::selection{background:var(--navy);color:#fff}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(250,248,244,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{height:50px}
+.nav-links{display:flex;gap:24px}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;transition:color 0.3s}
+.nav-links a:hover{color:var(--red)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 40px 80px;position:relative;overflow:hidden;background:var(--navy)}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 20%,rgba(139,0,0,0.12),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(197,162,88,0.08),transparent 60%)}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#C5A258;margin-bottom:24px;opacity:0.8}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:900;color:#fff;line-height:1.1;max-width:900px;margin-bottom:20px}
+.hero h1 span{color:#C5A258}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.7);max-width:700px;line-height:1.6;margin-bottom:12px}
+.hero-doc{font-family:'JetBrains Mono',monospace;font-size:13px;color:#C5A258;margin-top:24px;padding:8px 16px;border:1px solid rgba(197,162,88,0.4);display:inline-block}
+
+/* SECTIONS */
+.section{max-width:900px;margin:0 auto;padding:80px 24px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.section h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,42px);color:var(--navy);margin-bottom:24px;line-height:1.2}
+.section h2 span{color:var(--red)}
+.section p{margin-bottom:20px;font-size:16.5px;color:var(--text)}
+.section .highlight{color:var(--red);font-weight:600}
+.section .key-quote{border-left:3px solid var(--gold);padding:16px 24px;margin:28px 0;background:rgba(27,42,74,0.04);font-style:italic;font-size:17px;color:var(--text)}
+.section .key-quote cite{display:block;margin-top:8px;font-style:normal;font-size:13px;color:var(--gold)}
+
+/* LEVEL CARDS */
+.level-card{background:var(--card-bg);border:1px solid var(--border);padding:32px;margin:32px 0;position:relative;overflow:hidden}
+.level-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.level-card.l1::before{background:var(--gold)}
+.level-card.l2::before{background:var(--red)}
+.level-card.l3::before{background:#fff}
+.level-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.level-card.l1 .level-num{color:var(--gold)}
+.level-card.l2 .level-num{color:var(--red)}
+.level-card.l3 .level-num{color:#fff}
+.level-card h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:12px}
+.level-card p{font-size:15.5px;margin-bottom:0}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:40px;margin:40px 0}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--gold),var(--red),rgba(255,255,255,0.2))}
+.tl-item{position:relative;margin-bottom:28px;padding-left:24px}
+.tl-item::before{content:'';position:absolute;left:-32px;top:6px;width:9px;height:9px;border-radius:50%;border:2px solid var(--gold);background:var(--darker)}
+.tl-item.critical::before{background:var(--red);border-color:var(--red);box-shadow:0 0 8px rgba(139,0,0,0.3)}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--red);font-weight:700}
+.tl-text{font-size:15px;color:var(--text);margin-top:4px}
+.tl-item.critical .tl-text{color:var(--navy);font-weight:600}
+
+/* NETWORK CARD */
+.network-card{background:var(--card-bg);border:1px solid var(--border);padding:20px 24px;margin:16px 0;display:flex;gap:16px;align-items:flex-start}
+.network-role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);min-width:100px;padding-top:3px}
+.network-name{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:4px}
+.network-detail{font-size:14px;color:var(--text-muted)}
+
+/* IRAN BOX */
+.iran-box{background:linear-gradient(135deg,rgba(139,0,0,0.04),rgba(27,42,74,0.06));border:1px solid rgba(139,0,0,0.15);padding:32px;margin:40px 0}
+.iran-box h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:22px;margin-bottom:16px}
+.iran-box .stat{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--red);margin-bottom:4px}
+
+/* DOCUMENT REF */
+.doc-ref{background:rgba(27,42,74,0.04);border:1px solid var(--border);padding:20px;margin:24px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-muted)}
+.doc-ref .doc-id{color:var(--red);font-weight:700;font-size:14px}
+
+/* CONTEXT BOX */
+.context-box{background:rgba(27,42,74,0.04);border:1px solid rgba(27,42,74,0.15);padding:24px 28px;margin:32px 0;position:relative}
+.context-box::before{content:'CONTEXT';position:absolute;top:-10px;left:20px;background:var(--darker);padding:0 10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold)}
+.context-box h4{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:10px}
+.context-box p{font-size:15px;color:var(--text);margin-bottom:8px}
+.context-box p:last-child{margin-bottom:0}
+.abbr-def{border-bottom:1px dotted var(--gold);cursor:help;color:var(--gold)}
+.funder-card{background:linear-gradient(135deg,rgba(139,0,0,0.03),rgba(27,42,74,0.05));border:1px solid rgba(139,0,0,0.12);padding:28px;margin:32px 0}
+.funder-card h4{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:12px}
+.funder-card .funder-stat{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);margin-bottom:6px}
+.funder-card p{font-size:15px;margin-bottom:10px}
+
+/* DIVIDER */
+.divider{max-width:900px;margin:0 auto;padding:0 24px}
+.divider hr{border:none;border-top:1px solid var(--border);margin:0}
+
+/* SOURCE SECTION */
+.source-item{font-size:13px;color:var(--text-muted);margin-bottom:8px;padding-left:16px;border-left:1px solid rgba(197,162,88,0.2)}
+
+/* FOOTER */
+.footer{background:var(--navy);border-top:1px solid var(--border);padding:40px;margin-top:80px}
+.footer-inner{max-width:900px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-logo{height:60px}
+.footer-hub a{display:inline-block;padding:10px 24px;border:1px solid #C5A258;color:#C5A258;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:all 0.3s}
+.footer-hub a:hover{background:#C5A258;color:var(--navy)}
+.footer-social{display:flex;gap:16px;align-items:center}
+.footer-social a{color:rgba(255,255,255,0.6);transition:color 0.3s}
+.footer-social a:hover{color:#C5A258}
+.footer-social svg{width:20px;height:20px}
+
+/* VISUAL IMAGES */
+.visual-break{max-width:900px;margin:0 auto;padding:0 24px}
+.visual-break img{width:100%;height:280px;object-fit:cover;display:block;filter:grayscale(30%) contrast(1.05);border:1px solid var(--border)}
+.visual-break .caption{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);padding:8px 0;letter-spacing:0.5px}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+.nav{padding:12px 16px}.nav-links{gap:12px}.nav-links a{font-size:11px}
+.hero{padding:100px 20px 60px}.hero h1{font-size:32px}
+.section{padding:50px 16px}
+.level-card{padding:20px}
+.network-card{flex-direction:column;gap:4px}
+.network-role{min-width:auto}
+.footer-inner{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+<img src="https://altafrikaner.github.io/journalist-map/logo.png" alt="Alt Afrikaner" class="nav-logo" onerror="this.style.display='none'">
+<div class="nav-links">
+<a href="javascript:void(0)" onclick="document.getElementById('framework').scrollIntoView({behavior:'smooth'})">Framework</a>
+<a href="javascript:void(0)" onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">Timeline</a>
+<a href="javascript:void(0)" onclick="document.getElementById('network').scrollIntoView({behavior:'smooth'})">Network</a>
+<a href="javascript:void(0)" onclick="document.getElementById('iran').scrollIntoView({behavior:'smooth'})">Iran</a>
+<a href="javascript:void(0)" onclick="document.getElementById('precedent').scrollIntoView({behavior:'smooth'})">Precedent</a>
+<a href="javascript:void(0)" onclick="document.getElementById('sources').scrollIntoView({behavior:'smooth'})">Sources</a>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-label">Netwerk Leaks Investigation</div>
+<h1>The Deal That <span>Disappeared</span></h1>
+<p class="hero-sub">How the ANC government engineered the Crime Against Humanity it promised not to prosecute, then deployed it as a weapon against Israel and the Western legal order.</p>
+<p class="hero-sub" style="font-size:15px;color:var(--gold);font-style:italic">"De Klerk was right on the law. He was wrong to think the law would remain what it was when he negotiated it. The ANC changed the law. Then it changed the world."</p>
+<div class="hero-doc">DOCUMENT A/CONF.183/C.1/L.12 &mdash; 22 JUNE 1998</div>
+</section>
+
+<!-- WHAT THIS IS ABOUT - Plain language intro -->
+<section class="section">
+<div class="section-label">Before You Read</div>
+<h2>What This <span>Investigation</span> Is About</h2>
+<p>In the early 1990s, the white South African government and the African National Congress (ANC) negotiated the end of apartheid. The deal included a promise: nobody would be prosecuted for the system of apartheid itself. Individual acts of violence could be investigated through a Truth and Reconciliation Commission (TRC), but the political system would not be treated as a criminal offence. That was the price of a peaceful transition.</p>
+<p>This investigation documents, using only public records, how that deal was systematically reversed after 1994 by the same ANC government that agreed to it, and how the legal instrument created in that reversal was then deployed internationally against Israel and, potentially, against the broader Western legal order.</p>
+<p>Every claim on this page is sourced to official United Nations (UN) records, court judgments, academic publications, or verified news reporting. Nothing is fabricated. Nothing is speculative. The documentary record speaks for itself.</p>
+
+<div class="context-box fade-in">
+<h4>Key Terms Used on This Page</h4>
+<p><strong>ANC</strong> = African National Congress. The liberation movement that fought apartheid and has governed South Africa since 1994.</p>
+<p><strong>NP</strong> = National Party. The white-minority government that created and administered apartheid from 1948 to 1994.</p>
+<p><strong>TRC</strong> = Truth and Reconciliation Commission. The body created in 1995 to investigate apartheid-era human rights violations and grant amnesty to those who confessed.</p>
+<p><strong>ICC</strong> = International Criminal Court. A permanent court in The Hague, Netherlands, created by the Rome Statute in 1998 to prosecute genocide, war crimes, and crimes against humanity.</p>
+<p><strong>ICJ</strong> = International Court of Justice. The UN's main judicial body, also in The Hague. Settles disputes between countries. This is where South Africa filed its genocide case against Israel in December 2023.</p>
+<p><strong>Rome Statute</strong> = The international treaty that created the ICC. Adopted on 17 July 1998 at a diplomatic conference in Rome, Italy. Entered into force on 1 July 2002.</p>
+<p><strong>SADC</strong> = Southern African Development Community. A regional bloc of 16 southern African countries. South Africa is its dominant member.</p>
+<p><strong>PGA</strong> = Parliamentarians for Global Action. An international network of legislators that worked with the ANC government on the Rome Statute.</p>
+<p><strong>Customary international law</strong> = Unwritten rules of international law that arise from consistent state practice and acceptance. Section 232 of South Africa's Constitution says customary international law is automatically law in South Africa.</p>
+</div>
+</section>
+
+<!-- THE THREE-LEVEL FRAMEWORK -->
+<div class="divider"><hr></div>
+<section class="section" id="framework">
+<div class="section-label">Strategic Framework</div>
+<h2>Three Levels of <span>Deployment</span></h2>
+<p>The universalisation of apartheid as a crime against humanity was not a single act. It was a three-level strategic operation that targeted different adversaries at different timescales, using the same legal instrument.</p>
+
+<div class="context-box fade-in">
+<h4>What "Three Levels" Means</h4>
+<p>When a government creates a new legal tool, the question is always: who is it aimed at? In this case, the evidence shows the universalised crime of apartheid was designed to operate at three levels simultaneously. <strong>Level 1</strong> keeps the Afrikaner community permanently under legal threat inside South Africa. <strong>Level 2</strong> deploys the same tool against Israel on the world stage. <strong>Level 3</strong> establishes a precedent that any Western-aligned country can be targeted using the same framework. Each level uses the same legal instrument (Article 7(1)(j) of the Rome Statute), but applies it to a different target at a different scale.</p>
+<p>Think of it as one weapon with three barrels, each pointed in a different direction, fired at different times.</p>
+</div>
+
+<div class="level-card l1 fade-in">
+<div class="level-num">Level 1 &mdash; Immediate Target</div>
+<h3>Collective Afrikaner Guilt</h3>
+<p>By walking back the negotiated amnesty domestically (1995 TRC Act) and codifying apartheid as a universal crime internationally (1998 Rome Statute), the ANC government created a permanent moral lever against the Afrikaner community. This lever does not need to be pulled often. Its value is in its existence. It says: at any time, for any reason, your past can be prosecuted. This is what the COSAS Four case (2021/2025) demonstrates. The 14-year suppression of prosecutions (2003 to 2017) shows the ANC government could turn prosecution on or off depending on political need.</p>
+</div>
+
+<div class="level-card l2 fade-in">
+<div class="level-num">Level 2 &mdash; Medium-Term Target</div>
+<h3>The State of Israel</h3>
+<p>The universalisation of the apartheid definition (removing "Southern Africa" from the legal text) in 1998, the Durban I deployment in 2001, and the ICJ case in 2023 form a continuous arc. Iran's role from the Tehran regional meeting (February 2001) onwards was to chair and coordinate the deployment of the "Israel equals apartheid" template. Iran has geopolitical reasons to target Israel that predate this: the 1979 Revolution positioned Iran as the primary state opponent of Zionism. The ANC-Iran Joint Commission (1995) and the nuclear discussions (1997) were the institutional glue.</p>
+</div>
+
+<div class="level-card l3 fade-in">
+<div class="level-num">Level 3 &mdash; Strategic Target</div>
+<h3>The Western Liberal Order</h3>
+<p>By universalising "apartheid" as a crime against humanity and demonstrating it could be deployed against a Western-aligned state (Israel), the ANC-Iran-SADC-Global South bloc created a legal weapon that could, in theory, be used against any state that practices what the bloc defines as "systematic oppression and domination by one racial group." The US and UK voted against the 1973 Convention for precisely this reason: they understood it was being designed as a portable political weapon, not a fixed legal instrument. The Rome Statute proved them right.</p>
+</div>
+
+<div class="iran-box fade-in">
+<h3>Iran's Strategic Exemption</h3>
+<div class="stat">STATUS: Signed the Rome Statute. Never ratified.</div>
+<p style="margin-top:12px">Iran positioned itself outside the ICC's jurisdiction while pushing for apartheid to be a universal crime aimed at Israel. Iran built the weapon while exempting itself from the armoury. Egypt, Russia, Sudan, Syria, and the United States also signed but never ratified. Israel never signed.</p>
+</div>
+</section>
+
+<!-- VISUAL: Legal Architecture -->
+<div class="visual-break">
+<div style="width:100%;height:280px;background:linear-gradient(135deg,#1B2A4A 0%,#2d3f5e 40%,#8B0000 100%);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);position:relative;overflow:hidden">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.06;background:repeating-linear-gradient(0deg,transparent,transparent 20px,rgba(255,255,255,0.1) 20px,rgba(255,255,255,0.1) 21px),repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(255,255,255,0.1) 20px,rgba(255,255,255,0.1) 21px)"></div>
+<div style="text-align:center;z-index:1;padding:20px">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#C5A258;margin-bottom:12px">Documentary Evidence</div>
+<div style="font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:8px">1990 &rarr; 1998 &rarr; 2001 &rarr; 2025</div>
+<div style="font-family:'Source Sans 3',sans-serif;font-size:15px;color:rgba(255,255,255,0.6)">From negotiated amnesty to universal prosecution in four moves</div>
+</div>
+</div>
+<div class="caption">The legal architecture built between 1995 and 2002 created instruments that would be deployed decades later at The Hague.</div>
+</div>
+
+<!-- TIMELINE -->
+<div class="divider"><hr></div>
+<section class="section" id="timeline">
+<div class="section-label">Documentary Record</div>
+<h2>The <span>Timeline</span></h2>
+<p>Every date below is sourced to public institutional records: UN official proceedings, court judgments, treaty archives, and academic publications.</p>
+
+<div class="timeline">
+<div class="tl-item"><span class="tl-year">1966</span><div class="tl-text">UN General Assembly Resolution 2202 first calls apartheid a "crime against humanity." Non-binding. Security Council never adopts it (UK, US, France would veto).</div></div>
+<div class="tl-item"><span class="tl-year">1971</span><div class="tl-text">Soviet Union and Guinea submit drafts for an apartheid convention to the UN.</div></div>
+<div class="tl-item"><span class="tl-year">1973</span><div class="tl-text">Convention on the Suppression and Punishment of the Crime of Apartheid adopted. 91 in favour, 4 against (Portugal, South Africa, UK, US), 26 abstentions. No Western democracy ever ratifies it.</div></div>
+<div class="tl-item"><span class="tl-year">1979</span><div class="tl-text">Iranian Revolution. Oliver Tambo (ANC) among first to congratulate Khomeini. Iran severs ties with apartheid SA, supports ANC.</div></div>
+<div class="tl-item critical"><span class="tl-year">1990</span><div class="tl-text">UN General Assembly abandons the 1973 Apartheid Convention. Same year, De Klerk unbans ANC, releases Mandela, begins negotiations. The weapon is put down so the peace can be built.</div></div>
+<div class="tl-item"><span class="tl-year">May 1990</span><div class="tl-text">Groote Schuur Minute signed. Working group established on "the granting of immunity in respect of political offences."</div></div>
+<div class="tl-item"><span class="tl-year">1990</span><div class="tl-text">Dullah Omar establishes Community Law Centre at UWC, funded by the Ford Foundation. Staff include Bulelani Ngcuka, Zola Skweyiya, Brigitte Mabandla, Albie Sachs.</div></div>
+<div class="tl-item"><span class="tl-year">Nov 1993</span><div class="tl-text">Interim Constitution adopted. Post-amble states: "amnesty SHALL be granted in respect of acts, omissions and offences associated with political objectives."</div></div>
+<div class="tl-item"><span class="tl-year">1994</span><div class="tl-text">Democratic elections. ANC takes power. Omar becomes Minister of Justice. Iran restores diplomatic relations with SA on inauguration day (10 May).</div></div>
+<div class="tl-item critical"><span class="tl-year">1995</span><div class="tl-text">THE WALKBACK: Omar's TRC Act imposes conditions far more onerous than the 1993 Constitution mandated. Blanket amnesty replaced with conditional disclosure regime. SA-Iran Joint Commission of Cooperation formed.</div></div>
+
+<div class="context-box fade-in" style="margin-left:24px">
+<h4>Why This Matters</h4>
+<p>The 1993 Interim Constitution used the word "shall" when it said amnesty would be granted. In legal language, "shall" means "must." It is not optional. The NP (white government) understood this to mean all politically motivated acts would be pardoned. This was their price for handing over power peacefully.</p>
+<p>But the 1995 TRC Act, drafted by ANC Justice Minister Dullah Omar, added new conditions: applicants had to make "full disclosure of all relevant facts," prove their acts were politically motivated, and face public hearings. Many applicants were denied amnesty under these stricter rules. The FW de Klerk Foundation later described this as the Act having "circumvented the clear intention of the interim Constitution."</p>
+</div>
+<div class="tl-item"><span class="tl-year">1996</span><div class="tl-text">SA FM Nzo visits Iran. Constitutional Court upholds TRC Act in AZAPO case, finding international law "imposes no duty" to prosecute. De Klerk challenges TRC finding against him in court and wins.</div></div>
+<div class="tl-item"><span class="tl-year">1997</span><div class="tl-text">Mandela discusses selling nuclear enrichment expertise to Iran. Omar begins working with Parliamentarians for Global Action on Rome Statute. UN GA initiates World Conference Against Racism to be held in SA.</div></div>
+<div class="tl-item critical"><span class="tl-year">22 Jun 1998</span><div class="tl-text">SADC submits proposal A/CONF.183/C.1/L.12 to insert apartheid into the Rome Statute. Apartheid was NOT in the Preparatory Committee draft. This is a late, last-minute insertion. Definition universalised: all references to Southern Africa removed.</div></div>
+
+<div class="context-box fade-in" style="margin-left:24px">
+<h4>Why the Removal of "Southern Africa" Changes Everything</h4>
+<p>The 1973 Convention on Apartheid was written specifically about South Africa and its neighbours. It named "Southern Africa" in its text. This meant it could only be used against South Africa, Namibia, and the Portuguese colonies. It was a targeted weapon.</p>
+<p>The 1998 Rome Statute definition removed every mention of "Southern Africa." The crime of apartheid became portable, meaning it could be applied to any country, anywhere, at any time, if someone could argue that an "institutionalised regime of systematic oppression and domination by one racial group over any other" existed there.</p>
+<p>This is why the definition was later applied to Israel. The universalisation was not accidental. It was the entire point of the late insertion.</p>
+</div>
+<div class="tl-item"><span class="tl-year">17 Jul 1998</span><div class="tl-text">SA signs Rome Statute on opening day. First African state to do so.</div></div>
+<div class="tl-item"><span class="tl-year">Jul 1999</span><div class="tl-text">SADC Conference on ICC Statute held in Pretoria, hosted by Omar's Ministry. Produces ratification/implementation kit.</div></div>
+<div class="tl-item critical"><span class="tl-year">Feb 2001</span><div class="tl-text">Iran chairs Asian regional preparatory meeting for Durban I in Tehran. Produces template accusing Israel of "a new kind of Apartheid" and "a crime against humanity." Israel and Jewish NGOs excluded from the meeting.</div></div>
+<div class="tl-item"><span class="tl-year">Sep 2001</span><div class="tl-text">Durban I World Conference Against Racism. Chaired by SA FM Nkosazana Zuma. NGO Forum (funded: Ford Foundation $10M, Rockefeller, MacArthur, Mott) declares Israel a "racist, apartheid state." US and Israel walk out.</div></div>
+
+<div class="context-box fade-in" style="margin-left:24px">
+<h4>What Happened at Durban</h4>
+<p>The United Nations organised a World Conference Against Racism in Durban, South Africa, in September 2001 (just days before the September 11 attacks in the United States). It was supposed to fight racism worldwide. Instead, it became the launchpad for the global campaign to label Israel an "apartheid state."</p>
+<p>A parallel NGO Forum, attended by 8,000 representatives from 3,000 organisations, adopted a declaration calling Israel a "racist, apartheid state" guilty of "racist crimes including war crimes, acts of genocide and ethnic cleansing." Copies of the antisemitic forgery <em>The Protocols of the Elders of Zion</em> were sold at the conference venue. The United States and Israel walked out.</p>
+<p>The Ford Foundation provided USD 10 million in funding. The Rockefeller Foundation, MacArthur Foundation, and Mott Foundation also contributed. The conference was chaired by South Africa's Foreign Minister. The template document had been prepared at the Tehran preparatory meeting chaired by Iran five months earlier. Fourteen Western democracies later boycotted Durban follow-up conferences.</p>
+<p>Critics described the outcome as the "Durban Strategy," a deliberate plan to delegitimise Israel by applying the universalised apartheid definition that had been inserted into the Rome Statute three years earlier.</p>
+</div>
+<div class="tl-item"><span class="tl-year">May 2001</span><div class="tl-text">Windhoek Plan of Action on ICC Ratification and Implementation in SADC region.</div></div>
+<div class="tl-item"><span class="tl-year">Jul 2002</span><div class="tl-text">Rome Statute enters into force. SA incorporates it domestically via Implementation Act No. 27 of 2002.</div></div>
+<div class="tl-item"><span class="tl-year">2003-2017</span><div class="tl-text">14-year political suppression of apartheid-era prosecutions. Supreme Court of Appeal later calls this "perplexing and inexplicable." A former NPA official testified that Mbeki's administration suppressed 400+ cases.</div></div>
+<div class="tl-item"><span class="tl-year">Feb 2020</span><div class="tl-text">De Klerk denies apartheid was a crime against humanity. Forced to retract within 72 hours. ANC proposes criminalising denial (modelled on German Holocaust denial laws).</div></div>
+<div class="tl-item"><span class="tl-year">Nov 2021</span><div class="tl-text">First apartheid indictment in history (COSAS Four). Customary international law used via Section 232 of the Constitution to bypass Rome Statute retroactivity bar. De Klerk dies the same month.</div></div>
+<div class="tl-item"><span class="tl-year">Dec 2023</span><div class="tl-text">SA files ICJ genocide case against Israel. Announced during Ramaphosa's state visit to Qatar (Hamas financial sponsor). Hamas leader Haniyeh publicly thanks SA.</div></div>
+<div class="tl-item critical"><span class="tl-year">Apr 2025</span><div class="tl-text">Johannesburg High Court confirms COSAS Four charges. Rules apartheid was a crime under customary international law in 1982. No statute of limitations. Opens the door to hundreds of prosecutions and potential corporate liability claims.</div></div>
+</div>
+</section>
+
+<!-- NETWORK -->
+<div class="divider"><hr></div>
+<section class="section" id="network">
+<div class="section-label">Key Actors</div>
+<h2>The <span>Architects</span></h2>
+<p>The individuals and institutions documented in public records as driving the legal-institutional reversal of the negotiated settlement.</p>
+
+<div class="network-card fade-in">
+<div class="network-role">Architect</div>
+<div><div class="network-name">Dullah Omar</div><div class="network-detail">ANC Minister of Justice 1994-1999. Promulgated TRC Act (1995 walkback). Led SADC at Rome (1998 insertion). Founded Community Law Centre at UWC in 1990 with Ford Foundation funding. Described by PGA as "the greatest supporter of the fight against impunity."</div></div>
+</div>
+<div class="network-card fade-in">
+<div class="network-role">Academic</div>
+<div><div class="network-name">Gerhard Kemp</div><div class="network-detail">Stellenbosch-educated Afrikaner legal scholar. Prof of criminal law at UWE Bristol + extraordinary professor at Stellenbosch. Co-authored the definitive legal analysis of the COSAS Four indictment. Board member, Institute for Justice and Reconciliation (TRC legacy project). Framed ANC's international legal strategy through "the history and traditions of the ANC."</div></div>
+</div>
+
+<div class="key-quote fade-in">"The ANC has certainly regarded international law as a tool that they can use to restructure the power structures of the world."<cite>Prof. Gerhard Kemp, JusticeInfo.net, November 2023</cite></div>
+<div class="network-card fade-in">
+<div class="network-role">Diplomat</div>
+<div><div class="network-name">Albert J. Hoffmann</div><div class="network-detail">Chief State Law Adviser, Ministry of Foreign Affairs 1992-1999. Career bureaucrat who served under both De Klerk and Mandela/Omar. SA representative at UN Sixth Committee (Legal) October 1998. Institutional bridge between the two regimes. Now Judge, International Tribunal for the Law of the Sea.</div></div>
+</div>
+<div class="network-card fade-in">
+<div class="network-role">Facilitator</div>
+<div><div class="network-name">Parliamentarians for Global Action (PGA)</div><div class="network-detail">International NGO. Worked with Omar 1997-1999. Drafted SADC ratification/implementation kit in 1999. Co-organised Windhoek Conference 2001. Operated the institutional machinery for Rome Statute rollout across SADC region.</div></div>
+</div>
+<div class="network-card fade-in">
+<div class="network-role">Funder</div>
+<div><div class="network-name">Ford Foundation</div><div class="network-detail">Funded Omar's Community Law Centre from 1990 (the intellectual engine). Provided USD 10 million for Durban I World Conference Against Racism in 2001 (the deployment). Same funder, 11-year arc from creation to deployment.</div></div>
+</div>
+
+<div class="funder-card fade-in">
+<h4>Who Is the Ford Foundation?</h4>
+<div class="funder-stat">ESTABLISHED: 1936 | ASSETS: $16+ billion | HEADQUARTERS: New York City</div>
+<p>The Ford Foundation is one of the largest philanthropic organisations in the world. It was created by the Ford Motor Company family, but has operated independently of the car company since the 1950s. It presents itself as a charity focused on reducing inequality and strengthening democracy.</p>
+<p>However, the Foundation has a extensively documented history as a conduit for the United States Central Intelligence Agency (CIA). During the Cold War (1947 to 1991), the CIA used the Ford Foundation to channel funds to front organisations, cultural programmes, and political projects without revealing government involvement. A 1976 US Congressional investigation found that nearly half of the 700 grants in international activities by major foundations were CIA-funded.</p>
+<p>Key documented connections include: the Foundation's chairman from 1958 to 1965 was <strong>John J. McCloy</strong>, who had founded the wartime intelligence agency (the Office of Strategic Services, or OSS) that became the CIA. McCloy created a dedicated unit within the Foundation to coordinate with the CIA. Before him, <strong>Richard Bissell</strong> served as Foundation president from 1952 before leaving in 1954 to become special assistant to CIA Director Allen Dulles. <strong>McGeorge Bundy</strong>, who became Foundation president in 1966, came directly from his role as Special Assistant to the US President for National Security, a position that included monitoring the CIA.</p>
+<p>The scholar Frances Stonor Saunders documented this relationship in her book <em>The Cultural Cold War: The CIA and the World of Arts and Letters</em> (1999), noting that the Foundation "had a record of close involvement in covert actions in Europe, working closely with Marshall Plan and CIA officials on specific projects."</p>
+<p>This is the same organisation that funded the Community Law Centre that produced the legal architecture for South Africa's transition (1990), and then provided USD 10 million for the Durban I conference that deployed the "Israel equals apartheid" template (2001). The Rockefeller Foundation, MacArthur Foundation, and Charles Stewart Mott Foundation provided additional funding for the Durban I NGO Forum.</p>
+</div>
+<div class="network-card fade-in">
+<div class="network-role">Intelligence</div>
+<div><div class="network-name">Abdul Minty</div><div class="network-detail">Returned to SA 1995 after 30+ years as honorary secretary of British Anti-Apartheid Movement. Appointed Deputy DG of Foreign Affairs. Chairperson, Weapons of Mass Destruction Non-Proliferation Council. SA's IAEA representative. Later advisor to FM Naledi Pandor (who phoned Hamas leader Haniyeh 10 days after October 7, 2023).</div></div>
+</div>
+</section>
+
+<!-- INTERACTIVE NETWORK MAP -->
+<div class="divider"><hr></div>
+<section class="section" id="web">
+<div class="section-label">Interactive Network</div>
+<h2>The <span>Connectors</span></h2>
+<p>This map shows the documented institutional relationships between the people, organisations, and events that built the legal architecture described in this investigation. Every connection shown is sourced to public records.</p>
+
+<div id="networkCanvas" style="width:100%;height:580px;background:var(--navy);border:1px solid var(--border);position:relative;overflow:hidden;cursor:default;border-radius:4px">
+<!-- INLINE LEGEND -->
+<div style="position:absolute;top:14px;left:16px;z-index:5;display:flex;gap:16px;flex-wrap:wrap">
+<div style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#C5A258;display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:1px">FUNDER</span></div>
+<div style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#8B0000;display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:1px">INSTRUMENT / DEPLOYMENT</span></div>
+<div style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.6);display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:1px">CONNECTOR</span></div>
+</div>
+<div style="position:absolute;top:14px;right:16px;z-index:5;display:flex;gap:14px">
+<div style="display:flex;align-items:center;gap:5px"><span style="width:18px;height:2px;background:#C5A258;display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5)">Funding</span></div>
+<div style="display:flex;align-items:center;gap:5px"><span style="width:18px;height:2px;background:#8B0000;display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5)">Political</span></div>
+<div style="display:flex;align-items:center;gap:5px"><span style="width:18px;height:2px;background:rgba(255,255,255,0.4);display:inline-block"></span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.5)">Institutional</span></div>
+</div>
+<canvas id="spiderCanvas" style="width:100%;height:100%"></canvas>
+<div id="nodeInfo" style="display:none;position:absolute;background:rgba(250,248,244,0.97);border:1px solid rgba(27,42,74,0.2);padding:16px 20px;max-width:320px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:10;pointer-events:none;border-radius:3px">
+<div id="nodeTitle" style="font-family:'Playfair Display',serif;font-size:16px;color:#1B2A4A;margin-bottom:6px;font-weight:700"></div>
+<div id="nodeRole" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8B0000;margin-bottom:8px"></div>
+<div id="nodeDesc" style="font-family:'Source Sans 3',sans-serif;font-size:13px;color:#2a2a2a;line-height:1.5"></div>
+</div>
+</div>
+<p style="font-size:13px;color:var(--text-muted);margin-top:8px;font-style:italic">Click any node to see its role, connections, and country of origin. Gold = funding. Red = political direction and deployment. White = institutional links. Flags indicate country or organisational origin.</p>
+</section>
+
+<!-- VISUAL: The Document -->
+<div class="visual-break">
+<div style="width:100%;height:280px;background:#1B2A4A;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);position:relative;overflow:hidden">
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.04;background:repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(255,255,255,0.15) 30px,rgba(255,255,255,0.15) 31px)"></div>
+<div style="text-align:center;z-index:1;padding:20px">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;color:#C5A258;margin-bottom:16px">UNITED NATIONS DIPLOMATIC CONFERENCE</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:22px;color:#fff;margin-bottom:8px;letter-spacing:1px">A/CONF.183/C.1/L.12</div>
+<div style="font-family:'Source Sans 3',sans-serif;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:16px">22 June 1998 | Rome, Italy</div>
+<div style="width:60px;height:2px;background:#8B0000;margin:0 auto 16px"></div>
+<div style="font-family:'Source Sans 3',sans-serif;font-size:15px;color:rgba(255,255,255,0.7);max-width:500px">Proposal by SADC to insert the crime of apartheid into the Rome Statute of the International Criminal Court</div>
+</div>
+</div>
+<div class="caption">This document was not in the Preparatory Committee's draft. It was a late, last-minute insertion by the Southern African Development Community that universalised apartheid as a crime against humanity.</div>
+</div>
+
+<!-- IRAN -->
+<div class="divider"><hr></div>
+<section class="section" id="iran">
+<div class="section-label">Geopolitical Deployment</div>
+<h2>Iran's <span>Fingerprints</span></h2>
+<p>Iran did not create the tool. Dullah Omar, SADC, and the Ford Foundation did that. Iran weaponised the tool against Israel, then exempted itself from the armoury.</p>
+
+<div class="key-quote fade-in">"The Islamic Republic stood by us during our darkest days, cutting ties with the apartheid regime. Your revolution was our revolution."<cite>SA Minister Maite Nkoana-Mashabane, SA-Iran Joint Commission, Tehran, 2015</cite></div>
+
+<div class="doc-ref fade-in">
+<div class="doc-id">SA-IRAN INSTITUTIONAL TIMELINE</div>
+<p style="margin-top:8px">1979: Tambo congratulates Khomeini &bull; 1979: Iran severs ties with apartheid SA &bull; 1994: Iran restores diplomatic relations on Mandela's inauguration day &bull; 1995: SA-Iran Joint Commission of Cooperation formed &bull; 1996: SA FM Nzo visits Tehran &bull; 1997: Mandela discusses nuclear enrichment sales to Iran &bull; Feb 2001: Iran chairs Tehran preparatory meeting for Durban I, produces "Israel = apartheid" template &bull; Nov 2023: Ramaphosa visits Qatar, announces ICJ case &bull; Dec 2023: SA files ICJ genocide case against Israel</p>
+</div>
+
+<p>Iran signed but never ratified the Rome Statute. It positioned itself outside ICC jurisdiction while pushing for the universalised apartheid definition to be aimed at Israel. The Tehran preparatory meeting in February 2001 produced the foundational document that the Durban I NGO Forum then adopted, calling Israel a "racist, apartheid state" guilty of "racist crimes including war crimes, acts of genocide and ethnic cleansing."</p>
+<p>Fourteen Western democracies boycotted subsequent Durban follow-up conferences over their antisemitic content: Australia, Austria, Bulgaria, Canada, Czech Republic, France, Germany, Israel, Italy, Netherlands, New Zealand, Poland, the United Kingdom, and the United States.</p>
+</section>
+
+<!-- VISUAL: Courtroom 4D -->
+<div class="visual-break">
+<div style="width:100%;height:280px;background:linear-gradient(180deg,#2a2a2a 0%,#1B2A4A 100%);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);position:relative;overflow:hidden">
+<div style="text-align:center;z-index:1;padding:20px">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px">Johannesburg High Court</div>
+<div style="font-family:'Playfair Display',serif;font-size:42px;color:#fff;margin-bottom:8px;font-weight:900">Courtroom 4D</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#C5A258;margin-bottom:16px">14 APRIL 2025</div>
+<div style="width:60px;height:2px;background:#8B0000;margin:0 auto 16px"></div>
+<div style="font-family:'Source Sans 3',sans-serif;font-size:15px;color:rgba(255,255,255,0.6);max-width:500px">First prosecution of apartheid as a crime against humanity in history</div>
+</div>
+</div>
+<div class="caption">Judge Dario Dosio confirmed charges of murder and apartheid as crimes against humanity, ruling that customary international law applied directly and that there was no statute of limitations.</div>
+</div>
+
+<!-- COSAS FOUR / PRECEDENT -->
+<div class="divider"><hr></div>
+<section class="section" id="precedent">
+<div class="section-label">The Precedent Case</div>
+<h2>COSAS Four: <span>What It Is Really For</span></h2>
+<p>On 14 April 2025, the Johannesburg High Court confirmed charges of murder and apartheid as crimes against humanity against two former apartheid-era security police officers for a 1982 bombing that killed three student activists. Judge Dario Dosio ruled that customary international law applied directly via Section 232 of the Constitution, that apartheid had been a crime against humanity at the time, and that there was no statute of limitations.</p>
+<p>This was not primarily about two elderly defendants. It was a <span class="highlight">precedent case</span> that established three legal principles simultaneously:</p>
+
+<div class="level-card l2 fade-in">
+<div class="level-num">Principle Established</div>
+<h3>1. Apartheid was a crime under customary international law before 1994</h3>
+<p>This bypasses the Rome Statute's non-retroactivity bar entirely.</p>
+</div>
+<div class="level-card l2 fade-in">
+<div class="level-num">Principle Established</div>
+<h3>2. No statute of limitations for crimes against humanity</h3>
+<p>Apartheid-era acts can be prosecuted indefinitely, regardless of when they occurred.</p>
+</div>
+<div class="level-card l2 fade-in">
+<div class="level-num">Principle Established</div>
+<h3>3. Customary international law applies directly in SA courts</h3>
+<p>Via Section 232 of the Constitution. No new legislation required.</p>
+</div>
+
+<p style="margin-top:32px">Once these principles are established domestically, they become available for deployment:</p>
+<p>The ICJ case against Israel (South Africa can point to its own courts prosecuting apartheid). Future ICC prosecution of Israeli officials using the universalised apartheid definition. And the question the Southern Africa Litigation Centre asked in April 2025: "What about banks, arms dealers and multinational corporations that profited and supported the apartheid regime?"</p>
+
+<div class="key-quote fade-in">"The tremors caused by the judgment from courtroom 4D will affect many other cases that have been filed, and others that are yet to be filed."<cite>Southern Africa Litigation Centre, April 2025</cite></div>
+
+<p>The ANC government suppressed apartheid-era prosecutions for 14 years (2003-2017). The Supreme Court of Appeal called this "perplexing and inexplicable." Then the prosecutions resumed in 2021, two years before the ICJ case was filed in December 2023. The domestic precedent was needed when the Israel case was maturing, not before.</p>
+</section>
+
+<!-- THE NEGOTIATED SETTLEMENT -->
+<div class="divider"><hr></div>
+<section class="section">
+<div class="section-label">The Core Finding</div>
+<h2>The Deal They <span>Broke</span></h2>
+<p>The Groote Schuur Minute (4 May 1990) established the framework: a working group on "the granting of immunity in respect of political offences" that would "bear in mind experiences in Namibia." The 1993 Interim Constitution's post-amble mandated that amnesty "shall be granted."</p>
+<p>De Klerk's consistent position from his 1997 TRC submission to his 2020 statement was that the 1973 Convention had been "little more than a mobilisation exercise by the African National Congress and its totalitarian and Third World supporters in the UN General Assembly" and that it was "never adopted or approved by the Security Council."</p>
+<p>On the narrow legal-historical facts, he was correct. The 1973 Convention was Soviet-initiated (drafts submitted by the USSR and Guinea in 1971). It was never Security Council binding. No Western democracy ratified it. And it was abandoned by the UN General Assembly in 1990, the year negotiations began.</p>
+<p>What De Klerk did not anticipate was that his own Justice Minister (Omar) would simultaneously tighten domestic amnesty conditions and insert a universalised apartheid crime into the Rome Statute through a late SADC proposal at Rome, using a definition stripped of all references to Southern Africa, making it a portable legal weapon deployable against any state the Global South chose to target.</p>
+<p class="highlight" style="font-size:18px;margin-top:32px">The FW de Klerk Foundation itself acknowledged: "One of the greatest failures of the NP's negotiators was their inability to conclude a comprehensive amnesty agreement before the 1994 elections."</p>
+</section>
+
+<!-- SOURCES -->
+<div class="divider"><hr></div>
+<section class="section" id="sources">
+<div class="section-label">Source Documentation</div>
+<h2>Sources</h2>
+<div class="source-item">Groote Schuur Minute, Cape Town, 4 May 1990. Nelson Mandela Foundation.</div>
+<div class="source-item">Interim Constitution of the Republic of South Africa, Act 200 of 1993. Post-amble.</div>
+<div class="source-item">Promotion of National Unity and Reconciliation Act 34 of 1995.</div>
+<div class="source-item">UN General Assembly Resolution 2202 (XXI), 16 December 1966.</div>
+<div class="source-item">International Convention on the Suppression and Punishment of the Crime of Apartheid, 1973. GA Res 3068 (XXVIII).</div>
+<div class="source-item">Rome Statute of the International Criminal Court, Article 7(1)(j) and Article 7(2)(h), 17 July 1998.</div>
+<div class="source-item">SADC Proposal: A/CONF.183/C.1/L.12, 22 June 1998. UN Diplomatic Conference Official Records.</div>
+<div class="source-item">De Klerk NP Second Submission to the TRC, 23 March 1997. justice.gov.za/trc/media/1997.</div>
+<div class="source-item">FW de Klerk Foundation Statement, 14 February 2020 (subsequently withdrawn 17 February 2020).</div>
+<div class="source-item">Kemp, G. and Nortje, W. "Prosecuting the Crime against Humanity of Apartheid." Journal of International Criminal Justice, Vol 21(2), May 2023.</div>
+<div class="source-item">Lingaas, C. "The Crime against Humanity of Apartheid in a Post-Apartheid World." Oslo Law Review, Vol 2(3), 2015.</div>
+<div class="source-item">AZAPO v President of the Republic of South Africa, CCT 17/96, Constitutional Court, 25 July 1996.</div>
+<div class="source-item">Parliamentarians for Global Action. "South Africa and the Rome Statute." pgaction.org.</div>
+<div class="source-item">Dullah Omar Institute (formerly Community Law Centre). "30th Anniversary." dullahomarinstitute.org.za.</div>
+<div class="source-item">Human Rights Watch. "Reflections on Apartheid and Persecution in International Law." 9 July 2021.</div>
+<div class="source-item">ICTJ. "Landmark Court Decision Opens New Avenues for Accountability." 3 June 2025.</div>
+<div class="source-item">SALC. "Cosas 4: Naming the elephant in the room." 17 April 2025.</div>
+<div class="source-item">ISS Africa. "Landmark ruling enables justice for SA's apartheid-era crimes." 2025.</div>
+<div class="source-item">World Conference against Racism, Durban, 2001. UN official proceedings. NGO Forum Declaration.</div>
+<div class="source-item">ADL. "The Durban Conference and Process." 7 November 2025.</div>
+<div class="source-item">Al Jazeera Centre for Studies. "The impact of the South Africa-Iran relations on the African Union." 28 February 2016.</div>
+<div class="source-item">Onderco, M. "A battle of principles: South Africa's relations with Iran." Commonwealth & Comparative Politics, 2016.</div>
+<div class="source-item">ICJ. Application of the Convention on the Prevention and Punishment of the Crime of Genocide in the Gaza Strip (South Africa v. Israel), Case 192.</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="footer-inner">
+<img src="https://altafrikaner.github.io/journalist-map/logo.png" alt="Alt Afrikaner" class="footer-logo" onerror="this.style.display='none'">
+<div class="footer-social">
+<a href="https://www.facebook.com/AltAfrikaner" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+<a href="https://substack.com/@altafrikaner" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg></a>
+<a href="mailto:AltAfrikaner@outlook.com"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+</div>
+<div class="footer-hub">
+<a href="https://altafrikaner.github.io/journalist-map/index.html">Investigation Hub</a>
+</div>
+</div>
+</footer>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('.section[id]');
+window.addEventListener('scroll', () => {
+let current = '';
+sections.forEach(s => { if(window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id'); });
+document.querySelectorAll('.nav-links a').forEach(a => {
+a.style.color = a.getAttribute('onclick')?.includes(current) ? 'var(--gold)' : '';
+});
+});
+// CONNECTOR MAP WITH CANVAS-DRAWN FLAGS
+const canvas=document.getElementById('spiderCanvas');
+const ctx=canvas.getContext('2d');
+const container=document.getElementById('networkCanvas');
+const info=document.getElementById('nodeInfo');
+const nTitle=document.getElementById('nodeTitle');
+const nRole=document.getElementById('nodeRole');
+const nDesc=document.getElementById('nodeDesc');
+function resize(){canvas.width=container.offsetWidth;canvas.height=container.offsetHeight}
+resize();
+
+// Pre-load flag images from Wikipedia/Wikimedia Commons (public domain SVGs rendered as PNG)
+const flagImgs={};
+const flagUrls={
+sa:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_South_Africa.svg/80px-Flag_of_South_Africa.svg.png',
+us:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_United_States_%28DoS_ECA_vexillological_standard%29.svg/80px-Flag_of_the_United_States_%28DoS_ECA_vexillological_standard%29.svg.png',
+ir:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Iran.svg/80px-Flag_of_Iran.svg.png',
+nl:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/80px-Flag_of_the_Netherlands.svg.png'
+};
+let flagsLoaded=0;
+Object.keys(flagUrls).forEach(k=>{
+const img=new Image();img.crossOrigin='anonymous';
+img.onload=()=>{flagImgs[k]=img;flagsLoaded++;if(flagsLoaded>=4)draw()};
+img.onerror=()=>{flagsLoaded++;if(flagsLoaded>=4)draw()};
+img.src=flagUrls[k];
+});
+
+function drawFlagImg(key,cx,cy,s){
+const img=flagImgs[key];if(!img)return;
+ctx.save();ctx.beginPath();ctx.arc(cx,cy,s,0,Math.PI*2);ctx.clip();
+const aspect=img.width/img.height;
+let dw=s*2.2,dh=dw/aspect;
+if(dh<s*2){dh=s*2;dw=dh*aspect}
+ctx.drawImage(img,cx-dw/2,cy-dh/2,dw,dh);
+ctx.restore();
+}
+
+function drawGlobe(cx,cy,s){
+ctx.save();ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1;
+ctx.beginPath();ctx.arc(cx,cy,s*.7,0,Math.PI*2);ctx.stroke();
+ctx.beginPath();ctx.ellipse(cx,cy,s*.3,s*.7,0,0,Math.PI*2);ctx.stroke();
+ctx.beginPath();ctx.moveTo(cx-s*.7,cy);ctx.lineTo(cx+s*.7,cy);ctx.stroke();
+ctx.beginPath();ctx.moveTo(cx,cy-s*.7);ctx.lineTo(cx,cy+s*.7);ctx.stroke();
+ctx.restore();
+}
+
+const flagFn={
+omar:(cx,cy,s)=>drawFlagImg('sa',cx,cy,s),
+ford:(cx,cy,s)=>drawFlagImg('us',cx,cy,s),
+kemp:(cx,cy,s)=>drawFlagImg('sa',cx,cy,s),
+pga:drawGlobe,
+hoffman:(cx,cy,s)=>drawFlagImg('sa',cx,cy,s),
+iran:(cx,cy,s)=>drawFlagImg('ir',cx,cy,s),
+durban:(cx,cy,s)=>drawFlagImg('sa',cx,cy,s),
+rome:drawGlobe,
+minty:(cx,cy,s)=>drawFlagImg('sa',cx,cy,s),
+icj:(cx,cy,s)=>drawFlagImg('nl',cx,cy,s),
+cosas:(cx,cy,s)=>drawFlagImg('sa',cx,cy,s)
+};
+
+const nodes=[
+{id:'omar',x:.5,y:.2,r:28,label:'Dullah Omar',role:'ARCHITECT',color:'#C5A258',fill:'rgba(197,162,88,.18)',desc:'ANC Minister of Justice 1994-1999. Drafted TRC Act (1995 domestic walkback). Led SADC at Rome Conference (1998 international insertion). Founded Community Law Centre at UWC in 1990 with Ford Foundation funding.'},
+{id:'ford',x:.13,y:.13,r:26,label:'Ford Foundation',role:'FUNDER (USA)',color:'#C5A258',fill:'rgba(197,162,88,.12)',desc:'Funded Omar\'s Community Law Centre from 1990. Provided $10 million for Durban I (2001). Documented CIA connections since 1950s. Chairman McCloy created dedicated CIA liaison unit.'},
+{id:'kemp',x:.87,y:.26,r:21,label:'Gerhard Kemp',role:'ACADEMIC (SA/UK)',color:'#fff',fill:'rgba(255,255,255,.07)',desc:'Stellenbosch-trained Afrikaner. Prof at UWE Bristol. Admitted ANC "regarded international law as a tool to restructure power structures of the world." Co-authored COSAS Four legal analysis.'},
+{id:'pga',x:.19,y:.44,r:19,label:'PGA',role:'FACILITATOR',color:'#fff',fill:'rgba(255,255,255,.06)',desc:'Parliamentarians for Global Action. International NGO. Worked with Omar 1997-1999. Drafted SADC ratification kit. Co-organised Windhoek Conference 2001.'},
+{id:'hoffman',x:.81,y:.46,r:18,label:'Albert Hoffmann',role:'DIPLOMAT (SA)',color:'#fff',fill:'rgba(255,255,255,.06)',desc:'Chief State Law Adviser 1992-1999 under both De Klerk and Mandela. SA representative at UN Legal Committee. Now Judge, Int\'l Tribunal for Law of the Sea.'},
+{id:'iran',x:.1,y:.72,r:24,label:'Iran',role:'DEPLOYER',color:'#8B0000',fill:'rgba(139,0,0,.14)',desc:'Joint Commission with SA from 1995. Chaired Tehran prep meeting Feb 2001 producing Israel=apartheid template. Signed but NEVER ratified Rome Statute.'},
+{id:'durban',x:.5,y:.7,r:22,label:'Durban I (2001)',role:'DEPLOYMENT',color:'#8B0000',fill:'rgba(139,0,0,.11)',desc:'World Conference Against Racism. Chaired by SA FM Zuma. NGO Forum declared Israel "racist apartheid state." US and Israel walked out. Ford Foundation provided $10M.'},
+{id:'rome',x:.5,y:.45,r:33,label:'Rome Statute 1998',role:'THE INSTRUMENT',color:'#C5A258',fill:'rgba(197,162,88,.1)',desc:'Article 7(1)(j): Crime of apartheid. Inserted via SADC proposal A/CONF.183/C.1/L.12 on 22 June 1998. Definition universalised: all Southern Africa references removed.'},
+{id:'minty',x:.9,y:.68,r:17,label:'Abdul Minty',role:'INTELLIGENCE (SA)',color:'#fff',fill:'rgba(255,255,255,.06)',desc:'Deputy DG Foreign Affairs from 1995. SA IAEA rep. Honorary secretary British Anti-Apartheid Movement 30+ years. Advisor to FM Pandor who phoned Hamas leader after Oct 7.'},
+{id:'icj',x:.28,y:.9,r:21,label:'ICJ Case (2023)',role:'DEPLOYMENT',color:'#8B0000',fill:'rgba(139,0,0,.11)',desc:'SA v Israel genocide case at The Hague. Filed Dec 2023 during Ramaphosa visit to Qatar. Hamas leader Haniyeh publicly thanked SA.'},
+{id:'cosas',x:.72,y:.9,r:20,label:'COSAS Four (2025)',role:'PRECEDENT',color:'#8B0000',fill:'rgba(139,0,0,.11)',desc:'First apartheid prosecution in history. Customary int\'l law via Section 232. Confirmed Johannesburg High Court April 2025. Opens door to hundreds of further prosecutions.'}
+];
+const edges=[
+{from:'ford',to:'omar',c:'#C5A258',a:.65,w:2.5},{from:'omar',to:'rome',c:'#8B0000',a:.75,w:3},
+{from:'omar',to:'pga',c:'#fff',a:.25,w:1.5},{from:'pga',to:'rome',c:'#fff',a:.25,w:1.5},
+{from:'hoffman',to:'rome',c:'#fff',a:.2,w:1.2},{from:'rome',to:'durban',c:'#8B0000',a:.65,w:2.5},
+{from:'iran',to:'durban',c:'#8B0000',a:.65,w:2.5},{from:'ford',to:'durban',c:'#C5A258',a:.45,w:2},
+{from:'rome',to:'icj',c:'#8B0000',a:.65,w:2.5},{from:'rome',to:'cosas',c:'#8B0000',a:.65,w:2.5},
+{from:'kemp',to:'cosas',c:'#fff',a:.3,w:1.5},{from:'kemp',to:'rome',c:'#fff',a:.2,w:1},
+{from:'minty',to:'iran',c:'#fff',a:.2,w:1},{from:'minty',to:'icj',c:'#fff',a:.2,w:1},
+{from:'omar',to:'hoffman',c:'#fff',a:.2,w:1},{from:'durban',to:'icj',c:'#8B0000',a:.45,w:2}
+];
+let active=null,pulse=0,raf=null;
+
+function draw(){
+const W=canvas.width,H=canvas.height;
+ctx.clearRect(0,0,W,H);pulse+=.03;
+edges.forEach(e=>{
+const a=nodes.find(n=>n.id===e.from),b=nodes.find(n=>n.id===e.to);
+const ax=a.x*W,ay=a.y*H,bx=b.x*W,by=b.y*H;
+const on=active&&(e.from===active.id||e.to===active.id);
+ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);
+if(on){ctx.strokeStyle=e.c;ctx.globalAlpha=e.a*1.4;ctx.lineWidth=e.w*1.8;ctx.setLineDash([]);}
+else if(active){ctx.strokeStyle='#fff';ctx.globalAlpha=.03;ctx.lineWidth=.5;ctx.setLineDash([]);}
+else{ctx.strokeStyle=e.c;ctx.globalAlpha=e.a*.4;ctx.lineWidth=e.w*.5;ctx.setLineDash([3,6]);}
+ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+});
+nodes.forEach(n=>{
+const px=n.x*W,py=n.y*H,on=active&&active.id===n.id;
+const conn=active&&edges.some(e=>(e.from===active.id&&e.to===n.id)||(e.to===active.id&&e.from===n.id));
+const al=(!active||on||conn)?1:.1;
+if(on){const pr=n.r+5+Math.sin(pulse)*3;ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.strokeStyle=n.color;ctx.lineWidth=1.5;ctx.globalAlpha=.2+Math.sin(pulse)*.15;ctx.stroke();ctx.globalAlpha=1;}
+ctx.beginPath();ctx.arc(px,py,n.r,0,Math.PI*2);ctx.fillStyle=n.fill;ctx.globalAlpha=al;ctx.fill();
+ctx.strokeStyle=n.color;ctx.lineWidth=on?2.5:1.5;ctx.stroke();ctx.globalAlpha=1;
+ctx.globalAlpha=al*(on?.95:.55);
+if(flagFn[n.id])flagFn[n.id](px,py,n.r*.65);
+ctx.globalAlpha=1;
+ctx.fillStyle=on?'#fff':'rgba(255,255,255,'+Math.max(.08,al*.8)+')';
+ctx.font=(on?'700 ':'400 ')+'11px "Source Sans 3",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+ctx.fillText(n.label,px,py+n.r+7);
+});
+if(active)raf=requestAnimationFrame(draw);
+}
+canvas.addEventListener('click',ev=>{
+const r=canvas.getBoundingClientRect(),mx=ev.clientX-r.left,my=ev.clientY-r.top;
+let hit=null;nodes.forEach(n=>{if(Math.hypot(mx-n.x*r.width,my-n.y*r.height)<n.r+8)hit=n});
+if(raf){cancelAnimationFrame(raf);raf=null}
+if(hit&&active&&hit.id===active.id){active=null;info.style.display='none';draw()}
+else if(hit){
+active=hit;nTitle.textContent=hit.label;nRole.textContent=hit.role;nDesc.textContent=hit.desc;
+info.style.display='block';
+let l=hit.x*container.offsetWidth+hit.r+16,t=hit.y*container.offsetHeight-30;
+if(l+330>container.offsetWidth)l=hit.x*container.offsetWidth-hit.r-335;
+if(t<10)t=10;if(t+200>container.offsetHeight)t=container.offsetHeight-210;
+info.style.left=Math.max(8,l)+'px';info.style.top=Math.max(8,t)+'px';draw();
+}else{active=null;info.style.display='none';draw()}
+});
+canvas.addEventListener('mousemove',ev=>{
+const r=canvas.getBoundingClientRect(),mx=ev.clientX-r.left,my=ev.clientY-r.top;
+let f=false;nodes.forEach(n=>{if(Math.hypot(mx-n.x*r.width,my-n.y*r.height)<n.r+8)f=true});
+canvas.style.cursor=f?'pointer':'default';
+});
+draw();window.addEventListener('resize',()=>{resize();draw()});
+</script>
+</body>
+</html>
