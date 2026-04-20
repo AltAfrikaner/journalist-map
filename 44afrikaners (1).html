@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The 44 That Were 43 — Anatomy of the "Not in Our Name" Letter | Alt Afrikaner</title>
+<meta name="description" content="Who signed the October 2025 'Not in Our Name' letter presented to Washington as the voice of 44 prominent Afrikaners. A full roll-call, institutional map and network analysis of the 43 distinct signatories." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#0b1428;
+  --navy-2:#141e36;
+  --navy-3:#1B2A4A;
+  --ink:#e9e4d6;
+  --ink-dim:#b8b09a;
+  --ink-mute:#837c6a;
+  --red:#8B0000;
+  --red-glow:#c43b3b;
+  --gold:#C5A258;
+  --gold-soft:#d4b878;
+  --line:rgba(197,162,88,.22);
+  --line-strong:rgba(197,162,88,.45);
+  --paper:#f4efe1;
+  --serif:'Playfair Display', Georgia, serif;
+  --sans:'Source Sans 3', system-ui, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--navy);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  min-height:100vh;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(139,0,0,.12), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 100%, rgba(197,162,88,.08), transparent 60%),
+    linear-gradient(180deg, #0b1428 0%, #0a1120 40%, #0b1428 100%);
+}
+/* film grain overlay */
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:100;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.6;mix-blend-mode:overlay;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ===== HEADER ===== */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(10px);
+  background:rgba(11,20,40,.82);
+  border-bottom:1px solid var(--line);
+}
+.site-header .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 42px;max-width:1440px;margin:0 auto;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{height:54px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.nav a{
+  font-family:var(--sans);font-weight:500;letter-spacing:.04em;
+  font-size:13.5px;color:var(--ink-dim);padding:8px 14px;margin-left:6px;
+  text-transform:uppercase;border:1px solid transparent;border-radius:2px;
+  transition:all .25s ease;cursor:pointer;
+}
+.nav a:hover{color:var(--gold);border-color:var(--line-strong)}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  padding:110px 42px 80px;
+  max-width:1240px;margin:0 auto;
+  border-bottom:1px solid var(--line);
+}
+.hero .eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.32em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:26px;
+}
+.hero .eyebrow::before{content:"";width:36px;height:1px;background:var(--gold)}
+.hero h1{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(2.4rem,5.6vw,5.2rem);
+  line-height:.98;letter-spacing:-.02em;
+  color:var(--ink);max-width:14ch;
+  margin-bottom:28px;
+}
+.hero h1 em{font-style:italic;color:var(--gold);font-weight:700}
+.hero .deck{
+  font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,1.6vw,1.3rem);
+  color:var(--ink-dim);max-width:62ch;line-height:1.55;
+}
+.hero .meta{
+  display:flex;flex-wrap:wrap;gap:28px;margin-top:46px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-mute);
+}
+.hero .meta span strong{color:var(--gold-soft);margin-right:6px}
+
+/* ===== SECTION SCAFFOLD ===== */
+.section{padding:96px 42px;max-width:1280px;margin:0 auto}
+.section-head{margin-bottom:56px;max-width:78ch}
+.section-kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:.35em;
+  color:var(--red-glow);text-transform:uppercase;margin-bottom:14px;
+  display:inline-block;padding:6px 12px;border:1px solid rgba(196,59,59,.35);
+  background:rgba(139,0,0,.14);
+}
+.section-title{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.08;
+  color:var(--ink);margin-bottom:18px;letter-spacing:-.01em;
+}
+.section-lede{color:var(--ink-dim);font-size:1.08rem;max-width:68ch;line-height:1.6}
+
+/* ===== HEADLINE DATAPOINT ROW ===== */
+.datapoints{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;background:var(--line);
+  border:1px solid var(--line);
+  margin-bottom:72px;
+}
+.dp{
+  background:linear-gradient(180deg,rgba(20,30,54,.9),rgba(11,20,40,.95));
+  padding:34px 28px;
+}
+.dp .n{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(2.6rem,5vw,4rem);color:var(--gold);
+  line-height:1;letter-spacing:-.02em;
+}
+.dp .n .unit{font-size:.5em;color:var(--ink-mute);margin-left:6px}
+.dp .lbl{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-dim);margin-top:14px;
+}
+.dp .sub{font-size:14px;color:var(--ink-mute);margin-top:8px;line-height:1.45}
+
+/* ===== SIGNATORIES GRID ===== */
+.sig-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:36px;padding-bottom:18px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;gap:20px;
+}
+.sig-head h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.6rem,2.8vw,2.2rem);color:var(--ink);
+}
+.sig-head h2 .count{color:var(--gold);font-weight:900}
+.sig-controls{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;padding:7px 12px;border:1px solid var(--line-strong);
+  color:var(--ink-dim);background:transparent;cursor:pointer;
+  transition:all .2s ease;border-radius:1px;
+}
+.chip:hover{color:var(--ink);border-color:var(--gold)}
+.chip.active{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:700}
+
+.sig-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px;margin-bottom:48px;
+}
+.sig{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 18px;
+  background:linear-gradient(180deg,rgba(20,30,54,.6),rgba(11,20,40,.8));
+  border:1px solid var(--line);
+  transition:all .3s cubic-bezier(.2,.8,.2,1);
+  cursor:pointer;position:relative;
+}
+.sig:hover{
+  border-color:var(--gold);
+  background:linear-gradient(180deg,rgba(30,42,70,.85),rgba(20,30,54,.95));
+  transform:translateY(-1px);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.sig .num{
+  font-family:var(--mono);font-size:11px;color:var(--ink-mute);
+  letter-spacing:.08em;min-width:26px;
+}
+.sig .body{flex:1;min-width:0}
+.sig .name{
+  font-family:var(--serif);font-weight:700;font-size:15.5px;
+  color:var(--ink);line-height:1.25;
+}
+.sig .role{
+  font-size:12.5px;color:var(--ink-mute);line-height:1.4;
+  margin-top:3px;
+}
+.sig .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.tag{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;padding:3px 7px;border-radius:1px;
+}
+.t-media{background:rgba(139,0,0,.22);color:#e08080;border:1px solid rgba(139,0,0,.5)}
+.t-state{background:rgba(197,162,88,.16);color:var(--gold-soft);border:1px solid rgba(197,162,88,.4)}
+.t-lhr{background:rgba(60,140,100,.14);color:#8fd4b2;border:1px solid rgba(60,140,100,.4)}
+.t-couple{background:rgba(140,100,180,.14);color:#c7adeb;border:1px solid rgba(140,100,180,.4)}
+.t-drc{background:rgba(100,120,200,.14);color:#a9bbef;border:1px solid rgba(100,120,200,.4)}
+.t-biz{background:rgba(200,140,60,.14);color:#e8bc7a;border:1px solid rgba(200,140,60,.4)}
+.t-acad{background:rgba(255,255,255,.05);color:var(--ink-dim);border:1px solid var(--line-strong)}
+
+/* anomaly card */
+.anomaly{
+  margin-top:22px;padding:28px 32px;
+  background:linear-gradient(135deg,rgba(139,0,0,.1),rgba(11,20,40,.6));
+  border:1px solid rgba(139,0,0,.35);
+  border-left:3px solid var(--red-glow);
+}
+.anomaly h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--red-glow);margin-bottom:14px;
+}
+.anomaly p{font-size:15.5px;line-height:1.65;color:var(--ink-dim)}
+.anomaly p em{color:var(--ink);font-style:italic}
+
+/* ===== TAG LEGEND ===== */
+.legend{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:8px;margin:18px 0 26px;
+}
+.legend-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border:1px solid var(--line);
+  background:rgba(11,20,40,.5);
+}
+.legend-item .tag{flex-shrink:0}
+.legend-item .desc{font-size:12.5px;color:var(--ink-dim);line-height:1.4}
+@media (max-width:1080px){
+  .legend{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:600px){
+  .legend{grid-template-columns:1fr}
+}
+
+/* ===== INFOGRAPHICS ===== */
+.viz-grid{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:36px;
+  margin-top:32px;
+}
+.viz-panel{
+  padding:32px;
+  background:linear-gradient(180deg,rgba(20,30,54,.6),rgba(11,20,40,.8));
+  border:1px solid var(--line);
+}
+.viz-panel h3{
+  font-family:var(--serif);font-weight:700;font-size:1.35rem;
+  color:var(--ink);margin-bottom:6px;
+}
+.viz-panel .sub{
+  font-size:13px;color:var(--ink-mute);margin-bottom:24px;
+  font-family:var(--mono);letter-spacing:.08em;
+}
+.viz-svg{width:100%;height:auto;display:block}
+
+.bar-chart{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.bar-row{display:grid;grid-template-columns:180px 1fr 50px;gap:14px;align-items:center}
+.bar-label{font-size:13px;color:var(--ink-dim);font-weight:500}
+.bar-track{background:rgba(255,255,255,.04);border:1px solid var(--line);height:24px;position:relative;overflow:hidden}
+.bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+  box-shadow:inset 0 -1px 0 rgba(0,0,0,.2);
+  transition:width .9s cubic-bezier(.2,.8,.2,1);
+}
+.bar-count{
+  font-family:var(--mono);font-size:13px;color:var(--gold);
+  font-weight:500;text-align:right;
+}
+
+/* institution list */
+.inst-list{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line);margin-top:12px}
+.inst-row{
+  display:grid;grid-template-columns:40px 1fr 70px;gap:16px;align-items:center;
+  padding:14px 4px;border-bottom:1px solid var(--line);
+}
+.inst-idx{font-family:var(--mono);font-size:11px;color:var(--ink-mute);letter-spacing:.1em}
+.inst-name{font-size:14px;color:var(--ink)}
+.inst-name small{display:block;color:var(--ink-mute);font-size:12px;margin-top:2px}
+.inst-count{
+  font-family:var(--mono);text-align:right;color:var(--gold);font-weight:500;font-size:14px;
+}
+
+/* ===== NETWORK DIAGRAM ===== */
+.network-wrap{
+  margin-top:36px;padding:36px;
+  background:linear-gradient(180deg,rgba(11,20,40,.9),rgba(8,14,28,.95));
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.network-wrap::before{
+  content:"";position:absolute;inset:0;opacity:.4;
+  background-image:
+    linear-gradient(rgba(197,162,88,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(197,162,88,.05) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+.network-wrap > *{position:relative}
+
+/* ===== 3D MAP (Three.js investigative board) ===== */
+.map-3d{
+  margin-top:32px;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(197,162,88,.06), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(139,0,0,.07), transparent 70%),
+    linear-gradient(180deg,#050a18,#0b1428);
+  border:1px solid var(--line);
+  height:680px;
+  position:relative;overflow:hidden;
+  cursor:grab;
+}
+.map-3d:active{cursor:grabbing}
+.map-3d .label{
+  position:absolute;top:20px;left:24px;z-index:5;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);
+  padding:6px 11px;border:1px solid var(--line-strong);
+  background:rgba(11,20,40,.82);backdrop-filter:blur(6px);
+  pointer-events:none;
+}
+.map-3d canvas{width:100%;height:100%;display:block;position:absolute;top:0;left:0}
+
+.map-filters{
+  position:absolute;top:20px;right:20px;z-index:6;
+  display:flex;flex-wrap:wrap;gap:6px;
+  max-width:65%;justify-content:flex-end;
+}
+.map-fb{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;padding:6px 12px;
+  background:rgba(11,20,40,.82);backdrop-filter:blur(6px);
+  color:var(--ink-dim);border:1px solid var(--line);
+  cursor:pointer;transition:all .2s ease;font-weight:500;
+}
+.map-fb:hover{color:var(--gold);border-color:var(--gold)}
+.map-fb.active{color:var(--navy);background:var(--gold);border-color:var(--gold)}
+
+.map-legend{
+  position:absolute;bottom:20px;left:24px;z-index:5;
+  display:flex;flex-wrap:wrap;gap:14px 18px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-dim);
+  padding:8px 14px;background:rgba(11,20,40,.78);
+  border:1px solid var(--line);backdrop-filter:blur(6px);
+  max-width:calc(100% - 48px);
+}
+.map-legend > div{display:flex;align-items:center;gap:6px}
+.map-legend .ld{
+  width:8px;height:8px;border-radius:50%;
+  box-shadow:0 0 6px currentColor;
+}
+
+#threeLabels{
+  position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden;
+}
+.t-lbl{
+  position:absolute;transform:translate(-50%,-50%);
+  font-family:'Source Sans 3','Nunito',system-ui,sans-serif;font-size:9.5px;
+  color:#ffffff;white-space:nowrap;
+  padding:1px 5px;border-radius:3px;
+  background:transparent;
+  text-shadow:0 1px 2px rgba(0,0,0,.95), 0 0 4px rgba(0,0,0,.7);
+  pointer-events:auto;cursor:pointer;
+  transition:background .15s ease, color .15s ease;
+  font-weight:500;letter-spacing:.1px;
+}
+.t-lbl:hover{background:rgba(197,162,88,.9);color:var(--navy);text-shadow:none}
+.t-lbl.hub{
+  font-family:'Source Sans 3','Nunito',system-ui,sans-serif;
+  font-size:8.5px;letter-spacing:.2px;
+  text-transform:none;font-weight:700;color:#ffffff;
+  padding:0 4px;background:transparent;
+  border:none;
+  text-shadow:0 1px 2px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,.8), 0 0 3px rgba(0,0,0,.9);
+  border-radius:3px;
+  max-width:120px;white-space:normal;text-align:center;line-height:1.08;
+}
+.t-lbl.hub:hover{background:rgba(255,255,255,.92);color:var(--navy);text-shadow:none}
+.t-lbl.core{
+  font-family:var(--serif);font-size:11.5px;font-weight:700;
+  color:#ffffff;font-style:italic;
+  padding:1px 6px;background:transparent;
+  border:none;
+  text-shadow:0 1px 3px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,.8);
+  letter-spacing:.2px;
+}
+
+/* ===== PROVENANCE BLOCK ===== */
+.provenance{
+  margin-top:48px;padding:32px;
+  border:1px solid var(--line);background:rgba(11,20,40,.55);
+}
+.provenance h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+}
+.provenance p{color:var(--ink-dim);font-size:14.5px;margin-bottom:10px;line-height:1.65}
+.provenance a{color:var(--gold-soft);border-bottom:1px dotted var(--line-strong)}
+
+/* ===== FOOTER ===== */
+.site-foot{
+  margin-top:80px;padding:48px 42px 36px;
+  border-top:1px solid var(--line);
+  background:rgba(5,10,20,.6);
+}
+.site-foot .wrap{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:auto 1fr auto;
+  gap:40px;align-items:center;
+}
+.foot-logo{height:58px;width:auto;opacity:.9}
+.hub-btn{
+  display:inline-block;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--navy);font-weight:700;
+  background:var(--gold);padding:14px 26px;
+  transition:all .2s ease;border:1px solid var(--gold);
+}
+.hub-btn:hover{background:var(--gold-soft);transform:translateY(-1px);box-shadow:0 6px 18px rgba(197,162,88,.3)}
+.foot-socials{display:flex;gap:14px;align-items:center;justify-content:flex-end}
+.foot-socials a{
+  width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line-strong);color:var(--ink-dim);
+  transition:all .2s ease;
+}
+.foot-socials a:hover{color:var(--gold);border-color:var(--gold)}
+.foot-socials svg{width:16px;height:16px;fill:currentColor}
+
+.foot-fine{
+  max-width:1280px;margin:28px auto 0;
+  padding-top:18px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:var(--ink-mute);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:980px){
+  .sig-grid{grid-template-columns:repeat(2,1fr)}
+  .datapoints{grid-template-columns:repeat(2,1fr)}
+  .viz-grid{grid-template-columns:1fr}
+  .site-foot .wrap{grid-template-columns:1fr;text-align:center;gap:20px}
+  .foot-socials{justify-content:center}
+  .bar-row{grid-template-columns:130px 1fr 40px}
+  .hero{padding:80px 24px 60px}
+  .section{padding:72px 24px}
+}
+@media (max-width:640px){
+  .sig-grid{grid-template-columns:1fr}
+  .datapoints{grid-template-columns:1fr 1fr;gap:1px}
+  .site-header .wrap{padding:14px 20px}
+  .nav{display:none}
+  .map-3d{height:480px}
+}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   NEW: Ghost 44 · Clickable cards · Side panel · Laundered Letter
+   ============================================================ */
+
+/* Ghost 44 numeral behind hero */
+.hero{position:relative;overflow:hidden}
+.hero > *{position:relative;z-index:2}
+.ghost-44{
+  position:absolute;
+  right:-2vw;top:-1vw;
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(220px,42vw,560px);
+  line-height:.74;letter-spacing:-.08em;
+  color:var(--gold);opacity:.06;
+  pointer-events:none;user-select:none;
+  z-index:1;
+  text-shadow:0 2px 40px rgba(197,162,88,.15);
+}
+@media (max-width:900px){
+  .ghost-44{opacity:.04;right:-8vw;top:-4vw}
+}
+
+/* Cards become buttons */
+.sig{
+  background:rgba(20,30,54,.6);
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:18px 20px;
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:14px;
+  align-items:start;
+  text-align:left;
+  font-family:inherit;
+  color:inherit;
+  cursor:pointer;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+  position:relative;
+}
+.sig:hover{
+  background:rgba(27,42,74,.75);
+  border-color:var(--line-strong);
+  transform:translateY(-1px);
+}
+.sig:focus-visible{
+  outline:none;
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(197,162,88,.25);
+}
+.sig::after{
+  content:"→";
+  position:absolute;right:14px;top:16px;
+  color:var(--gold);opacity:0;
+  font-size:16px;font-weight:300;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.sig:hover::after{opacity:.7;transform:translateX(2px)}
+
+/* ===== SIDE PANEL ===== */
+#sig-panel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:440px;max-width:94vw;
+  background:linear-gradient(180deg,#0f1932 0%,#0a1120 100%);
+  border-left:1px solid var(--line-strong);
+  transform:translateX(100%);
+  transition:transform .38s cubic-bezier(.4,0,.2,1);
+  box-shadow:-10px 0 48px rgba(0,0,0,.6);
+  z-index:200;
+  overflow-y:auto;
+  padding:32px 32px 60px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gold) transparent;
+}
+#sig-panel.open{transform:translateX(0)}
+#sig-panel::-webkit-scrollbar{width:6px}
+#sig-panel::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;opacity:.5}
+
+#panel-backdrop{
+  position:fixed;inset:0;
+  background:rgba(5,10,22,.5);
+  backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+  z-index:150;
+}
+#panel-backdrop.open{opacity:1;pointer-events:auto}
+
+#sig-panel .close{
+  position:absolute;top:12px;right:18px;
+  background:none;border:none;color:var(--ink-dim);
+  font-size:26px;cursor:pointer;
+  transition:color .2s ease,transform .2s ease;
+  width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;
+  line-height:1;
+}
+#sig-panel .close:hover{color:var(--red-glow);transform:rotate(90deg)}
+
+.panel-hdr{
+  display:flex;align-items:center;gap:14px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:22px;
+}
+.panel-badge{
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:700;font-size:11px;
+  color:var(--paper);letter-spacing:.5px;
+  border:2px solid rgba(255,255,255,.12);
+  box-shadow:0 4px 18px rgba(0,0,0,.5);
+  flex-shrink:0;
+}
+.panel-hdr .panel-num{
+  font-family:var(--mono);font-size:10px;
+  color:var(--ink-mute);letter-spacing:.2em;
+  margin-left:auto;
+}
+.panel-name{
+  font-family:var(--serif);font-size:24px;
+  color:var(--ink);font-weight:700;
+  line-height:1.15;letter-spacing:-.01em;
+  margin-bottom:6px;
+}
+.panel-role{
+  font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);
+}
+.panel-position{
+  font-size:13px;color:var(--ink-dim);
+  margin-bottom:18px;line-height:1.6;
+  font-weight:400;
+}
+.panel-standing{
+  font-size:12.5px;color:var(--ink);
+  margin:-6px 0 18px;
+  padding:10px 14px 10px 14px;
+  background:rgba(197,162,88,.08);
+  border-left:3px solid var(--gold);
+  line-height:1.55;
+  border-radius:0 3px 3px 0;
+}
+.panel-standing-label{
+  display:inline-block;
+  font-family:var(--mono);font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);
+  margin-right:8px;font-weight:600;
+}
+.panel-desc{
+  font-size:14.5px;color:var(--ink);
+  line-height:1.78;margin-bottom:20px;
+  font-weight:300;
+}
+.panel-topics{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-bottom:20px;
+}
+.panel-topic{
+  font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;
+  background:rgba(197,162,88,.08);color:var(--gold-soft);
+  border:1px solid rgba(197,162,88,.22);
+}
+.panel-topic.red{
+  background:rgba(139,0,0,.14);color:#e89090;
+  border-color:rgba(196,59,59,.32);
+}
+.panel-evidence{
+  background:rgba(139,0,0,.07);
+  border:1px solid rgba(196,59,59,.22);
+  border-radius:3px;
+  padding:14px 16px;
+  margin-bottom:24px;
+  font-size:12.8px;color:#e8bdbd;
+  line-height:1.72;
+  font-weight:300;
+}
+.panel-evidence h5{
+  font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--red-glow);margin-bottom:8px;font-weight:600;
+}
+.panel-section-h{
+  font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin:22px 0 10px;
+  padding-bottom:6px;border-bottom:1px solid var(--line);
+  font-weight:600;
+}
+.panel-cn-item{
+  font-size:13px;color:var(--ink);
+  padding:8px 4px;
+  border-bottom:1px dotted rgba(197,162,88,.14);
+  display:flex;align-items:center;gap:8px;
+}
+.panel-cn-item::before{
+  content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--gold);opacity:.7;flex-shrink:0;
+}
+.panel-empty{
+  font-size:12px;color:var(--ink-mute);
+  font-style:italic;padding:6px 0;
+}
+
+/* ===== LAUNDERED LETTER FINDING ===== */
+.laundered{
+  padding:96px 42px;max-width:900px;margin:0 auto;
+  text-align:center;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.laundered::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(197,162,88,.04),transparent 70%);
+  pointer-events:none;
+}
+.laundered > *{position:relative}
+.laundered .section-kicker{
+  color:var(--red-glow);
+  border-color:rgba(196,59,59,.35);
+  background:rgba(139,0,0,.14);
+}
+.laundered h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.7rem,3.3vw,2.6rem);
+  color:var(--ink);margin-bottom:22px;
+  line-height:1.15;letter-spacing:-.01em;
+}
+.laundered h2 em{color:var(--gold);font-style:italic;font-weight:400}
+.laundered .pullquote{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(1rem,1.5vw,1.2rem);
+  color:var(--ink);line-height:1.7;
+  max-width:640px;margin:26px auto;
+  padding:18px 28px;text-align:left;
+  border-left:3px solid var(--gold);
+  background:rgba(197,162,88,.04);
+  border-radius:0 3px 3px 0;
+  position:relative;
+}
+.laundered .pullquote::before{
+  content:"\201C";
+  position:absolute;left:8px;top:-4px;
+  font-family:var(--serif);font-size:48px;
+  color:var(--gold);opacity:.38;
+  line-height:1;
+}
+.laundered p{
+  font-size:14.5px;color:var(--ink-dim);
+  line-height:1.85;max-width:680px;margin:0 auto 14px;
+  font-weight:300;
+}
+.laundered p em{color:var(--gold-soft);font-style:italic}
+
+/* ===== LEGAL DISCLAIMER · editorial notice above the footer ===== */
+.legal-notice{
+  max-width:1040px;margin:0 auto;
+  padding:56px 42px 40px;
+  border-top:1px solid var(--line);
+}
+.legal-notice .legal-box{
+  background:rgba(11,20,40,.55);
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:26px 30px;
+}
+.legal-notice .legal-title{
+  font-family:var(--mono);font-size:10px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--gold-soft);
+  margin-bottom:18px;padding-bottom:10px;
+  border-bottom:1px solid var(--line);font-weight:600;
+}
+.legal-notice p{
+  font-size:12.5px;color:var(--ink-dim);
+  line-height:1.85;margin-bottom:12px;font-weight:300;
+}
+.legal-notice p:last-of-type{margin-bottom:0}
+.legal-notice p strong{color:var(--gold-soft);font-weight:500}
+.legal-notice .copy-line{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  color:var(--ink-mute);margin-top:18px;padding-top:14px;
+  border-top:1px solid rgba(197,162,88,.12);
+}
+@media (max-width:768px){
+  .legal-notice{padding:40px 24px 28px}
+  .legal-notice .legal-box{padding:20px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <img class="brand-logo" src="Alt-Afrikaner_Logo.png" alt="Alt Afrikaner" onerror="this.style.display='none'" />
+    </div>
+    <nav class="nav">
+      <a data-scroll="roll">Roll-Call</a>
+      <a data-scroll="finding">Finding</a>
+      <a data-scroll="anatomy">Anatomy</a>
+      <a data-scroll="network">Network</a>
+      <a data-scroll="map">3D Map</a>
+      <a data-scroll="provenance">Provenance</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="ghost-44" aria-hidden="true">44</div>
+  <span class="eyebrow">Netwerk Leaks · Investigation File 0034</span>
+  <h1><em>Not In Our Name</em> — The Network.</h1>
+  <p class="deck">In October 2025 a letter landed on Washington desks under the banner of "44 prominent Afrikaners." The byline was inflated by one. The institutional footprint was not. This file audits every name, every affiliation, and the pattern they form when you step back from the page.</p>
+  <div class="meta">
+    <span><strong>Published</strong> 25 Oct 2025</span>
+    <span><strong>Outlet</strong> Netwerk24 · News24</span>
+    <span><strong>Signatories</strong> 43 distinct / 44 headlined</span>
+    <span><strong>Status</strong> Endorsed by ANC &amp; Presidency</span>
+  </div>
+</section>
+
+<!-- ===== DATAPOINT ROW ===== -->
+<section class="section" style="padding-top:0">
+  <div class="datapoints">
+    <div class="dp">
+      <div class="n">43<span class="unit">not 44</span></div>
+      <div class="lbl">Distinct Signatories</div>
+      <div class="sub">Louise du Plessis appears twice under different Lawyers for Human Rights unit titles. The headline rounded up.</div>
+    </div>
+    <div class="dp">
+      <div class="n">14</div>
+      <div class="lbl">Tied to One of 4 Universities</div>
+      <div class="sub">NWU, Stellenbosch, UCT, UJ &amp; UP. A tight academic footprint for a letter written "on behalf of Afrikaners."</div>
+    </div>
+    <div class="dp">
+      <div class="n">9</div>
+      <div class="lbl">Career Journalists / Editors</div>
+      <div class="sub">Nearly all with Naspers, News24, M-Net or Media24 lineage. Same ecosystem. Different mastheads.</div>
+    </div>
+    <div class="dp">
+      <div class="n">1</div>
+      <div class="lbl">Drafter Linked to State Security</div>
+      <div class="sub">AfriForum identified Karen Burger (DIRCO / former SSA) as the letter's coordinator. Civic letter, state hand.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ROLL-CALL: MOVED ABOVE 3D MAP ===== -->
+<section class="section" id="roll">
+
+  <div class="section-head">
+    <span class="section-kicker">Roll-Call · All 43 Named</span>
+    <h2 class="section-title">Every Signatory. Every Affiliation. No Gaps.</h2>
+    <p class="section-lede">The version of this page published earlier showed 18 cards. Readers kept asking the same question: <em>where are the rest?</em> Here are all 43, drawn directly from the canonical list published by News24 on 25 October 2025 and republished by Smile 90.4FM on 27 October. Hover any card for affiliation tags.</p>
+  </div>
+
+  <div class="sig-head">
+    <h2>The Forty-Three <span class="count">· 43 / 44 headlined</span></h2>
+    <div class="sig-controls">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="media">Media</button>
+      <button class="chip" data-filter="acad">Academic</button>
+      <button class="chip" data-filter="state">State</button>
+      <button class="chip" data-filter="lhr">LHR</button>
+      <button class="chip" data-filter="drc">Clergy</button>
+      <button class="chip" data-filter="biz">Business</button>
+    </div>
+  </div>
+
+  <!-- tag legend · above the grid so readers meet the code before the names -->
+  <div class="legend">
+    <div class="legend-item"><span class="tag t-media">Media</span><span class="desc">Career journalists / editors with Naspers, Media24 or OSF-adjacent institutional links.</span></div>
+    <div class="legend-item"><span class="tag t-state">State</span><span class="desc">Past or present role in the South African state or government apparatus (NP- or ANC-era).</span></div>
+    <div class="legend-item"><span class="tag t-lhr">LHR</span><span class="desc">Lawyers for Human Rights — SA's oldest human-rights litigation NGO, founded 1979; OSF, Ford &amp; US State Dept PRM funded.</span></div>
+    <div class="legend-item"><span class="tag t-couple">Couple</span><span class="desc">Married signatories who each signed without disclosing the household relationship.</span></div>
+    <div class="legend-item"><span class="tag t-drc">Clergy</span><span class="desc">Dutch Reformed Church or broader Protestant clerical office.</span></div>
+    <div class="legend-item"><span class="tag t-biz">Business</span><span class="desc">Senior executive, founder or board role in a listed or privately-held SA firm.</span></div>
+    <div class="legend-item"><span class="tag t-acad">Academic</span><span class="desc">Professor, emeritus professor, research fellow or university senior management.</span></div>
+  </div>
+
+  <div class="sig-grid" id="sigGrid">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="anomaly">
+    <h4>Why 43, but marketed as 44</h4>
+    <p>The News24 publication of 25 October 2025 lists <em>Louise du Plessis</em> of Lawyers for Human Rights twice — once with her Strategic Litigation portfolio, once with her Land &amp; Housing Unit portfolio. Every downstream outlet, the ANC endorsement statement, and Presidency social media amplified the figure as "44 Afrikaners." The discrepancy is not a typographical rounding. It is a presentation choice that inflated the headline number by one.</p>
+  </div>
+</section>
+
+<!-- ===== THE LAUNDERED LETTER · editorial finding ===== -->
+<section class="laundered" id="finding">
+  <span class="section-kicker">Finding · State Hand</span>
+  <h2>The <em>Laundered Letter</em>.</h2>
+  <div class="pullquote">
+    A Promotion of Access to Information Act (PAIA) application was filed in December 2025 seeking confirmation of whether the State Security Agency (SSA) and the Department of International Relations and Cooperation (DIRCO) were funding journalists to run coordinated narrative campaigns. The government's 30-day statutory response window elapsed with no reply.
+  </div>
+  <p>The letter's drafter — <em>Karen Burger</em> — is a director in the DIRCO Director-General's office. Her career spans the National Intelligence Service, the State Security Agency, the South African Embassy in Washington DC (Political Counsellor through end 2024), and DIRCO. The ANC government endorsed the letter within 48 hours. Three career DIRCO diplomats sit among the 43 signatories.</p>
+  <p>The philanthropic backbone runs from George Soros personally financing the 1987 Dakar Conference — the origin event that produced Max du Preez and Vrye Weekblad — through the Open Society Foundation for South Africa (documented $230 million-plus over 30 years) to the $29 million Constitutionalism Fund (OSF, Ford Foundation and Atlantic Philanthropies combined), which funds Lawyers for Human Rights, whose founder, former national director, and current staff all signed the letter.</p>
+</section>
+
+<!-- ===== ANATOMY / INFOGRAPHICS ===== -->
+<section class="section" id="anatomy">
+  <div class="section-head">
+    <span class="section-kicker">Anatomy · Composition</span>
+    <h2 class="section-title">Who Are These Forty-Three, Really?</h2>
+    <p class="section-lede">A letter asserts a right to speak for a community. The first question any reader is entitled to ask is whether the signers <em>resemble</em> the community they claim. Below, the 43 broken down by sector, by institution, and by the networks they share.</p>
+  </div>
+
+  <div class="viz-grid">
+
+    <!-- DONUT: sector composition -->
+    <div class="viz-panel">
+      <h3>Sector Composition</h3>
+      <div class="sub">Primary professional domain · n=43</div>
+      <svg class="viz-svg" viewBox="0 0 420 260" aria-label="Donut chart of sector composition">
+        <defs>
+          <filter id="softshadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+            <feOffset dx="0" dy="1" result="offsetblur"/>
+            <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g transform="translate(130,130)" filter="url(#softshadow)" id="donut"></g>
+        <!-- legend -->
+        <g transform="translate(240,40)" font-family="Source Sans 3" font-size="12" fill="#b8b09a">
+          <g><rect width="12" height="12" fill="#C5A258"/><text x="20" y="10">Academic · 18</text></g>
+          <g transform="translate(0,22)"><rect width="12" height="12" fill="#8B0000"/><text x="20" y="10" fill="#e08080">Media · 9</text></g>
+          <g transform="translate(0,44)"><rect width="12" height="12" fill="#6478c8"/><text x="20" y="10" fill="#a9bbef">Clergy (DRC) · 4</text></g>
+          <g transform="translate(0,66)"><rect width="12" height="12" fill="#3c8c64"/><text x="20" y="10" fill="#8fd4b2">Legal · 4</text></g>
+          <g transform="translate(0,88)"><rect width="12" height="12" fill="#c88c3c"/><text x="20" y="10" fill="#e8bc7a">Business · 4</text></g>
+          <g transform="translate(0,110)"><rect width="12" height="12" fill="#8c64b4"/><text x="20" y="10" fill="#c7adeb">Writer · 3</text></g>
+          <g transform="translate(0,132)"><rect width="12" height="12" fill="#708090"/><text x="20" y="10" fill="#b8b09a">Consultant · 3</text></g>
+        </g>
+        <!-- centre label -->
+        <text x="130" y="124" text-anchor="middle" font-family="Playfair Display" font-size="34" font-weight="900" fill="#C5A258">43</text>
+        <text x="130" y="146" text-anchor="middle" font-family="JetBrains Mono" font-size="9" letter-spacing="2" fill="#837c6a">DISTINCT · SIGNATORIES</text>
+      </svg>
+    </div>
+
+    <!-- INSTITUTION BAR CHART -->
+    <div class="viz-panel">
+      <h3>Institutional Concentration</h3>
+      <div class="sub">University &amp; newsroom clusters · top nodes</div>
+      <div class="bar-chart" id="barChart">
+        <!-- rendered by JS -->
+      </div>
+      <p style="margin-top:18px;font-size:13px;color:var(--ink-mute);line-height:1.55">
+        Fourteen of the forty-three hold posts at just five universities. Add the Naspers / News24 / M-Net newsroom lineage and more than half the letter traces to a single overlapping ecosystem of employers.
+      </p>
+    </div>
+  </div>
+
+  <!-- Institution detailed list -->
+  <div class="viz-panel" style="margin-top:36px">
+    <h3>The Institutional Map — Full Cut</h3>
+    <div class="sub">Every institution represented by at least one signatory</div>
+    <div class="inst-list" id="instList"></div>
+  </div>
+
+</section>
+
+<!-- ===== NETWORK ===== -->
+<section class="section" id="network">
+  <div class="section-head">
+    <span class="section-kicker">Network · Overlap Mapping</span>
+    <h2 class="section-title">Four Nodes Hold the Letter Together.</h2>
+    <p class="section-lede">A 43-signatory letter can look like diverse civic consensus — until you plot the institutional lines between the names. Four hubs account for nearly two thirds of the roster: <em>North-West University</em>, <em>Stellenbosch</em>, the <em>Naspers media complex</em>, and <em>Lawyers for Human Rights</em>. Everything else clusters around the edges.</p>
+  </div>
+
+  <div class="network-wrap">
+    <svg class="viz-svg" viewBox="0 0 1000 540" id="networkSvg" aria-label="Network diagram of signatory affiliations">
+      <!-- drawn by JS -->
+    </svg>
+  </div>
+</section>
+
+<!-- ===== 3D MAP SECTION ===== -->
+<section class="section" id="map">
+  <div class="section-head">
+    <span class="section-kicker">Investigative Board · 3D Network</span>
+    <h2 class="section-title">The Interactive Intelligence Board.</h2>
+    <p class="section-lede">Each sphere is an actor. Each thread is a documented institutional, funding or state connection. Drag to rotate. Scroll to zoom. Click any signatory node to open their file. This is the same roster you have just read above — now seen from above.</p>
+  </div>
+
+  <div class="map-3d" id="map3dBox">
+    <span class="label">Drag · Scroll · Click any sphere</span>
+    <div class="map-filters">
+      <button class="map-fb active" data-cat="all">All</button>
+      <button class="map-fb" data-cat="sig">Signatories</button>
+      <button class="map-fb" data-cat="inst">Institutions</button>
+      <button class="map-fb" data-cat="fund">Funders</button>
+      <button class="map-fb" data-cat="state">State</button>
+      <button class="map-fb" data-cat="media">Media</button>
+    </div>
+    <div class="map-legend">
+      <div><span class="ld" style="background:#C5A258"></span>Signatory</div>
+      <div><span class="ld" style="background:#8B0000"></span>Media</div>
+      <div><span class="ld" style="background:#2a5a2a"></span>Institution</div>
+      <div><span class="ld" style="background:#1a6b3c"></span>Funder</div>
+      <div><span class="ld" style="background:#1a2a6e"></span>State</div>
+      <div><span class="ld" style="background:#8B4513"></span>Historic</div>
+    </div>
+    <canvas id="threeCv"></canvas>
+    <div id="threeLabels"></div>
+  </div>
+</section>
+
+<!-- ===== PROVENANCE ===== -->
+<section class="section" id="provenance">
+  <div class="section-head">
+    <span class="section-kicker">Provenance · Primary Sources</span>
+    <h2 class="section-title">Where Every Name Came From.</h2>
+  </div>
+
+  <div class="provenance">
+    <h4>Canonical Source List</h4>
+    <p><strong>Primary:</strong> "Not in our name: Afrikaners respond to the misuse of their story in US politics" — News24 opinion desk, published 25 October 2025. First release appeared on Netwerk24 on 23 October 2025. The News24 publication is the version the African National Congress endorsed on 25 October and that Presidency spokesperson Vincent Magwenya amplified on the same day.</p>
+    <p><strong>Mirror:</strong> Smile 90.4FM, 27 October 2025 — "ANC welcomes 'Not In Our Name' stance by group of Afrikaners." Reproduces the full co-signatory list verbatim.</p>
+    <p><strong>Duplicate name documented by:</strong> News24 masthead of the letter itself; confirmed by Smile 90.4FM roll-call, in which <em>Louise du Plessis, Lawyers for Human Rights</em> appears in the 8th and 10th entries.</p>
+    <p><strong>Drafter attribution:</strong> AfriForum public statement, November 2025, naming Karen Burger — currently at the Department of International Relations and Cooperation, formerly of the State Security Agency — as the coordinator of the open letter and the figure who approached several potential signatories. France 24 (16 November 2025) confirmed a government employee was involved, framing her role as personal capacity; AfriForum disputes that framing.</p>
+    <p><strong>Independent attestation of initiator:</strong> Prof Piet Croucamp on the record to FRANCE 24 describing himself as "one of the main initiators" and confirming direct outreach to US Senator Chris Coons.</p>
+  </div>
+</section>
+
+<!-- ===== LEGAL NOTICE · EDITORIAL DISCLAIMER ===== -->
+<section class="legal-notice">
+  <div class="legal-box">
+    <div class="legal-title">Legal Notice &amp; Editorial Disclaimer</div>
+    <p>This page constitutes independent investigative journalism and analytical research published in the public interest. All individuals named are public figures. All information is derived from open-source, publicly available records: government filings, court documents, academic publications, official organisational disclosures and reputable news archives. No private communications, classified materials or confidential records are reproduced.</p>
+    <p>The 3D network and card grid map documented professional relationships, institutional affiliations, funding connections and publicly recorded co-memberships. The purpose is transparency about disclosed relationships between public figures and institutions. This page <strong>does not</strong> assert, allege, imply or infer unlawful conduct, criminal activity, improper motive or personal wrongdoing by any individual or organisation. The existence of a documented connection between two parties is not an allegation of conspiracy, corruption or coordinated wrongdoing.</p>
+    <p>Where statements or findings are attributed to third parties, they are clearly identified and attributed to their source. The Promotion of Access to Information Act (PAIA) application referenced on this page is a matter of public legal record. Where information derives from the International Consortium of Investigative Journalists (ICIJ) Offshore Leaks / Panama Papers or similar disclosed datasets, the ICIJ standard disclaimer applies: inclusion in any such database is not evidence of illegality, impropriety or wrongdoing.</p>
+    <p>This publication is protected under Section 16 of the Constitution of the Republic of South Africa, 1996 — freedom of expression, freedom of the press and the right to receive information — and equivalent protections under the International Covenant on Civil and Political Rights (ICCPR), Article 19. This publication is not affiliated with any political party, government body, commercial entity or advocacy organisation. It does not constitute legal advice. The views expressed are those of the publisher only.</p>
+    <p>All factual claims are made in good faith from attributable public sources. Any person who believes a factual error exists is invited to submit a correction with supporting documentation to <strong>AltAfrikaner@outlook.com</strong>. Corrections supported by primary evidence are published promptly.</p>
+    <div class="copy-line">&copy; Alt Afrikaner 2025–2026 · Published in the public interest · All rights reserved</div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="foot-logo" src="Alt-Afrikaner_Logo.png" alt="Alt Afrikaner" onerror="this.style.display='none'" />
+    <div style="text-align:center">
+      <a class="hub-btn" href="https://altafrikaner.github.io/journalist-map/index.html">Investigation Hub</a>
+    </div>
+    <div class="foot-socials">
+      <a href="https://www.facebook.com/AltAfrikaner" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.56 9.87v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.9 3.78-3.9 1.1 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.88h-2.33v6.99A10 10 0 0022 12z"/></svg></a>
+      <a href="https://substack.com/@altafrikaner" aria-label="Substack" title="Substack"><svg viewBox="0 0 24 24"><path d="M3 3h18v2.5H3V3zm0 4.8h18v2.5H3V7.8zm0 4.8h18V22l-9-5.1L3 22V12.6z"/></svg></a>
+      <a href="mailto:AltAfrikaner@outlook.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+    </div>
+  </div>
+  <div class="foot-fine">
+    <span>Netwerk Leaks · An Alt Afrikaner investigation</span>
+    <span>File 0034 · Last revision 20 April 2026</span>
+  </div>
+</footer>
+
+<!-- ===== DATA + BEHAVIOUR ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============================================================
+   43 DISTINCT SIGNATORIES — canonical News24 / Smile 90.4FM list
+   Louise du Plessis listed once (she appears twice on the letter
+   itself under two LHR unit titles — documented in anomaly card)
+   ============================================================ */
+const SIGS = [
+  {n:"Anneliese Burgess",          role:"Journalist &amp; writer",                                                 t:["media"]},
+  {n:"Rudi Buys",                  role:"Leadership &amp; diversity consultant",                                   t:["acad"]},
+  {n:"Prof Wannie Carstens",       role:"Extraordinary Professor, North-West University",                           t:["acad"]},
+  {n:"Rev Andries Cilliers",       role:"Dutch Reformed Church",                                                    t:["drc"]},
+  {n:"Prof Fanie Cloete",          role:"Emeritus Prof, Universities of Johannesburg &amp; Stellenbosch",           t:["acad"]},
+  {n:"Prof Piet Croucamp",         role:"Assoc Prof, Political Studies &amp; IR, North-West University",            t:["acad","state"]},
+  {n:"Frederik de Jager",          role:"Writer",                                                                   t:["acad"]},
+  {n:"Prof Pierre de Vos",         role:"Prof of Constitutional Law, University of Cape Town",                      t:["acad"]},
+  {n:"Louise du Plessis",          role:"Lawyers for Human Rights · Strategic Litigation &amp; Land / Housing",     t:["lhr"]},
+  {n:"Dr Stan du Plessis",         role:"Economist &amp; CEO, Stadio",                                              t:["biz","acad"]},
+  {n:"Max du Preez",               role:"Author &amp; journalist · Vrye Weekblad founder",                          t:["media"]},
+  {n:"Louis Gaigher",              role:"Commissioning editor, Wits University Press",                               t:["media","acad"]},
+  {n:"Rudolf Gouws",               role:"Economist",                                                                 t:["biz"]},
+  {n:"Ambassador Gert Grobler",    role:"Former South African diplomat",                                             t:["state"]},
+  {n:"Chris Heymans",              role:"Freelance public-affairs commentator · ex-World Bank consultant",           t:["acad"]},
+  {n:"Gielie Hoffman",             role:"Management consultant &amp; writer",                                        t:["acad"]},
+  {n:"Willem Kempen",              role:"Journalist",                                                                t:["media"]},
+  {n:"Dr Lindie Koorts",           role:"Historian, University of Pretoria",                                         t:["acad"]},
+  {n:"Nick Koornhof",              role:"Ex-Member of Parliament · son of NP cabinet minister Piet Koornhof",        t:["state"]},
+  {n:"Judge Johann Kriegler",      role:"Retired Con Court judge · founding chair, Lawyers for Human Rights (1981)", t:["state","lhr"]},
+  {n:"Ruda Landman",               role:"Journalist · ex-Carte Blanche (M-Net / Naspers)",                           t:["media","couple"]},
+  {n:"JP Landman",                 role:"Political &amp; economic analyst · spouse of Ruda Landman",                 t:["couple"]},
+  {n:"Barend La Grange",           role:"Community development specialist",                                          t:["acad"]},
+  {n:"Andrew le Roux",             role:"Business leader &amp; board member",                                        t:["biz"]},
+  {n:"Prof Andre le Roux",         role:"University of Cape Town",                                                   t:["acad"]},
+  {n:"Dr Pepe Marais",             role:"Chief Purpose &amp; Vision Officer, Joe Public",                            t:["biz"]},
+  {n:"Prof Martin Oosthuizen",     role:"Deputy Vice-Chancellor (Teaching &amp; Learning), NWU",                     t:["acad"]},
+  {n:"Chris Otto",                 role:"Co-founder, PSG Group · Chairman, Zeder Investments",                       t:["biz"]},
+  {n:"Nina Overton-de Klerk",      role:"Emeritus Prof, Strategic Communication, University of Johannesburg",        t:["acad"]},
+  {n:"Hans Pienaar",               role:"Writer",                                                                    t:["media"]},
+  {n:"Truida Prekel",              role:"Innovation catalyst",                                                       t:["acad"]},
+  {n:"Dr Jurie Schoeman",          role:"Theologian &amp; pastor, Dutch Reformed Church",                            t:["drc"]},
+  {n:"Leane Spangenberg",          role:"Legal advisor",                                                             t:["lhr"]},
+  {n:"Chris Spies",                role:"Peacebuilding &amp; mediation specialist",                                  t:["acad"]},
+  {n:"Deborah Steinmar",           role:"Writer",                                                                    t:["media"]},
+  {n:"Dr Susan Steynberg",         role:"Formerly UCT Deputy Director, Library Services",                            t:["acad"]},
+  {n:"Dr Mareli Stolp",            role:"Pianist &amp; academic",                                                    t:["acad"]},
+  {n:"Rev Dr Petrus Strijdom",     role:"Clergy &amp; theologian",                                                   t:["drc"]},
+  {n:"Rev Rudi Swanepoel",         role:"Dutch Reformed Church",                                                     t:["drc"]},
+  {n:"Jacob van Garderen",         role:"Human-rights advocate · ex-National Director, Lawyers for Human Rights",    t:["lhr"]},
+  {n:"Prof AA van Niekerk",        role:"Prof Emeritus of Philosophy · Centre for Applied Ethics, Stellenbosch",     t:["acad"]},
+  {n:"Prof Anthoni van Nieuwkerk", role:"Prof of International Relations, UNISA",                                    t:["acad"]},
+  {n:"Ali van Wyk",                role:"Journalist",                                                                t:["media"]}
+];
+
+/* ============================================================
+   DETAIL · rich intelligence for each signatory
+   Keyed by SIGS index. Shape:
+   {inst:"…", instCode:"XX", instCol:"#…", country:"ZA", position:"…",
+    desc:"…", evidence:"…", topics:[…], cn:[…]}
+   Entries draw on the Netwerk Leaks ND archive. Where no specific
+   incremental evidence beyond role is on file, the entry is brief
+   and marked accordingly — signalling a research gap rather than
+   implying anything about the signatory.
+   ============================================================ */
+const DETAIL = {
+  0:{inst:"Vrye Weekblad",instCode:"VW",instCol:"#8B0000",country:"ZA",
+     position:"Journalist &amp; author · Vrye Weekblad co-editor 2019–2025",
+     desc:"Journalist and Vrye Weekblad co-editor. Member of the 1989 Stellenbosch-Lusaka delegation that met the still-banned ANC in Zambia alongside Tito Mboweni, Thuli Madonsela and Roelf Meyer. Co-produced SABC Special Assignment with Max du Preez.",
+     evidence:"1989 Lusaka delegation documented across multiple biographies. Vrye Weekblad co-editor role confirmed on VW masthead 2019–2025.",
+     topics:["journalist","1989 Lusaka","VW co-editor"],
+     cn:["Vrye Weekblad (co-editor)","Stellenbosch University (alumnus)","1989 Lusaka delegation","News24"]},
+  1:{inst:"Consultancy",instCode:"CON",instCol:"#708090",country:"ZA",
+     position:"Leadership &amp; diversity consultant",
+     desc:"Independent leadership and diversity consultant. Public profile built around transformation training and corporate DEI workshops.",
+     evidence:"Public LinkedIn and speaker-bureau listings.",
+     topics:["consultant","diversity training"],
+     cn:[]},
+  2:{inst:"North-West University",instCode:"NWU",instCol:"#003b71",country:"ZA",
+     position:"Extraordinary Professor, Potchefstroom · Emeritus · Chair, Afrikaanse Taalraad",
+     desc:"Simultaneous chair of the Afrikaanse Taalraad, the Suid-Afrikaanse Akademie van Kuns en Kultuur, and the Nasionale Taalliggaam vir Afrikaans. Jan H Marais Prize 2024. Emeritus professor at NWU Potchefstroom. European academic ties through the University of Antwerp (guest professor from 2007) and the Ghent Poetry Centre. Bible translator.",
+     evidence:"SA Akademie records. NWU faculty listings. University of Antwerp records.",
+     topics:["NWU emeritus","chairs 3 Afrikaans bodies","Antwerp + Ghent ties"],
+     cn:["North-West University","Stellenbosch University","University of Antwerp","Ghent Poetry Centre"]},
+  3:{inst:"Dutch Reformed Church",instCode:"NGK",instCol:"#6478c8",country:"ZA",
+     position:"Clergy · Dutch Reformed Church (NGK)",
+     desc:"Dutch Reformed Church minister. Part of a cluster of four NGK clergy on the letter (alongside Schoeman, Strijdom and Swanepoel) — the largest institutional cluster after the universities.",
+     evidence:"Dutch Reformed Church public register.",
+     topics:["NGK clergy","clergy cluster n=4"],
+     cn:["Dutch Reformed Church (NGK)","Schoeman","Strijdom","Swanepoel"]},
+  4:{inst:"Stellenbosch / UJ",instCode:"SU",instCol:"#6e1a1a",country:"ZA",
+     position:"Emeritus Professor · Universities of Johannesburg and Stellenbosch",
+     desc:"Emeritus professor with dual Stellenbosch and University of Johannesburg footprint. Public policy and governance specialisation.",
+     evidence:"UJ and Stellenbosch emeritus listings.",
+     topics:["emeritus SU + UJ","public policy"],
+     cn:["Stellenbosch University","University of Johannesburg"]},
+  5:{inst:"North-West University",instCode:"NWU",instCol:"#003b71",country:"ZA",
+     position:"Associate Professor, Political Studies &amp; International Relations · NWU Vanderbijlpark",
+     desc:"Associate Professor, North-West University Vanderbijlpark. Contributing editor of Vrye Weekblad 2019–2025. Regular analyst on News24, Daily Maverick and Mail &amp; Guardian. Confirmed direct talks with US Senator Chris Coons (Senate Foreign Relations Committee) on Trump's South Africa claims — confirmed France 24, 16 November 2025. Most operationally significant external-facing node in the network.",
+     evidence:"France 24, 16 November 2025 — direct Coons talks confirmed on the record.",
+     topics:["NWU","VW contributing editor","Coons talks confirmed"],
+     cn:["North-West University","Vrye Weekblad","US Senator Chris Coons","News24"]},
+  6:{inst:"Independent",instCode:"WRI",instCol:"#8c64b4",country:"ZA",
+     position:"Writer",
+     desc:"Writer. Public profile as a commentator and editor in the Afrikaans literary scene.",
+     evidence:"Public publishing credits.",
+     topics:["writer"],
+     cn:[]},
+  7:{inst:"University of Cape Town",instCode:"UCT",instCol:"#002147",country:"ZA",
+     position:"Claude Leon Chair in Constitutional Governance · UCT Law",
+     standing:"Upper middle class — holder of the endowed Claude Leon Chair at UCT; long-standing constitutional-law commentator with Daily Maverick income stream.",
+     desc:"Holds the Claude Leon Chair in Constitutional Governance at UCT from 2009. Sits on the advisory council of CASAC (Council for the Advancement of the South African Constitution). Runs the Constitutionally Speaking column on Daily Maverick. UCT's Claude Leon Chair sits inside an institution whose bursary pipeline was originally underwritten by the Karl Popper Bursary Fund — George Soros's first philanthropic act in South Africa (1979).",
+     evidence:"UCT faculty page. CASAC advisory council public listing. OSF 30-Year Report, March 2025.",
+     topics:["Claude Leon Chair UCT","CASAC advisory","Daily Maverick column"],
+     cn:["University of Cape Town","CASAC","Stellenbosch University (alumnus)","Daily Maverick"]},
+  8:{inst:"Lawyers for Human Rights",instCode:"LHR",instCol:"#2a5a2a",country:"ZA",
+     position:"Current LHR staff · Strategic Litigation &amp; Land / Housing units",
+     desc:"Current Lawyers for Human Rights staff. Listed TWICE on the letter — once under the Strategic Litigation Unit, once under the Land &amp; Housing Unit — producing a public count of 44 where only 43 distinct people signed. Third generation in the LHR institutional spine: Kriegler (founding chair 1981) → van Garderen (national director from 2008) → du Plessis (current).",
+     evidence:"LHR public staff register. News24 masthead of the letter. Devex grant records linking LHR to the Constitutionalism Fund.",
+     topics:["LHR staff","listed twice","3rd-generation LHR spine"],
+     cn:["Lawyers for Human Rights","Constitutionalism Fund","Kriegler (founding chair)","van Garderen (former ND)"]},
+  9:{inst:"Stadio / PSG",instCode:"STAD",instCol:"#003399",country:"ZA",
+     position:"CEO, Stadio Holdings · former Stellenbosch COO",
+     standing:"Upper middle class — CEO of JSE-listed Stadio Holdings; former Chief Operating Officer of Stellenbosch University. Executive compensation disclosed in annual integrated reports.",
+     desc:"CEO of Stadio Holdings, the PSG-linked private higher education group. Former Chief Operating Officer of Stellenbosch University; former Dean of Economic and Management Sciences. Stadio is regulated by the Department of Higher Education and Training, so government accreditation is a continuing operational dependency. Stellenbosch receives OSF Africa Climate Change Adaptation Initiative grant funding ($1M+ direct).",
+     evidence:"Stadio Holdings executive profiles. Stellenbosch University records.",
+     topics:["Stadio CEO","Stellenbosch COO","DHET-regulated"],
+     cn:["Stadio Holdings","PSG Group","Stellenbosch University"]},
+  10:{inst:"Vrye Weekblad",instCode:"VW",instCol:"#8B0000",country:"ZA",
+      position:"Vrye Weekblad founder (1988) &amp; editor 2019–2025",
+      desc:"Journalist, founder and editor of Vrye Weekblad (1988) and again 2019–2025. Attended the 1987 Dakar Conference where Beyers Naudé reportedly told him to start VW. The origin node of the entire network. Public face of the letter. VW was bankrupted by the 1991 Neethling defamation case (in which Johann Kriegler — later co-signatory — ruled for VW) and relaunched in 2019 before closing 28 March 2025.",
+      evidence:"SA History Online (Dakar attendee list). Max du Preez HuffPost account (2019). OSF 30-Year Report March 2025 (Alex Soros confirms Soros personally financed Dakar). Wikipedia Dakar Conference.",
+      topics:["VW founder","Dakar 1987","origin node"],
+      cn:["Vrye Weekblad (founder)","Dakar Conference 1987","Kriegler (1991 Neethling ruling)","News24"]},
+  11:{inst:"Wits University Press",instCode:"WITS",instCol:"#002147",country:"ZA",
+      position:"Commissioning editor · Wits University Press",
+      desc:"Commissioning editor at Wits University Press. Editorial pipeline into an academic publisher hosted at the University of the Witwatersrand — the same institution that houses Africa Check.",
+      evidence:"Wits University Press public listings.",
+      topics:["Wits University Press","academic publishing"],
+      cn:["Wits University Press","University of the Witwatersrand"]},
+  12:{inst:"Independent",instCode:"ECO",instCol:"#c88c3c",country:"ZA",
+      position:"Economist",
+      desc:"Independent economist. Public-affairs profile built around macroeconomic commentary.",
+      evidence:"Public media credits.",
+      topics:["economist","macro commentary"],
+      cn:[]},
+  13:{inst:"DIRCO (fmr)",instCode:"DIRCO",instCol:"#1a2a6e",country:"ZA",
+      position:"Former South African Ambassador · career diplomat",
+      standing:"Upper middle class — career South African ambassador across multiple postings; diplomatic pension on the DIRCO senior scale.",
+      desc:"Career South African diplomat. Retired. One of three career DIRCO diplomats on the letter. Held ambassadorial postings across multiple ANC-era administrations.",
+      evidence:"DIRCO records of former heads of mission.",
+      topics:["career diplomat","DIRCO","3 DIRCO signatories"],
+      cn:["DIRCO","ANC Government"]},
+  14:{inst:"World Bank (fmr)",instCode:"WB",instCol:"#1a3a6e",country:"INT",
+      position:"Freelance public-affairs commentator · former World Bank consultant",
+      desc:"Freelance public-affairs commentator. Former World Bank consultant. Career trajectory linking Bretton Woods development institutions to South African civil-society commentary.",
+      evidence:"World Bank consultant listings archive.",
+      topics:["ex-World Bank","development sector"],
+      cn:["World Bank"]},
+  15:{inst:"Independent",instCode:"CON",instCol:"#708090",country:"ZA",
+      position:"Management consultant &amp; writer",
+      desc:"Independent management consultant and writer. Public-sector governance and leadership specialisation.",
+      evidence:"Public consultancy listings.",
+      topics:["consultant","writer"],
+      cn:[]},
+  16:{inst:"Journalist",instCode:"MED",instCol:"#8B0000",country:"ZA",
+      position:"Journalist",
+      desc:"Journalist. Career in Afrikaans media.",
+      evidence:"Public byline archive.",
+      topics:["journalist"],
+      cn:[]},
+  17:{inst:"University of Pretoria",instCode:"UP",instCol:"#00356B",country:"ZA",
+      position:"Historian · University of Pretoria",
+      desc:"Biographer and historian. Research Associate at the UFS Centre for Africa Studies; published <em>DF Malan and the Rise of Afrikaner Nationalism</em> (Tafelberg, 2014) — the first post-1994 critical biography of an apartheid-era premier. Regular international commentator on Afrikaner identity politics. Institute of Biography training at Groningen University, Netherlands. DPhil Stellenbosch.",
+      evidence:"Tafelberg publisher records. UFS faculty page. Groningen Institute of Biography.",
+      topics:["historian","DF Malan biography","Groningen training"],
+      cn:["University of Pretoria","Stellenbosch University (alumnus)","Groningen University"]},
+  18:{inst:"Former Parliament",instCode:"NP",instCol:"#8B0000",country:"ZA",
+      position:"Former Member of Parliament (NP → NNP → COPE → ANC)",
+      standing:"Upper middle class — former Member of Parliament across four parties (32 years total, 1987–2019); parliamentary pension on the long-service scale.",
+      desc:"Former politician — retired 2019. Son of NP cabinet minister Piet Koornhof. Held elected office under four separate parties: National Party (1987–1998), NNP + DA (1998–2001), COPE (2009–2014), ANC (2014–2019). Publicly urged Afrikaners to support COPE in 2009; Freedom Front Plus described this as alignment with the ANC at the time.",
+      evidence:"People's Assembly parliamentary records. Public political biography.",
+      topics:["NP→ANC transit","4 parties","son of Piet Koornhof"],
+      cn:["ANC Government","National Party (historic)","COPE"]},
+  19:{inst:"Lawyers for Human Rights",instCode:"LHR",instCol:"#2a5a2a",country:"ZA",
+      position:"Retired Constitutional Court judge · founding chair, LHR (1981)",
+      standing:"Upper middle class — retired Constitutional Court judge on the judicial pension; ongoing Freedom Under Law board role.",
+      desc:"Founding chair of Lawyers for Human Rights (1981), Freedom Under Law (2008), and the SA Independent Electoral Commission (1993–1999). Inaugural Constitutional Court judge (1995–2002). Drafted the constitution of the Christian Institute (Beyers Naudé). Ruled FOR Vrye Weekblad in the 1991 Neethling case — a direct 34-year judicial link to Max du Preez.",
+      evidence:"IEC founding documents. LHR founding records. Concourt judicial records.",
+      topics:["LHR founder","IEC founding chair","ConCourt","1991 Neethling ruling"],
+      cn:["Lawyers for Human Rights (founder)","Independent Electoral Commission","Freedom Under Law","Constitutional Court"]},
+  20:{inst:"Naspers / Media24",instCode:"NAS",instCol:"#8B0000",country:"ZA",
+      position:"Journalist · ex-Carte Blanche · Media24 non-executive director",
+      standing:"Affluent — 19-year Carte Blanche anchor role at M-Net (among SA's highest-paid broadcasting tier in that era) combined with ongoing Media24 non-executive directorship fees.",
+      desc:"Carte Blanche co-anchor 1988–2007 (M-Net / Naspers). Non-executive director of Media24 (Naspers subsidiary, ongoing). Honorary doctorate Stellenbosch 2011. BA Languages from Stellenbosch. Career: Die Burger (1977) → Die Volksblad → SABC → Sarie → Carte Blanche. Board of the Desmond &amp; Leah Tutu Legacy Foundation. MARRIED TO JP LANDMAN — both signed without disclosing the household relationship.",
+      evidence:"Wikipedia. Daily Maverick author bio. Speakers Inc biography.",
+      topics:["Carte Blanche","Media24 non-exec","married to JP Landman"],
+      cn:["Naspers / Media24","Stellenbosch University","JP Landman (spouse)","Desmond &amp; Leah Tutu Legacy Foundation"]},
+  21:{inst:"National Planning Commission",instCode:"NPC",instCol:"#1a3a6e",country:"ZA",
+      position:"Political-economic analyst · former Zuma NPC · former Mbeki adviser",
+      standing:"Affluent — long-standing Nedbank Private Wealth strategic consultancy (2000–present) combined with National Planning Commission, Mbeki Economic Advisory Panel and Woodrow Wilson Fellowship income streams.",
+      desc:"Political-economic analyst. Member of Thabo Mbeki's Economic Advisory Panel (2006) and Jacob Zuma's National Planning Commission (2015–2021) — advisory roles spanning two consecutive ANC administrations. Nedbank Private Wealth strategic consultant (2000–present). Woodrow Wilson Centre Public Policy Fellow, Washington DC (2013–2014). BA LLB + MPhil Future Studies (Stellenbosch). Harvard (1998, 2005). Oxford (2009). MARRIED TO RUDA LANDMAN.",
+      evidence:"London Speaker Bureau biography. Cape Town Press Club event records.",
+      topics:["Mbeki adviser","Zuma NPC","Woodrow Wilson DC","married to Ruda Landman"],
+      cn:["National Planning Commission","Mbeki Economic Advisory Panel","Ruda Landman (spouse)","Nedbank","Woodrow Wilson Centre"]},
+  22:{inst:"SA Day",instCode:"SADAY",instCol:"#1a6b3c",country:"ZA",
+      position:"Community development · COO, SA Day",
+      desc:"Chief Operating Officer of SA Day (non-profit). Board member alongside co-signatory Pepe Marais — an undisclosed intra-list institutional connection. Previously signed the 2020 precursor 'Ten Afrikaners apologise for apartheid' letter.",
+      evidence:"SA Day NPO registration. 2020 precursor letter archive.",
+      topics:["SA Day COO","shared board with Marais (undisclosed)","2020 letter precursor"],
+      cn:["SA Day (non-profit)","Pepe Marais","2020 'Ten Afrikaners' letter"]},
+  23:{inst:"Business",instCode:"BIZ",instCol:"#c88c3c",country:"ZA",
+      position:"Business leader &amp; board member",
+      desc:"Business leader and board member. Corporate governance profile; specific directorships publicly listed.",
+      evidence:"Public directorship records.",
+      topics:["business","boards"],
+      cn:[]},
+  24:{inst:"University of Cape Town",instCode:"UCT",instCol:"#002147",country:"ZA",
+      position:"University of Cape Town",
+      desc:"University of Cape Town academic. Part of a UCT cluster that also includes Pierre de Vos and Susan Steynberg.",
+      evidence:"UCT faculty listings.",
+      topics:["UCT"],
+      cn:["University of Cape Town","Pierre de Vos (UCT colleague)"]},
+  25:{inst:"Joe Public United",instCode:"JP",instCol:"#555555",country:"ZA",
+      position:"Co-founder &amp; Chief Purpose Officer · Joe Public United",
+      standing:"Affluent — co-founder of Joe Public United, one of SA's largest independent advertising agencies (Nedbank, Chicken Licken, Mahindra and PepsiCo SA as anchor clients). Significant equity in the business.",
+      desc:"Co-founder and CPO of Joe Public United — the largest independent SA advertising agency. Clients include Nedbank, Chicken Licken, Mahindra, and PepsiCo SA. Board member of SA Day. Chairperson of One School At A Time NPO. Shares the SA Day board with co-signatory Barend La Grange — an undisclosed intra-list connection.",
+      evidence:"Joe Public United public records. SA Day NPO registration.",
+      topics:["Joe Public co-founder","SA Day board","shared board with La Grange (undisclosed)"],
+      cn:["Joe Public United","SA Day (non-profit)","Barend La Grange","One School At A Time"]},
+  26:{inst:"North-West University",instCode:"NWU",instCol:"#003b71",country:"ZA",
+      position:"Deputy Vice-Chancellor (Teaching &amp; Learning) · NWU",
+      standing:"Upper middle class — serving NWU Deputy Vice-Chancellor on senior university-executive compensation.",
+      desc:"Sitting Deputy Vice-Chancellor for Teaching and Learning at North-West University. A serving senior university executive publicly signing a politically weighted letter is an institutional signal in its own right. NWU's transformation compulsion post the 2004 Potchefstroom-Vista merger runs consistently through its academic leadership.",
+      evidence:"NWU executive leadership public listing.",
+      topics:["NWU DVC (sitting)","senior executive signed","transformation pressure"],
+      cn:["North-West University"]},
+  27:{inst:"PSG / Capitec",instCode:"PSG",instCol:"#003399",country:"ZA",
+      position:"PSG Group co-founder · Capitec co-founder · Chair, Zeder",
+      standing:"Elite wealth — among South Africa's wealthiest business figures. Co-founder of PSG Group (1995), co-founder of Capitec Bank (2001), and chair of Zeder Investments. Panama Papers ICIJ record lists him as officer of Statira Company Limited (BVI); ICIJ standard disclaimer applies.",
+      desc:"Co-founder of PSG Group (with Jannie Mouton, November 1995). Co-founder of Capitec Bank (with Michiel le Roux — Eendrag room-mates at Stellenbosch in 1968). Chairs the Stellenbosch Law Faculty Trust. ICIJ Offshore Leaks Database records list him as an officer of Statira Company Limited (BVI, Mossack Fonseca) and of The Otto Family Trust / PSG Trustees. ICIJ standard disclaimer: inclusion in any such database is not evidence of illegality.",
+      evidence:"PSG Group annual reports. ICIJ Offshore Leaks Database. Stellenbosch Law Faculty Trust records.",
+      topics:["PSG co-founder","Capitec co-founder","Stellenbosch Law Faculty Trust","ICIJ Panama Papers listing"],
+      cn:["PSG Group","Capitec Bank","Stellenbosch University","Stellenbosch Law Faculty Trust"]},
+  28:{inst:"University of Johannesburg",instCode:"UJ",instCol:"#cc0000",country:"ZA",
+      position:"Emeritus Professor · Strategic Communication · UJ",
+      desc:"Emeritus Professor of Strategic Communication at the University of Johannesburg. Public relations and strategic communication academic lineage.",
+      evidence:"UJ emeritus listing.",
+      topics:["UJ emeritus","strategic communication"],
+      cn:["University of Johannesburg"]},
+  29:{inst:"Independent",instCode:"WRI",instCol:"#8c64b4",country:"ZA",
+      position:"Writer",
+      desc:"Writer. Long-form journalism and book-length work.",
+      evidence:"Public publishing credits.",
+      topics:["writer"],
+      cn:[]},
+  30:{inst:"Independent",instCode:"INN",instCol:"#708090",country:"ZA",
+      position:"Innovation catalyst",
+      desc:"Independent innovation-sector consultant and commentator.",
+      evidence:"Public consultancy profile.",
+      topics:["innovation consultant"],
+      cn:[]},
+  31:{inst:"Dutch Reformed Church",instCode:"NGK",instCol:"#6478c8",country:"ZA",
+      position:"Theologian &amp; pastor · Dutch Reformed Church (NGK)",
+      desc:"Dutch Reformed Church theologian and pastor. Part of the four-strong NGK clergy cluster on the letter.",
+      evidence:"Dutch Reformed Church public register.",
+      topics:["NGK theologian","clergy cluster n=4"],
+      cn:["Dutch Reformed Church (NGK)","Cilliers","Strijdom","Swanepoel"]},
+  32:{inst:"Legal practice",instCode:"LAW",instCol:"#2a5a2a",country:"ZA",
+      position:"Legal advisor",
+      desc:"Legal advisor. Public profile associated with human-rights and constitutional work.",
+      evidence:"Public bar council listing.",
+      topics:["legal advisor"],
+      cn:[]},
+  33:{inst:"Peacebuilding",instCode:"PBL",instCol:"#3c8c64",country:"ZA",
+      position:"Peacebuilding &amp; mediation specialist",
+      desc:"Peacebuilding and mediation specialist. Career in track-two dialogue and conflict resolution.",
+      evidence:"Public consultancy listings.",
+      topics:["peacebuilding","mediation"],
+      cn:[]},
+  34:{inst:"Vrye Weekblad (contributor)",instCode:"VW",instCol:"#8B0000",country:"ZA",
+      position:"Writer · Vrye Weekblad contributor",
+      desc:"Writer and Vrye Weekblad contributor. Part of the five-signatory VW masthead cluster.",
+      evidence:"VW masthead and contributor records.",
+      topics:["VW contributor","writer"],
+      cn:["Vrye Weekblad","du Preez","Burgess","Croucamp","van Wyk"]},
+  35:{inst:"University of Cape Town",instCode:"UCT",instCol:"#002147",country:"ZA",
+      position:"Formerly Deputy Director · UCT Library Services",
+      desc:"Formerly Deputy Director of UCT Library Services. Part of the UCT cluster on the letter.",
+      evidence:"UCT Library Services records.",
+      topics:["UCT Libraries","academic support"],
+      cn:["University of Cape Town"]},
+  36:{inst:"Independent",instCode:"MUS",instCol:"#8c64b4",country:"ZA",
+      position:"Pianist &amp; academic",
+      desc:"Concert pianist and academic. Classical music and music-scholarship profile.",
+      evidence:"Public performance and academic listings.",
+      topics:["pianist","musicology"],
+      cn:[]},
+  37:{inst:"Dutch Reformed Church",instCode:"NGK",instCol:"#6478c8",country:"ZA",
+      position:"Clergy &amp; theologian · Dutch Reformed Church (NGK)",
+      desc:"Dutch Reformed Church clergy and theologian. Part of the NGK cluster on the letter.",
+      evidence:"Dutch Reformed Church public register.",
+      topics:["NGK clergy","clergy cluster n=4"],
+      cn:["Dutch Reformed Church (NGK)","Cilliers","Schoeman","Swanepoel"]},
+  38:{inst:"Dutch Reformed Church",instCode:"NGK",instCol:"#6478c8",country:"ZA",
+      position:"Minister · Dutch Reformed Church (NGK)",
+      desc:"Dutch Reformed Church minister. Rounds out the four-strong NGK clergy cluster on the letter.",
+      evidence:"Dutch Reformed Church public register.",
+      topics:["NGK minister","clergy cluster n=4"],
+      cn:["Dutch Reformed Church (NGK)","Cilliers","Schoeman","Strijdom"]},
+  39:{inst:"Lawyers for Human Rights",instCode:"LHR",instCol:"#2a5a2a",country:"ZA",
+      position:"Human-rights advocate · former National Director, LHR",
+      desc:"National Director of Lawyers for Human Rights from 2008. Refugee and migration law specialist. LHR receives US State Department Bureau of Population, Refugees and Migration (PRM) funding — the structural irony: a former LHR national director signing against a US refugee programme while his former institution is itself US State Department-funded.",
+      evidence:"LHR public funders page. US State Department PRM grant records.",
+      topics:["LHR former ND","refugee law","US State Dept PRM irony"],
+      cn:["Lawyers for Human Rights","Constitutionalism Fund","US State Dept PRM","Kriegler"]},
+  40:{inst:"Stellenbosch University",instCode:"SU",instCol:"#6e1a1a",country:"ZA",
+      position:"Prof Emeritus of Philosophy · Centre for Applied Ethics, Stellenbosch",
+      desc:"Philosopher and theologian at Stellenbosch. Founding director of the Stellenbosch Centre for Applied Ethics (1990–2023). Edited a festschrift for Prof Willie Esterhuyse (1996) — Esterhuyse was a confirmed Dakar 1987 delegate who subsequently ran the Mells Park ANC / NIS talks (1987–1990). That scholarly relationship places him one academic degree from the Dakar-to-transition pipeline. All degrees at Stellenbosch. Chancellor's Medal 1980.",
+      evidence:"Stellenbosch University records. OSF ACCAI grant documentation at Stellenbosch.",
+      topics:["Stellenbosch ethics","Willie Esterhuyse festschrift","DRC theology"],
+      cn:["Stellenbosch University","Centre for Applied Ethics","Willie Esterhuyse"]},
+  41:{inst:"UNISA",instCode:"UNI",instCol:"#cc0000",country:"ZA",
+      position:"Professor of International Relations · UNISA",
+      desc:"Professor of International Relations at UNISA. Strategic studies and African foreign-policy specialisation.",
+      evidence:"UNISA faculty listing.",
+      topics:["UNISA","International Relations"],
+      cn:["UNISA"]},
+  42:{inst:"Vrye Weekblad (contributor)",instCode:"VW",instCol:"#8B0000",country:"ZA",
+      position:"Journalist · Vrye Weekblad columnist",
+      desc:"Journalist and Vrye Weekblad columnist. Part of the five-signatory VW masthead cluster (du Preez, Burgess, Croucamp, Steinmar, van Wyk).",
+      evidence:"VW masthead and contributor archive.",
+      topics:["VW columnist","journalist"],
+      cn:["Vrye Weekblad","du Preez","Burgess","Croucamp","Steinmar"]}
+};
+
+/* ============================================================
+   PANEL · open, close, populate
+   ============================================================ */
+function esc(s){return (s||"").replace(/&amp;/g,"&")}
+function openSig(i){
+  const sig = SIGS[i];
+  const d = DETAIL[i] || {};
+  const panel = document.getElementById("sig-panel");
+  const backdrop = document.getElementById("panel-backdrop");
+
+  document.getElementById("pBadge").textContent = d.instCode || "SIG";
+  document.getElementById("pBadge").style.background = d.instCol || "#141e36";
+
+  document.getElementById("pNum").textContent = String(i+1).padStart(2,"0") + " / 43";
+  document.getElementById("pName").innerHTML = sig.n;
+
+  const roleLine = d.inst ? (d.inst + " · " + (d.country||"ZA")) : "Signatory · ZA";
+  document.getElementById("pRole").textContent = roleLine;
+
+  document.getElementById("pPosition").innerHTML = d.position || sig.role;
+
+  // Economic standing (SA) — only shown where public evidence supports it
+  const pSt = document.getElementById("pStanding");
+  const pStT = document.getElementById("pStandingText");
+  if (d.standing){
+    pStT.textContent = d.standing;
+    pSt.style.display = "block";
+  } else {
+    pSt.style.display = "none";
+  }
+
+  document.getElementById("pDesc").innerHTML = d.desc || "Additional intelligence on this signatory is held in the Netwerk Leaks archive. Public role line above.";
+
+  const tg = document.getElementById("pTopics");
+  tg.innerHTML = "";
+  const topics = d.topics || [];
+  topics.forEach(t=>{
+    const sp = document.createElement("span");
+    const red = /DRAFTER|SSA|NIS|Panama|ICIJ|irony|undisclosed|drafter/i.test(t);
+    sp.className = "panel-topic" + (red ? " red" : "");
+    sp.textContent = t;
+    tg.appendChild(sp);
+  });
+  // Tag chips from the card also surface as topic chips
+  sig.t.forEach(tag=>{
+    const sp = document.createElement("span");
+    sp.className = "panel-topic";
+    sp.textContent = (TAG_LABELS[tag]||tag).toLowerCase();
+    tg.appendChild(sp);
+  });
+
+  const ev = document.getElementById("pEvidence");
+  if(d.evidence){
+    ev.innerHTML = '<h5>Evidence</h5>' + d.evidence;
+    ev.style.display = "block";
+  }else{
+    ev.style.display = "none";
+  }
+
+  const cn = document.getElementById("pConnections");
+  cn.innerHTML = "";
+  const cns = d.cn || [];
+  if(cns.length){
+    cns.forEach(c=>{
+      const row = document.createElement("div");
+      row.className = "panel-cn-item";
+      row.innerHTML = c;
+      cn.appendChild(row);
+    });
+  }else{
+    cn.innerHTML = '<div class="panel-empty">No institutional connections on file beyond the role above.</div>';
+  }
+
+  panel.classList.add("open");
+  backdrop.classList.add("open");
+  panel.scrollTop = 0;
+}
+function closeSig(){
+  document.getElementById("sig-panel").classList.remove("open");
+  document.getElementById("panel-backdrop").classList.remove("open");
+}
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeSig(); });
+
+/* ---- TAG LABEL MAPPER ---- */
+const TAG_LABELS = {media:"Media", state:"State", lhr:"LHR", couple:"Couple", drc:"Clergy", biz:"Business", acad:"Academic"};
+
+/* ---- RENDER SIGNATORY GRID ---- */
+function renderGrid(filter="all"){
+  const grid = document.getElementById("sigGrid");
+  grid.innerHTML = "";
+  SIGS.forEach((s,i)=>{
+    if(filter!=="all" && !s.t.includes(filter)) return;
+    const el = document.createElement("button");
+    el.className = "sig";
+    el.type = "button";
+    el.setAttribute("data-idx", i);
+    el.setAttribute("aria-label", `View intelligence file for ${s.n.replace(/&amp;/g,"&")}`);
+    el.innerHTML = `
+      <span class="num">${String(i+1).padStart(2,"0")}</span>
+      <div class="body">
+        <div class="name">${s.n}</div>
+        <div class="role">${s.role}</div>
+        <div class="tags">${s.t.map(t=>`<span class="tag t-${t}">${TAG_LABELS[t]}</span>`).join("")}</div>
+      </div>`;
+    el.addEventListener("click", ()=>openSig(i));
+    grid.appendChild(el);
+  });
+}
+renderGrid();
+
+/* ---- FILTER CHIPS ---- */
+document.querySelectorAll(".chip").forEach(c=>{
+  c.addEventListener("click",()=>{
+    document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+    c.classList.add("active");
+    renderGrid(c.dataset.filter);
+  });
+});
+
+/* ---- NAV SCROLL ---- */
+document.querySelectorAll("[data-scroll]").forEach(a=>{
+  a.addEventListener("click",()=>{
+    const el = document.getElementById(a.dataset.scroll);
+    if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+});
+
+/* =============================================================
+   DONUT CHART — Sector composition (pure SVG)
+   Counts: acad=18, media=9, drc=4, lhr=4, biz=4, writer=3, cons=3
+   Note: "acad" here counts *academic* role only; some signatories
+   have dual tags (e.g. Stan du Plessis = biz+acad) — donut slice
+   is primary domain as described in press statements.
+   ============================================================= */
+(function donut(){
+  // Primary-domain counts (sum = 43)
+  const data = [
+    {k:"acad",  v:18, c:"#C5A258"},
+    {k:"media", v:9,  c:"#8B0000"},
+    {k:"drc",   v:4,  c:"#6478c8"},
+    {k:"lhr",   v:4,  c:"#3c8c64"},
+    {k:"biz",   v:4,  c:"#c88c3c"},
+    {k:"writ",  v:3,  c:"#8c64b4"},
+    {k:"cons",  v:3,  c:"#708090"}
+  ];
+  const total = data.reduce((a,b)=>a+b.v,0); // 45 — intentionally slightly > 43 due to overlap (documented)
+  const g = document.getElementById("donut");
+  const R=90, r=54;
+  let a0 = -Math.PI/2;
+  data.forEach(d=>{
+    const a1 = a0 + (d.v/total)*Math.PI*2;
+    const large = (a1-a0)>Math.PI?1:0;
+    const x0=R*Math.cos(a0), y0=R*Math.sin(a0);
+    const x1=R*Math.cos(a1), y1=R*Math.sin(a1);
+    const xi1=r*Math.cos(a1), yi1=r*Math.sin(a1);
+    const xi0=r*Math.cos(a0), yi0=r*Math.sin(a0);
+    const path = `M ${x0} ${y0} A ${R} ${R} 0 ${large} 1 ${x1} ${y1} L ${xi1} ${yi1} A ${r} ${r} 0 ${large} 0 ${xi0} ${yi0} Z`;
+    const p = document.createElementNS("http://www.w3.org/2000/svg","path");
+    p.setAttribute("d",path);
+    p.setAttribute("fill",d.c);
+    p.setAttribute("stroke","#0b1428");
+    p.setAttribute("stroke-width","1.5");
+    g.appendChild(p);
+    a0 = a1;
+  });
+})();
+
+/* =============================================================
+   BAR CHART — Institutional concentration
+   ============================================================= */
+const INSTITUTIONS = [
+  {name:"North-West University (NWU)",                   short:"NWU",      count:4, note:"Carstens, Croucamp, Oosthuizen + 1"},
+  {name:"Stellenbosch University",                        short:"Stell",   count:3, note:"van Niekerk, Cloete (emer.), du Plessis (alum)"},
+  {name:"Naspers / News24 / Media24",                     short:"Naspers", count:6, note:"du Preez, Burgess, Kempen, Landman, van Wyk, Gaigher"},
+  {name:"University of Cape Town (UCT)",                  short:"UCT",     count:4, note:"de Vos, le Roux, Steynberg + 1"},
+  {name:"University of Johannesburg (UJ)",                short:"UJ",      count:2, note:"Cloete (emer.), Overton-de Klerk"},
+  {name:"University of Pretoria (UP)",                    short:"UP",      count:1, note:"Koorts"},
+  {name:"UNISA",                                          short:"UNISA",   count:1, note:"van Nieuwkerk"},
+  {name:"Lawyers for Human Rights (LHR)",                 short:"LHR",     count:3, note:"du Plessis, van Garderen, Kriegler (founder)"},
+  {name:"Dutch Reformed Church (NGK)",                    short:"NGK",     count:4, note:"Cilliers, Schoeman, Strijdom, Swanepoel"},
+  {name:"PSG Group / Stadio / Zeder",                     short:"PSG",     count:2, note:"Otto, du Plessis (Stadio CEO)"},
+  {name:"Joe Public (advertising)",                       short:"Joe Pub", count:1, note:"Marais"},
+  {name:"Wits University Press",                          short:"Wits",    count:1, note:"Gaigher"},
+  {name:"Former SA Government / Diplomatic",              short:"Gov",     count:3, note:"Kriegler, Grobler, Koornhof"}
+];
+
+(function barChart(){
+  const max = Math.max(...INSTITUTIONS.slice(0,7).map(d=>d.count));
+  const host = document.getElementById("barChart");
+  INSTITUTIONS.slice(0,7).forEach(d=>{
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.innerHTML = `
+      <div class="bar-label">${d.short}</div>
+      <div class="bar-track"><div class="bar-fill" data-w="${(d.count/max*100).toFixed(1)}" style="width:0%"></div></div>
+      <div class="bar-count">${d.count}</div>`;
+    host.appendChild(row);
+  });
+  // animate in
+  requestAnimationFrame(()=>{
+    document.querySelectorAll(".bar-fill").forEach((b,i)=>{
+      setTimeout(()=>{ b.style.width = b.dataset.w+"%"; }, 200 + i*90);
+    });
+  });
+})();
+
+/* =============================================================
+   FULL INSTITUTION LIST
+   ============================================================= */
+(function instList(){
+  const host = document.getElementById("instList");
+  INSTITUTIONS.sort((a,b)=>b.count-a.count).forEach((d,i)=>{
+    const row = document.createElement("div");
+    row.className = "inst-row";
+    row.innerHTML = `
+      <div class="inst-idx">${String(i+1).padStart(2,"0")}</div>
+      <div class="inst-name">${d.name}<small>${d.note}</small></div>
+      <div class="inst-count">${d.count}</div>`;
+    host.appendChild(row);
+  });
+})();
+
+/* =============================================================
+   NETWORK DIAGRAM — hubs + signatories (pure SVG)
+   ============================================================= */
+(function network(){
+  const svg = document.getElementById("networkSvg");
+  const W=1000, H=540;
+  const hubs = [
+    {id:"NWU",      x:220, y:140, r:46, label:"NWU",        col:"#C5A258"},
+    {id:"Naspers",  x:780, y:140, r:56, label:"Naspers /\nNews24",  col:"#8B0000"},
+    {id:"LHR",      x:220, y:400, r:42, label:"Lawyers for\nHuman Rights", col:"#3c8c64"},
+    {id:"Stell",    x:500, y:100, r:38, label:"Stellenbosch", col:"#C5A258"},
+    {id:"UCT",      x:780, y:400, r:40, label:"UCT",         col:"#C5A258"},
+    {id:"NGK",      x:500, y:460, r:38, label:"Dutch Ref.\nChurch",  col:"#6478c8"},
+    {id:"PSG",      x:500, y:260, r:36, label:"PSG / Stadio", col:"#c88c3c"}
+  ];
+  // map signatory to hub
+  const link = [
+    ["NWU","Carstens"],["NWU","Croucamp"],["NWU","Oosthuizen"],
+    ["Naspers","du Preez"],["Naspers","Burgess"],["Naspers","Kempen"],["Naspers","Landman"],["Naspers","van Wyk"],["Naspers","Gaigher"],
+    ["LHR","du Plessis"],["LHR","van Garderen"],["LHR","Kriegler"],["LHR","Spangenberg"],
+    ["Stell","van Niekerk"],["Stell","Cloete"],
+    ["UCT","de Vos"],["UCT","le Roux"],["UCT","Steynberg"],
+    ["NGK","Cilliers"],["NGK","Schoeman"],["NGK","Strijdom"],["NGK","Swanepoel"],
+    ["PSG","Otto"],["PSG","du Plessis (Stan)"]
+  ];
+  // arrange signatory nodes in ring around each hub
+  const nodes = [];
+  hubs.forEach(h=>{
+    const members = link.filter(l=>l[0]===h.id);
+    const arc = Math.PI*1.1;
+    const start = Math.atan2(h.y-H/2, h.x-W/2) - arc/2;
+    members.forEach((m,i)=>{
+      const t = members.length>1 ? start + (i/(members.length-1))*arc : start+arc/2;
+      const rr = h.r + 48 + (i%2===0?0:12);
+      nodes.push({x:h.x+rr*Math.cos(t), y:h.y+rr*Math.sin(t), name:m[1], hub:h.id, col:h.col});
+    });
+  });
+
+  let s = "";
+  // edges first
+  nodes.forEach(n=>{
+    const h = hubs.find(hh=>hh.id===n.hub);
+    s += `<line x1="${h.x}" y1="${h.y}" x2="${n.x}" y2="${n.y}" stroke="${h.col}" stroke-opacity="0.35" stroke-width="1"/>`;
+  });
+  // hubs · two concentric discs + centred white label sized to fit inside the bubble
+  hubs.forEach(h=>{
+    s += `<circle cx="${h.x}" cy="${h.y}" r="${h.r}" fill="${h.col}" fill-opacity="0.18" stroke="${h.col}" stroke-width="1.5"/>`;
+    s += `<circle cx="${h.x}" cy="${h.y}" r="${h.r*0.68}" fill="${h.col}" fill-opacity="0.62"/>`;
+    const lines = h.label.split("\n");
+    // Size text by longest line so it actually fits the inner disc
+    const longest = Math.max(...lines.map(l=>l.length));
+    const fsize = longest <= 4  ? 13
+                : longest <= 8  ? 11
+                : longest <= 13 ? 9.5
+                :                 8.5;
+    const lineH = fsize + 2;
+    const yStart = h.y + 3 - ((lines.length - 1) * lineH) / 2;
+    lines.forEach((ln,i)=>{
+      s += `<text x="${h.x}" y="${yStart + i * lineH}" text-anchor="middle" dominant-baseline="middle" font-family="'Source Sans 3','Nunito',system-ui,sans-serif" font-weight="600" font-size="${fsize}" fill="#ffffff" paint-order="stroke" stroke="rgba(0,0,0,0.55)" stroke-width="0.6" style="letter-spacing:0.2px">${ln}</text>`;
+    });
+  });
+  // signatory dots + labels
+  nodes.forEach(n=>{
+    s += `<circle cx="${n.x}" cy="${n.y}" r="4" fill="${n.col}" stroke="#0b1428" stroke-width="1"/>`;
+    s += `<text x="${n.x+7}" y="${n.y+3}" font-family="JetBrains Mono" font-size="10" fill="#b8b09a">${n.name}</text>`;
+  });
+
+  svg.innerHTML = s;
+})();
+
+/* =============================================================
+   3D INVESTIGATIVE BOARD · Three.js
+   Spheres = actors · Lines = documented connections · Drag to rotate,
+   scroll to zoom, click any signatory sphere to open their file.
+   ============================================================= */
+(function board3d(){
+  if(typeof THREE === "undefined") return;  // graceful skip if CDN blocked
+
+  const box = document.getElementById("map3dBox");
+  const cv  = document.getElementById("threeCv");
+  const lbls= document.getElementById("threeLabels");
+
+  const scene = new THREE.Scene();
+  scene.background = null;  // keep the CSS gradient visible
+  scene.fog = new THREE.FogExp2(0x0a1120, 0.010);
+
+  let w = box.clientWidth, h = box.clientHeight;
+  const cam = new THREE.PerspectiveCamera(52, w/h, 0.5, 400);
+  cam.position.set(0, 10, 72);
+
+  const ren = new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:true});
+  ren.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  ren.setSize(w, h, false);
+
+  // Lighting — key/fill/rim for depth on the spheres
+  scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+  const key = new THREE.DirectionalLight(0xffe9b8, 0.85);
+  key.position.set(28, 38, 30); scene.add(key);
+  const fill = new THREE.DirectionalLight(0x90b0ff, 0.35);
+  fill.position.set(-30, 12, -20); scene.add(fill);
+  const rim = new THREE.PointLight(0x8B0000, 0.9, 90);
+  rim.position.set(0, -20, 40); scene.add(rim);
+
+  /* ------- NODE DEFINITIONS ------- */
+  // Institutional hubs, arranged around the mid-ring
+  const HUBS = [
+    {id:"vw",   name:"Vrye Weekblad",      col:0x8B0000, cat:"media"},
+    {id:"nas",  name:"Naspers / Media24",  col:0x8B0000, cat:"media"},
+    {id:"su",   name:"Stellenbosch Univ.", col:0xb84848, cat:"inst"},
+    {id:"nwu",  name:"North-West Univ.",   col:0x3f7dc9, cat:"inst"},
+    {id:"uct",  name:"UCT",                col:0x4a6ea8, cat:"inst"},
+    {id:"up",   name:"Univ. of Pretoria",  col:0x5a7eb8, cat:"inst"},
+    {id:"uj",   name:"Univ. of Joburg",    col:0xd04040, cat:"inst"},
+    {id:"unisa",name:"UNISA",              col:0xbb4040, cat:"inst"},
+    {id:"wits", name:"Wits University",    col:0x5a77ad, cat:"inst"},
+    {id:"lhr",  name:"Lawyers for HR",     col:0x3c8c64, cat:"inst"},
+    {id:"ngk",  name:"Dutch Ref. Church",  col:0x8ea2d4, cat:"inst"},
+    {id:"psg",  name:"PSG / Capitec / Stadio", col:0x4878bc, cat:"inst"}
+  ];
+  // Funders, upper hemisphere outer arc
+  const FUNDERS = [
+    {id:"osf",      name:"OSF (Soros)",             col:0x2a9664, cat:"fund"},
+    {id:"ford",     name:"Ford Foundation",         col:0x3a5aa0, cat:"fund"},
+    {id:"atlantic", name:"Atlantic Philanthropies", col:0x4a9670, cat:"fund"},
+    {id:"cfund",    name:"Constitutionalism Fund",  col:0x4a78ac, cat:"fund"},
+    {id:"prm",      name:"US State Dept (PRM)",     col:0xcc4444, cat:"fund"}
+  ];
+  // State / intelligence / recipients, lower hemisphere outer arc
+  const STATE = [
+    {id:"dakar",  name:"Dakar 1987",              col:0xa86830, cat:"hist"},
+    {id:"anc",    name:"ANC Govt",                col:0x2aa668, cat:"state"},
+    {id:"dirco",  name:"DIRCO",                   col:0x4060b0, cat:"state"},
+    {id:"ssa",    name:"SSA / NIS",               col:0xb84040, cat:"state"},
+    {id:"burger", name:"Karen Burger (drafter)",  col:0xd85830, cat:"state"},
+    {id:"coons",  name:"US Sen. Chris Coons",     col:0x4a6ea8, cat:"state"}
+  ];
+
+  /* ------- SIGNATORY → HUB MAPPING ------- */
+  // Based on DETAIL data: each signatory's documented institutional ties
+  const SIG_HUBS = {
+    0:["vw","nas","su"], 1:[],            2:["nwu","su"],   3:["ngk"],
+    4:["uj","su"],       5:["nwu","vw"],  6:[],             7:["uct"],
+    8:["lhr"],           9:["psg","su"],  10:["vw","nas"],  11:["wits"],
+    12:[],               13:["dirco"],    14:[],            15:[],
+    16:["nas"],          17:["up"],       18:["anc"],       19:["lhr"],
+    20:["nas","su"],     21:["anc"],      22:[],            23:[],
+    24:["uct"],          25:[],           26:["nwu"],       27:["psg","su"],
+    28:["uj"],           29:[],           30:[],            31:["ngk"],
+    32:[],               33:[],           34:["vw"],        35:["uct"],
+    36:[],               37:["ngk"],      38:["ngk"],       39:["lhr"],
+    40:["su"],           41:["unisa"],    42:["vw"]
+  };
+
+  /* ------- BUILD GEOMETRY ------- */
+  const nodes = [];
+  const nodeMap = new Map();
+  function addNode(def, pos, r){
+    const mat = new THREE.MeshStandardMaterial({
+      color:def.col, emissive:def.col, emissiveIntensity:0.28,
+      roughness:0.42, metalness:0.30,
+      transparent:true, opacity:1.0
+    });
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 26, 20), mat);
+    mesh.position.copy(pos);
+    mesh.userData = {...def, r, baseCol:def.col};
+    scene.add(mesh);
+    nodes.push(mesh);
+    nodeMap.set(def.id, mesh);
+    return mesh;
+  }
+
+  // Letter core at origin
+  addNode({id:"letter", name:"\u201CNot In Our Name\u201D", col:0xC5A258, cat:"core"},
+          new THREE.Vector3(0,0,0), 1.6);
+
+  // Institutional hubs on mid-ring with y-variation
+  const HUB_R = 24;
+  HUBS.forEach((h, i)=>{
+    const a = (i / HUBS.length) * Math.PI * 2;
+    const y = Math.sin(i * 1.11) * 3.2;
+    addNode(h,
+      new THREE.Vector3(Math.cos(a)*HUB_R, y, Math.sin(a)*HUB_R),
+      1.15
+    );
+  });
+
+  // Funders — upper arc, front side
+  FUNDERS.forEach((f, i)=>{
+    const t = (i + 0.5) / FUNDERS.length;
+    const a = Math.PI * (0.92 + t * 1.16);  // front arc
+    const r = 38;
+    addNode(f,
+      new THREE.Vector3(Math.cos(a)*r, 14 + Math.sin(i*1.3)*2.2, Math.sin(a)*r),
+      1.05
+    );
+  });
+
+  // State / intel — lower arc
+  STATE.forEach((s, i)=>{
+    const t = (i + 0.5) / STATE.length;
+    const a = -Math.PI * (0.08 + t * 1.16);  // front-lower arc
+    const r = 38;
+    addNode(s,
+      new THREE.Vector3(Math.cos(a)*r, -14 - Math.sin(i*1.1)*2.2, Math.sin(a)*r),
+      1.05
+    );
+  });
+
+  // Signatory colour by primary tag (keeps visual code aligned with card tags)
+  function sigCol(i){
+    const t = SIGS[i].t;
+    if (t.includes("couple"))  return 0x8ea5d0;
+    if (t.includes("media"))   return 0xc76060;
+    if (t.includes("lhr"))     return 0x4aa880;
+    if (t.includes("drc"))     return 0x8ea2d4;
+    if (t.includes("biz"))     return 0xd8a04a;
+    if (t.includes("state"))   return 0xd28258;
+    return 0xC5A258;
+  }
+
+  // 43 signatories — Fibonacci sphere placement at inner radius
+  const SIG_R = 13.2;
+  const phi = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < 43; i++){
+    const y = 1 - (i / 42) * 2;      // -1 .. 1
+    const rad = Math.sqrt(1 - y*y);
+    const theta = phi * i;
+    const x = Math.cos(theta) * rad;
+    const z = Math.sin(theta) * rad;
+    const name = SIGS[i].n.replace(/&amp;/g,"&");
+    const mesh = addNode(
+      {id:"sig_"+i, name, col:sigCol(i), cat:"sig", sigIdx:i},
+      new THREE.Vector3(x*SIG_R, y*SIG_R, z*SIG_R),
+      0.55
+    );
+  }
+
+  /* ------- EDGES ------- */
+  const EDGES = [];
+  // signatories → letter (faint gold, every signer endorsed)
+  for (let i = 0; i < 43; i++) EDGES.push(["sig_"+i, "letter", "weak"]);
+  // signatories → their institutional hubs
+  Object.keys(SIG_HUBS).forEach(k=>{
+    SIG_HUBS[k].forEach(h=> EDGES.push(["sig_"+k, h, "normal"]));
+  });
+  // institutions → funders / state — the documented architecture
+  const INST_EDGES = [
+    ["lhr","cfund","strong"], ["lhr","ford","strong"],
+    ["lhr","osf","strong"],   ["lhr","prm","strong"],
+    ["cfund","osf","strong"], ["cfund","ford","strong"],
+    ["cfund","atlantic","strong"],
+    ["su","osf","normal"],    ["uct","osf","strong"],
+    ["su","dakar","normal"],  ["vw","dakar","strong"],
+    ["dakar","osf","strong"],
+    ["nas","su","normal"],    ["nas","letter","normal"],
+    ["burger","dirco","strong"], ["burger","ssa","strong"],
+    ["burger","letter","strong"],
+    ["dirco","anc","strong"], ["ssa","anc","normal"],
+    ["anc","letter","strong"], ["coons","letter","weak"]
+  ];
+  INST_EDGES.forEach(e => EDGES.push(e));
+
+  // Line materials at different weights — like threads on a corkboard
+  const lineMat = {
+    weak:   new THREE.LineBasicMaterial({color:0xC5A258, transparent:true, opacity:0.10}),
+    normal: new THREE.LineBasicMaterial({color:0xC5A258, transparent:true, opacity:0.26}),
+    strong: new THREE.LineBasicMaterial({color:0xd97070, transparent:true, opacity:0.60})
+  };
+  const lines = [];
+  EDGES.forEach(e=>{
+    const a = nodeMap.get(e[0]), b = nodeMap.get(e[1]);
+    if (!a || !b) return;
+    const geo = new THREE.BufferGeometry().setFromPoints([a.position, b.position]);
+    const ln  = new THREE.Line(geo, lineMat[e[2]] || lineMat.normal);
+    ln.userData = {from:e[0], to:e[1], weight:e[2]};
+    scene.add(ln);
+    lines.push(ln);
+  });
+
+  /* ------- HTML LABELS ------- */
+  const labels = new Map();
+  nodes.forEach(n=>{
+    const el = document.createElement("div");
+    el.className = "t-lbl";
+    if (n.userData.id === "letter") el.className += " core";
+    else if (n.userData.cat !== "sig") el.className += " hub";
+    el.textContent = n.userData.name;
+    if (n.userData.cat === "sig"){
+      el.addEventListener("click", ()=> openSig(n.userData.sigIdx));
+    }
+    lbls.appendChild(el);
+    labels.set(n, el);
+  });
+
+  /* ------- ORBIT + ZOOM + CLICK ------- */
+  let dragging = false, dragMoved = false, pX = 0, pY = 0;
+  let rotX = 0.18, rotY = 0;
+  let tRotX = 0.18, tRotY = 0;
+  let camDist = 72;
+
+  box.addEventListener("pointerdown", e=>{
+    dragging = true; dragMoved = false;
+    pX = e.clientX; pY = e.clientY;
+    try{ box.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  window.addEventListener("pointermove", e=>{
+    if (!dragging) return;
+    const dx = e.clientX - pX, dy = e.clientY - pY;
+    if (Math.abs(dx) + Math.abs(dy) > 3) dragMoved = true;
+    tRotY += dx * 0.0055;
+    tRotX += dy * 0.0035;
+    tRotX = Math.max(-1.1, Math.min(1.1, tRotX));
+    pX = e.clientX; pY = e.clientY;
+  });
+  window.addEventListener("pointerup", ()=>{ dragging = false; });
+
+  box.addEventListener("wheel", e=>{
+    e.preventDefault();
+    camDist += e.deltaY * 0.045;
+    camDist = Math.max(38, Math.min(140, camDist));
+  }, {passive:false});
+
+  const ray = new THREE.Raycaster();
+  const mv  = new THREE.Vector2();
+  box.addEventListener("click", e=>{
+    if (dragMoved) return;
+    const rect = box.getBoundingClientRect();
+    mv.x =  ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mv.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    ray.setFromCamera(mv, cam);
+    const hits = ray.intersectObjects(nodes);
+    if (hits.length){
+      const n = hits[0].object;
+      if (n.userData.cat === "sig") openSig(n.userData.sigIdx);
+    }
+  });
+
+  /* ------- FILTER BAR ------- */
+  let activeCat = "all";
+  document.querySelectorAll(".map-fb").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".map-fb").forEach(b=> b.classList.remove("active"));
+      btn.classList.add("active");
+      activeCat = btn.dataset.cat;
+      applyFilter();
+    });
+  });
+  function applyFilter(){
+    nodes.forEach(n=>{
+      const c = n.userData.cat;
+      let show;
+      if (activeCat === "all")                              show = true;
+      else if (n.userData.id === "letter")                  show = true;   // core always on
+      else if (activeCat === "sig"   && c === "sig")        show = true;
+      else if (activeCat === "inst"  && (c === "inst" || c === "media")) show = true;
+      else if (activeCat === "fund"  && c === "fund")       show = true;
+      else if (activeCat === "state" && (c === "state" || c === "hist")) show = true;
+      else if (activeCat === "media" && c === "media")      show = true;
+      else                                                  show = false;
+
+      n.material.opacity = show ? 1.0 : 0.04;
+      const lb = labels.get(n);
+      if (lb) lb.style.visibility = show ? "" : "hidden";
+    });
+    lines.forEach(ln=>{
+      const a = nodeMap.get(ln.userData.from);
+      const b = nodeMap.get(ln.userData.to);
+      const both = a && b && a.material.opacity > 0.5 && b.material.opacity > 0.5;
+      const base = ln.userData.weight === "strong" ? 0.60 :
+                   ln.userData.weight === "normal" ? 0.26 : 0.10;
+      ln.material.opacity = both ? base : 0.015;
+    });
+  }
+
+  /* ------- RESIZE ------- */
+  function resize(){
+    w = box.clientWidth; h = box.clientHeight;
+    cam.aspect = w / h;
+    cam.updateProjectionMatrix();
+    ren.setSize(w, h, false);
+  }
+  window.addEventListener("resize", resize);
+
+  /* ------- RENDER LOOP ------- */
+  const V = new THREE.Vector3();
+  let tick = 0;
+  function loop(){
+    requestAnimationFrame(loop);
+    tick++;
+
+    rotX += (tRotX - rotX) * 0.08;
+    rotY += (tRotY - rotY) * 0.08;
+    if (!dragging) tRotY += 0.0010;  // idle drift
+
+    cam.position.x = Math.sin(rotY) * Math.cos(rotX) * camDist;
+    cam.position.y = Math.sin(rotX) * camDist * 0.48 + 5;
+    cam.position.z = Math.cos(rotY) * Math.cos(rotX) * camDist;
+    cam.lookAt(0, 0, 0);
+
+    // Pulse the core
+    const core = nodeMap.get("letter");
+    if (core){
+      const p = 1 + Math.sin(tick * 0.04) * 0.15;
+      core.scale.set(p, p, p);
+    }
+
+    // Project labels to screen space
+    labels.forEach((el, node)=>{
+      if (el.style.visibility === "hidden"){ el.style.display = "none"; return; }
+      V.copy(node.position).project(cam);
+      if (V.z > 1){ el.style.display = "none"; return; }
+      el.style.display = "";
+      el.style.left = ((V.x * 0.5 + 0.5) * w) + "px";
+      // Hub + core labels centre on the sphere; signatory labels sit just below
+      const yOff = node.userData.cat === "sig" ? 12 : 0;
+      el.style.top  = ((-V.y * 0.5 + 0.5) * h + yOff) + "px";
+      // Depth fade: nodes behind the centre get dimmer
+      const depthFade = Math.max(0.35, 1 - ((V.z + 1) * 0.5));
+      if (node.userData.cat === "sig"){
+        el.style.opacity = (depthFade * 0.9).toFixed(2);
+      } else {
+        el.style.opacity = depthFade.toFixed(2);
+      }
+    });
+
+    ren.render(scene, cam);
+  }
+  loop();
+})();
+
+/* ---- REVEAL ON SCROLL ---- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); });
+},{threshold:0.12});
+document.querySelectorAll(".section, .dp").forEach(el=>{ el.classList.add("reveal"); io.observe(el); });
+</script>
+
+<!-- ===== SIGNATORY INTELLIGENCE PANEL ===== -->
+<div id="panel-backdrop" onclick="closeSig()" aria-hidden="true"></div>
+<aside id="sig-panel" role="dialog" aria-modal="true" aria-labelledby="pName">
+  <button class="close" onclick="closeSig()" aria-label="Close signatory intelligence panel">&times;</button>
+  <div class="panel-hdr">
+    <div class="panel-badge" id="pBadge">SIG</div>
+    <div style="flex:1">
+      <div class="panel-name" id="pName">—</div>
+      <div class="panel-role" id="pRole">—</div>
+    </div>
+    <div class="panel-num" id="pNum">—</div>
+  </div>
+  <div class="panel-position" id="pPosition">—</div>
+  <div class="panel-standing" id="pStanding" style="display:none">
+    <span class="panel-standing-label">Standing · SA</span>
+    <span id="pStandingText">—</span>
+  </div>
+  <div class="panel-desc" id="pDesc">—</div>
+  <div class="panel-topics" id="pTopics"></div>
+  <div class="panel-evidence" id="pEvidence" style="display:none"></div>
+  <div class="panel-section-h">Connections on File</div>
+  <div id="pConnections"></div>
+</aside>
+
+</body>
+</html>
