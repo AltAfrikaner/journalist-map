@@ -309,22 +309,20 @@ img{max-width:100%;display:block}
 /* ===== 3D MAP (Three.js investigative board) ===== */
 .map-3d{
   margin-top:32px;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(197,162,88,.06), transparent 70%),
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(139,0,0,.07), transparent 70%),
-    linear-gradient(180deg,#050a18,#0b1428);
-  border:1px solid var(--line);
+  background:linear-gradient(160deg,#f5f1e9 0%,#ede8de 60%,#e8e2d6 100%);
+  border:1px solid rgba(197,162,88,.4);
   height:680px;
   position:relative;overflow:hidden;
   cursor:grab;
+  box-shadow:inset 0 0 100px rgba(197,162,88,.04);
 }
 .map-3d:active{cursor:grabbing}
 .map-3d .label{
   position:absolute;top:20px;left:24px;z-index:5;
   font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--gold);
-  padding:6px 11px;border:1px solid var(--line-strong);
-  background:rgba(11,20,40,.82);backdrop-filter:blur(6px);
+  text-transform:uppercase;color:var(--navy);
+  padding:6px 11px;border:1px solid rgba(27,42,74,.22);
+  background:rgba(245,241,233,.92);backdrop-filter:blur(6px);
   pointer-events:none;
 }
 .map-3d canvas{width:100%;height:100%;display:block;position:absolute;top:0;left:0}
@@ -337,61 +335,57 @@ img{max-width:100%;display:block}
 .map-fb{
   font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;
   text-transform:uppercase;padding:6px 12px;
-  background:rgba(11,20,40,.82);backdrop-filter:blur(6px);
-  color:var(--ink-dim);border:1px solid var(--line);
-  cursor:pointer;transition:all .2s ease;font-weight:500;
+  background:rgba(245,241,233,.92);backdrop-filter:blur(6px);
+  color:var(--navy-3);border:1px solid rgba(27,42,74,.22);
+  cursor:pointer;transition:all .2s ease;font-weight:600;
 }
-.map-fb:hover{color:var(--gold);border-color:var(--gold)}
-.map-fb.active{color:var(--navy);background:var(--gold);border-color:var(--gold)}
+.map-fb:hover{color:var(--navy);border-color:var(--navy)}
+.map-fb.active{color:#f5f1e9;background:var(--navy-3);border-color:var(--navy-3)}
 
 .map-legend{
   position:absolute;bottom:20px;left:24px;z-index:5;
   display:flex;flex-wrap:wrap;gap:14px 18px;
   font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-dim);
-  padding:8px 14px;background:rgba(11,20,40,.78);
-  border:1px solid var(--line);backdrop-filter:blur(6px);
+  text-transform:uppercase;color:var(--navy-3);
+  padding:8px 14px;background:rgba(245,241,233,.90);
+  border:1px solid rgba(27,42,74,.18);backdrop-filter:blur(6px);
   max-width:calc(100% - 48px);
 }
 .map-legend > div{display:flex;align-items:center;gap:6px}
-.map-legend .ld{
-  width:8px;height:8px;border-radius:50%;
-  box-shadow:0 0 6px currentColor;
-}
+.map-legend .ld{width:8px;height:8px;border-radius:50%;box-shadow:0 0 6px currentColor}
 
 #threeLabels{
   position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden;
 }
+/* Signatory labels: float below small sphere on light bg → dark navy text */
 .t-lbl{
   position:absolute;transform:translate(-50%,-50%);
   font-family:'Source Sans 3','Nunito',system-ui,sans-serif;font-size:9.5px;
-  color:#ffffff;white-space:nowrap;
+  color:#1B2A4A;white-space:nowrap;
   padding:1px 5px;border-radius:3px;
   background:transparent;
-  text-shadow:0 1px 2px rgba(0,0,0,.95), 0 0 4px rgba(0,0,0,.7);
+  text-shadow:0 0.5px 1px rgba(245,241,233,.9);
   pointer-events:auto;cursor:pointer;
   transition:background .15s ease, color .15s ease;
-  font-weight:500;letter-spacing:.1px;
+  font-weight:600;letter-spacing:.1px;
 }
-.t-lbl:hover{background:rgba(197,162,88,.9);color:var(--navy);text-shadow:none}
+.t-lbl:hover{background:rgba(27,42,74,.9);color:#f5f1e9;text-shadow:none}
+/* Hub labels: centered on darker colored spheres → white text still works */
 .t-lbl.hub{
   font-family:'Source Sans 3','Nunito',system-ui,sans-serif;
   font-size:8.5px;letter-spacing:.2px;
   text-transform:none;font-weight:700;color:#ffffff;
-  padding:0 4px;background:transparent;
-  border:none;
-  text-shadow:0 1px 2px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,.8), 0 0 3px rgba(0,0,0,.9);
+  padding:0 4px;background:transparent;border:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.6), 0 0 4px rgba(0,0,0,.45);
   border-radius:3px;
   max-width:120px;white-space:normal;text-align:center;line-height:1.08;
 }
 .t-lbl.hub:hover{background:rgba(255,255,255,.92);color:var(--navy);text-shadow:none}
 .t-lbl.core{
   font-family:var(--serif);font-size:11.5px;font-weight:700;
-  color:#ffffff;font-style:italic;
-  padding:1px 6px;background:transparent;
-  border:none;
-  text-shadow:0 1px 3px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,.8);
-  letter-spacing:.2px;
+  color:#1B2A4A;font-style:italic;
+  padding:1px 6px;background:transparent;border:none;
+  text-shadow:0 1px 2px rgba(245,241,233,.8);letter-spacing:.2px;
 }
 
 /* ===== PROVENANCE BLOCK ===== */
@@ -1657,201 +1651,417 @@ const INSTITUTIONS = [
 
 /* =============================================================
    3D INVESTIGATIVE BOARD · Three.js
-   Spheres = actors · Lines = documented connections · Drag to rotate,
-   scroll to zoom, click any signatory sphere to open their file.
+   Light paper background · darker richer sphere colours ·
+   Every bubble clickable (signatories → bio · institutions /
+   funders / state → intel brief)
    ============================================================= */
 (function board3d(){
-  if(typeof THREE === "undefined") return;  // graceful skip if CDN blocked
+  if(typeof THREE === "undefined") return;
 
   const box = document.getElementById("map3dBox");
   const cv  = document.getElementById("threeCv");
   const lbls= document.getElementById("threeLabels");
 
+  /* ── SCENE: warm paper background ── */
   const scene = new THREE.Scene();
-  scene.background = null;  // keep the CSS gradient visible
-  scene.fog = new THREE.FogExp2(0x0a1120, 0.010);
+  scene.background = new THREE.Color(0xede9e0);
+  scene.fog = new THREE.Fog(0xede9e0, 90, 230);
 
   let w = box.clientWidth, h = box.clientHeight;
-  const cam = new THREE.PerspectiveCamera(52, w/h, 0.5, 400);
+  const cam = new THREE.PerspectiveCamera(50, w/h, 0.5, 400);
   cam.position.set(0, 10, 72);
 
-  const ren = new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:true});
+  const ren = new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:false});
   ren.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   ren.setSize(w, h, false);
 
-  // Lighting — key/fill/rim for depth on the spheres
-  scene.add(new THREE.AmbientLight(0xffffff, 0.45));
-  const key = new THREE.DirectionalLight(0xffe9b8, 0.85);
-  key.position.set(28, 38, 30); scene.add(key);
-  const fill = new THREE.DirectionalLight(0x90b0ff, 0.35);
-  fill.position.set(-30, 12, -20); scene.add(fill);
-  const rim = new THREE.PointLight(0x8B0000, 0.9, 90);
-  rim.position.set(0, -20, 40); scene.add(rim);
+  /* Daytime lighting — brighter, warmer, less dramatic */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+  const key = new THREE.DirectionalLight(0xfff4e0, 0.78);
+  key.position.set(30, 40, 25); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xdde4ff, 0.40);
+  fill.position.set(-25, 10, -20); scene.add(fill);
 
-  /* ------- NODE DEFINITIONS ------- */
-  // Institutional hubs, arranged around the mid-ring
+  /* ── NODE DEFINITIONS ── */
   const HUBS = [
-    {id:"vw",   name:"Vrye Weekblad",      col:0x8B0000, cat:"media"},
-    {id:"nas",  name:"Naspers / Media24",  col:0x8B0000, cat:"media"},
-    {id:"su",   name:"Stellenbosch Univ.", col:0xb84848, cat:"inst"},
-    {id:"nwu",  name:"North-West Univ.",   col:0x3f7dc9, cat:"inst"},
-    {id:"uct",  name:"UCT",                col:0x4a6ea8, cat:"inst"},
-    {id:"up",   name:"Univ. of Pretoria",  col:0x5a7eb8, cat:"inst"},
-    {id:"uj",   name:"Univ. of Joburg",    col:0xd04040, cat:"inst"},
-    {id:"unisa",name:"UNISA",              col:0xbb4040, cat:"inst"},
-    {id:"wits", name:"Wits University",    col:0x5a77ad, cat:"inst"},
-    {id:"lhr",  name:"Lawyers for HR",     col:0x3c8c64, cat:"inst"},
-    {id:"ngk",  name:"Dutch Ref. Church",  col:0x8ea2d4, cat:"inst"},
-    {id:"psg",  name:"PSG / Capitec / Stadio", col:0x4878bc, cat:"inst"}
+    {id:"vw",   name:"Vrye Weekblad",         col:0x8B1010, cat:"media"},
+    {id:"nas",  name:"Naspers / Media24",      col:0x7a0808, cat:"media"},
+    {id:"su",   name:"Stellenbosch Univ.",     col:0x9a2222, cat:"inst"},
+    {id:"nwu",  name:"North-West Univ.",       col:0x1a4a9a, cat:"inst"},
+    {id:"uct",  name:"UCT",                    col:0x1a306e, cat:"inst"},
+    {id:"up",   name:"Univ. of Pretoria",      col:0x203870, cat:"inst"},
+    {id:"uj",   name:"Univ. of Joburg",        col:0xa01818, cat:"inst"},
+    {id:"unisa",name:"UNISA",                  col:0x881818, cat:"inst"},
+    {id:"wits", name:"Wits University",        col:0x1e3870, cat:"inst"},
+    {id:"lhr",  name:"Lawyers for HR",         col:0x145e2e, cat:"inst"},
+    {id:"ngk",  name:"Dutch Ref. Church",      col:0x3848a8, cat:"inst"},
+    {id:"psg",  name:"PSG / Capitec / Stadio", col:0x0e3888, cat:"inst"}
   ];
-  // Funders, upper hemisphere outer arc
   const FUNDERS = [
-    {id:"osf",      name:"OSF (Soros)",             col:0x2a9664, cat:"fund"},
-    {id:"ford",     name:"Ford Foundation",         col:0x3a5aa0, cat:"fund"},
-    {id:"atlantic", name:"Atlantic Philanthropies", col:0x4a9670, cat:"fund"},
-    {id:"cfund",    name:"Constitutionalism Fund",  col:0x4a78ac, cat:"fund"},
-    {id:"prm",      name:"US State Dept (PRM)",     col:0xcc4444, cat:"fund"}
+    {id:"osf",      name:"OSF (Soros)",              col:0x0a6030, cat:"fund"},
+    {id:"ford",     name:"Ford Foundation",          col:0x0a2e80, cat:"fund"},
+    {id:"atlantic", name:"Atlantic Philanthropies",  col:0x0e5838, cat:"fund"},
+    {id:"cfund",    name:"Constitutionalism Fund",   col:0x1a4a90, cat:"fund"},
+    {id:"prm",      name:"US State Dept (PRM)",      col:0x9a1818, cat:"fund"}
   ];
-  // State / intelligence / recipients, lower hemisphere outer arc
   const STATE = [
-    {id:"dakar",  name:"Dakar 1987",              col:0xa86830, cat:"hist"},
-    {id:"anc",    name:"ANC Govt",                col:0x2aa668, cat:"state"},
-    {id:"dirco",  name:"DIRCO",                   col:0x4060b0, cat:"state"},
-    {id:"ssa",    name:"SSA / NIS",               col:0xb84040, cat:"state"},
-    {id:"burger", name:"Karen Burger (drafter)",  col:0xd85830, cat:"state"},
-    {id:"coons",  name:"US Sen. Chris Coons",     col:0x4a6ea8, cat:"state"}
+    {id:"dakar",  name:"Dakar 1987",             col:0x7a3808, cat:"hist"},
+    {id:"anc",    name:"ANC Government",         col:0x0a6828, cat:"state"},
+    {id:"dirco",  name:"DIRCO",                  col:0x1a3080, cat:"state"},
+    {id:"ssa",    name:"SSA / NIS",              col:0x8a1010, cat:"state"},
+    {id:"burger", name:"Karen Burger (drafter)", col:0xaa2a08, cat:"state"},
+    {id:"coons",  name:"US Sen. Chris Coons",    col:0x1a3888, cat:"state"}
   ];
 
-  /* ------- SIGNATORY → HUB MAPPING ------- */
-  // Based on DETAIL data: each signatory's documented institutional ties
+  /* ── SIGNATORY → HUB MAPPING ── */
   const SIG_HUBS = {
-    0:["vw","nas","su"], 1:[],            2:["nwu","su"],   3:["ngk"],
-    4:["uj","su"],       5:["nwu","vw"],  6:[],             7:["uct"],
-    8:["lhr"],           9:["psg","su"],  10:["vw","nas"],  11:["wits"],
-    12:[],               13:["dirco"],    14:[],            15:[],
-    16:["nas"],          17:["up"],       18:["anc"],       19:["lhr"],
-    20:["nas","su"],     21:["anc"],      22:[],            23:[],
-    24:["uct"],          25:[],           26:["nwu"],       27:["psg","su"],
-    28:["uj"],           29:[],           30:[],            31:["ngk"],
-    32:[],               33:[],           34:["vw"],        35:["uct"],
-    36:[],               37:["ngk"],      38:["ngk"],       39:["lhr"],
-    40:["su"],           41:["unisa"],    42:["vw"]
+    0:["vw","nas","su"], 1:[],           2:["nwu","su"],  3:["ngk"],
+    4:["uj","su"],       5:["nwu","vw"], 6:[],            7:["uct"],
+    8:["lhr"],           9:["psg","su"], 10:["vw","nas"], 11:["wits"],
+    12:[],               13:["dirco"],   14:[],           15:[],
+    16:["nas"],          17:["up"],      18:["anc"],      19:["lhr"],
+    20:["nas","su"],     21:["anc"],     22:[],           23:[],
+    24:["uct"],          25:[],          26:["nwu"],      27:["psg","su"],
+    28:["uj"],           29:[],          30:[],           31:["ngk"],
+    32:[],               33:[],          34:["vw"],       35:["uct"],
+    36:[],               37:["ngk"],     38:["ngk"],      39:["lhr"],
+    40:["su"],           41:["unisa"],   42:["vw"]
   };
 
-  /* ------- BUILD GEOMETRY ------- */
+  /* ── INTELLIGENCE BRIEFS for non-signatory nodes ── */
+  const ND_INFO = {
+    letter:{
+      badge:"43", badgeCol:"#9a7020", type:"The Letter · Core",
+      role:"Open letter · October 2025",
+      position:"Netwerk24 23 Oct · News24 25 Oct · ANC endorsed within 48 h · 43 distinct signatories headlined as 44",
+      desc:"Published on Netwerk24 (23 October 2025) and News24 (25 October 2025) as a letter by 44 prominent Afrikaners. In reality, 43 distinct individuals signed — Louise du Plessis of Lawyers for Human Rights appears twice under two separate unit titles, inflating the headline number by one. The ANC government endorsed the letter within 48 hours. Drafted by Karen Burger, a DIRCO director whose career spans the National Intelligence Service and State Security Agency.",
+      topics:["43 distinct / 44 headlined","ANC endorsed within 48 hours","drafter: Karen Burger (DIRCO/SSA)","PAIA application filed Dec 2025"],
+      evidence:"News24 25 Oct 2025. Smile 90.4FM 27 Oct 2025. ANC endorsement statement 25 Oct 2025. AfriForum attribution of Burger, November 2025.",
+      cn:["Karen Burger (drafter)","ANC Government","43 signatories","OSF / Constitutionalism Fund"]},
+    vw:{
+      badge:"VW", badgeCol:"#8B1010", type:"Media · Institution",
+      role:"Vrye Weekblad — independent Afrikaans newspaper, 1988–2025",
+      position:"5 signatories on one masthead: du Preez, Burgess, Croucamp, Steinmar, van Wyk",
+      desc:"Vrye Weekblad was founded in 1988 after the Dakar Conference. Beyers Naudé reportedly urged Max du Preez to launch it at the conference. Bankrupted in 1994 by the Neethling defamation case (co-signatory Johann Kriegler ruled in VW's favour as judge). Relaunched 2019. Closed 28 March 2025. Five signatories of the October 2025 letter were directly affiliated with VW — making it the most tightly coupled editorial node in the letter network.",
+      topics:["5 signatories on one masthead","founded post-Dakar 1988","closed 28 March 2025","Neethling 1994 bankruptcy"],
+      evidence:"VW masthead records. 1991 Neethling ruling confirms Kriegler's judicial role. OSF 30-Year Report (March 2025).",
+      cn:["Max du Preez (founder)","Anneliese Burgess","Piet Croucamp","Dakar Conference 1987","Naspers / Media24"]},
+    nas:{
+      badge:"NAS", badgeCol:"#7a0808", type:"Media · Corporate",
+      role:"Naspers / Media24 / Netwerk24 / News24",
+      position:"Published the letter. Ruda Landman is a current Media24 non-executive director. 6 signatory links.",
+      desc:"Naspers-owned Media24 published the letter on Netwerk24 (23 Oct) and News24 (25 Oct). Historically the Afrikaner nationalist press complex that supported NP rule. Co-signatory Ruda Landman sits as a non-executive director on the Media24 board — an institutional connection not disclosed in the letter's rollout. Six signatories have direct Naspers or Media24 lineage.",
+      topics:["published the letter","Ruda Landman Media24 NED (undisclosed)","NP-origins conglomerate","6 signatory links"],
+      evidence:"Publication dates on both mastheads. Ruda Landman Media24 directorship disclosed in annual reports.",
+      cn:["Ruda Landman (Media24 NED)","Max du Preez","Anneliese Burgess","Stellenbosch University"]},
+    su:{
+      badge:"SU", badgeCol:"#9a2222", type:"Institution · University",
+      role:"Stellenbosch University — central gravity node",
+      position:"11+ signatory links · OSF ACCAI $1M+ · IDRC R20M Wasserman CINIA grant (2026)",
+      desc:"Stellenbosch is the central gravity node of the entire network with eleven or more signatory connections. It receives OSF Africa Climate Change Adaptation Initiative (ACCAI) funding ($1M+ direct, $5.79M leveraged) and houses the Centre for International and National Affairs from an R20 million IDRC grant (January 2026) — the same institute run by Prof Herman Wasserman whose work feeds into the Africa Check → IFCN → Meta content-moderation pipeline. Historically the intellectual heartland of Afrikaner nationalism; post-1994 transformation pivot.",
+      topics:["11+ signatory links","OSF ACCAI $1M+","IDRC R20M Wasserman grant","Dakar intellectual origin"],
+      evidence:"Stellenbosch University records. OSF ACCAI documentation. IDRC press release January 2026.",
+      cn:["OSF (Soros)","IDRC (Canada)","Africa Check","Naspers / Media24","Dakar Conference 1987"]},
+    nwu:{
+      badge:"NWU", badgeCol:"#1a4a9a", type:"Institution · University",
+      role:"North-West University — 3 direct signatory links",
+      position:"Carstens (emeritus), Croucamp (associate prof), Oosthuizen (sitting DVC). Formed 2004 from Potchefstroom-Vista merger.",
+      desc:"North-West University has three direct signatory links. Wannie Carstens is an emeritus professor who simultaneously chairs three Afrikaans cultural bodies. Piet Croucamp (associate professor) is the most operationally significant external-facing node — he confirmed direct talks with US Senator Chris Coons. Martin Oosthuizen is the serving Deputy Vice-Chancellor for Teaching and Learning. NWU was formed in 2004 from the merger of the historically Calvinist-Afrikaner Potchefstroom University with Vista University.",
+      topics:["3 signatory links","sitting DVC signed","Coons connection via Croucamp","transformation compulsion post-2004"],
+      evidence:"NWU faculty listings. France 24, 16 November 2025 (Croucamp on Coons).",
+      cn:["Piet Croucamp","Wannie Carstens","Martin Oosthuizen","US Sen. Chris Coons"]},
+    uct:{
+      badge:"UCT", badgeCol:"#1a306e", type:"Institution · University",
+      role:"University of Cape Town — 3 signatory links",
+      position:"Claude Leon Chair (de Vos). Karl Popper Bursary Fund (Soros, 1979) — UCT was the first OSF contact in SA.",
+      desc:"Three signatories connect to UCT: Pierre de Vos (Claude Leon Chair in Constitutional Governance, CASAC advisory council), Andre le Roux (faculty), and Susan Steynberg (former Deputy Director, Library Services). UCT is historically notable as an open university that defied NP segregation. The Karl Popper Bursary Fund established at UCT by George Soros in 1979 was the founding act of what became the OSF-SA network.",
+      topics:["Claude Leon Chair de Vos","OSF origin 1979 (Karl Popper)","3 signatory links","CASAC connection"],
+      evidence:"UCT faculty. OSF 30-Year Report March 2025.",
+      cn:["Pierre de Vos","OSF (Soros)","CASAC","Constitutionalism Fund"]},
+    up:{
+      badge:"UP", badgeCol:"#203870", type:"Institution · University",
+      role:"University of Pretoria",
+      position:"Lindie Koorts — historian, biographer of DF Malan.",
+      desc:"The University of Pretoria link is Lindie Koorts, historian and author of DF Malan and the Rise of Afrikaner Nationalism (Tafelberg, 2014) — the first post-1994 critical biography of an apartheid-era premier. She received Institute of Biography training at Groningen University, Netherlands.",
+      topics:["Lindie Koorts historian","DF Malan biography 2014"],
+      evidence:"UP faculty. Tafelberg publisher records.",
+      cn:["Lindie Koorts"]},
+    uj:{
+      badge:"UJ", badgeCol:"#a01818", type:"Institution · University",
+      role:"University of Johannesburg — 2 signatory links",
+      position:"Fanie Cloete (emeritus) and Nina Overton-de Klerk (emeritus, Strategic Communication). Former RAU.",
+      desc:"Two signatories link to UJ via emeritus positions: Prof Fanie Cloete (public policy and governance) and Nina Overton-de Klerk (strategic communication). UJ was formed from the historically Afrikaner Rand Afrikaans University (RAU).",
+      topics:["2 emeritus signatories","former RAU"],
+      evidence:"UJ faculty listings.",
+      cn:["Fanie Cloete","Nina Overton-de Klerk"]},
+    unisa:{
+      badge:"UNISA", badgeCol:"#881818", type:"Institution · University",
+      role:"UNISA — 1 signatory link",
+      position:"Prof Anthoni van Nieuwkerk (International Relations).",
+      desc:"University of South Africa link: Prof Anthoni van Nieuwkerk, Professor of International Relations. UNISA is the world's largest distance-learning university by enrolment.",
+      topics:["Anthoni van Nieuwkerk","International Relations"],
+      evidence:"UNISA faculty listing.",
+      cn:["Anthoni van Nieuwkerk"]},
+    wits:{
+      badge:"WITS", badgeCol:"#1e3870", type:"Institution · University",
+      role:"Wits University Press / Wits University",
+      position:"Louis Gaigher (commissioning editor). Wits houses Africa Check.",
+      desc:"Two connections: Louis Gaigher as commissioning editor of Wits University Press, and the University of the Witwatersrand as the institutional home of Africa Check — the OSF-funded fact-checking organisation whose outputs feed into the IFCN → Meta content-moderation pipeline. Africa Check partners with News24 and Daily Maverick.",
+      topics:["Louis Gaigher editor","Africa Check at Wits","OSF → Africa Check → Meta pipeline"],
+      evidence:"Wits University Press listings. Africa Check About page.",
+      cn:["Louis Gaigher","Africa Check","OSF (Soros)"]},
+    lhr:{
+      badge:"LHR", badgeCol:"#145e2e", type:"Institution · NGO",
+      role:"Lawyers for Human Rights — three-generation institutional spine",
+      position:"Kriegler (1981 founder) → van Garderen (ND 2008) → du Plessis (current staff). US State Dept PRM funded.",
+      desc:"LHR is the most institutionally significant node in the letter. Founded in 1981 by Johann Kriegler (also founding chair IEC and ConCourt judge). Jacob van Garderen served as National Director from 2008. Louise du Plessis is current staff and appears twice on the letter under two unit titles — creating the 44-vs-43 anomaly. Funders include the US State Department Bureau of Population, Refugees and Migration (structural irony: opposing Trump refugee policy while receiving US refugee agency funding), the Ford Foundation ($3M+), OSF, and the $29M Constitutionalism Fund.",
+      topics:["3-generation institutional spine","44-vs-43 anomaly source","US State Dept PRM funder","$29M Constitutionalism Fund grantee"],
+      evidence:"LHR public funders page. Devex grant records. US State Dept PRM confirmed grantee.",
+      cn:["Johann Kriegler (founder)","Jacob van Garderen (fmr ND)","Louise du Plessis","Constitutionalism Fund","Ford Foundation","OSF (Soros)","US State Dept (PRM)"]},
+    ngk:{
+      badge:"NGK", badgeCol:"#3848a8", type:"Institution · Church",
+      role:"Dutch Reformed Church — 4-strong clergy cluster",
+      position:"Cilliers, Schoeman, Strijdom, Swanepoel. Largest single institutional cluster after universities.",
+      desc:"Four Dutch Reformed Church ministers signed the letter — Rev Andries Cilliers, Dr Jurie Schoeman, Rev Dr Petrus Strijdom, and Rev Rudi Swanepoel — forming the largest single institutional cluster after the universities. The NGK is historically described as the National Party at prayer. Their collective presence on a letter explicitly opposing Afrikaner refugee claims is therefore notable.",
+      topics:["4 NGK clergy","historically NP-aligned","largest single cluster after universities"],
+      evidence:"Dutch Reformed Church public register. Historical documentation of NGK-NP alignment.",
+      cn:["Andries Cilliers","Jurie Schoeman","Petrus Strijdom","Rudi Swanepoel"]},
+    psg:{
+      badge:"PSG", badgeCol:"#0e3888", type:"Corporate · Finance",
+      role:"PSG Group / Capitec Bank / Stadio Holdings",
+      position:"Chris Otto (PSG + Capitec co-founder, Panama Papers). Stan du Plessis (Stadio CEO, DHET-regulated).",
+      desc:"Two signatories link to the PSG corporate complex: Chris Otto (co-founder of PSG Group 1995, co-founder of Capitec Bank with Michiel le Roux) and Dr Stan du Plessis (CEO of Stadio Holdings, a PSG-linked private higher-education company regulated by DHET). Chris Otto appears in the ICIJ Offshore Leaks Database as officer of Statira Company Limited (BVI, Mossack Fonseca) and The Otto Family Trust. ICIJ standard disclaimer applies: inclusion is not evidence of illegality.",
+      topics:["Otto: PSG + Capitec co-founder","Stadio CEO Stan du Plessis","ICIJ Panama Papers listing","DHET regulatory dependency"],
+      evidence:"PSG Group annual reports. ICIJ Offshore Leaks Database. Stadio integrated annual reports.",
+      cn:["Chris Otto","Stan du Plessis","Stellenbosch University"]},
+    osf:{
+      badge:"OSF", badgeCol:"#0a6030", type:"Funder · Philanthropy",
+      role:"Open Society Foundation — South Africa",
+      position:"$230M+ invested in SA over 30 years · co-funder $29M Constitutionalism Fund · ACCAI grant Stellenbosch · Africa Check 12%",
+      desc:"George Soros founded OSF-SA in Cape Town in April 1993. The founding chairman was Frederik van Zyl Slabbert — who also co-organised the 1987 Dakar Conference. OSF-SA has invested more than $230 million in South Africa over 30 years (OSF 30-Year Report, March 2025). It co-funds the $29M Constitutionalism Fund, directly funds Africa Check (12%), and granted the ACCAI climate grant to Stellenbosch. The founding board included Helen Zille before she resigned.",
+      topics:["$230M+ SA over 30 years","co-funder $29M Constitutionalism Fund","Africa Check 12%","Van Zyl Slabbert founding chair"],
+      evidence:"OSF 30-Year Report March 2025 (Alex Soros foreword).",
+      cn:["Constitutionalism Fund","Africa Check","Stellenbosch University","Dakar Conference 1987","Ford Foundation","Atlantic Philanthropies"]},
+    ford:{
+      badge:"FORD", badgeCol:"#0a2e80", type:"Funder · Philanthropy",
+      role:"Ford Foundation",
+      position:"$3M+ to Lawyers for Human Rights 2007–2024 · co-funder $29M Constitutionalism Fund",
+      desc:"The Ford Foundation has been active in South Africa for more than 60 years. It directed $3M+ to Lawyers for Human Rights from 2007 to 2024 (Foundation 990 filings). It co-funds the $29M Constitutionalism Fund alongside OSF and Atlantic Philanthropies.",
+      topics:["60+ years in SA","$3M+ to LHR","$29M Constitutionalism Fund co-funder"],
+      evidence:"InfluenceWatch Ford Foundation grants. Ford Foundation press release February 2015.",
+      cn:["Lawyers for Human Rights","Constitutionalism Fund","OSF (Soros)","Atlantic Philanthropies"]},
+    atlantic:{
+      badge:"ATL", badgeCol:"#0e5838", type:"Funder · Philanthropy",
+      role:"Atlantic Philanthropies",
+      position:"$355M+ in SA · closed 2016 · $29M Constitutionalism Fund as exit mechanism",
+      desc:"Atlantic Philanthropies (founded 1982 by Chuck Feeney) invested more than $355 million in South Africa. It closed its SA programme in 2016 but co-designed the $29M Constitutionalism Fund as an exit mechanism — to sustain constitutionalism work after its departure.",
+      topics:["$355M+ SA total","closed 2016","Constitutionalism Fund as exit mechanism"],
+      evidence:"Atlantic Philanthropies SA investment page. CF announcement February 2015.",
+      cn:["Constitutionalism Fund","OSF (Soros)","Ford Foundation"]},
+    cfund:{
+      badge:"CF", badgeCol:"#1a4a90", type:"Funder · Joint Fund",
+      role:"Constitutionalism Fund — $29M joint fund",
+      position:"OSF + Ford + Atlantic. 60+ grantees. LHR primary grantee. Chaired by Justice Yvonne Mokgoro.",
+      desc:"The Joint Fund to Promote and Advance Constitutionalism in South Africa was established February 2015. Three donors: OSF, Ford Foundation, and Atlantic Philanthropies. Total committed: $29 million over 10 years. Selection panel chaired by former Constitutional Court Justice Yvonne Mokgoro. More than 60 grantees, with Lawyers for Human Rights as a primary recipient.",
+      topics:["$29M joint fund","OSF + Ford + Atlantic","LHR primary grantee","60+ grantees"],
+      evidence:"Ford Foundation press release February 2015. Constitutionalism Fund website.",
+      cn:["Lawyers for Human Rights","OSF (Soros)","Ford Foundation","Atlantic Philanthropies"]},
+    prm:{
+      badge:"PRM", badgeCol:"#9a1818", type:"Funder · US Government",
+      role:"US State Dept — Bureau of Population, Refugees and Migration",
+      position:"Confirmed LHR funder. Structural irony: LHR signed against Trump refugee programme while receiving US refugee-agency funding.",
+      desc:"The US State Department Bureau of Population, Refugees and Migration (PRM) is a confirmed funder of Lawyers for Human Rights, which provides legal assistance to refugees in South Africa. Three signatories are directly linked to LHR. Structural irony: Jacob van Garderen and Louise du Plessis signed a letter opposing the Trump refugee programme for Afrikaners while their institution receives US government refugee-assistance funding.",
+      topics:["confirmed LHR funder","refugee funding vs letter irony","US State Dept Bureau PRM"],
+      evidence:"LHR public funders page. US State Dept PRM grant records.",
+      cn:["Lawyers for Human Rights","Jacob van Garderen","Louise du Plessis"]},
+    dakar:{
+      badge:"1987", badgeCol:"#7a3808", type:"Historical Event",
+      role:"Dakar Conference 1987 — origin event of the entire network",
+      position:"July 1987, Gorée Island, Senegal. Personally financed by George Soros. Max du Preez attended; Vrye Weekblad originated here.",
+      desc:"In July 1987, 61 largely Afrikaner South Africans met the banned ANC on Gorée Island. Co-organised by Frederik van Zyl Slabbert and Alex Boraine (IDASA). According to the OSF 30-Year Report (March 2025), George Soros personally financed it at Slabbert's request — he 'agreed on the spot.' Max du Preez attended; Beyers Naudé reportedly told him there to start Vrye Weekblad. Dakar is the documented origin event of the 2025 letter network: it produced VW, cemented the Stellenbosch-OSF relationship, and established the track-two pipeline that ran through Mells Park into the 1990 transition.",
+      topics:["Soros personally financed","VW origin event","Van Zyl Slabbert + Boraine","du Preez attended","Beyers Naudé"],
+      evidence:"OSF 30-Year Report March 2025 — Alex Soros: 'he agreed on the spot.' SA History Online (Dakar attendee list).",
+      cn:["OSF (Soros)","Max du Preez","Vrye Weekblad","Stellenbosch University","ANC Government"]},
+    anc:{
+      badge:"ANC", badgeCol:"#0a6828", type:"State · Political party",
+      role:"ANC Government — endorsed the letter within 48 hours",
+      position:"25 October 2025 ANC statement by spokesperson Mahlengi Bhengu. Presidency amplified same day.",
+      desc:"The ANC endorsed the letter within 48 hours of its News24 publication. National spokesperson Mahlengi Bhengu issued a supporting statement on 25 October 2025. Presidency spokesperson Vincent Magwenya amplified it the same day. Three career DIRCO diplomats are among the 43 signatories. The speed of endorsement — and the drafter's DIRCO/SSA career background — is the primary argument that the letter's rollout was coordinated with or anticipated by the ANC government.",
+      topics:["endorsed within 48 hours","Bhengu endorsement statement","Presidency amplified","3 DIRCO diplomat signatories"],
+      evidence:"ANC statement 25 October 2025. Presidency social media 25 October 2025.",
+      cn:["DIRCO","Karen Burger (drafter)","Nick Koornhof","Gert Grobler","JP Landman (NPC)"]},
+    dirco:{
+      badge:"DIRCO", badgeCol:"#1a3080", type:"State · Government",
+      role:"Dept of International Relations and Cooperation",
+      position:"DG: Zane Dangor (April 2022). Karen Burger a director in DG's office. 3 DIRCO diplomat signatories.",
+      desc:"DIRCO's Director-General is Zane Dangor (appointed April 2022). His career spans: International Human Rights Law Group (Washington DC) → Dept Social Development DG → Soul City COO → UNFPA → DIRCO. He architected SA's ICJ genocide case against Israel and served as SA G20 Sherpa 2025. Karen Burger — the letter's drafter — is a director in Dangor's office. Three career DIRCO diplomats are among the signatories.",
+      topics:["DG Dangor: ICJ-Israel architect","Karen Burger in DG's office","3 DIRCO diplomat signatories","G20 Sherpa 2025"],
+      evidence:"DIRCO official biography Dangor. News24 March 2022 appointment. Rapport and Maroela Media (2025) on Burger.",
+      cn:["Karen Burger (drafter)","ANC Government","SSA / NIS","Zane Dangor"]},
+    ssa:{
+      badge:"SSA", badgeCol:"#8a1010", type:"State · Intelligence",
+      role:"State Security Agency / National Intelligence Service (NIS)",
+      position:"Burger career: NIS (apartheid) → SSA (post-1994). PAIA application filed Dec 2025 — 30-day window elapsed, no reply.",
+      desc:"The NIS was the apartheid intelligence apparatus, restructured post-1994 into the SSA. Karen Burger — the letter's drafter — has a career linking both. A PAIA application was filed in December 2025 seeking confirmation of whether the SSA and DIRCO were funding journalists to run coordinated narrative campaigns against civil society. The government's statutory 30-day response window elapsed with no reply as of April 2026.",
+      topics:["Burger NIS→SSA career","PAIA filed Dec 2025","30-day window elapsed with no reply","intelligence–media nexus"],
+      evidence:"PAIA application December 2025. Government 30-day window elapsed. Rapport and Maroela Media (2025) on Burger's career.",
+      cn:["Karen Burger (drafter)","DIRCO","ANC Government"]},
+    burger:{
+      badge:"KB", badgeCol:"#aa2a08", type:"State · Drafter",
+      role:"Karen Burger — DIRCO director · letter drafter (not a signatory)",
+      position:"Career: NIS → SSA → SA Embassy Washington DC (Political Counsellor) → DIRCO DG's office. Active as of April 2026.",
+      desc:"Karen Burger is not a signatory but is identified by AfriForum (November 2025) as the coordinator who drafted the letter and approached several potential signatories. Active DIRCO official as of April 2026 (per public embassy directory). Her documented career spans the National Intelligence Service (NIS), the State Security Agency (SSA), the SA Embassy in Washington DC as Political Counsellor through end 2024, and her current role as a director in Director-General Dangor's office. France 24 (16 November 2025) confirmed a government employee was involved; AfriForum disputes the 'personal capacity' framing.",
+      topics:["DRAFTER — not a signatory","NIS → SSA → Embassy DC → DIRCO","identified by AfriForum","France 24 confirmed government employee"],
+      evidence:"Rapport and Maroela Media (2025). France 24, 16 November 2025. SA Embassy Washington DC public directory, April 2026. AfriForum public statement November 2025.",
+      cn:["DIRCO","SSA / NIS","ANC Government","US Sen. Chris Coons"]},
+    coons:{
+      badge:"COONS", badgeCol:"#1a3888", type:"State · Foreign",
+      role:"US Senator Chris Coons — Senate Foreign Relations Committee",
+      position:"Piet Croucamp confirmed direct talks with Coons (France 24, 16 Nov 2025). Converts letter from op-ed to US Senate input.",
+      desc:"Senator Chris Coons (Democrat, Delaware) sits on the Senate Foreign Relations Committee. Piet Croucamp confirmed on the record to France 24 (16 November 2025) that he held direct talks with Coons about the Trump administration's claims regarding South Africa. This is the most operationally consequential foreign connection in the letter network: it places the letter as direct input into US Senate deliberations on SA policy, not merely domestic commentary.",
+      topics:["Senate Foreign Relations Committee","direct Croucamp talks confirmed","converts letter to US Senate input","most consequential foreign connection"],
+      evidence:"France 24, 16 November 2025 — Croucamp on-the-record statement.",
+      cn:["Piet Croucamp","Karen Burger (drafter)","DIRCO"]}
+  };
+
+  /* ── openNode: panel for non-signatory nodes ── */
+  function openNode(id){
+    const d = ND_INFO[id];
+    if (!d) return;
+    const panel = document.getElementById("sig-panel");
+    const backdrop = document.getElementById("panel-backdrop");
+
+    const badge = document.getElementById("pBadge");
+    badge.textContent = d.badge || "ORG";
+    badge.style.background = d.badgeCol || "#1B2A4A";
+    badge.style.fontSize = d.badge && d.badge.length > 5 ? "7px" : "10px";
+
+    document.getElementById("pNum").textContent = d.type || "Node";
+    document.getElementById("pName").textContent = d.name || id;
+    document.getElementById("pRole").textContent = d.role || "";
+    document.getElementById("pPosition").innerHTML = d.position || "";
+
+    document.getElementById("pStanding").style.display = "none";
+    document.getElementById("pDesc").innerHTML = d.desc || "";
+
+    const tg = document.getElementById("pTopics");
+    tg.innerHTML = "";
+    (d.topics || []).forEach(t=>{
+      const sp = document.createElement("span");
+      const red = /DRAFTER|SSA|NIS|Panama|irony|undisclosed|48 hours|PAIA/i.test(t);
+      sp.className = "panel-topic" + (red ? " red" : "");
+      sp.textContent = t;
+      tg.appendChild(sp);
+    });
+
+    const ev = document.getElementById("pEvidence");
+    if (d.evidence){
+      ev.innerHTML = '<h5>Evidence</h5>' + d.evidence;
+      ev.style.display = "block";
+    } else { ev.style.display = "none"; }
+
+    const cn = document.getElementById("pConnections");
+    cn.innerHTML = "";
+    (d.cn || []).forEach(c=>{
+      const row = document.createElement("div");
+      row.className = "panel-cn-item";
+      row.innerHTML = c;
+      cn.appendChild(row);
+    });
+
+    panel.classList.add("open");
+    backdrop.classList.add("open");
+    panel.scrollTop = 0;
+  }
+
+  /* ── BUILD GEOMETRY ── */
   const nodes = [];
   const nodeMap = new Map();
   function addNode(def, pos, r){
     const mat = new THREE.MeshStandardMaterial({
-      color:def.col, emissive:def.col, emissiveIntensity:0.28,
-      roughness:0.42, metalness:0.30,
+      color:def.col, emissive:def.col, emissiveIntensity:0.06,
+      roughness:0.45, metalness:0.25,
       transparent:true, opacity:1.0
     });
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 26, 20), mat);
     mesh.position.copy(pos);
-    mesh.userData = {...def, r, baseCol:def.col};
+    mesh.userData = {...def, r};
     scene.add(mesh);
     nodes.push(mesh);
     nodeMap.set(def.id, mesh);
     return mesh;
   }
 
-  // Letter core at origin
+  /* Core — letter at origin */
   addNode({id:"letter", name:"\u201CNot In Our Name\u201D", col:0xC5A258, cat:"core"},
           new THREE.Vector3(0,0,0), 1.6);
 
-  // Institutional hubs on mid-ring with y-variation
+  /* Hubs on mid-ring */
   const HUB_R = 24;
   HUBS.forEach((h, i)=>{
     const a = (i / HUBS.length) * Math.PI * 2;
     const y = Math.sin(i * 1.11) * 3.2;
-    addNode(h,
-      new THREE.Vector3(Math.cos(a)*HUB_R, y, Math.sin(a)*HUB_R),
-      1.15
-    );
+    addNode(h, new THREE.Vector3(Math.cos(a)*HUB_R, y, Math.sin(a)*HUB_R), 1.15);
   });
 
-  // Funders — upper arc, front side
+  /* Funders — upper-front arc */
   FUNDERS.forEach((f, i)=>{
     const t = (i + 0.5) / FUNDERS.length;
-    const a = Math.PI * (0.92 + t * 1.16);  // front arc
-    const r = 38;
-    addNode(f,
-      new THREE.Vector3(Math.cos(a)*r, 14 + Math.sin(i*1.3)*2.2, Math.sin(a)*r),
-      1.05
-    );
+    const a = Math.PI * (0.92 + t * 1.16);
+    addNode(f, new THREE.Vector3(Math.cos(a)*38, 14 + Math.sin(i*1.3)*2.2, Math.sin(a)*38), 1.05);
   });
 
-  // State / intel — lower arc
+  /* State — lower-front arc */
   STATE.forEach((s, i)=>{
     const t = (i + 0.5) / STATE.length;
-    const a = -Math.PI * (0.08 + t * 1.16);  // front-lower arc
-    const r = 38;
-    addNode(s,
-      new THREE.Vector3(Math.cos(a)*r, -14 - Math.sin(i*1.1)*2.2, Math.sin(a)*r),
-      1.05
-    );
+    const a = -Math.PI * (0.08 + t * 1.16);
+    addNode(s, new THREE.Vector3(Math.cos(a)*38, -14 - Math.sin(i*1.1)*2.2, Math.sin(a)*38), 1.05);
   });
 
-  // Signatory colour by primary tag (keeps visual code aligned with card tags)
+  /* Signatory colour by tag */
   function sigCol(i){
     const t = SIGS[i].t;
-    if (t.includes("couple"))  return 0x8ea5d0;
-    if (t.includes("media"))   return 0xc76060;
-    if (t.includes("lhr"))     return 0x4aa880;
-    if (t.includes("drc"))     return 0x8ea2d4;
-    if (t.includes("biz"))     return 0xd8a04a;
-    if (t.includes("state"))   return 0xd28258;
-    return 0xC5A258;
+    if (t.includes("couple"))  return 0x7888c8;
+    if (t.includes("media"))   return 0x9a2020;
+    if (t.includes("lhr"))     return 0x186030;
+    if (t.includes("drc"))     return 0x3848a8;
+    if (t.includes("biz"))     return 0xb87010;
+    if (t.includes("state"))   return 0xb85020;
+    return 0xb8920a;
   }
 
-  // 43 signatories — Fibonacci sphere placement at inner radius
-  const SIG_R = 13.2;
-  const phi = Math.PI * (3 - Math.sqrt(5));
+  /* 43 signatories — Fibonacci sphere */
+  const SIG_R = 13.2, phi = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < 43; i++){
-    const y = 1 - (i / 42) * 2;      // -1 .. 1
+    const y = 1 - (i / 42) * 2;
     const rad = Math.sqrt(1 - y*y);
     const theta = phi * i;
-    const x = Math.cos(theta) * rad;
-    const z = Math.sin(theta) * rad;
-    const name = SIGS[i].n.replace(/&amp;/g,"&");
-    const mesh = addNode(
-      {id:"sig_"+i, name, col:sigCol(i), cat:"sig", sigIdx:i},
-      new THREE.Vector3(x*SIG_R, y*SIG_R, z*SIG_R),
+    addNode(
+      {id:"sig_"+i, name:SIGS[i].n.replace(/&amp;/g,"&"), col:sigCol(i), cat:"sig", sigIdx:i},
+      new THREE.Vector3(Math.cos(theta)*rad*SIG_R, y*SIG_R, Math.sin(theta)*rad*SIG_R),
       0.55
     );
   }
 
-  /* ------- EDGES ------- */
+  /* ── EDGES ── */
   const EDGES = [];
-  // signatories → letter (faint gold, every signer endorsed)
   for (let i = 0; i < 43; i++) EDGES.push(["sig_"+i, "letter", "weak"]);
-  // signatories → their institutional hubs
   Object.keys(SIG_HUBS).forEach(k=>{
     SIG_HUBS[k].forEach(h=> EDGES.push(["sig_"+k, h, "normal"]));
   });
-  // institutions → funders / state — the documented architecture
-  const INST_EDGES = [
-    ["lhr","cfund","strong"], ["lhr","ford","strong"],
-    ["lhr","osf","strong"],   ["lhr","prm","strong"],
-    ["cfund","osf","strong"], ["cfund","ford","strong"],
-    ["cfund","atlantic","strong"],
-    ["su","osf","normal"],    ["uct","osf","strong"],
-    ["su","dakar","normal"],  ["vw","dakar","strong"],
-    ["dakar","osf","strong"],
-    ["nas","su","normal"],    ["nas","letter","normal"],
-    ["burger","dirco","strong"], ["burger","ssa","strong"],
-    ["burger","letter","strong"],
-    ["dirco","anc","strong"], ["ssa","anc","normal"],
-    ["anc","letter","strong"], ["coons","letter","weak"]
-  ];
-  INST_EDGES.forEach(e => EDGES.push(e));
+  [["lhr","cfund","strong"],["lhr","ford","strong"],["lhr","osf","strong"],["lhr","prm","strong"],
+   ["cfund","osf","strong"],["cfund","ford","strong"],["cfund","atlantic","strong"],
+   ["su","osf","normal"],["uct","osf","strong"],["su","dakar","normal"],["vw","dakar","strong"],
+   ["dakar","osf","strong"],["nas","su","normal"],["nas","letter","normal"],
+   ["burger","dirco","strong"],["burger","ssa","strong"],["burger","letter","strong"],
+   ["dirco","anc","strong"],["ssa","anc","normal"],["anc","letter","strong"],["coons","letter","weak"]
+  ].forEach(e=>EDGES.push(e));
 
-  // Line materials at different weights — like threads on a corkboard
+  /* Lines — darker tones for light background */
   const lineMat = {
-    weak:   new THREE.LineBasicMaterial({color:0xC5A258, transparent:true, opacity:0.10}),
-    normal: new THREE.LineBasicMaterial({color:0xC5A258, transparent:true, opacity:0.26}),
-    strong: new THREE.LineBasicMaterial({color:0xd97070, transparent:true, opacity:0.60})
+    weak:   new THREE.LineBasicMaterial({color:0x3a3020, transparent:true, opacity:0.12}),
+    normal: new THREE.LineBasicMaterial({color:0x1B2A4A, transparent:true, opacity:0.28}),
+    strong: new THREE.LineBasicMaterial({color:0x8B0000, transparent:true, opacity:0.58})
   };
   const lines = [];
   EDGES.forEach(e=>{
@@ -1860,11 +2070,10 @@ const INSTITUTIONS = [
     const geo = new THREE.BufferGeometry().setFromPoints([a.position, b.position]);
     const ln  = new THREE.Line(geo, lineMat[e[2]] || lineMat.normal);
     ln.userData = {from:e[0], to:e[1], weight:e[2]};
-    scene.add(ln);
-    lines.push(ln);
+    scene.add(ln); lines.push(ln);
   });
 
-  /* ------- HTML LABELS ------- */
+  /* ── HTML LABELS — ALL nodes clickable ── */
   const labels = new Map();
   nodes.forEach(n=>{
     const el = document.createElement("div");
@@ -1872,18 +2081,19 @@ const INSTITUTIONS = [
     if (n.userData.id === "letter") el.className += " core";
     else if (n.userData.cat !== "sig") el.className += " hub";
     el.textContent = n.userData.name;
+    /* Click: signatory → bio panel · all others → intel brief */
     if (n.userData.cat === "sig"){
       el.addEventListener("click", ()=> openSig(n.userData.sigIdx));
+    } else {
+      el.addEventListener("click", ()=> openNode(n.userData.id));
     }
     lbls.appendChild(el);
     labels.set(n, el);
   });
 
-  /* ------- ORBIT + ZOOM + CLICK ------- */
+  /* ── ORBIT + ZOOM + CLICK ── */
   let dragging = false, dragMoved = false, pX = 0, pY = 0;
-  let rotX = 0.18, rotY = 0;
-  let tRotX = 0.18, tRotY = 0;
-  let camDist = 72;
+  let rotX = 0.18, rotY = 0, tRotX = 0.18, tRotY = 0, camDist = 72;
 
   box.addEventListener("pointerdown", e=>{
     dragging = true; dragMoved = false;
@@ -1893,36 +2103,36 @@ const INSTITUTIONS = [
   window.addEventListener("pointermove", e=>{
     if (!dragging) return;
     const dx = e.clientX - pX, dy = e.clientY - pY;
-    if (Math.abs(dx) + Math.abs(dy) > 3) dragMoved = true;
-    tRotY += dx * 0.0055;
-    tRotX += dy * 0.0035;
+    if (Math.abs(dx)+Math.abs(dy) > 3) dragMoved = true;
+    tRotY += dx * 0.0055; tRotX += dy * 0.0035;
     tRotX = Math.max(-1.1, Math.min(1.1, tRotX));
     pX = e.clientX; pY = e.clientY;
   });
   window.addEventListener("pointerup", ()=>{ dragging = false; });
-
   box.addEventListener("wheel", e=>{
     e.preventDefault();
     camDist += e.deltaY * 0.045;
     camDist = Math.max(38, Math.min(140, camDist));
-  }, {passive:false});
+  },{passive:false});
 
+  /* Raycaster: every sphere opens a panel */
   const ray = new THREE.Raycaster();
   const mv  = new THREE.Vector2();
   box.addEventListener("click", e=>{
     if (dragMoved) return;
     const rect = box.getBoundingClientRect();
-    mv.x =  ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    mv.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    mv.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
+    mv.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
     ray.setFromCamera(mv, cam);
     const hits = ray.intersectObjects(nodes);
     if (hits.length){
       const n = hits[0].object;
       if (n.userData.cat === "sig") openSig(n.userData.sigIdx);
+      else openNode(n.userData.id);
     }
   });
 
-  /* ------- FILTER BAR ------- */
+  /* ── FILTER BAR ── */
   let activeCat = "all";
   document.querySelectorAll(".map-fb").forEach(btn=>{
     btn.addEventListener("click", ()=>{
@@ -1936,15 +2146,14 @@ const INSTITUTIONS = [
     nodes.forEach(n=>{
       const c = n.userData.cat;
       let show;
-      if (activeCat === "all")                              show = true;
-      else if (n.userData.id === "letter")                  show = true;   // core always on
-      else if (activeCat === "sig"   && c === "sig")        show = true;
-      else if (activeCat === "inst"  && (c === "inst" || c === "media")) show = true;
-      else if (activeCat === "fund"  && c === "fund")       show = true;
-      else if (activeCat === "state" && (c === "state" || c === "hist")) show = true;
-      else if (activeCat === "media" && c === "media")      show = true;
-      else                                                  show = false;
-
+      if (activeCat === "all")                                   show = true;
+      else if (n.userData.id === "letter")                       show = true;
+      else if (activeCat === "sig"   && c === "sig")             show = true;
+      else if (activeCat === "inst"  && (c==="inst"||c==="media")) show = true;
+      else if (activeCat === "fund"  && c === "fund")            show = true;
+      else if (activeCat === "state" && (c==="state"||c==="hist")) show = true;
+      else if (activeCat === "media" && c === "media")           show = true;
+      else                                                       show = false;
       n.material.opacity = show ? 1.0 : 0.04;
       const lb = labels.get(n);
       if (lb) lb.style.visibility = show ? "" : "hidden";
@@ -1953,67 +2162,52 @@ const INSTITUTIONS = [
       const a = nodeMap.get(ln.userData.from);
       const b = nodeMap.get(ln.userData.to);
       const both = a && b && a.material.opacity > 0.5 && b.material.opacity > 0.5;
-      const base = ln.userData.weight === "strong" ? 0.60 :
-                   ln.userData.weight === "normal" ? 0.26 : 0.10;
+      const base = ln.userData.weight==="strong"?0.58:ln.userData.weight==="normal"?0.28:0.12;
       ln.material.opacity = both ? base : 0.015;
     });
   }
 
-  /* ------- RESIZE ------- */
-  function resize(){
+  /* ── RESIZE ── */
+  window.addEventListener("resize", ()=>{
     w = box.clientWidth; h = box.clientHeight;
-    cam.aspect = w / h;
-    cam.updateProjectionMatrix();
+    cam.aspect = w / h; cam.updateProjectionMatrix();
     ren.setSize(w, h, false);
-  }
-  window.addEventListener("resize", resize);
+  });
 
-  /* ------- RENDER LOOP ------- */
+  /* ── RENDER LOOP ── */
   const V = new THREE.Vector3();
   let tick = 0;
   function loop(){
     requestAnimationFrame(loop);
     tick++;
-
     rotX += (tRotX - rotX) * 0.08;
     rotY += (tRotY - rotY) * 0.08;
-    if (!dragging) tRotY += 0.0010;  // idle drift
-
+    if (!dragging) tRotY += 0.0010;
     cam.position.x = Math.sin(rotY) * Math.cos(rotX) * camDist;
     cam.position.y = Math.sin(rotX) * camDist * 0.48 + 5;
     cam.position.z = Math.cos(rotY) * Math.cos(rotX) * camDist;
     cam.lookAt(0, 0, 0);
 
-    // Pulse the core
     const core = nodeMap.get("letter");
-    if (core){
-      const p = 1 + Math.sin(tick * 0.04) * 0.15;
-      core.scale.set(p, p, p);
-    }
+    if (core){ const p = 1 + Math.sin(tick*.04)*.15; core.scale.set(p,p,p); }
 
-    // Project labels to screen space
     labels.forEach((el, node)=>{
       if (el.style.visibility === "hidden"){ el.style.display = "none"; return; }
       V.copy(node.position).project(cam);
       if (V.z > 1){ el.style.display = "none"; return; }
       el.style.display = "";
-      el.style.left = ((V.x * 0.5 + 0.5) * w) + "px";
-      // Hub + core labels centre on the sphere; signatory labels sit just below
+      el.style.left = ((V.x*.5+.5)*w) + "px";
       const yOff = node.userData.cat === "sig" ? 12 : 0;
-      el.style.top  = ((-V.y * 0.5 + 0.5) * h + yOff) + "px";
-      // Depth fade: nodes behind the centre get dimmer
-      const depthFade = Math.max(0.35, 1 - ((V.z + 1) * 0.5));
-      if (node.userData.cat === "sig"){
-        el.style.opacity = (depthFade * 0.9).toFixed(2);
-      } else {
-        el.style.opacity = depthFade.toFixed(2);
-      }
+      el.style.top  = ((-V.y*.5+.5)*h + yOff) + "px";
+      const fade = Math.max(0.35, 1 - ((V.z+1)*.5));
+      el.style.opacity = (fade * (node.userData.cat==="sig" ? 0.9 : 1)).toFixed(2);
     });
 
     ren.render(scene, cam);
   }
   loop();
 })();
+
 
 /* ---- REVEAL ON SCROLL ---- */
 const io = new IntersectionObserver(entries=>{
