@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The ADL Decides What Hate Is. Donors Decide Who Qualifies. | Netwerk Leaks | Alt Afrikaner</title>
+<meta name="description" content="The ADL claims universal authority to define ethnic persecution. South Africa's own Human Rights Commission convicted Julius Malema of hate speech against white men. The US Government documented 447 farm murders. The ADL's response: a webpage calling it white supremacist conspiracy theory. This investigation follows the donor money.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B2A4A;
+  --red:#8B0000;
+  --gold:#C5A258;
+  --cream:#F5F0E8;
+  --dark:#0D1520;
+  --mid:#243552;
+  --light-gold:#E8D5A3;
+  --text-light:#B8C4D4;
+  --text-muted:#7A8FA8;
+  --white:#FFFFFF;
+  --border:#2A3F5F;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--dark);
+  color:var(--cream);
+  font-family:'Source Sans 3',sans-serif;
+  font-weight:400;
+  line-height:1.75;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:1000;
+  opacity:.35;
+}
+
+nav{
+  position:sticky;
+  top:0;
+  background:rgba(13,21,32,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  z-index:500;
+  padding:0 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:64px;
+}
+
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:.02em;
+  text-decoration:none;
+}
+
+.nav-logo span{
+  color:var(--text-muted);
+  font-weight:300;
+  font-size:.9rem;
+  margin-left:.5rem;
+}
+
+.nav-links{
+  display:flex;
+  gap:1.5rem;
+  list-style:none;
+}
+
+.nav-links a{
+  color:var(--text-muted);
+  text-decoration:none;
+  font-size:.85rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--gold)}
+
+/* HERO */
+.hero{
+  background:linear-gradient(180deg,#0D1520 0%,#111E30 100%);
+  padding:5rem 2rem 4rem;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--red),transparent);
+}
+
+.hero::after{
+  content:'';
+  position:absolute;
+  top:0;right:0;
+  width:50%;height:100%;
+  background:radial-gradient(ellipse at top right,rgba(139,0,0,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.container{
+  max-width:1000px;
+  margin:0 auto;
+  padding:0 1.5rem;
+}
+
+.tag-row{
+  display:flex;
+  gap:.6rem;
+  flex-wrap:wrap;
+  margin-bottom:1.4rem;
+}
+
+.tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  padding:.3rem .8rem;
+  border-radius:3px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+.tag-red{background:rgba(139,0,0,.25);border:1px solid rgba(139,0,0,.5);color:#E87070}
+.tag-gold{background:rgba(197,162,88,.15);border:1px solid rgba(197,162,88,.4);color:var(--gold)}
+.tag-blue{background:rgba(27,42,74,.6);border:1px solid var(--border);color:var(--text-light)}
+.tag-green{background:rgba(20,80,40,.3);border:1px solid rgba(40,140,70,.4);color:#7EC89A}
+
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,5.5vw,3.8rem);
+  font-weight:900;
+  line-height:1.1;
+  color:var(--white);
+  margin-bottom:1rem;
+  letter-spacing:-.02em;
+}
+
+.hero h1 em{
+  font-style:normal;
+  color:var(--gold);
+}
+
+.hero-sub{
+  font-size:1.15rem;
+  color:var(--text-light);
+  max-width:680px;
+  line-height:1.65;
+  margin-bottom:2rem;
+}
+
+.hero-meta{
+  display:flex;
+  gap:2rem;
+  flex-wrap:wrap;
+}
+
+.meta-item{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  color:var(--text-muted);
+  letter-spacing:.05em;
+}
+
+.meta-item strong{
+  color:var(--gold);
+  display:block;
+  font-size:.7rem;
+  text-transform:uppercase;
+  margin-bottom:.2rem;
+}
+
+/* VERDICT BANNER */
+.verdict-banner{
+  background:linear-gradient(135deg,rgba(139,0,0,.2) 0%,rgba(27,42,74,.4) 100%);
+  border:1px solid rgba(139,0,0,.4);
+  border-left:4px solid var(--red);
+  padding:1.8rem 2rem;
+  margin:3rem 0;
+  border-radius:4px;
+}
+
+.verdict-banner h2{
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem;
+  color:var(--white);
+  margin-bottom:.6rem;
+}
+
+.verdict-banner p{
+  color:var(--text-light);
+  font-size:1.05rem;
+  line-height:1.65;
+}
+
+.verdict-banner .verdict-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  letter-spacing:.1em;
+  color:var(--red);
+  text-transform:uppercase;
+  margin-bottom:.8rem;
+  opacity:.9;
+}
+
+/* MAIN BODY */
+.main-content{
+  padding:4rem 2rem;
+}
+
+.section{
+  margin-bottom:5rem;
+}
+
+.section-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  letter-spacing:.12em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+}
+
+.section-label::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+.section h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,3.5vw,2.4rem);
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:1.4rem;
+  line-height:1.2;
+}
+
+.section h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;
+  font-weight:600;
+  color:var(--light-gold);
+  margin:2.5rem 0 .9rem;
+}
+
+.section p{
+  color:var(--text-light);
+  margin-bottom:1.2rem;
+  font-size:1.02rem;
+}
+
+.section p strong{
+  color:var(--cream);
+}
+
+/* CRITERION CARDS */
+.criteria-grid{
+  display:flex;
+  flex-direction:column;
+  gap:1.2rem;
+  margin:2rem 0;
+}
+
+.criterion-card{
+  background:rgba(27,42,74,.25);
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+  transition:border-color .2s;
+}
+
+.criterion-card:hover{
+  border-color:rgba(197,162,88,.3);
+}
+
+.criterion-header{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:1.2rem;
+  align-items:center;
+  padding:1.2rem 1.5rem;
+  background:rgba(13,21,32,.4);
+  cursor:pointer;
+}
+
+.criterion-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.4rem;
+  font-weight:700;
+  color:var(--border);
+  line-height:1;
+}
+
+.criterion-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  color:var(--cream);
+  font-weight:600;
+}
+
+.criterion-verdict{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;
+  letter-spacing:.08em;
+  padding:.3rem .8rem;
+  border-radius:3px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.verdict-fail{
+  background:rgba(139,0,0,.3);
+  border:1px solid rgba(139,0,0,.5);
+  color:#E87070;
+}
+
+.criterion-body{
+  padding:1.5rem;
+  border-top:1px solid var(--border);
+}
+
+.criterion-body .adl-standard{
+  background:rgba(197,162,88,.08);
+  border-left:3px solid var(--gold);
+  padding:.9rem 1.2rem;
+  margin-bottom:1rem;
+  border-radius:0 4px 4px 0;
+}
+
+.criterion-body .adl-standard .label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;
+  letter-spacing:.1em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+
+.criterion-body .adl-standard p{
+  font-size:.95rem;
+  color:var(--cream);
+  margin:0;
+}
+
+.criterion-body .afrikaner-reality{
+  background:rgba(139,0,0,.1);
+  border-left:3px solid var(--red);
+  padding:.9rem 1.2rem;
+  margin-bottom:1rem;
+  border-radius:0 4px 4px 0;
+}
+
+.criterion-body .afrikaner-reality .label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;
+  letter-spacing:.1em;
+  color:#E87070;
+  text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+
+.criterion-body .afrikaner-reality p{
+  font-size:.95rem;
+  color:var(--cream);
+  margin:0;
+}
+
+.criterion-body .adl-response{
+  background:rgba(27,42,74,.4);
+  border-left:3px solid var(--border);
+  padding:.9rem 1.2rem;
+  border-radius:0 4px 4px 0;
+}
+
+.criterion-body .adl-response .label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;
+  letter-spacing:.1em;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+
+.criterion-body .adl-response p{
+  font-size:.95rem;
+  color:var(--text-light);
+  margin:0;
+  font-style:italic;
+}
+
+/* QUOTE BLOCK */
+.pull-quote{
+  border-left:4px solid var(--gold);
+  padding:1.5rem 2rem;
+  margin:2.5rem 0;
+  background:rgba(197,162,88,.06);
+  border-radius:0 4px 4px 0;
+}
+
+.pull-quote p{
+  font-family:'Playfair Display',serif;
+  font-size:1.25rem;
+  color:var(--light-gold);
+  line-height:1.55;
+  font-style:italic;
+  margin:0 0 .6rem;
+}
+
+.pull-quote cite{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  color:var(--text-muted);
+  letter-spacing:.05em;
+  font-style:normal;
+}
+
+/* NETWORK TABLE */
+.data-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:2rem 0;
+  font-size:.92rem;
+}
+
+.data-table th{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--gold);
+  padding:.75rem .9rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  background:rgba(13,21,32,.5);
+  white-space:nowrap;
+}
+
+.data-table td{
+  padding:.8rem .9rem;
+  color:var(--text-light);
+  border-bottom:1px solid rgba(42,63,95,.4);
+  vertical-align:top;
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+.data-table tr:hover td{
+  background:rgba(27,42,74,.2);
+}
+
+.data-table .cell-name{
+  color:var(--cream);
+  font-weight:600;
+}
+
+.data-table .cell-red{
+  color:#E87070;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;
+}
+
+.data-table .cell-gold{
+  color:var(--gold);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;
+}
+
+/* CONTRADICTION BLOCK */
+.contradiction{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+  margin:2rem 0;
+}
+
+@media(max-width:640px){
+  .contradiction{grid-template-columns:1fr}
+}
+
+.contra-col{
+  padding:1.5rem;
+  border-radius:6px;
+}
+
+.contra-col.left{
+  background:rgba(197,162,88,.08);
+  border:1px solid rgba(197,162,88,.25);
+}
+
+.contra-col.right{
+  background:rgba(139,0,0,.1);
+  border:1px solid rgba(139,0,0,.3);
+}
+
+.contra-col .col-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:.8rem;
+}
+
+.contra-col.left .col-label{color:var(--gold)}
+.contra-col.right .col-label{color:#E87070}
+
+.contra-col ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+}
+
+.contra-col ul li{
+  font-size:.95rem;
+  color:var(--text-light);
+  padding-left:1.2rem;
+  position:relative;
+}
+
+.contra-col.left ul li::before{
+  content:'→';
+  position:absolute;
+  left:0;
+  color:var(--gold);
+}
+
+.contra-col.right ul li::before{
+  content:'→';
+  position:absolute;
+  left:0;
+  color:#E87070;
+}
+
+/* TIMELINE */
+.timeline{
+  position:relative;
+  padding-left:2rem;
+  margin:2rem 0;
+}
+
+.timeline::before{
+  content:'';
+  position:absolute;
+  left:.4rem;
+  top:0;bottom:0;
+  width:1px;
+  background:linear-gradient(180deg,var(--red),var(--gold),transparent);
+}
+
+.timeline-item{
+  position:relative;
+  padding-bottom:2rem;
+}
+
+.timeline-item::before{
+  content:'';
+  position:absolute;
+  left:-1.7rem;
+  top:.4rem;
+  width:.6rem;
+  height:.6rem;
+  border-radius:50%;
+  background:var(--gold);
+  border:2px solid var(--dark);
+}
+
+.timeline-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  color:var(--gold);
+  letter-spacing:.06em;
+  margin-bottom:.3rem;
+}
+
+.timeline-title{
+  font-size:1rem;
+  font-weight:600;
+  color:var(--cream);
+  margin-bottom:.4rem;
+}
+
+.timeline-body{
+  font-size:.92rem;
+  color:var(--text-light);
+}
+
+/* STAT BLOCKS */
+.stat-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;
+  margin:2.5rem 0;
+}
+
+@media(max-width:600px){.stat-row{grid-template-columns:1fr}}
+
+.stat-block{
+  background:rgba(27,42,74,.3);
+  border:1px solid var(--border);
+  border-top:3px solid var(--red);
+  padding:1.4rem;
+  border-radius:4px;
+  text-align:center;
+}
+
+.stat-block .stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;
+  font-weight:900;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:.4rem;
+}
+
+.stat-block .stat-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  letter-spacing:.07em;
+  color:var(--text-muted);
+  text-transform:uppercase;
+}
+
+.stat-block .stat-note{
+  font-size:.82rem;
+  color:var(--text-muted);
+  margin-top:.5rem;
+}
+
+/* ARGUMENT CARD */
+.argument-card{
+  background:linear-gradient(135deg,rgba(197,162,88,.06) 0%,rgba(27,42,74,.2) 100%);
+  border:1px solid rgba(197,162,88,.2);
+  border-radius:6px;
+  padding:2rem;
+  margin:2.5rem 0;
+}
+
+.argument-card .arg-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  letter-spacing:.1em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:.8rem;
+}
+
+.argument-card h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;
+  color:var(--white);
+  margin-bottom:1rem;
+}
+
+.argument-card p{
+  color:var(--text-light);
+  font-size:1rem;
+  margin:0;
+}
+
+/* DOCUMENT CITE */
+.doc-cite{
+  background:rgba(13,21,32,.6);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:1.2rem 1.5rem;
+  margin:1.5rem 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;
+  color:var(--text-muted);
+  line-height:1.6;
+}
+
+.doc-cite .doc-label{
+  color:var(--gold);
+  font-size:.65rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:.5rem;
+  display:block;
+}
+
+.doc-cite em{
+  color:var(--cream);
+  font-style:italic;
+}
+
+/* DIVIDER */
+.divider{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:4rem 0;
+}
+
+/* FINAL VERDICT */
+.final-verdict{
+  background:linear-gradient(135deg,rgba(139,0,0,.15) 0%,rgba(27,42,74,.3) 100%);
+  border:1px solid rgba(139,0,0,.35);
+  border-top:3px solid var(--red);
+  border-radius:6px;
+  padding:3rem 2.5rem;
+  margin:3rem 0;
+}
+
+.final-verdict .fv-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  letter-spacing:.12em;
+  color:var(--red);
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+}
+
+.final-verdict h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.5rem,3.5vw,2.2rem);
+  color:var(--white);
+  margin-bottom:1.4rem;
+  line-height:1.2;
+}
+
+.final-verdict p{
+  color:var(--text-light);
+  font-size:1.02rem;
+  margin-bottom:1rem;
+}
+
+/* SOURCES */
+.sources-section{
+  background:rgba(13,21,32,.5);
+  border-top:1px solid var(--border);
+  padding:3rem 2rem;
+  margin-top:4rem;
+}
+
+.sources-section h3{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  letter-spacing:.1em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+}
+
+.sources-list{
+  column-count:2;
+  column-gap:2rem;
+}
+
+@media(max-width:640px){.sources-list{column-count:1}}
+
+.sources-list li{
+  font-size:.82rem;
+  color:var(--text-muted);
+  margin-bottom:.6rem;
+  line-height:1.5;
+  list-style:none;
+  padding-left:1rem;
+  position:relative;
+  break-inside:avoid;
+}
+
+.sources-list li::before{
+  content:'—';
+  position:absolute;
+  left:0;
+  color:var(--border);
+}
+
+/* FOOTER */
+footer{
+  background:rgba(13,21,32,.8);
+  border-top:1px solid var(--border);
+  padding:2.5rem 2rem;
+}
+
+.footer-inner{
+  max-width:1000px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  gap:2rem;
+}
+
+.footer-brand{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:.3rem;
+}
+
+.footer-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;
+  color:var(--text-muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.footer-hub{
+  text-align:center;
+}
+
+.footer-hub-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;
+  color:var(--text-muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:.6rem;
+}
+
+.footer-hub a{
+  display:inline-block;
+  background:var(--mid);
+  color:var(--cream);
+  text-decoration:none;
+  padding:.5rem 1.2rem;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-size:.85rem;
+  transition:all .2s;
+}
+.footer-hub a:hover{background:var(--gold);color:var(--dark)}
+
+.footer-social{
+  display:flex;
+  gap:1.2rem;
+}
+
+.social-link{
+  color:var(--text-muted);
+  text-decoration:none;
+  font-size:.85rem;
+  transition:color .2s;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+}
+.social-link:hover{color:var(--gold)}
+
+.footer-sources{
+  max-width:1000px;
+  margin:1.5rem auto 0;
+  padding-top:1.5rem;
+  border-top:1px solid var(--border);
+  font-size:.78rem;
+  color:var(--text-muted);
+  line-height:1.6;
+}
+
+.context-box{
+  background:rgba(197,162,88,.07);
+  border:1px solid rgba(197,162,88,.25);
+  border-left:4px solid var(--gold);
+  border-radius:0 6px 6px 0;
+  padding:1.4rem 1.8rem;
+  margin:1.8rem 0;
+}
+.ctx-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.7rem;
+}
+.context-box p{color:var(--text-light);font-size:.97rem;margin:0}
+.context-box p strong{color:var(--cream)}
+
+.infographic-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;
+  margin:2.5rem 0;
+}
+@media(max-width:800px){.infographic-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.infographic-row{grid-template-columns:1fr}}
+
+.info-card{
+  padding:1.4rem;border-radius:6px;
+  border:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:transform .2s,border-color .2s;
+}
+.info-card:hover{transform:translateY(-3px)}
+.info-define{background:rgba(197,162,88,.08);border-color:rgba(197,162,88,.25)}
+.info-define:hover{border-color:rgba(197,162,88,.5)}
+.info-enforce{background:rgba(58,159,216,.08);border-color:rgba(58,159,216,.2)}
+.info-enforce:hover{border-color:rgba(58,159,216,.45)}
+.info-fund{background:rgba(243,156,18,.08);border-color:rgba(243,156,18,.2)}
+.info-fund:hover{border-color:rgba(243,156,18,.45)}
+.info-silence{background:rgba(139,0,0,.1);border-color:rgba(139,0,0,.3)}
+.info-silence:hover{border-color:rgba(139,0,0,.6)}
+
+.info-icon{
+  font-family:'JetBrains Mono',monospace;
+  font-size:2rem;font-weight:700;
+  color:rgba(255,255,255,.08);
+  position:absolute;top:.6rem;right:.8rem;
+  line-height:1;
+}
+.info-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;
+  color:var(--white);margin-bottom:.6rem;
+}
+.info-body{font-size:.85rem;color:var(--text-light);line-height:1.6}
+
+.stat-block .stat-note{
+  font-size:.75rem;color:var(--text-muted);
+  margin-top:.4rem;line-height:1.4;
+  font-style:italic;
+}
+
+/* WHY SILENCE infographic */
+.why-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+  margin:2rem 0;
+}
+@media(max-width:640px){.why-grid{grid-template-columns:1fr}}
+
+.why-card{
+  background:rgba(27,42,74,.25);
+  border:1px solid var(--border);
+  border-radius:6px;padding:1.5rem;
+}
+.why-card .why-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:2.5rem;font-weight:700;
+  color:var(--red);opacity:.35;
+  line-height:1;margin-bottom:.5rem;
+}
+.why-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;color:var(--cream);
+  margin-bottom:.6rem;
+}
+.why-card p{font-size:.9rem;color:var(--text-light);line-height:1.6;margin:0}
+
+/* DONOR PIPELINE visual */
+.pipeline{
+  display:flex;align-items:center;
+  gap:0;margin:2rem 0;
+  flex-wrap:wrap;
+}
+.pipe-node{
+  flex:1;min-width:120px;
+  background:rgba(27,42,74,.3);
+  border:1px solid var(--border);
+  padding:1rem .8rem;text-align:center;
+  position:relative;
+}
+.pipe-node:first-child{border-radius:6px 0 0 6px}
+.pipe-node:last-child{border-radius:0 6px 6px 0}
+.pipe-node .pn-top{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-muted);
+  margin-bottom:.4rem;
+}
+.pipe-node .pn-name{
+  font-size:.9rem;font-weight:600;color:var(--cream);
+  margin-bottom:.3rem;
+}
+.pipe-node .pn-note{font-size:.72rem;color:var(--text-muted)}
+.pipe-arrow{
+  font-size:1.2rem;color:var(--gold);
+  padding:0 .3rem;flex-shrink:0;
+  align-self:center;
+}
+@media(max-width:600px){
+  .pipeline{flex-direction:column}
+  .pipe-node{border-radius:0;min-width:100%;border-left:3px solid var(--gold)}
+  .pipe-arrow{transform:rotate(90deg)}
+}
+
+/* COMPARISON infographic */
+.compare-table{width:100%;border-collapse:collapse;margin:2rem 0}
+.compare-table th{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  letter-spacing:.07em;text-transform:uppercase;
+  padding:.75rem 1rem;text-align:left;
+  background:rgba(13,21,32,.5);
+}
+.compare-table th:nth-child(2){color:var(--gold)}
+.compare-table th:nth-child(3){color:#E87070}
+.compare-table td{
+  padding:.8rem 1rem;font-size:.9rem;
+  border-bottom:1px solid rgba(42,63,95,.3);
+  vertical-align:top;
+  color:var(--text-light);
+}
+.compare-table td:first-child{color:var(--cream);font-weight:600;font-size:.85rem}
+.compare-table td:nth-child(2){color:#C5D5A0}
+.compare-table td:nth-child(3){color:#E8A0A0;font-style:italic}
+.compare-table tr:hover td{background:rgba(27,42,74,.15)}
+
+/* REVEAL */
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .55s ease,transform .55s ease;
+}
+.reveal.visible{
+  opacity:1;
+  transform:none;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-links{display:none}
+  .hero{padding:3.5rem 1.2rem 3rem}
+  .main-content{padding:3rem 1.2rem}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .contradiction{grid-template-columns:1fr}
+  .data-table{font-size:.82rem}
+  .data-table th,.data-table td{padding:.6rem .7rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="https://altafrikaner.github.io/journalist-map/index.html">
+    Alt Afrikaner <span>// Netwerk Leaks</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="https://altafrikaner.github.io/journalist-map/index.html">Hub</a></li>
+    <li><a href="https://substack.com/@altafrikaner">Substack</a></li>
+    <li><a href="https://www.facebook.com/AltAfrikaner">Facebook</a></li>
+    <li><a href="mailto:AltAfrikaner@outlook.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="tag-row">
+      <span class="tag tag-red">Investigation</span>
+      <span class="tag tag-gold">ADL · Anti-Defamation League</span>
+      <span class="tag tag-blue">South Africa</span>
+      <span class="tag tag-green">Primary Sources</span>
+    </div>
+    <h1>The ADL Decides What Hate Is.<br><em>Donors Decide Who Qualifies.</em></h1>
+    <p class="hero-sub">
+      The Anti-Defamation League (ADL) is a New York-based private organisation with $165 million in foundation assets, $1.4 million in annual lobbying spend, and the claimed authority to define hate speech for governments, courts, and technology platforms across 40 countries. It applies that authority selectively. South Africa's own Human Rights Commission convicted Julius Malema of racial hate speech against white men in August 2025. The US Government documented 447 farm murders in 2024 and named the EFF as an extremist organisation. The ADL's published response: a webpage calling those concerns a white supremacist conspiracy theory — citing data from 2016. This investigation uses the ADL's own documents to explain why. The answer is not complicated. Follow the donors.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item"><strong>Classification</strong>Open-Source Investigation</div>
+      <div class="meta-item"><strong>Primary Sources</strong>IRS 990 · Court Records · ADL.org · US State Dept 2024 · FBI Statements · SFPD Affidavit 1993</div>
+      <div class="meta-item"><strong>Subject</strong>Anti-Defamation League (ADL) + South Africa Network</div>
+      <div class="meta-item"><strong>Updated</strong>April 2026</div>
+    </div>
+    <div style="margin-top:1.8rem">
+      <a href="#map-section" style="
+        display:inline-flex;align-items:center;gap:.7rem;
+        background:rgba(197,162,88,.1);border:1px solid rgba(197,162,88,.4);
+        color:var(--gold);text-decoration:none;border-radius:5px;
+        padding:.75rem 1.4rem;font-family:'JetBrains Mono',monospace;
+        font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
+        transition:all .2s;
+      " onmouseover="this.style.background='rgba(197,162,88,.2)'" onmouseout="this.style.background='rgba(197,162,88,.1)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        ↓ 3D Network Map — 40 Nodes · 60 Connections
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="main-content">
+<div class="container">
+
+<!-- OPENING -->
+<section class="section reveal">
+  <div class="section-label">What the ADL Is</div>
+  <h2>How Donor Money Built the Architecture of Silence — And Why Afrikaners Are Outside It</h2>
+
+  <div class="context-box reveal">
+    <div class="ctx-label">For readers outside the United States</div>
+    <p>The <strong>Anti-Defamation League (ADL)</strong> is a private American non-profit organisation founded in 1913 in New York, originally to combat antisemitism — prejudice and discrimination against Jewish people. Over the past century it grew from a civil rights advocacy group into one of the most institutionally embedded private organisations in the United States political and media landscape. It is not elected, not regulated as an intelligence body, and answers to no government authority. Yet its influence over what speech is permitted online, what counts as hate, and how governments measure ethnic persecution now spans four continents.</p>
+  </div>
+
+  <p>
+    The ADL supplied the definition of antisemitism used by the United States government — specifically the <strong>International Holocaust Remembrance Alliance (IHRA)</strong> working definition, which it helped draft and which has since been adopted by over 40 national governments, hundreds of universities, and numerous corporate compliance frameworks. It advises YouTube and Meta (Facebook's parent company) on content moderation standards. Its financial affiliate, <strong>JLens</strong>, manages $12 billion in communal investment capital from 35 Jewish institutions. It operates a legal network across more than 50 major law firms. It runs a 103-country antisemitism surveillance platform. And it coordinates — at conference level — with the <strong>South African Jewish Board of Deputies (SAJBD)</strong>, which briefs the United States government's National Security Council on South African affairs.
+  </p>
+  <p>
+    None of this institutional reach derives from an elected mandate. It derives from one thing: donor money, and the claimed authority to define what hate is. Those two things are not separable. The ADL raised $91 million in 2020 alone. Its revenue surges when its donors perceive rising threat. Its donors are US-based, liberal-leaning, Jewish professionals. They have no stake in what happens to Afrikaners in South Africa. And so the ADL produces nothing — not because the evidence is absent, but because there is no revenue in recognising it.
+  </p>
+
+  <div class="infographic-row reveal">
+    <div class="info-card info-define">
+      <div class="info-icon">01</div>
+      <div class="info-title">Define</div>
+      <div class="info-body">ADL co-authors the IHRA antisemitism definition. 40+ governments adopt it. It becomes the official standard for identifying hate speech in law, policy, and corporate compliance.</div>
+    </div>
+    <div class="info-card info-enforce">
+      <div class="info-icon">02</div>
+      <div class="info-title">Enforce</div>
+      <div class="info-body">ADL advises YouTube and Meta. Its affiliate JLens applies shareholder pressure when platforms resist. The IFCN (International Fact-Checking Network) — funded by the same donor ecosystem — certifies fact-checkers who label content on those platforms.</div>
+    </div>
+    <div class="info-card info-fund">
+      <div class="info-icon">03</div>
+      <div class="info-title">Fund</div>
+      <div class="info-body">The ADL Foundation holds $165 million in assets. Revenue surges after high-profile hate incidents — incidents the ADL counts using its own methodology. The organisation that counts the incidents also receives the donations those incidents generate.</div>
+    </div>
+    <div class="info-card info-silence">
+      <div class="info-icon">04</div>
+      <div class="info-title">Silence</div>
+      <div class="info-body">Any community whose persecution is not useful to the donor base is pre-classified as extremist or conspiracy before the evidence is examined. The ADL's own published article does this to Afrikaners explicitly — using decade-old data to call documented evidence of violence a "racist obsession." The silence is not neutral. It is funded.</div>
+    </div>
+  </div>
+
+  <p>
+    The Afrikaner case tests the ADL's claimed universality against its own published criteria. On every criterion — named group, court-certified incitement, government documentation, statutory discrimination, disproportionate physical targeting — the evidence is present and sourced. The ADL produces nothing. That is the measurement. And the measurement explains itself when you look at who funds the measuring.
+  </p>
+
+  <div class="stat-row">
+    <div class="stat-block">
+      <div class="stat-num">103</div>
+      <div class="stat-label">Countries where ADL's ATLAS platform tracks antisemitism</div>
+      <div class="stat-note">South Africa is included. Farm murder data is not.</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">447</div>
+      <div class="stat-label">Farm and smallholding murders in a single year</div>
+      <div class="stat-note">Source: US State Dept Country Report on Human Rights, South Africa 2024</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">0</div>
+      <div class="stat-label">ADL incident reports on Afrikaner farm murders</div>
+      <div class="stat-note">In the organisation's entire published history</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3D MAP STYLES -->
+<style>
+#map-section{background:linear-gradient(180deg,var(--dark) 0%,#060D16 8%,#060D16 92%,var(--dark) 100%);position:relative;overflow:hidden}
+#map-head{padding:3.5rem 2rem 1.5rem;max-width:1000px;margin:0 auto}
+#map-head .ml{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem}
+#map-head .ml::after{content:'';flex:1;height:1px;background:var(--border)}
+#map-head h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:var(--white);margin-bottom:.8rem;line-height:1.2}
+#map-head p{color:var(--text-light);font-size:1rem;margin-bottom:1.5rem;max-width:720px}
+#map-chrome{position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+#map-wrap{position:relative;width:100%;height:72vh;min-height:480px;max-height:780px}
+#map-wrap canvas{display:block;position:absolute;top:0;left:0;width:100%!important;height:100%!important}
+#mleft{position:absolute;top:0;left:0;bottom:0;width:196px;background:rgba(8,15,24,.95);border-right:1px solid var(--border);backdrop-filter:blur(10px);z-index:10;padding:1rem;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:.7rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#mleft h4{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.mfbtn{display:flex;align-items:center;gap:.5rem;padding:.42rem .6rem;border-radius:3px;cursor:pointer;border:1px solid transparent;transition:all .15s;font-family:'Source Sans 3',sans-serif;font-size:.76rem;color:var(--text-light);user-select:none}
+.mfbtn:hover{background:rgba(255,255,255,.05)}
+.mfbtn.mfon{background:rgba(255,255,255,.07);border-color:rgba(42,63,95,.8)}
+.mfdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.mfct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-muted)}
+.msrch{width:100%;background:rgba(27,42,74,.5);border:1px solid var(--border);border-radius:3px;padding:.42rem .6rem;color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:.72rem;outline:none;transition:border-color .2s}
+.msrch::placeholder{color:var(--text-muted)}
+.msrch:focus{border-color:var(--gold)}
+.eleg-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;font-size:.7rem;color:var(--text-muted)}
+.eleg-line{height:2px;width:20px;flex-shrink:0;border-radius:1px}
+#mright{position:absolute;top:0;right:0;bottom:0;width:284px;background:rgba(8,15,24,.97);border-left:1px solid var(--border);backdrop-filter:blur(10px);z-index:10;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#mright.mrop{transform:translateX(0)}
+#mrclose{position:absolute;top:.8rem;right:.8rem;background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;z-index:1;transition:color .2s}
+#mrclose:hover{color:var(--cream)}
+#mrcontent{padding:1.3rem}
+.mr-cat{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.mr-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--white);margin-bottom:.5rem;line-height:1.2;font-weight:700}
+.mr-role{font-size:.83rem;color:var(--text-muted);margin-bottom:1rem;font-style:italic}
+.mr-body{font-size:.87rem;color:var(--text-light);line-height:1.65}
+.mr-body p{margin-bottom:.7rem}
+.mr-ch4{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:.9rem 0 .5rem}
+.mr-conn{display:flex;align-items:flex-start;gap:.5rem;margin-bottom:.4rem;font-size:.78rem;color:var(--text-light);padding:.42rem .55rem;background:rgba(27,42,74,.3);border-radius:3px;border-left:2px solid transparent;cursor:pointer;transition:background .15s}
+.mr-conn:hover{background:rgba(27,42,74,.55)}
+.mr-cdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.mr-date{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.05em;padding:.17rem .42rem;border-radius:2px;background:rgba(197,162,88,.12);border:1px solid rgba(197,162,88,.28);color:var(--gold);margin:.3rem .2rem 0 0}
+#mtt{position:absolute;pointer-events:none;z-index:50;background:rgba(8,15,24,.96);border:1px solid var(--border);border-radius:5px;padding:.5rem .75rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cream);backdrop-filter:blur(4px);transform:translate(-50%,-115%);display:none;white-space:nowrap;text-align:center}
+.mtt-cat{font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-bottom:.15rem}
+#mhint{position:absolute;bottom:.8rem;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-muted);letter-spacing:.05em;background:rgba(8,15,24,.8);padding:.32rem .85rem;border-radius:14px;border:1px solid var(--border);pointer-events:none;z-index:10;white-space:nowrap}
+@media(max-width:700px){#mleft{display:none}#mright{width:240px}#map-wrap{height:58vh}}
+</style>
+
+<section id="map-section">
+  <div id="map-head">
+    <div class="ml">Interactive Evidence Map — Click Any Node</div>
+    <h2>The Full Network: ADL, South Africa, Funders, and the People Who Make It Run</h2>
+    <p>This map documents 40 nodes and over 60 sourced connections — the organisations, individuals, funders, and government entities that constitute the ADL's actual operational architecture in the United States, South Africa, and internationally. Every node is sourced to primary documents. The brown nodes show the historical South Africa intelligence operation. The blue nodes show current South African operational connections. The amber nodes show the funding network that structurally enforces the ADL's silence on Afrikaner persecution. Click any node for the full evidence card with dates and documented source material.</p>
+    <div class="tag-row" style="margin-top:.8rem">
+      <span class="tag tag-red">● ADL Core</span>
+      <span class="tag tag-blue">● SA Operations</span>
+      <span class="tag tag-gold">● Funding Network</span>
+      <span class="tag" style="background:rgba(155,89,182,.2);border:1px solid rgba(155,89,182,.4);color:#C89FE8">● Media / Academic</span>
+      <span class="tag" style="background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.35);color:#7EC89A">● International</span>
+      <span class="tag" style="background:rgba(139,110,71,.2);border:1px solid rgba(139,110,71,.4);color:#C4A87A">● Historical (court-settled)</span>
+    </div>
+    <p style="font-size:.8rem;color:var(--text-muted);margin-top:.7rem;font-family:'JetBrains Mono',monospace;letter-spacing:.02em">ADL = Anti-Defamation League &nbsp;·&nbsp; SAJBD = South African Jewish Board of Deputies &nbsp;·&nbsp; IFCN = International Fact-Checking Network &nbsp;·&nbsp; OSF = Open Society Foundations &nbsp;·&nbsp; BOSS = Bureau of State Security (apartheid intelligence) &nbsp;·&nbsp; ICJ = International Court of Justice &nbsp;·&nbsp; JLens = ADL-affiliated Jewish investment network &nbsp;·&nbsp; BEE = Black Economic Empowerment</p>
+  </div>
+  <div id="map-chrome">
+    <div id="map-wrap">
+      <div id="mleft">
+        <input class="msrch" id="mapsrch" type="text" placeholder="Search nodes…">
+        <div><h4>Categories</h4><div id="mflist"></div></div>
+        <div><h4>Connections</h4>
+          <div class="eleg-item"><div class="eleg-line" style="background:#C5A258"></div>Funding</div>
+          <div class="eleg-item"><div class="eleg-line" style="background:#E05A2B"></div>Personnel</div>
+          <div class="eleg-item"><div class="eleg-line" style="background:#3A9FD8"></div>Operational</div>
+          <div class="eleg-item"><div class="eleg-line" style="background:#8B6E47"></div>Historical</div>
+          <div class="eleg-item"><div class="eleg-line" style="background:#9B59B6"></div>Narrative</div>
+          <div class="eleg-item"><div class="eleg-line" style="background:#E74C3C;height:1px"></div>Adversarial</div>
+        </div>
+      </div>
+      <canvas id="map3d"></canvas>
+      <div id="mright"><button id="mrclose">✕</button><div id="mrcontent"><div id="mrinner"></div></div></div>
+      <div id="mtt"><div class="mtt-cat" id="mttcat"></div><div id="mttname"></div></div>
+      <div id="mhint">Drag to rotate · Scroll to zoom · Click node for details</div>
+      <div id="mcount" style="position:absolute;bottom:.8rem;right:.8rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-muted);letter-spacing:.05em;background:rgba(8,15,24,.8);padding:.32rem .7rem;border-radius:12px;border:1px solid var(--border);z-index:10;pointer-events:none">40 nodes · 62 connections</div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+const MCATS={
+  adl:      {label:'ADL Core',         color:0xE05A2B,hex:'#E05A2B'},
+  sa:       {label:'SA Operations',    color:0x3A9FD8,hex:'#3A9FD8'},
+  media:    {label:'Media / Academic', color:0x9B59B6,hex:'#9B59B6'},
+  political:{label:'SA Political',     color:0xE74C3C,hex:'#E74C3C'},
+  funding:  {label:'Funding Network',  color:0xF39C12,hex:'#F39C12'},
+  intl:     {label:'International',    color:0x27AE60,hex:'#27AE60'},
+  historical:{label:'Historical',      color:0x8B6E47,hex:'#8B6E47'}
+};
+
+const MNODES=[
+  {id:'adl',cat:'adl',label:'ADL',size:18,role:'Anti-Defamation League — New York',pos:[0,0,0],
+   ev:`<p><strong>Founded 1913.</strong> $165M foundation assets. $1.4M lobbying (2024). Advises YouTube, Meta, and US government on extremism standards. FBI formally severed ties October 2025. FBI Director called operations "activism dressed up as counterterrorism."</p>`,
+   conn:['greenblatt','rosenberg','jlens','adlf','j7','africacheck','meta','boss'],
+   dates:['1913: Founded','1961: Intelligence sharing with Israeli govt documented','2015: Greenblatt appointed from Obama WH','2025: FBI severs partnership']},
+  {id:'greenblatt',cat:'adl',label:'Greenblatt',size:12,role:'ADL CEO — from Obama White House 2015',pos:[55,40,-30],
+   ev:`<p>Arrived at ADL directly from Obama White House (Special Assistant, Office of Social Innovation). Clinton campaign → Clinton WH → Ethos Water (sold to Starbucks) → All for Good (sold to Points of Light) → ADL. CFR member. Aspen Institute Henry Crown Fellow. Compensation: $1.25M (2021).</p>`,
+   conn:['adl','cfr'],dates:['2015: Obama WH → ADL CEO','2022: Declares anti-Zionism = antisemitism']},
+  {id:'rosenberg',cat:'adl',label:'Rosenberg',size:12,role:'ADL SVP International — ex-Israeli Ambassador',pos:[40,-30,55],
+   ev:`<p>16-year career Israeli diplomat. Israeli Ambassador to Chile (2019-2022). Joined ADL as SVP International Affairs 2023. Founded J7 coalition. Founded ALAS. Directs ATLAS (103-country antisemitism surveillance). Three citizenships: Israeli, German, Argentine.</p>`,
+   conn:['adl','j7','sajbd','israelimfa'],dates:['2023: Israeli MFA → ADL SVP International','2024: J7 issues SA ICJ statement']},
+  {id:'jlens',cat:'adl',label:'JLens',size:11,role:'ADL capital affiliate — $12B AUM, NYSE: TOV',pos:[-42,30,62],
+   ev:`<p>$12B communal capital, 35+ institutions. Dual-axis: FOR Meta content moderation (May 2025 proxy). AGAINST GE Aerospace human rights due diligence (March 2026). AGAINST Intel BDS-adjacent proposal (April 2026). Same organisation. Same 6-month period.</p>`,
+   conn:['adl','meta'],dates:['2022: Formally affiliated with ADL','2026: GE Aerospace human rights proposal blocked']},
+  {id:'adlf',cat:'adl',label:'ADLF',size:10,role:'ADL Foundation — $165M assets',pos:[-52,-20,30],
+   ev:`<p>$165M total assets (FY2024). Passed $175M+ to ADL since 2010. IRS Schedule J flags first-class travel across 5 consecutive years. PPP loan: $7.4M received and forgiven 2021 despite $21M surplus.</p>`,
+   conn:['adl','macarthur','osf'],dates:['2020: $7.4M PPP loan received','2021: Forgiven despite $21M surplus']},
+  {id:'j7',cat:'adl',label:'J7 Coalition',size:9,role:'7 largest diaspora communities — Rosenberg',pos:[72,10,-62],
+   ev:`<p>Founded and directed by Marina Rosenberg (ex-Israeli Ambassador, ADL SVP). January 2024: called South Africa's ICJ case "a morally obscene, anti-Israel campaign led by South Africa with the backing of the Iranian regime."</p>`,
+   conn:['adl','rosenberg','sajbd','icj'],dates:['Jan 2024: SA ICJ case = "sinister ploy backed by Iran"']},
+  {id:'sajbd',cat:'sa',label:'SAJBD',size:15,role:'SA Jewish Board of Deputies',pos:[200,20,30],
+   ev:`<p>Primary ADL operational partner in South Africa. Kahn presented alongside Rosenberg and Lerner at ADL Never Is Now 2026. Tracks 125 antisemitic incidents per year in granular detail for US State Department. Produces no equivalent documentation of farm murders.</p>`,
+   conn:['adl','wkahn','acharnas','gfarber','wjc','ramaphosa','icj'],dates:['2024: Kahn meets White House NSC, State Dept, Congress','2026: NIN panel with ADL leadership']},
+  {id:'wkahn',cat:'sa',label:'Wendy Kahn',size:11,role:'SAJBD National Director — 20 years',pos:[235,60,62],
+   ev:`<p>April 2024 Washington DC: met White House NSC, State Department Special Envoy Lipstadt, Representative Kathy Manning, Senator Jacky Rosen's office, House Africa Subcommittee. Conference of Presidents of Major American Jewish Organizations (Israel, March 2025).</p>`,
+   conn:['sajbd','wjc','lipstadt','whnsc'],dates:['Apr 2024: White House NSC meeting','Apr 2024: State Dept — Deborah Lipstadt meeting']},
+  {id:'acharnas',cat:'sa',label:'Adam Charnas',size:10,role:'SAJBD — Political & Intelligence Analyst',pos:[225,-42,82],
+   ev:`<p>Joined SAJBD 2024. Former political and intelligence analyst specialising in sub-Saharan African affairs. 15 years in Israel. BA Wits, MA Political Science from Ben-Gurion University of the Negev. Specific Israeli employers not publicly disclosed.</p>`,
+   conn:['sajbd','bgu'],dates:['Wits BA → Ben-Gurion MA (sub-Saharan Africa spec)','15 years Israel','2024: Joins SAJBD']},
+  {id:'gfarber',cat:'sa',label:'Farber Cohen',size:10,role:'SAJBD Coordinator — ex-ANCWL Gauteng Spokesperson',pos:[172,-30,112],
+   ev:`<p>Simultaneously held: ANCWL Gauteng PEC Spokesperson AND SAJBD-supported activist (Wits SRC PYA, 2020-21). SAJBD vice-president publicly celebrated her ANC election. Was running for ANC Parliamentary seat 2024. Resigned October 19, 2023 after ANC failed to condemn Hamas. Now SAJBD Project and Campaign Coordinator.</p>`,
+   conn:['sajbd','anc','ancwl'],dates:['2020: First Jewish PYA Wits SRC (SAJBD backed)','Oct 2023: Resigned ANC','2024: SAJBD Campaign Coordinator']},
+  {id:'africacheck',cat:'media',label:'Africa Check',size:13,role:'IFCN fact-checker — Wits, ADL cited source',pos:[-152,122,-82],
+   ev:`<p>ADL cited Africa Check to dismiss Afrikaner farm murder statistics — using 2016-17 data not updated despite US State Dept 2024 findings. Housed at Wits Journalism Dept. Funders: Omidyar 23%, Gates 13%, OSF-SA 12%. IFCN-certified: Meta pays it to label content.</p>`,
+   conn:['adl','ifcn','osf','gates','luminate','wits'],dates:['2012: Founded at Wits with Google seed money','2021: Only African org in Google $3M vaccine fund']},
+  {id:'wasserman',cat:'media',label:'Wasserman',size:12,role:'Prof — CINIA Director, Stellenbosch',pos:[-182,82,-42],
+   ev:`<p>Director, Centre for Information Integrity in Africa (CINIA). R20M IDRC (Canadian govt) grant 2025. Editor-in-Chief: Annals of ICA and African Journalism Studies. Published on Africa Is A Country: Trump SA executive order = "cynical ploy to stoke racial paranoia." Co-authored with Africa Check founder Cunliffe-Jones.</p>`,
+   conn:['africacheck','cpcj','idrc','stellenbosch'],dates:['R4.5M IDRC (2021)','R20M IDRC to CINIA (2025)']},
+  {id:'cpcj',cat:'media',label:'Cunliffe-Jones',size:11,role:'Africa Check founder / IFCN Code co-author',pos:[-122,152,-112],
+   ev:`<p>Founded Africa Check 2012 with $57,000 Google seed money at Wits. Co-wrote IFCN Code of Principles 2016 — the standard Africa Check must meet for Meta certification. IFCN Advisory Board 2015-2024. Former AFP Foundation Deputy Director. Co-authored with Wasserman.</p>`,
+   conn:['africacheck','ifcn','wasserman'],dates:['2012: Founds Africa Check','2016: Co-writes IFCN Code','2019: IFCN Senior Adviser']},
+  {id:'ifcn',cat:'media',label:'IFCN',size:12,role:'International Fact-Checking Network — Poynter',pos:[-102,172,-62],
+   ev:`<p>Business unit of Poynter Institute. Certification = Meta pays you to label content. Funders: OSF, Meta, Google, US State Dept, NED, Luminate, Gates. ADL content advisory and IFCN platform certification are parallel mechanisms serving the same definitional framework.</p>`,
+   conn:['africacheck','meta','osf','google'],dates:['2015: Founded','2016: Code of Principles','170+ certified orgs worldwide']},
+  {id:'wits',cat:'media',label:'Wits University',size:9,role:'Hosts Africa Check — Johannesburg',pos:[-202,102,-22],
+   ev:`<p>University of the Witwatersrand Journalism Department hosts Africa Check. Institutional home for the IFCN-certified fact-checker the ADL uses to dismiss Afrikaner farm murder statistics. Central node in the OSF-funded academic journalism ecosystem.</p>`,
+   conn:['africacheck','osf'],dates:['2012: Africa Check launched here']},
+  {id:'stellenbosch',cat:'media',label:'Stellenbosch U.',size:9,role:'CINIA — Wasserman base',pos:[-202,62,-82],
+   ev:`<p>Hosts Centre for Information Integrity in Africa (CINIA) under Herman Wasserman. R20M IDRC grant 2025. Produces academic research defining "disinformation" for the African continent feeding into IFCN standards and platform policy.</p>`,
+   conn:['wasserman','idrc'],dates:['2025: R20M IDRC grant to CINIA']},
+  {id:'anc',cat:'political',label:'ANC',size:14,role:'African National Congress — governing party',pos:[102,-182,82],
+   ev:`<p>Filed ICJ genocide case against Israel, December 29, 2023. ADL J7: "sinister ploy backed by Iran." ANC stopped publishing farm attack statistics 2008. No condemnation of Malema "Kill the Boer" performances. Primary current ADL-ANC adversarial flashpoint is the ICJ case.</p>`,
+   conn:['ramaphosa','pandor','ancwl','eff','icj'],dates:['2008: Stops publishing farm attack statistics','Dec 2023: Files ICJ genocide case']},
+  {id:'ramaphosa',cat:'political',label:'Ramaphosa',size:11,role:'President of South Africa',pos:[132,-162,52],
+   ev:`<p>Used the SAJBD December 2023 meeting as diplomatic cover in the ICJ filing. Kahn: "At the end he started giving us a lecture on genocide. Then he put in the ICJ complaint that he had met with the SAJBD." Chanted "from the river to the sea" May 2024.</p>`,
+   conn:['anc','sajbd','icj'],dates:['Dec 2023: Uses SAJBD meeting in ICJ filing','May 2024: "From the river to the sea" — SAJBD condemns']},
+  {id:'pandor',cat:'political',label:'Naledi Pandor',size:10,role:'Former Minister — International Relations',pos:[82,-202,102],
+   ev:`<p>Principal architect of South Africa's ICJ positioning. Took call from Hamas leader Ismail Haniyeh after October 7. Primary target of SAJBD and ADL criticism. Called for Israeli ambassador to leave South Africa.</p>`,
+   conn:['anc','icj'],dates:['Oct 2023: Call with Hamas leader Haniyeh','Dec 2023: Co-architect of ICJ filing']},
+  {id:'ancwl',cat:'political',label:'ANC Women\'s League',size:10,role:'Farber Cohen\'s former party structure',pos:[162,-152,122],
+   ev:`<p>Structure through which Gabriella Farber Cohen operated as Gauteng PEC Spokesperson while simultaneously SAJBD-supported. The SAJBD backed her ANC SRC campaign from its beginning — SAJBD vice-president publicly commented on her election.</p>`,
+   conn:['anc','gfarber'],dates:['2020-23: Farber Cohen held ANCWL positions while SAJBD-backed']},
+  {id:'eff',cat:'political',label:'EFF / Malema',size:12,role:'Economic Freedom Fighters',pos:[62,-212,62],
+   ev:`<p>Julius Malema performed "Kill the Boer" before 90,000 people, FNB Stadium, July 2023. Convicted of hate speech August 2025 for calling for a white man to be killed. Sentenced to 5 years April 2026. US State Dept 2024: "extremist political party the EFF encouraged attacks on Afrikaner farmers."</p>`,
+   conn:['anc','icj'],dates:['July 2023: "Kill the Boer" before 90,000','Aug 2025: Convicted hate speech','Apr 2026: 5-year sentence']},
+  {id:'icj',cat:'political',label:'ICJ Case',size:11,role:'SA vs Israel — International Court of Justice',pos:[52,-172,152],
+   ev:`<p>Filed December 29, 2023. ICJ issued provisional measures January 2024. ADL J7 called it "morally obscene" and "Iranian-backed." SAJBD published statement January 11, 2024 accusing SA of "inverting reality." The case is the primary reason for ADL-ANC adversarial positioning.</p>`,
+   conn:['anc','sajbd','j7'],dates:['Dec 29, 2023: SA files ICJ case','Jan 2024: Provisional measures granted','Jan 2024: J7 "Iranian-backed sinister ploy"']},
+  {id:'osf',cat:'funding',label:'OSF',size:14,role:'Open Society Foundations — Soros network',pos:[-232,32,22],
+   ev:`<p>OSF-SA funded Africa Check (12%, 2016). OSF funds ADLF. OSF funds IFCN. OSF funds ISD. The single shared funder connecting the ADL Foundation, content moderation advisory body, African fact-checker, and global fact-checking standards network.</p>`,
+   conn:['adlf','africacheck','ifcn'],dates:[]},
+  {id:'macarthur',cat:'funding',label:'MacArthur Foundation',size:10,role:'Shared funder — ADLF and ISD',pos:[-202,52,62],
+   ev:`<p>Documented funder of both the ADL Foundation and the Institute for Strategic Dialogue. Shared funder between the ADL's asset management body and the London-based extremism advisory body that also shapes content moderation standards.</p>`,
+   conn:['adlf'],dates:[]},
+  {id:'gates',cat:'funding',label:'Gates Foundation',size:10,role:'Funder — Africa Check and IFCN',pos:[-212,-12,-32],
+   ev:`<p>Gates Foundation funds Africa Check (13% in 2016) and the IFCN. Creates shared funder relationship between the African fact-checker and the global certification body that gives it Meta platform access.</p>`,
+   conn:['africacheck','ifcn'],dates:[]},
+  {id:'luminate',cat:'funding',label:'Omidyar / Luminate',size:10,role:'Largest Africa Check funder — 23%',pos:[-222,22,-62],
+   ev:`<p>Omidyar Network (now Luminate) was Africa Check's largest single funder at 23% in 2016. Also funds IFCN. Pierre Omidyar's vehicle is one of the largest funders in the progressive media and fact-checking ecosystem globally.</p>`,
+   conn:['africacheck','ifcn'],dates:[]},
+  {id:'idrc',cat:'funding',label:'IDRC Canada',size:10,role:'Canadian government — R20M to Wasserman',pos:[-182,112,42],
+   ev:`<p>International Development Research Centre — Canadian government agency. R20M to Wasserman's CINIA at Stellenbosch (2025), three-year project defining "information integrity" standards across Africa, MENA, Latin America, and Asia. Previous grant: R4.5M (2021).</p>`,
+   conn:['wasserman'],dates:['2021: R4.5M to Wasserman','2025: R20M to CINIA']},
+  {id:'google',cat:'funding',label:'Google',size:11,role:'ADL Corporate Partner + funds IFCN + Africa Check',pos:[-162,-12,82],
+   ev:`<p>Google is simultaneously: ADL Corporate Partner Against Hate ($25,000+), funder of IFCN, and provided seed money for Africa Check's founding (2012). The platform funds the research body that defines what the platform moderates.</p>`,
+   conn:['adl','ifcn','africacheck'],dates:['2012: Google seed money for Africa Check','Present: ADL Corporate Partner']},
+  {id:'meta',cat:'funding',label:'Meta / Facebook',size:11,role:'Funds IFCN · ADL content advisory',pos:[-132,-32,102],
+   ev:`<p>Meta funds IFCN (which certifies Africa Check). ADL advises Meta on content standards. JLens pressures Meta through shareholder mechanisms. January 2025: Meta ends fact-checking. May 2025: JLens/ADL shareholder proposal pushes for expanded content monitoring.</p>`,
+   conn:['adl','ifcn','jlens'],dates:['Jan 2025: Meta ends fact-checking','May 2025: JLens/ADL shareholder proposal']},
+  {id:'wjc',cat:'intl',label:'World Jewish Congress',size:12,role:'Global Jewish umbrella — facilitated NSC access',pos:[2,222,-102],
+   ev:`<p>WJC provided umbrella framework for Kahn's April 2024 Washington operation — access to White House NSC, State Department, and Congress. Mary Kluk (SAJBD President) is simultaneously a WJC Vice President. WJC National Community Directors Forum regular.</p>`,
+   conn:['sajbd','wkahn'],dates:['April 2024: WJC facilitates SAJBD Washington DC lobbying']},
+  {id:'lipstadt',cat:'intl',label:'Deborah Lipstadt',size:10,role:'US Special Envoy for Antisemitism 2022-2025',pos:[52,212,-82],
+   ev:`<p>Biden's Special Envoy to Monitor and Combat Antisemitism (2022-Jan 2025). Met Wendy Kahn in Washington April 2024 — four months after South Africa filed the ICJ case. Also "deeply disturbed" by Wikipedia's downgrade of ADL reliability status. Lipstadt, Kahn, and ADL's Rosenberg operated in the same institutional circuit simultaneously.</p>`,
+   conn:['wkahn'],dates:['April 2024: Meets Wendy Kahn, Washington DC']},
+  {id:'whnsc',cat:'intl',label:'White House NSC',size:10,role:'National Security Council — met SAJBD April 2024',pos:[-52,222,-82],
+   ev:`<p>Wendy Kahn (SAJBD) met directly with the White House National Security Council in April 2024 — four months after South Africa filed the ICJ genocide case. Facilitated by WJC umbrella. Positioned SA Jewish community security as a US national security matter.</p>`,
+   conn:['wkahn'],dates:['April 2024: SAJBD meets White House NSC']},
+  {id:'israelimfa',cat:'intl',label:'Israeli MFA',size:11,role:'Israeli Ministry of Foreign Affairs',pos:[102,202,-52],
+   ev:`<p>Marina Rosenberg: 16 years Israeli MFA → Israeli Ambassador to Chile → ADL SVP International (2023). The documented revolving door. SAJBD's Adam Charnas: 15 years in Israel as political/intelligence analyst. Ben-Gurion University training. Specific Israeli employers not disclosed.</p>`,
+   conn:['rosenberg','acharnas'],dates:['2023: Rosenberg joins ADL from Israeli MFA']},
+  {id:'bgu',cat:'intl',label:'Ben-Gurion University',size:9,role:'Charnas MA — Political Science, sub-Saharan Africa',pos:[152,182,-42],
+   ev:`<p>Ben-Gurion University of the Negev, Beersheba. Adam Charnas holds MA in Political Science, specialising in sub-Saharan African affairs. BGU has documented partnerships with Israeli government agencies and IDF on cyber security and intelligence-adjacent research.</p>`,
+   conn:['acharnas'],dates:[]},
+  {id:'cfr',cat:'intl',label:'Council on Foreign Relations',size:9,role:'Greenblatt member; former ADLF President member',pos:[-32,232,-112],
+   ev:`<p>Greenblatt (ADL CEO) is a CFR member. Glen Lewy (former ADLF President) is a CFR member. CFR membership provides access to the US foreign policy consensus-building circuit that defines acceptable positions on Israel-Palestine for elite media and government audiences.</p>`,
+   conn:['greenblatt'],dates:[]},
+  {id:'boss',cat:'historical',label:'BOSS',size:12,role:'Bureau of State Security — apartheid SA',pos:[2,-202,202],
+   ev:`<p>Apartheid South Africa's assassination-capable security service. Meetings with Bullock/Gerard at Fisherman's Wharf motel, San Francisco. Agent alias "Humphries." BOSS requested anti-apartheid activist intel AND "sexual impropriety" for blackmail. Material on Congressman Ron Dellums (House Armed Services Committee Chair) passed to BOSS. $16,000 cash in envelopes, 1987-1991.</p>`,
+   conn:['bullock','adl'],dates:['1987: First documented payments','1991: Payments period ends']},
+  {id:'bullock',cat:'historical',label:'Roy Bullock',size:11,role:'ADL operative — BOSS intelligence seller',pos:[62,-212,182],
+   ev:`<p>ADL operative since 1954. Code name "Cal." Paid via false-name "L. Patterson" account at ADL LA office. Initial FBI statement: "It was my superiors in the ADL who introduced me to the South African agents." ADL then retained him, paid his legal fees, petitioned court to classify operations as journalism — court accepted. Files included dedicated "ANC" database category. Alex Odeh office key and floor plan in his files — Odeh murdered 1985, case still open.</p>`,
+   conn:['adl','boss'],dates:['1954: Begins working for ADL','1985: Alex Odeh murdered (key/floor plan in Bullock files)','1987-91: Sells intelligence to BOSS','Apr 1993: FBI investigates — initially names ADL superiors']},
+  {id:'hani',cat:'historical',label:'Chris Hani File',size:9,role:'Surveillance file — 10 days pre-assassination',pos:[-52,-222,202],
+   ev:`<p>Bullock compiled a surveillance report on ANC deputy leader Chris Hani's California visit. Submitted to South African government. Hani was assassinated April 10, 1993 — ten days later. ADL attorney declined to comment. No investigation was ever conducted. Seized files remain under court seal. ADL retains right to object before any public disclosure.</p>`,
+   conn:['bullock','boss'],dates:['April 1993: File submitted to SA government','April 10, 1993: Chris Hani assassinated (10 days later)']},
+  {id:'lpatterson',cat:'historical',label:'"L. Patterson"',size:8,role:'False-name bank account — ADL Los Angeles',pos:[102,-222,162],
+   ev:`<p>False-name bank account in a locked safe at ADL's Los Angeles office, used to pay Bullock without institutional attribution. Managed by David Lehrer (ADL LA Executive Director). Funded through cut-out attorney Bruce Hochman — former federal prosecutor and ADL board member. Documented in SFPD 700-page police affidavit, 1993.</p>`,
+   conn:['adl','bullock'],dates:['Documented: SFPD affidavit 1993']}
+];
+
+const MEDGES=[
+  {s:'adl',t:'greenblatt',type:'personnel',label:'CEO'},
+  {s:'adl',t:'rosenberg',type:'personnel',label:'SVP International (ex-Israeli Ambassador)'},
+  {s:'adl',t:'jlens',type:'operational',label:'$12B capital affiliate'},
+  {s:'adl',t:'adlf',type:'funding',label:'$175M+ passed since 2010'},
+  {s:'adl',t:'j7',type:'operational',label:'Founded by Rosenberg'},
+  {s:'adl',t:'africacheck',type:'narrative',label:'Cited to dismiss SA farm murder stats'},
+  {s:'adl',t:'meta',type:'operational',label:'Content moderation advisory'},
+  {s:'adl',t:'google',type:'operational',label:'Corporate partner + advisory'},
+  {s:'adl',t:'boss',type:'historical',label:'Intelligence contractor 1987-91'},
+  {s:'adl',t:'sajbd',type:'operational',label:'NIN 2026 joint panel'},
+  {s:'adl',t:'bullock',type:'historical',label:'Paid via false-name account'},
+  {s:'greenblatt',t:'cfr',type:'operational',label:'CFR member'},
+  {s:'rosenberg',t:'j7',type:'personnel',label:'Founder and Director'},
+  {s:'rosenberg',t:'israelimfa',type:'personnel',label:'16yr diplomat → ADL 2023'},
+  {s:'rosenberg',t:'sajbd',type:'operational',label:'NIN 2026 joint panel'},
+  {s:'jlens',t:'meta',type:'adversarial',label:'Shareholder pressure (2025)'},
+  {s:'adlf',t:'macarthur',type:'funding',label:'Documented grant'},
+  {s:'adlf',t:'osf',type:'funding',label:'OSF-adjacent funding'},
+  {s:'j7',t:'sajbd',type:'operational',label:'ICJ statement coordination'},
+  {s:'j7',t:'icj',type:'adversarial',label:'"Iranian-backed sinister ploy" Jan 2024'},
+  {s:'sajbd',t:'wkahn',type:'personnel',label:'National Director (20 years)'},
+  {s:'sajbd',t:'acharnas',type:'personnel',label:'Intelligence analyst (2024)'},
+  {s:'sajbd',t:'gfarber',type:'personnel',label:'Campaign Coordinator (ex-ANCWL)'},
+  {s:'sajbd',t:'wjc',type:'operational',label:'WJC umbrella for Washington lobbying'},
+  {s:'sajbd',t:'ramaphosa',type:'adversarial',label:'ICJ opposition'},
+  {s:'sajbd',t:'icj',type:'adversarial',label:'Jan 2024 condemning statement'},
+  {s:'wkahn',t:'wjc',type:'operational',label:'WJC Forum regular'},
+  {s:'wkahn',t:'lipstadt',type:'operational',label:'Washington DC April 2024'},
+  {s:'wkahn',t:'whnsc',type:'operational',label:'Met White House NSC April 2024'},
+  {s:'acharnas',t:'bgu',type:'personnel',label:'MA Political Science'},
+  {s:'acharnas',t:'israelimfa',type:'historical',label:'15yr Israel intel analyst'},
+  {s:'gfarber',t:'anc',type:'historical',label:'ANCWL Gauteng Spokesperson until Oct 2023'},
+  {s:'gfarber',t:'ancwl',type:'historical',label:'Simultaneous SAJBD + ANCWL role'},
+  {s:'africacheck',t:'ifcn',type:'operational',label:'IFCN certified → Meta partner'},
+  {s:'africacheck',t:'osf',type:'funding',label:'OSF-SA 12%'},
+  {s:'africacheck',t:'gates',type:'funding',label:'Gates 13%'},
+  {s:'africacheck',t:'luminate',type:'funding',label:'Omidyar 23% (largest)'},
+  {s:'africacheck',t:'wits',type:'operational',label:'Housed at Wits Journalism Dept'},
+  {s:'africacheck',t:'wasserman',type:'narrative',label:'Shared academic ecosystem'},
+  {s:'wasserman',t:'cpcj',type:'narrative',label:'Co-authored Disinformation in Global South'},
+  {s:'wasserman',t:'idrc',type:'funding',label:'R20M IDRC grant to CINIA'},
+  {s:'wasserman',t:'stellenbosch',type:'operational',label:'Prof & CINIA Director'},
+  {s:'cpcj',t:'ifcn',type:'operational',label:'Co-wrote IFCN Code 2016'},
+  {s:'ifcn',t:'osf',type:'funding',label:'OSF funder'},
+  {s:'ifcn',t:'google',type:'funding',label:'Google funder'},
+  {s:'ifcn',t:'meta',type:'operational',label:'Certification → Meta contracts'},
+  {s:'osf',t:'adlf',type:'funding',label:'OSF funds ADLF'},
+  {s:'macarthur',t:'adlf',type:'funding',label:'Documented ADLF grant'},
+  {s:'idrc',t:'stellenbosch',type:'funding',label:'R20M grant'},
+  {s:'google',t:'africacheck',type:'funding',label:'Seed money 2012'},
+  {s:'meta',t:'ifcn',type:'funding',label:'Funds IFCN certification'},
+  {s:'anc',t:'ramaphosa',type:'personnel',label:'President'},
+  {s:'anc',t:'pandor',type:'personnel',label:'Minister International Relations'},
+  {s:'anc',t:'ancwl',type:'operational',label:'Party structure'},
+  {s:'anc',t:'eff',type:'adversarial',label:'Political competitor'},
+  {s:'anc',t:'icj',type:'operational',label:'Filed ICJ case Dec 2023'},
+  {s:'ramaphosa',t:'icj',type:'operational',label:'Signed off ICJ filing'},
+  {s:'boss',t:'bullock',type:'historical',label:'$16K cash payments 1987-91'},
+  {s:'bullock',t:'hani',type:'historical',label:'Compiled Hani file (10 days pre-assassination)'},
+  {s:'bullock',t:'lpatterson',type:'historical',label:'Paid via "L. Patterson" account'},
+  {s:'israelimfa',t:'bgu',type:'operational',label:'Israeli govt-university relationship'},
+  {s:'wjc',t:'wkahn',type:'operational',label:'WJC facilitated Washington DC meetings'}
+];
+
+// ---- THREE.JS SCENE ----
+const mapCanvas = document.getElementById('map3d');
+const mapWrap   = document.getElementById('map-wrap');
+
+let mScene,mCamera,mRenderer,mRaycaster,mMouse;
+let mNodeMeshes={}, mEdges=[];
+let mActiveFilters=new Set(Object.keys(MCATS));
+let mHovered=null, mSelected=null;
+let mIsDown=false, mPrevX=0, mPrevY=0;
+let mTheta=0.6, mPhi=1.1, mRadius=750;
+let mTTheta=0.6, mTPhi=1.1, mTRadius=750;
+let mAutoRotate=true; // slow intro spin, stops on first user interaction
+let mT=0;
+
+function mGetSize(){
+  // Account for left panel width so canvas fills visible area correctly
+  return{w:mapWrap.clientWidth,h:mapWrap.clientHeight};
+}
+
+function mInit(){
+  const {w,h}=mGetSize();
+  mScene=new THREE.Scene();
+  mScene.background=new THREE.Color(0x060D16);
+  mScene.fog=new THREE.Fog(0x060D16,850,2100);
+  mCamera=new THREE.PerspectiveCamera(52,w/h,1,4000);
+  mCamUpdate();
+  mRenderer=new THREE.WebGLRenderer({canvas:mapCanvas,antialias:true,alpha:false});
+  mRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  mRenderer.setSize(w,h);
+
+  // Lights — added once, never cleared
+  const al=new THREE.AmbientLight(0xffffff,0.55);mScene.add(al);
+  const pl=new THREE.PointLight(0xC5A258,0.8,1200);
+  pl.position.set(0,220,220);mScene.add(pl);
+  const pl2=new THREE.PointLight(0x3A9FD8,0.38,950);
+  pl2.position.set(-220,-110,-110);mScene.add(pl2);
+
+  // Stars — added once, tagged so they survive filter rebuilds
+  const sg=new THREE.BufferGeometry();
+  const sv=[];
+  for(let i=0;i<800;i++)sv.push(
+    (Math.random()-.5)*4400,(Math.random()-.5)*4400,(Math.random()-.5)*4400
+  );
+  sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));
+  const stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0x1A2E4A,size:1.4}));
+  stars.userData={mStatic:true};
+  mScene.add(stars);
+
+  mRaycaster=new THREE.Raycaster();
+  mMouse=new THREE.Vector2();
+
+  // Wait for fonts then build
+  document.fonts.ready.then(()=>{
+    mBuildScene();
+    mBuildFilters();
+    mBindEvents();
+    mAnimate();
+  });
+}
+
+function mCamUpdate(){
+  mCamera.position.x=mRadius*Math.sin(mPhi)*Math.cos(mTheta);
+  mCamera.position.y=mRadius*Math.cos(mPhi);
+  mCamera.position.z=mRadius*Math.sin(mPhi)*Math.sin(mTheta);
+  mCamera.lookAt(0,0,0);
+}
+
+function mEdgeColor(type){
+  return{funding:0xC5A258,personnel:0xE05A2B,operational:0x3A9FD8,
+         historical:0x8B6E47,narrative:0x9B59B6,adversarial:0xE74C3C}[type]||0xffffff;
+}
+
+function mBuildScene(){
+  // Clear only node meshes and edges — NOT static bg (stars, lights)
+  const rem=[];
+  mScene.traverse(o=>{
+    if((o.userData.nid||o.userData.eid)&&!o.userData.mStatic)rem.push(o);
+  });
+  rem.forEach(o=>mScene.remove(o));
+  mEdges=[];mNodeMeshes={};
+
+  // Nodes
+  MNODES.forEach(nd=>{
+    if(!mActiveFilters.has(nd.cat))return;
+    const cat=MCATS[nd.cat];
+    const geo=new THREE.SphereGeometry(nd.size,22,22);
+    // emissive = full colour; emissiveIntensity controls brightness
+    const mat=new THREE.MeshPhongMaterial({
+      color:cat.color,
+      emissive:new THREE.Color(cat.color),
+      emissiveIntensity:0.28,
+      shininess:60,
+      transparent:true,
+      opacity:.9
+    });
+    const mesh=new THREE.Mesh(geo,mat);
+    mesh.position.set(...nd.pos);
+    mesh.userData={nid:nd.id};
+    mScene.add(mesh);
+
+    // Halo ring
+    const rg=new THREE.RingGeometry(nd.size*1.45,nd.size*1.8,36);
+    const rm=new THREE.MeshBasicMaterial({
+      color:cat.color,side:THREE.DoubleSide,transparent:true,opacity:.1
+    });
+    const ring=new THREE.Mesh(rg,rm);
+    ring.rotation.x=Math.PI/2;
+    mesh.add(ring);
+
+    // Text label
+    const sp=mMakeLabel(nd.label,cat.hex,nd.size);
+    sp.position.set(0,nd.size+15,0);
+    mesh.add(sp);
+    mNodeMeshes[nd.id]=mesh;
+  });
+
+  // Edges
+  MEDGES.forEach((edge,i)=>{
+    const sa=MNODES.find(n=>n.id===edge.s);
+    const ta=MNODES.find(n=>n.id===edge.t);
+    if(!sa||!ta)return;
+    if(!mActiveFilters.has(sa.cat)||!mActiveFilters.has(ta.cat))return;
+    const pts=[new THREE.Vector3(...sa.pos),new THREE.Vector3(...ta.pos)];
+    const geo=new THREE.BufferGeometry().setFromPoints(pts);
+    const col=mEdgeColor(edge.type);
+    const baseOp=edge.type==='historical'?.18:edge.type==='adversarial'?.42:.28;
+    const line=new THREE.Line(geo,new THREE.LineBasicMaterial({
+      color:col,transparent:true,opacity:baseOp
+    }));
+    line.userData={eid:i,edge,baseOp};
+    mScene.add(line);mEdges.push(line);
+  });
+}
+
+function mMakeLabel(text,color,ns){
+  const c2=document.createElement('canvas');
+  const ctx=c2.getContext('2d');
+  const fs=22;
+  ctx.font=`600 ${fs}px JetBrains Mono,monospace`;
+  const tw=Math.max(ctx.measureText(text).width+24,40);
+  c2.width=tw; c2.height=36;
+  ctx.font=`600 ${fs}px JetBrains Mono,monospace`;
+  ctx.fillStyle=color; ctx.fillText(text,12,26);
+  const tex=new THREE.CanvasTexture(c2);
+  const mat=new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,sizeAttenuation:true});
+  const sp=new THREE.Sprite(mat);
+  const h=18; sp.scale.set(h*(tw/36),h,1);
+  return sp;
+}
+
+function mBuildFilters(){
+  const list=document.getElementById('mflist');
+  list.innerHTML='';
+  Object.entries(MCATS).forEach(([key,cat])=>{
+    const cnt=MNODES.filter(n=>n.cat===key).length;
+    const btn=document.createElement('div');
+    btn.className='mfbtn mfon';btn.dataset.cat=key;
+    btn.innerHTML=`<div class="mfdot" style="background:${cat.hex}"></div><span>${cat.label}</span><span class="mfct">${cnt}</span>`;
+    btn.addEventListener('click',()=>{
+      if(mActiveFilters.has(key)){mActiveFilters.delete(key);btn.classList.remove('mfon')}
+      else{mActiveFilters.add(key);btn.classList.add('mfon')}
+      mBuildScene();
+    });
+    list.appendChild(btn);
+  });
+}
+
+function mBindEvents(){
+  let mDownX=0,mDownY=0; // separate from mPrevX/Y which track drag
+
+  mapCanvas.addEventListener('mousedown',e=>{
+    mIsDown=true; mAutoRotate=false;
+    mPrevX=e.clientX;mPrevY=e.clientY;
+    mDownX=e.clientX;mDownY=e.clientY;
+  });
+  window.addEventListener('mouseup',()=>mIsDown=false);
+
+  // Use mapCanvas mousemove (not window) to avoid ghost tooltips outside canvas
+  mapCanvas.addEventListener('mousemove',e=>{
+    if(mIsDown){
+      mTTheta-=(e.clientX-mPrevX)*.005;
+      mTPhi=Math.max(.3,Math.min(Math.PI-.3,mTPhi+(e.clientY-mPrevY)*.005));
+      mPrevX=e.clientX;mPrevY=e.clientY;
+    }
+    const rect=mapWrap.getBoundingClientRect();
+    const lx=e.clientX-rect.left;
+    const ly=e.clientY-rect.top;
+    mMouse.x=(lx/mapWrap.clientWidth)*2-1;
+    mMouse.y=-(ly/mapWrap.clientHeight)*2+1;
+    mHandleHover(lx,ly);
+  });
+
+  mapCanvas.addEventListener('mouseleave',()=>{
+    // Clear hover state when mouse exits canvas
+    if(mHovered&&mNodeMeshes[mHovered]){
+      mNodeMeshes[mHovered].material.emissiveIntensity=0.22;
+    }
+    mHovered=null;
+    mTT.style.display='none';
+    mapCanvas.style.cursor='default';
+  });
+
+  mapCanvas.addEventListener('wheel',e=>{
+    mTRadius=Math.max(160,Math.min(1500,mTRadius+e.deltaY*.5));
+    e.preventDefault();
+  },{passive:false});
+
+  // Click uses dedicated mousedown coords — not mPrevX which drift during drag
+  mapCanvas.addEventListener('click',e=>{
+    if(Math.abs(e.clientX-mDownX)<6&&Math.abs(e.clientY-mDownY)<6){
+      mHandleClick();
+    }
+  });
+
+  // Touch
+  let ltd=0,tDownX=0,tDownY=0;
+  mapCanvas.addEventListener('touchstart',e=>{
+    mAutoRotate=false;
+    if(e.touches.length===1){
+      mIsDown=true;
+      mPrevX=tDownX=e.touches[0].clientX;
+      mPrevY=tDownY=e.touches[0].clientY;
+    } else if(e.touches.length===2){
+      ltd=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+    }
+  });
+  mapCanvas.addEventListener('touchend',e=>{
+    mIsDown=false;
+    // Tap to select
+    if(e.changedTouches.length===1){
+      const t=e.changedTouches[0];
+      if(Math.abs(t.clientX-tDownX)<10&&Math.abs(t.clientY-tDownY)<10){
+        const rect=mapWrap.getBoundingClientRect();
+        mMouse.x=((t.clientX-rect.left)/mapWrap.clientWidth)*2-1;
+        mMouse.y=-((t.clientY-rect.top)/mapWrap.clientHeight)*2+1;
+        mHandleClick();
+      }
+    }
+  });
+  mapCanvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(e.touches.length===1&&mIsDown){
+      mTTheta-=(e.touches[0].clientX-mPrevX)*.006;
+      mTPhi=Math.max(.3,Math.min(Math.PI-.3,mTPhi+(e.touches[0].clientY-mPrevY)*.006));
+      mPrevX=e.touches[0].clientX;mPrevY=e.touches[0].clientY;
+    } else if(e.touches.length===2){
+      const d=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      mTRadius=Math.max(160,Math.min(1500,mTRadius-(d-ltd)*2));
+      ltd=d;
+    }
+  },{passive:false});
+
+  // Resize
+  const ro=new ResizeObserver(()=>{
+    if(!mCamera||!mRenderer)return;
+    const {w,h}=mGetSize();
+    mCamera.aspect=w/h;
+    mCamera.updateProjectionMatrix();
+    mRenderer.setSize(w,h);
+  });
+  ro.observe(mapWrap);
+
+  document.getElementById('mrclose').addEventListener('click',mClosePanel);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')mClosePanel();});
+
+  document.getElementById('mapsrch').addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase().trim();
+    Object.entries(mNodeMeshes).forEach(([id,mesh])=>{
+      if(!q){mesh.material.opacity=.9;return;}
+      const nd=MNODES.find(n=>n.id===id);
+      const hit=nd&&(
+        nd.label.toLowerCase().includes(q)||
+        nd.role.toLowerCase().includes(q)||
+        (nd.ev&&nd.ev.toLowerCase().includes(q))
+      );
+      mesh.material.opacity=hit?1:.06;
+    });
+  });
+}
+
+const mTT=document.getElementById('mtt');
+const mTTCat=document.getElementById('mttcat');
+const mTTName=document.getElementById('mttname');
+
+function mHandleHover(lx,ly){
+  if(!mRaycaster||!mCamera)return;
+  mRaycaster.setFromCamera(mMouse,mCamera);
+  const meshList=Object.values(mNodeMeshes);
+  if(!meshList.length)return;
+  const hits=mRaycaster.intersectObjects(meshList,false);
+
+  if(hits.length>0){
+    const id=hits[0].object.userData.nid;
+    if(id){
+      const nd=MNODES.find(n=>n.id===id);
+      if(nd){
+        mTTCat.textContent=MCATS[nd.cat].label;
+        mTTName.textContent=nd.label;
+        mTT.style.display='block';
+        // Clamp tooltip so it doesn't go offscreen
+        const tw=mapWrap.clientWidth, th=mapWrap.clientHeight;
+        const lpw=window.innerWidth>700?196:0; // left panel width
+        mTT.style.left=Math.min(Math.max(lx, lpw+60), tw-90)+'px';
+        mTT.style.top=Math.max(ly, 50)+'px';
+        mapCanvas.style.cursor='pointer';
+
+        if(id!==mHovered){
+          // Reset previous
+          if(mHovered&&mNodeMeshes[mHovered]){
+            mNodeMeshes[mHovered].material.emissiveIntensity=0.22;
+          }
+          mHovered=id;
+          // Brighten current
+          hits[0].object.material.emissiveIntensity=0.7;
+        }
+      }
+    }
+  } else {
+    if(mHovered&&mNodeMeshes[mHovered]){
+      mNodeMeshes[mHovered].material.emissiveIntensity=0.22;
+    }
+    mHovered=null;
+    mTT.style.display='none';
+    mapCanvas.style.cursor='default';
+  }
+}
+
+function mHandleClick(){
+  mRaycaster.setFromCamera(mMouse,mCamera);
+  const hits=mRaycaster.intersectObjects(Object.values(mNodeMeshes),false);
+  if(hits.length>0){const id=hits[0].object.userData.nid;if(id)mOpenPanel(id)}
+}
+
+function mOpenPanel(nid){
+  const nd=MNODES.find(n=>n.id===nid);
+  if(!nd)return;
+  mSelected=nid;
+  const cat=MCATS[nd.cat];
+  const conns=nd.conn||[];
+
+  let ch='';
+  if(conns.length){
+    ch=`<div class="mr-conns"><div class="mr-ch4">Connections (${conns.length})</div>`;
+    conns.forEach(cid=>{
+      const cn=MNODES.find(n=>n.id===cid);if(!cn)return;
+      const cc=MCATS[cn.cat];
+      const edge=MEDGES.find(e=>(e.s===nid&&e.t===cid)||(e.s===cid&&e.t===nid));
+      ch+=`<div class="mr-conn" onclick="mOpenPanel('${cid}')" style="border-left-color:${cc.hex}">
+        <div class="mr-cdot" style="background:${cc.hex}"></div>
+        <div>
+          <div style="color:var(--cream);font-size:.82rem;font-weight:600">${cn.label}</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">${edge?edge.label:cn.role}</div>
+        </div>
+      </div>`;
+    });
+    ch+='</div>';
+  }
+
+  let dh='';
+  if(nd.dates&&nd.dates.length){
+    dh='<div style="margin-top:.8rem">';
+    nd.dates.forEach(d=>{dh+=`<span class="mr-date">${d}</span>`});
+    dh+='</div>';
+  }
+
+  document.getElementById('mrinner').innerHTML=
+    `<div style="height:3px;background:${cat.hex};margin:-1.3rem -1.3rem 1.2rem;border-radius:0"></div>
+     <div class="mr-cat" style="color:${cat.hex}">${cat.label}</div>
+     <div class="mr-title">${nd.label}</div>
+     <div class="mr-role">${nd.role}</div>
+     <div class="mr-body">${nd.ev}${dh}</div>${ch}`;
+
+  document.getElementById('mright').classList.add('mrop');
+
+  // Focus camera — guard against zero-vector (ADL center node)
+  const tgt=new THREE.Vector3(...nd.pos);
+  const len=tgt.length();
+  if(len > 5){
+    const dir=tgt.clone().normalize();
+    mTTheta=Math.atan2(dir.z,dir.x);
+    mTPhi=Math.max(0.4,Math.min(Math.PI-0.4,Math.acos(dir.y)));
+    mTRadius=Math.max(280,len+220);
+  } else {
+    // ADL is at centre — pull back and orbit to a pleasant angle
+    mTTheta+=0.4;
+    mTPhi=1.1;
+    mTRadius=500;
+  }
+}
+
+function mClosePanel(){document.getElementById('mright').classList.remove('mrop');mSelected=null}
+
+// Make mOpenPanel globally accessible for inline onclick
+window.mOpenPanel=mOpenPanel;
+
+function mAnimate(){
+  requestAnimationFrame(mAnimate);
+  mT+=0.006;
+
+  // Auto-rotate until user interacts
+  if(mAutoRotate) mTTheta+=0.003;
+
+  // Smooth camera interpolation
+  mTheta +=(mTTheta-mTheta )*.07;
+  mPhi   +=(mTPhi  -mPhi   )*.07;
+  mRadius+=(mTRadius-mRadius)*.06;
+  mCamUpdate();
+
+  // ADL central node pulse
+  const am=mNodeMeshes['adl'];
+  if(am){
+    const s=1+Math.sin(mT*1.8)*.045;
+    am.scale.set(s,s,s);
+  }
+
+  // Edge opacity breathe — uses stored baseOp per edge
+  mEdges.forEach((l,i)=>{
+    if(!l.userData.edge)return;
+    const bo=l.userData.baseOp||.28;
+    const wave=Math.sin(mT*.7+i*.4)*.06;
+    l.material.opacity=Math.max(0.05,Math.min(0.85, bo+wave));
+  });
+
+  if(mRenderer&&mScene&&mCamera){
+    mRenderer.render(mScene,mCamera);
+  }
+}
+
+// Init when canvas is visible in viewport
+const mObserver=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){mInit();mObserver.disconnect()}
+},{threshold:.1});
+mObserver.observe(mapWrap);
+
+})();
+</script>
+
+
+<hr class="divider">
+
+<!-- THE SIX CRITERIA -->
+<section class="section">
+  <div class="section-label reveal">The Standard Applied</div>
+  <h2 class="reveal">The ADL's Own Six Criteria — Each One Applied to Afrikaners</h2>
+
+  <div class="context-box reveal">
+    <div class="ctx-label">Who are Afrikaners?</div>
+    <p>Afrikaners are an ethnic group of approximately 2.7 million people, predominantly descended from Dutch, German, and French Huguenot settlers who arrived in South Africa from 1652 onwards. Their language, Afrikaans, is a distinct language derived from Dutch. The majority are Christian (Reformed Protestant tradition) and many are farmers whose families have worked the same land for generations. Under the apartheid system (1948–1994), the ruling National Party was predominantly Afrikaner — a fact routinely used today to dismiss contemporary Afrikaner concerns about discrimination and violence as expressions of racial nostalgia rather than genuine ethnic vulnerability. The ADL's own published article does exactly this.</p>
+  </div>
+
+  <p class="reveal">The ADL publishes its methodology for identifying ethnic targeting that requires institutional response. These six criteria are drawn from the ADL's own published standards — the same standards it applies globally when identifying hate speech, incitement, and ethnic persecution. Each is applied to the documented Afrikaner case below.</p>
+
+  <div class="criteria-grid">
+
+    <!-- C1 -->
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num">01</div>
+        <div class="criterion-title">Named ethnic group targeted in political speech</div>
+        <div class="criterion-verdict verdict-fail">Standard Not Applied</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">ADL Standard</div>
+          <p>Any expression targeting a named ethnic or religious group qualifies as a hate incident requiring documentation and response. Speech "perceived as" hostile qualifies for incident classification.</p>
+        </div>
+        <div class="afrikaner-reality">
+          <div class="label">Afrikaner Reality — Documented</div>
+          <p>"Kill the Boer" names a specific ethnic group. Performed by the leader of South Africa's third-largest political party before 90,000 people. With gun-pointing gestures. Repeatedly over fifteen years. Julius Malema was convicted of hate speech by the South African Equality Court in August 2025 specifically for calling for a white man to be killed. He was sentenced to five years' imprisonment in April 2026.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response</div>
+          <p>"While it is a historic protest song that called for the dismantlement of apartheid in South Africa, its crude lyrics could be interpreted as a call for violence." — ADL statement, August 9, 2023. Produced only after ten days of public pressure. Named no one. Designated nothing.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num">02</div>
+        <div class="criterion-title">Court-established incitement to violence</div>
+        <div class="criterion-verdict verdict-fail">Standard Not Applied</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">ADL Standard</div>
+          <p>Speech that could reasonably lead to violence against a group constitutes incitement requiring condemnation and potential legal intervention. The ADL does not require a court finding before acting — "perceived as" hostile is sufficient.</p>
+        </div>
+        <div class="afrikaner-reality">
+          <div class="label">Afrikaner Reality — Documented</div>
+          <p>The South African Equality Court ruled in 2011 the song "prima facie satisfies the crime of incitement to murder." The Truth and Reconciliation Commission heard direct testimony that the chant motivated an actual farm murder. Malema convicted 2025. Sentenced 2026. A South African court — not a political claim — made these findings.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response — After Malema's Conviction</div>
+          <p>No updated statement. No designation. No legal network response. The ADL called for Tucker Carlson to be fired from a television programme. It called for college presidents to investigate student clubs. For a court-convicted political leader: silence.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num">03</div>
+        <div class="criterion-title">Institutional discrimination by ethnicity</div>
+        <div class="criterion-verdict verdict-fail">Standard Not Applied</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">ADL Standard</div>
+          <p>Laws and policies that discriminate by ethnic or racial classification constitute systemic targeting requiring institutional response and legislative advocacy.</p>
+        </div>
+        <div class="afrikaner-reality">
+          <div class="label">Afrikaner Reality — Documented</div>
+          <p>Black Economic Empowerment (BEE) legislation explicitly classifies Afrikaners as non-beneficiaries in employment, business ownership, and economic participation. By statute. Not by custom. The Expropriation Act of 2024 creates mechanisms that could enable seizure of land without compensation — disproportionately affecting Afrikaner agricultural families. The ADL has advocated against anti-BDS legislation in 50 US states on First Amendment grounds.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response</div>
+          <p>No published analysis. No statement. No legislative advocacy. No legal challenge. The organisation that monitors employment discrimination in corporations across 103 countries has produced no analysis of legislation that explicitly classifies an ethnic group as non-beneficiaries by law.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C4 -->
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num">04</div>
+        <div class="criterion-title">Disproportionate physical targeting</div>
+        <div class="criterion-verdict verdict-fail">Standard Not Applied</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">ADL Standard</div>
+          <p>When a community experiences violence at rates disproportionate to the general population, the ADL documents, publicises, and advocates for protection. It publishes annual incident reports. It briefs law enforcement.</p>
+        </div>
+        <div class="afrikaner-reality">
+          <div class="label">Afrikaner Reality — Documented</div>
+          <p>The US State Department's 2024 Country Report on Human Rights in South Africa documents 447 murders on farms and smallholdings in a single year. The South African Institute of Race Relations found farmers were two to three times more likely to become homicide victims than other members of society. The South African Police Service stopped publishing farm attack statistics in 2008.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response</div>
+          <p>The ADL's own published article on South Africa states farm murders are "general crime" in a country with "generally high rates of violent crime" — citing Africa Check data from 2016-17. That article has not been updated despite the US Government's own 2024 findings directly contradicting it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C5 -->
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num">05</div>
+        <div class="criterion-title">Government silence enabling harm</div>
+        <div class="criterion-verdict verdict-fail">Standard Not Applied</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">ADL Standard</div>
+          <p>When governments fail to condemn hate speech targeting a minority group, the ADL calls them out publicly and advocates for state accountability. Its own published principle: "Antisemitism grows in silence and blossoms in acquiescence."</p>
+        </div>
+        <div class="afrikaner-reality">
+          <div class="label">Afrikaner Reality — Documented</div>
+          <p>The ANC government did not condemn Malema's stadium performance. The South African Police Service stopped publishing farm attack statistics in 2008. President Ramaphosa's response to international concern was that "Kill the Boer" does not reflect government policy — not that it constitutes hate speech. The ANC government simultaneously stopped publishing the data that would document the targeting pattern.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response</div>
+          <p>No government accountability statement on ANC silence on Afrikaner hate speech. The ADL's J7 coalition — founded by a career Israeli diplomat operating from ADL offices — attacked the ANC government. Not for silence on farm murders. For taking Israel to the International Court of Justice.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C6 -->
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num">06</div>
+        <div class="criterion-title">Contradiction with US Government findings</div>
+        <div class="criterion-verdict verdict-fail">Standard Not Applied</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">ADL Standard</div>
+          <p>The ADL positions itself as a partner and authoritative source for US government bodies — from the FBI to the State Department to congressional committees. Its credibility depends on alignment with documented fact.</p>
+        </div>
+        <div class="afrikaner-reality">
+          <div class="label">US State Department 2024 — Documented</div>
+          <p>The 2024 US Country Report on Human Rights in South Africa: "In recent years, extremist political party the Economic Freedom Fighters (EFF) encouraged attacks on Afrikaner farmers, reviving the use of the song 'Kill the Boer' at its rallies and otherwise inciting violence." 447 murders documented. EFF named as extremist. Kill the Boer linked directly to incitement.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Published Position — Unchanged</div>
+          <p>Farm murder concerns are rooted in "a long history" of white supremacist apartheid sympathy. Any claim of targeting is "white genocide" conspiracy theory. The ADL and the US Government are in direct documented contradiction. The ADL has not acknowledged the discrepancy.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end criteria-grid -->
+</section>
+
+<hr class="divider">
+
+<!-- NEW LEGAL EVIDENCE SECTION -->
+<section class="section">
+  <div class="section-label reveal">What the Evidence Actually Shows</div>
+  <h2 class="reveal">Three Bodies Confirm What the ADL Won't Acknowledge</h2>
+
+  <p class="reveal">The ADL does not need to be taken at its critics' word. Three independent institutional bodies — South Africa's own constitutional Human Rights Commission, the United States State Department, and a Jewish South African legal advocate writing in the SAJBD's own publication — have each, independently, confirmed what the ADL's published article calls a white supremacist conspiracy theory.</p>
+
+  <div class="criteria-grid reveal" style="margin-top:2rem">
+
+    <div class="criterion-card">
+      <div class="criterion-header">
+        <div class="criterion-num" style="color:#27AE60;font-size:.9rem">SAHRC</div>
+        <div class="criterion-title">South Africa's Human Rights Commission Wins Hate Speech Case Against Malema — August 2025</div>
+        <div class="criterion-verdict" style="background:rgba(39,174,96,.2);border:1px solid rgba(39,174,96,.4);color:#7EC89A;font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.3rem .7rem;border-radius:3px;white-space:nowrap">Court Record — ZAEQC 6</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">What the Court Found</div>
+          <p>The South African Human Rights Commission (SAHRC) — a Chapter 9 constitutional body — brought proceedings against EFF leader Julius Malema. On 27 August 2025, the Western Cape Equality Court (Judge M Sher) declared his statements constituted hate speech under the Promotion of Equality and Prevention of Unfair Discrimination Act. The court found the speech amounted to "an exhortation to kill white males" based on race. Judge Sher noted that when such a call comes from the leader of the third-largest political party, "it has the potential to foment racial violence on a large scale." Malema and the EFF were held jointly and severally liable.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response to South Africa's Own Human Rights Body Winning This Case</div>
+          <p>No statement. No update to its published article. No acknowledgment that South Africa's constitutional human rights infrastructure had confirmed — in a binding court order — that racial incitement against white South Africans by a major political party leader constitutes illegal hate speech.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion-card">
+      <div class="criterion-header">
+        <div class="criterion-num" style="color:#3A9FD8;font-size:.9rem">State Dept</div>
+        <div class="criterion-title">US State Department 2024 Report: EFF Is Extremist, Kill the Boer Is Incitement</div>
+        <div class="criterion-verdict" style="background:rgba(58,159,216,.2);border:1px solid rgba(58,159,216,.4);color:#8AC8E8;font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.3rem .7rem;border-radius:3px;white-space:nowrap">US Government — August 2025</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">What the US Government Found</div>
+          <p>The US State Department's 2024 Country Report on Human Rights in South Africa documents 447 murders on farms and smallholdings in a single year. It names the Economic Freedom Fighters (EFF) as "an extremist political party" and states the EFF "encouraged attacks on Afrikaner farmers, reviving the use of the song 'Kill the Boer' at its rallies and otherwise inciting violence." This is the same US government the ADL lobbies ($1.4M in 2024), briefed through SAJBD, and whose Special Envoy for Antisemitism met the SAJBD's National Director in Washington DC in April 2024.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Published Position — Unchanged</div>
+          <p>Farm murder concerns are "rooted in a long history" of white supremacist apartheid sympathy. The ADL's article cites Africa Check data from 2016-17. No update. No acknowledgment of the discrepancy. The organisation that lobbies the US government on human rights is in documented, unaddressed contradiction with the US government's own 2024 human rights findings.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion-card">
+      <div class="criterion-header">
+        <div class="criterion-num" style="color:#C5A258;font-size:.9rem">SAJBD</div>
+        <div class="criterion-title">A Jewish SA Legal Advocate — In the SAJBD's Own Publication — Says Courts Are Creating Different Rules for Afrikaners</div>
+        <div class="criterion-verdict" style="background:rgba(197,162,88,.15);border:1px solid rgba(197,162,88,.3);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.3rem .7rem;border-radius:3px;white-space:nowrap">SA Jewish Report — April 2025</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">What Advocate Mark Oppenheimer Found</div>
+          <p>Advocate Mark Oppenheimer argued the "Kill the Boer" case in South Africa's Equality Court. He is not an Afrikaner nationalist. He is a Jewish South African legal advocate. Writing in the SA Jewish Report — the SAJBD's own publication — in April 2025, he stated: "There's a danger that our courts are creating different rules for disfavoured minorities like Afrikaners." He further stated: "Afrikaners are increasingly feeling like second-class citizens, undeserving of equal protection." He noted that "Kill the Boer" written in blood above murder victims made him unable to think of any scenario where chanting about killing a racial group would not be hate speech.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">ADL Response to Its Own Partner's Publication Carrying This Analysis</div>
+          <p>Nothing. The SAJBD's own newspaper published a Jewish South African lawyer stating Afrikaners may be receiving unequal legal protection — in the same period the SAJBD was coordinating with the ADL at Never Is Now 2026. The ADL produced no equivalent analysis, no acknowledgment, no engagement with the argument made by a legal expert inside the ADL's own South African network.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pull-quote reveal" style="margin-top:2.5rem">
+    <p>"South Africa's Human Rights Commission says racial incitement against white men is illegal hate speech. The US State Department says 447 people were murdered on farms last year and names the party that sings Kill the Boer as extremist. A Jewish South African lawyer says Afrikaners may be undeserving of equal legal protection in his country's courts. The ADL has responded to none of it."</p>
+    <cite>Alt Afrikaner | Netwerk Leaks — April 2026</cite>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- THE HISTORICAL RECORD -->
+<section class="section">
+  <div class="section-label reveal">The Historical Record</div>
+  <h2 class="reveal">While Calling the ANC Terrorist — The ADL Was Spying For Apartheid</h2>
+
+  <div class="context-box reveal">
+    <div class="ctx-label">Key terms for this section</div>
+    <p><strong>Apartheid</strong> — South Africa's legally enforced system of racial segregation (1948–1994), in which the white minority government denied political rights, economic access, and civil freedoms to Black, Coloured, and Indian South Africans. <strong>ANC</strong> — African National Congress, the liberation movement that led the fight against apartheid and has governed South Africa since 1994. <strong>BOSS</strong> — Bureau of State Security, the apartheid regime's most feared intelligence service, responsible for political assassinations, surveillance, and the elimination of anti-apartheid activists inside and outside South Africa. <strong>BOSS</strong> is not a metaphor. It tortured and killed people.</p>
+  </div>
+
+  <p class="reveal">
+    The ADL currently dismisses Afrikaner farm murder concerns as white supremacist conspiracy theory rooted in apartheid nostalgia. That position is maintained by an organisation with a documented, court-settled operational history as a paid intelligence contractor for the very apartheid state it now accuses Afrikaners of being nostalgic about.
+  </p>
+
+  <div class="timeline reveal">
+
+    <div class="timeline-item">
+      <div class="timeline-year">1961</div>
+      <div class="timeline-title">The Foundation Document</div>
+      <div class="timeline-body">An internal ADL document states: the League maintains "very important, confidential investigative coverage" and that "our information has been of great value and service to both the United States State Department and the Israeli Government. All data have been made available to both countries with full knowledge to each that we were the source." The intelligence architecture predates the Bullock operation by decades. (Source: The Nation, 2024 — primary document)</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">1950s — 1992</div>
+      <div class="timeline-title">The Bullock Operation</div>
+      <div class="timeline-body">Roy Bullock, ADL operative paid via false-name bank account "L. Patterson" through an attorney cut-out, accumulates files on 12,000 Americans across five database categories: ARAB, PINKO, RIGHT, SKINS — and ANC. The African National Congress had its own dedicated intelligence folder in the ADL's database. This is documented in the 700-page police affidavit released by the San Francisco District Attorney in 1993.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">1987 — 1991</div>
+      <div class="timeline-title">South African Intelligence Payments</div>
+      <div class="timeline-body">Bullock and SFPD Inspector Tom Gerard meet clandestinely with apartheid Bureau of State Security (BOSS) agents — using the alias "Humphries" — at a Fisherman's Wharf motel. BOSS requests information on anti-apartheid activists and "any sexual impropriety" for blackmail use. Material on Congressman Ron Dellums, Chair of the House Armed Services Committee, is passed to BOSS. Payment: $16,000 cash in envelopes, split evenly. Documented in FBI investigation materials.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">April 1993</div>
+      <div class="timeline-title">The Chris Hani File</div>
+      <div class="timeline-body">Among the seized files: a surveillance report on ANC deputy leader Chris Hani's visit to California, compiled by Bullock and submitted to the South African government. Timeline: Hani was assassinated at his home in Boksburg ten days after the file's submission. No investigation was ever conducted into whether the surveillance report and the assassination are connected. The ADL's attorney declined to comment when asked.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">1993 — 2002</div>
+      <div class="timeline-title">The Cover Architecture</div>
+      <div class="timeline-body">The ADL retains Bullock, pays his legal fees, petitions a court to classify his operations as "journalism" protected by the First Amendment — and succeeds. A court accepts this argument. The FBI withholds its evidence from the prosecution. The DA settles for $25,000. Seized files are sealed with the ADL retaining objection rights before any public disclosure. Final settlement: $178,000 paid to the last three plaintiffs in 2002. No structural reform required. Foxman remains director until 2015.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">October 2025</div>
+      <div class="timeline-title">FBI Formally Severs Ties</div>
+      <div class="timeline-body">FBI Director Kash Patel severs the ADL's federal partnership, citing specifically "disgraceful operations spying on Americans" — activism dressed up as counterterrorism. The ADL deletes its Glossary of Extremism under political pressure. Multiple senior resignations documented across 2023-2025. The organisation whose intelligence operations helped sustain apartheid now defines what constitutes hate speech for Meta, YouTube, and 40+ governments.</div>
+    </div>
+
+  </div><!-- end timeline -->
+</section>
+
+<hr class="divider">
+
+<!-- POST-1994 INVERSION SECTION -->
+<section class="section">
+  <div class="section-label reveal">Post-1994: The Inversion</div>
+  <h2 class="reveal">After Apartheid Ended, the ADL's Position Flipped — But the Variable Never Changed</h2>
+
+  <p class="reveal">Understanding why the ADL does not recognise Afrikaner persecution requires understanding how its South Africa position evolved across three phases — each determined not by evidence about South Africa, but by a single consistent variable: Israeli strategic interest.</p>
+
+  <div class="criteria-grid" style="margin-top:2rem">
+
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num" style="color:#8B6E47;font-size:1rem">1980s</div>
+        <div class="criterion-title">Phase 1 — ADL Supports Apartheid, Calls ANC Terrorist</div>
+        <div class="criterion-verdict" style="background:rgba(139,110,71,.2);border:1px solid rgba(139,110,71,.4);color:#C4A87A;font-family:JetBrains Mono,monospace;font-size:.65rem;padding:.3rem .7rem;border-radius:3px;white-space:nowrap">1980 – 1992</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">The Position</div>
+          <p>The ANC is "totalitarian, anti-humane, anti-democratic, anti-Israel, and anti-American" — ADL National Director Nathan Perlmutter. ADL operative Roy Bullock monitors ANC supporters in California and sells files to BOSS (Bureau of State Security — apartheid's assassination-capable intelligence service) for $16,000 cash in envelopes, 1987–1991. The ADL feeds blackmail-capable material on US Congressman Ron Dellums to the apartheid state.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">The Determining Variable</div>
+          <p>The ANC aligned with the Palestine Liberation Organisation (PLO) and anti-Zionist liberation movements globally. Israel and apartheid South Africa were strategic military allies — Israel sold weapons systems to Pretoria throughout this period. The ADL served both. The ANC was not an enemy because of its domestic politics. It was an enemy because of its foreign policy toward Israel.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num" style="color:#3A9FD8;font-size:1rem">1990s</div>
+        <div class="criterion-title">Phase 2 — Tactical Rebranding: Mandela Becomes a Hero</div>
+        <div class="criterion-verdict" style="background:rgba(58,159,216,.15);border:1px solid rgba(58,159,216,.35);color:#8AC8E8;font-family:JetBrains Mono,monospace;font-size:.65rem;padding:.3rem .7rem;border-radius:3px;white-space:nowrap">1990 – 2022</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">The Position</div>
+          <p>Foxman calls Mandela "a hero." But the shift is immediately conditional — the ADL writes to Mandela that it is "disturbed and pained" by his relationship with PLO leader Yasser Arafat. The ADL wanted Mandela to endorse Israel's right to exist and distance himself from the PLO. When Mandela refused, warmth cooled. The rebranding was positioning, not principle. The SAJBD (South African Jewish Board of Deputies) — the ADL's operational partner — simultaneously maintains studied neutrality on apartheid while the ADL was selling intelligence to BOSS.</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">The Determining Variable</div>
+          <p>The apartheid state's collapse made continued alignment untenable. The ANC was now the government of a country where 52,000 Jewish South Africans lived. The SAJBD needed to maintain diplomatic access to the new government. The core condition — Israeli alignment as the price of warm relations — never changed. Only the political calculation of who was useful changed.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion-card reveal">
+      <div class="criterion-header">
+        <div class="criterion-num" style="color:#E74C3C;font-size:1rem">Now</div>
+        <div class="criterion-title">Phase 3 — ANC Takes Israel to Court: ADL Calls It Iranian Terrorism</div>
+        <div class="criterion-verdict verdict-fail">2023 – Present</div>
+      </div>
+      <div class="criterion-body">
+        <div class="adl-standard">
+          <div class="label">The Position</div>
+          <p>South Africa files an ICJ (International Court of Justice) genocide case against Israel, December 2023. The ADL's J7 coalition — founded by a career Israeli diplomat who left the Israeli Ministry of Foreign Affairs to run ADL's international operations — calls it "a morally obscene, anti-Israel campaign led by South Africa with the backing of the Iranian regime." The SAJBD states the ANC is "inverting reality." Malema sings "Kill the Boer" before 90,000 people in July 2023. ADL: "crude lyrics that could be interpreted as violent."</p>
+        </div>
+        <div class="adl-response">
+          <div class="label">The Determining Variable — Unchanged Since 1980</div>
+          <p>The ANC is attacked exclusively on Israeli grounds. On every other dimension of ANC governance — farm murders, hate speech, BEE statutory discrimination, suppression of farm attack statistics — the ADL produces nothing. The Afrikaner is not even a footnote in this calculation. Three phases spanning four decades. One variable throughout. The Afrikaner was irrelevant in 1985. The Afrikaner is irrelevant now.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pull-quote reveal" style="margin-top:2.5rem">
+    <p>"The ADL's South Africa position across 40 years was determined not by evidence about South Africa, but by Israeli strategic interest. The Afrikaner has never appeared in that calculation — not as ally, not as adversary, not as a minority requiring documentation. The Afrikaner simply does not exist within the framework."</p>
+    <cite>Alt Afrikaner | Netwerk Leaks</cite>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- THE ASYMMETRY ARGUMENT -->
+<section class="section">
+  <div class="section-label reveal">The Core Argument</div>
+  <h2 class="reveal">The ADL's Own Intellectual Architecture Destroys Its Own Position</h2>
+
+  <p class="reveal">
+    This argument requires no polemic. It requires only applying the ADL's stated principles consistently. The ADL built its entire post-war intellectual framework on one foundational idea: you cannot attribute collective guilt to a people based on the crimes of their government or a political faction within their community. That principle is the foundation of its antisemitism work. It is the reason the ADL exists.
+  </p>
+
+  <div class="contradiction reveal">
+    <div class="contra-col left">
+      <div class="col-label">ADL Applies This Principle — To Jewish People</div>
+      <ul>
+        <li>Criticising Israeli government policy ≠ criticising Jewish people</li>
+        <li>Individual Jewish South Africans who opposed apartheid are honoured despite Israeli state's apartheid-era arms deals</li>
+        <li>Contemporary Jewish communities should not bear collective guilt for historical crimes of any state</li>
+        <li>Attributing the conduct of a government to all members of a religion is antisemitism</li>
+      </ul>
+    </div>
+    <div class="contra-col right">
+      <div class="col-label">ADL Refuses This Principle — For Afrikaners</div>
+      <ul>
+        <li>NP/apartheid crimes attributed to all Afrikaners across generations</li>
+        <li>Farm murder concerns classified as rooted in "apartheid sympathy"</li>
+        <li>No distinction made between NP faction's worst elements and the majority of Afrikaners — farmers, families, Calvinist communities — with no Nazi ideology</li>
+        <li>ADL article: concerns are "white supremacist claims" from those who were "cheerleaders for institutionalised white supremacy"</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="reveal">
+    The ADL's IHRA (International Holocaust Remembrance Alliance) definition of antisemitism — which the ADL helped draft — includes as an example: "Applying double standards by requiring of a group behaviour not expected or demanded of any other democratic nation." The ADL's own published anti-double-standards framework condemns its own conduct on the Afrikaner question. That argument is not made by Afrikaner nationalists. It is made by the ADL's own intellectual architecture — applied consistently.
+  </p>
+
+  <div class="pull-quote reveal">
+    <p>"The ADL distinguishes carefully between individual Jewish South Africans who opposed apartheid and the Israeli state that simultaneously armed the apartheid government. It refuses to apply that exact same logic in the other direction — to distinguish between the National Party faction's worst elements and the vast Afrikaner majority of farmers, families, and Calvinist communities with no Nazi ideology whatsoever."</p>
+    <cite>Alt Afrikaner | Netwerk Leaks Analysis</cite>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white);margin:2.5rem 0 1rem">The Double Standard — Side by Side</h3>
+  <p class="reveal" style="margin-bottom:1.2rem">The same organisation. The same stated principles. Two communities. Applied differently.</p>
+
+  <table class="compare-table reveal">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Applied to Jewish / Israeli community</th>
+        <th>Applied to Afrikaners</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Collective guilt for government crimes</td>
+        <td>Explicitly rejected — "criticising Israel ≠ antisemitism" (when politically convenient)</td>
+        <td>Applied — Afrikaner concerns dismissed as "apartheid nostalgia" regardless of evidence</td>
+      </tr>
+      <tr>
+        <td>Named group in hate speech</td>
+        <td>Any expression targeting Jewish people triggers immediate documentation and condemnation</td>
+        <td>"Kill the Boer" — court-certified incitement — described as "crude lyrics that could be interpreted as violent"</td>
+      </tr>
+      <tr>
+        <td>Conviction for hate speech</td>
+        <td>ADL publishes incident reports within hours of antisemitic statements by public figures</td>
+        <td>Malema convicted of hate speech August 2025, sentenced April 2026. ADL: no updated statement</td>
+      </tr>
+      <tr>
+        <td>Disproportionate physical targeting</td>
+        <td>Annual antisemitism audit published. 125 SA Jewish incidents reported to US State Dept (2024)</td>
+        <td>447 farm murders in one year (US State Dept 2024). ADL: zero incident reports, ever</td>
+      </tr>
+      <tr>
+        <td>Government silence on incitement</td>
+        <td>ADL calls out governments that fail to condemn antisemitic statements within days</td>
+        <td>ANC government failed to condemn Malema's stadium performance. ADL: silent on government silence</td>
+      </tr>
+      <tr>
+        <td>Statutory ethnic discrimination</td>
+        <td>ADL advocates against BDS legislation as discriminatory in 50+ US states</td>
+        <td>BEE (Black Economic Empowerment) legislation explicitly excludes Afrikaners by statute. ADL: no analysis published</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- THE FUNDING MECHANISM -->
+<section class="section">
+  <div class="section-label reveal">Follow the Money</div>
+  <h2 class="reveal">The Donor Machine — Why the ADL Cannot Recognise Afrikaner Persecution Without Dismantling Its Own Revenue Model</h2>
+
+  <div class="context-box reveal">
+    <div class="ctx-label">Why this matters globally</div>
+    <p>Civil rights organisations in the United States receive significant tax advantages as registered non-profits and are trusted by governments, media organisations, and technology platforms as authoritative voices on hate and extremism. When a US-based civil rights organisation takes a position — or notably refuses to take a position — that decision shapes how those same governments, media organisations, and platforms treat the communities involved. The ADL's silence on Afrikaner persecution is not simply one organisation's omission. It affects how major platforms moderate content, how international media frames the issue, and how foreign governments prioritise diplomatic responses. The silence has institutional consequences.</p>
+  </div>
+
+  <p class="reveal">The ADL's silence on Afrikaner persecution is not an oversight. It is the revenue model operating exactly as designed. An organisation whose income depends on the perception of rising antisemitism has a structural incentive to control what counts as ethnic persecution. Afrikaners are not in the donor base. Acknowledging their persecution would not generate a dollar. Worse: it would require the ADL to criticise the ANC government — which the ADL is already opposing on Israeli grounds through separate channels, and whose domestic human rights failures the ADL needs to frame as an Israeli question rather than a South African one. The silence is the product, not the failure.</p>
+
+  <h3 class="reveal" style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white);margin:2rem 0 1rem">The Fear-Revenue Pipeline — How It Works</h3>
+  <p class="reveal" style="margin-bottom:1.5rem">The ADL's fundraising model is documented in its own published campaign materials and external contractor records. It follows a five-step circuit that has no input for Afrikaner concerns at any stage.</p>
+
+  <div class="pipeline reveal">
+    <div class="pipe-node">
+      <div class="pn-top">Step 1</div>
+      <div class="pn-name">Hate Incident</div>
+      <div class="pn-note">ADL counts incidents using its own methodology — including protests and slogans it defines as antisemitic</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-node">
+      <div class="pn-top">Step 2</div>
+      <div class="pn-name">Media Coverage</div>
+      <div class="pn-note">ADL audit is cited as authoritative by major outlets — New York Times, CNN, BBC, Snopes</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-node">
+      <div class="pn-top">Step 3</div>
+      <div class="pn-name">Donor Fear</div>
+      <div class="pn-note">Perception of rising threat drives emergency fundraising campaigns — CDR Fundraising Group paid $1.5M/year</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-node">
+      <div class="pn-top">Step 4</div>
+      <div class="pn-name">Revenue Surge</div>
+      <div class="pn-note">$91M raised in 2020. $100M campaign launched after Charlottesville 2017. ADL Foundation holds $165M in assets</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-node">
+      <div class="pn-top">Step 5</div>
+      <div class="pn-name">Donor Served</div>
+      <div class="pn-note">Donors are US-based, liberal-leaning Jewish professionals. No Afrikaner constituency exists in this donor base</div>
+    </div>
+  </div>
+
+  <h3 class="reveal" style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--white);margin:2.5rem 0 1.2rem">Four Structural Reasons the Afrikaner Will Never Be on the ADL's List</h3>
+
+  <div class="why-grid reveal">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <h4>Not in the Donor Base</h4>
+      <p>The ADL's major donors are overwhelmingly US-based, Democratic Party-aligned, urban Jewish professionals and institutions. Afrikaners — white, Calvinist, African, associated internationally with apartheid — are not a constituency the ADL courts, funds, or needs. There is no Afrikaner donation to protect.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <h4>The ANC Is the Wrong Enemy to Name</h4>
+      <p>Post-1994, the ANC government took Israel to the International Court of Justice (ICJ). The ADL already attacks the ANC on those grounds. But calling the ANC a hate-producing government on Afrikaner grounds would require applying the ADL's own civil rights methodology to an ANC it wants to frame exclusively as an Israeli adversary — not as a domestic abuser of a white minority. The two frames are incompatible.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <h4>The "White Genocide" Pre-Classification</h4>
+      <p>The ADL has officially pre-classified any claim of anti-white ethnic persecution as "white genocide" — a white supremacist conspiracy theory. This classification is embedded in its published glossary and its content advisory guidance to YouTube and Meta. Any Afrikaner raising farm murder evidence on major platforms is automatically adjacent to white supremacist content — by definitional architecture, not by evidence.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <h4>The Africa Check Citation Loop</h4>
+      <p>The ADL cited Africa Check — an OSF-funded, Wits University-housed fact-checker — as its authority for dismissing farm murder statistics, using 2016-17 data. Africa Check is certified by the IFCN, which is funded by the same donor ecosystem as the ADL. The ADL cites a source that is funded by the same philanthropic network that funds the ADL. The loop is self-sealing.</p>
+    </div>
+  </div>
+
+  <table class="data-table reveal">
+    <thead>
+      <tr>
+        <th>Entity</th>
+        <th>What It Is</th>
+        <th>Financial Relationship to ADL</th>
+        <th>Position on Afrikaner Persecution</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cell-name">ADLF<br><span style="font-size:.75rem;color:var(--text-muted);font-weight:400">ADL Foundation</span></td>
+        <td>ADL's asset management body. Holds the endowment and passes funds to ADL operationally.</td>
+        <td class="cell-gold">$165M assets. Passed $175M+ to ADL since 2010. First-class travel flagged 5 consecutive IRS filings.</td>
+        <td class="cell-red">Donors are predominantly US-based, liberal, urban Jewish professionals. Zero Afrikaner donor constituency. Revenue depends on perception of rising antisemitism — not farm murders.</td>
+      </tr>
+      <tr>
+        <td class="cell-name">MacArthur Foundation</td>
+        <td>Major US private philanthropic foundation. Funds a broad range of civil society organisations.</td>
+        <td class="cell-gold">Documented funder of ADLF. Also funds ISD (Institute for Strategic Dialogue) and Africa Check — the source ADL used to dismiss farm murder statistics.</td>
+        <td class="cell-red">Shared funder relationship connects ADL, the fact-checker that dismissed farm murder evidence, and the content moderation advisory body in a single philanthropic ecosystem.</td>
+      </tr>
+      <tr>
+        <td class="cell-name">Google</td>
+        <td>Technology corporation. Operates YouTube. One of the world's largest digital advertising platforms.</td>
+        <td class="cell-gold">$25,000+ ADL Corporate Partner (documented June 2024–Dec 2025). Also provided seed funding for Africa Check in 2012. Also funds IFCN.</td>
+        <td class="cell-red">Google pays the ADL to advise on content standards for YouTube. Google also funded the fact-checker the ADL cited to dismiss Afrikaner concerns. Google funds the certification body that gives that fact-checker its Meta moderation contract.</td>
+      </tr>
+      <tr>
+        <td class="cell-name">Africa Check<br><span style="font-size:.75rem;color:var(--text-muted);font-weight:400">Wits University, Johannesburg</span></td>
+        <td>IFCN-certified fact-checking organisation housed at the University of the Witwatersrand. Operates across South Africa, Kenya, Senegal, and Nigeria.</td>
+        <td class="cell-gold">Funded by OSF-SA (12%), Omidyar/Luminate (23%), Gates (13%), Google. IFCN certification — paid by Meta to label content. ADL cited their 2016–17 data as authority for dismissing farm murder statistics. That data is still cited. It has never been updated.</td>
+        <td class="cell-red">Africa Check's framing of farm murders as general crime — cited by ADL — feeds into Meta content moderation via IFCN. Afrikaner content raising farm murder evidence is algorithmically adjacent to white supremacist content. Not by evidence. By architecture.</td>
+      </tr>
+      <tr>
+        <td class="cell-name">SAJBD<br><span style="font-size:.75rem;color:var(--text-muted);font-weight:400">South African Jewish Board of Deputies</span></td>
+        <td>The representative body for South Africa's Jewish community of approximately 52,000 people. Founded 1903. ADL's operational partner inside South Africa.</td>
+        <td class="cell-gold">Joint panel at ADL's Never Is Now conference 2026. SAJBD National Director Wendy Kahn met the US White House National Security Council, State Department, and Congress in April 2024 — facilitated by the World Jewish Congress, the same body that links to ADL's international framework.</td>
+        <td class="cell-red">SAJBD tracks 125 antisemitic incidents per year in granular detail for the US State Department. It produces no equivalent documentation of farm murders. Its former staff member Gabriella Farber Cohen simultaneously held a position as ANCWL Gauteng Spokesperson and an SAJBD role until October 2023.</td>
+      </tr>
+      <tr>
+        <td class="cell-name">JLens<br><span style="font-size:.75rem;color:var(--text-muted);font-weight:400">NYSE: TOV ETF</span></td>
+        <td>ADL-affiliated Jewish investment network. 35+ Jewish institutions. $12 billion in communal capital. Registered Investment Advisor and 501(c)(3) simultaneously.</td>
+        <td class="cell-gold">ADL affiliate since 2022. Its Managing Director holds the simultaneous title of ADL Senior Advisor on Corporate Advocacy. Manages TOV ETF on NYSE — embeds ADL advocacy framework in a publicly tradeable financial instrument.</td>
+        <td class="cell-red">Deployed FOR Meta content moderation (restricting anti-Israel speech) via shareholder pressure, May 2025. Deployed AGAINST GE Aerospace human rights due diligence proposal, March 2026. Never once deployed for Afrikaner concerns. The capital lever exists. The political will does not.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="verdict-banner reveal" style="margin-top:2rem">
+    <div class="verdict-label">What This Means in Practice</div>
+    <h2>The Closed Circuit: One Donor Funds the ADL, the Fact-Checker, and the Platform That Suppresses the Evidence</h2>
+    <p>The MacArthur Foundation funds the ADL Foundation. It also funds Africa Check — the organisation the ADL cited to dismiss Afrikaner farm murder statistics. Africa Check is IFCN-certified (International Fact-Checking Network). The IFCN is funded by Meta and Google — who are both ADL Corporate Partners. Meta uses IFCN-certified organisations to label content on its platforms. The ADL advises Meta on content standards. Google funded Africa Check's founding in 2012. The circuit runs: shared donor → fact-checker that dismisses Afrikaner evidence → certification body funded by platforms → platforms the ADL advises. No stage in this circuit has a democratic mandate. No independent audit exists. The Afrikaner's ability to raise documented evidence of persecution on major platforms is being suppressed — not by force, but by a financial architecture in which every actor has a reason to agree that the evidence does not qualify as evidence. That is what the ADL's silence looks like at the technical level. It is not one person refusing to speak. It is a system designed so that speaking is categorically impossible.</p>
+  </div>
+
+  <p class="reveal">
+    In April 2026, the Southern Poverty Law Center (SPLC) — which shared the ADL's FBI partnership, content moderation ecosystem, and fear-based fundraising model — was federally indicted on eleven counts of wire fraud, bank fraud, and money laundering. The acting Attorney General described it as "manufacturing the extremism it purports to oppose." The ADL is not under indictment. But the structural model is identical. The SPLC raised $132 million after Charlottesville — off the same incident that launched the ADL's $100 million campaign. Both organisations built revenue models that depend on sustained perception of rising threat. Both counted the incidents that generated the donations. The difference between the two is not structural. It is that the SPLC's accounting has been examined. The ADL's has not.
+  </p>
+</section>
+
+<hr class="divider">
+
+<!-- FINAL VERDICT -->
+<div class="final-verdict reveal">
+  <div class="fv-label">The Verdict — Sourced to Primary Documents</div>
+  <h2>The Donor Decides. The Afrikaner Doesn't Pay. That Is the Whole Explanation.</h2>
+  <p>
+    South Africa's own constitutional Human Rights Commission brought a hate speech case against Julius Malema in 2022 and won in August 2025. The Western Cape Equality Court found his speech constituted "an exhortation to kill white males" based on race. The US State Department's 2024 human rights report documented 447 farm and smallholding murders in a single year and named the EFF as an extremist organisation that "encouraged attacks on Afrikaner farmers." A Jewish South African legal advocate, writing in the SAJBD's own publication in April 2025, stated that South Africa's courts may be creating different rules for Afrikaners and that they are "increasingly feeling like second-class citizens, undeserving of equal protection."
+  </p>
+  <p>
+    The ADL responded to none of it. No statement on the SAHRC victory. No update to its published article that calls these concerns white supremacist conspiracy theory. No acknowledgment of the US Government's direct contradiction of its published position.
+  </p>
+  <p>
+    The SAJBD — the ADL's operational partner inside South Africa, which briefs the White House National Security Council and tracks 125 antisemitic incidents per year for the US State Department — produces no equivalent documentation for Afrikaner farm murders. In September 2019 it fundraised for an Israeli tourist raped near the Kruger National Park. It has produced no equivalent response for Afrikaner victims of the same crime wave. The attacker who raped the Israeli tourist and the attackers who murdered Afrikaner farmers did not distinguish between the two communities. The institutions did.
+  </p>
+  <p>
+    The ADL's IHRA definition — which it helped write and which governments use to identify antisemitism — explicitly states that applying double standards by requiring of a group behaviour not expected of any other is discriminatory. By its own published definition, the ADL's treatment of Afrikaners constitutes discriminatory conduct.
+  </p>
+  <p>
+    The explanation for all of this is not geopolitical complexity. It is not oversight. It is not analytical disagreement. The ADL raised $91 million in 2020. Its revenue model depends on the sustained perception of rising antisemitism. Its donors are US-based, liberal-leaning Jewish professionals with no stake in what happens to Afrikaners in South Africa. Afrikaners are not in the donor base. They generate no revenue. Acknowledging their persecution would require the ADL to apply its methodology consistently — and consistent application would expose the methodology as the selective instrument it has always been.
+  </p>
+  <p>
+    The Afrikaner did not invent the ADL's standard. The ADL did. Applied consistently, that standard does not exonerate the ADL. It measures it.
+  </p>
+</div>
+
+<!-- KEY ARGUMENTS SUMMARY -->
+<section class="section">
+  <div class="section-label reveal">The Arsenal — Primary Sources Only</div>
+  <h2 class="reveal">What the Evidence Actually Shows</h2>
+
+  <div class="argument-card reveal">
+    <div class="arg-num">Primary Source 01 — ADL.org (live, unchanged, April 2026)</div>
+    <h3>The ADL Published Its Position on Afrikaner Farm Murders. It Called Them a Racist Obsession. It Is Still There.</h3>
+    <p>The ADL article "The Racist Obsession with South African White Genocide" is still live on adl.org. It cites Africa Check data from 2016-17. Africa Check is funded by the Open Society Foundations (OSF-SA 12%), Omidyar/Luminate (23%), Gates Foundation (13%), and Google — the same Google that is an ADL Corporate Partner and funded Africa Check's founding. The US State Department's 2024 human rights report documented 447 farm and smallholding murders in a single year and named the EFF as an extremist organisation inciting violence against Afrikaner farmers. The ADL article has not been updated. The 2016-17 data is still cited. The "racist obsession" framing is still live. This is not omission. This is a maintained institutional position that pre-classifies evidence the US Government considers documented as white supremacist conspiracy theory.</p>
+  </div>
+
+  <div class="argument-card reveal">
+    <div class="arg-num">Primary Source 02 — SAHRC v Malema, ZAEQC 6 (27 August 2025)</div>
+    <h3>South Africa's Own Human Rights Commission Won a Hate Speech Case Against Malema for Incitement Against White Men. The ADL Said Nothing.</h3>
+    <p>The South African Human Rights Commission (SAHRC) — a constitutional body — brought proceedings against EFF leader Julius Malema. The Western Cape Equality Court, on 27 August 2025, declared his October 2022 speech constituted hate speech under the Promotion of Equality and Prevention of Unfair Discrimination Act. Judge M Sher found the statements amounted to "an exhortation to kill white males" based on race — and that such a call from the leader of the third-largest political party "has the potential to foment racial violence on a large scale." Both Malema and the EFF were held jointly and severally liable. This is case ZAEQC 6, on SAFLII, a public legal record. The ADL has issued no statement. No update to its published article. No acknowledgment that South Africa's own constitutional human rights body confirmed what the ADL calls conspiracy theory.</p>
+  </div>
+
+  <div class="argument-card reveal">
+    <div class="arg-num">Primary Source 03 — IRS Form 990 + Court Records (ADL financial history)</div>
+    <h3>The ADL Ran Intelligence Operations for Apartheid South Africa. It Paid $178,000 to Settle. It Now Calls Afrikaner Concerns "Apartheid Nostalgia."</h3>
+    <p>Roy Bullock — paid via false-name account "L. Patterson" in a locked safe at ADL's Los Angeles office, funded through cut-out attorney Bruce Hochman (ADL board member) — sold intelligence on American anti-apartheid activists to BOSS (Bureau of State Security), apartheid's assassination-capable security service, for $16,000 cash in envelopes, 1987-1991. ADL spymaster Irwin Suall described Bullock as "our Number One fact finder" (July 1992 internal memo, discovered in FBI investigation). BOSS requested anti-apartheid intelligence and blackmail material on US Congressmen. The class action lawsuit was settled in 2002 for $178,000. The organisation that now classifies Afrikaner farm murder evidence as apartheid nostalgia was itself a documented, settled, paid contractor of the apartheid security apparatus — while calling the ANC terrorist and opposing it globally on Israel's behalf.</p>
+  </div>
+
+  <div class="argument-card reveal">
+    <div class="arg-num">Primary Source 04 — ADL.org IHRA page vs ADL.org South Africa page</div>
+    <h3>The ADL's Own Published Anti-Double-Standards Principle Condemns Its Own Published South Africa Position.</h3>
+    <p>The ADL's published IHRA definition page states that applying "double standards by requiring of a group behaviour not expected or demanded of any other democratic nation" is discriminatory. The ADL's published South Africa article applies the crimes of the National Party government to the entire Afrikaner community to dismiss contemporary evidence of farm murders and hate speech convictions. The ADL applies the opposite principle when defending Jewish communities — insisting historical crimes of any state cannot be used to dismiss a community's contemporary concerns. Both pages are live on adl.org. Reading them in sequence, without editorial comment, produces the contradiction. No Afrikaner argument required. The ADL argued against itself.</p>
+  </div>
+
+</section>
+
+</div><!-- end container -->
+</div><!-- end main-content -->
+
+
+<!-- SOURCES -->
+<div class="sources-section">
+  <div class="container">
+    <h3>Primary Sources</h3>
+    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1.2rem;font-style:italic">All claims on this page are sourced to primary documents. No AfriForum citations. Court records are publicly available on SAFLII.org. IRS records via ProPublica. ADL pages accessed April 2026.</p>
+    <ul class="sources-list">
+      <li>ADL.org — "The Racist Obsession with South African White Genocide" (published, undated, unchanged April 2026)</li>
+      <li>ADL.org — "About the IHRA Working Definition of Antisemitism" — double-standard prohibition (adl.org)</li>
+      <li>ADL.org — "Kill the Boer Statement," August 9, 2023 (full text)</li>
+      <li>SAHRC v Malema and EFF — ZAEQC 6; 2025 (6) SA 288 (WCC); [2025] 4 All SA 484 (EqC) — 27 August 2025 (SAFLII)</li>
+      <li>SAHRC Media Statement — "Equality Court Upholds SAHRC's Complaint Against Malema and EFF," 28 August 2025 (sahrc.org.za)</li>
+      <li>US State Department — "2024 Country Reports on Human Rights: South Africa," August 2025</li>
+      <li>DIRCO — "South African Government Sets Record Straight on Farm Crime," August 2025 (dirco.gov.za)</li>
+      <li>IRS Form 990 — ADL and ADLF, multiple years (ProPublica Nonprofit Explorer)</li>
+      <li>SFPD Police Affidavit — 700 pages, San Francisco DA Arlo Smith, April 1993</li>
+      <li>The Nation — James Bamford, "The ADL: Israel's Attack Dog in the US," February 2024 (1961 document, BOSS materials)</li>
+      <li>MERIP — "ADL's Spy Ring," July 1993</li>
+      <li>Pacific Standard — Mark Ames, "The Kings of Garbage," 2014</li>
+      <li>CounterPunch — Jeffrey Blankfort, "The ADL Spying Case Is Over," February 2002</li>
+      <li>SA Jewish Report — "Israeli Tourist Raped in SA on Her Birthday," September 12, 2019</li>
+      <li>SA Jewish Report — "South Africa Isn't an Anti-Semitic Country" (editor fundraising campaign for Israeli tourist), September 2019</li>
+      <li>SA Jewish Report — "Anti-Semitic Incidents in SA at 15-Year Low" (Saks/Milner dispute of ADL methodology), January 30, 2020</li>
+      <li>SA Jewish Report — "Kill the Boer Sanction Could Influence Antisemitism Cases" (Advocate Mark Oppenheimer), April 2025</li>
+      <li>SA Jewish Report — "Farewell to Steven Gruzd," March 2026</li>
+      <li>SA Jewish Report — "Crude and Violent: ADL Condemns Kill the Boer," August 2023</li>
+      <li>SA People Travel — "Manhunt Near Kruger Park After Tourists Robbed and Girl, 16, Allegedly Raped," December 28, 2019</li>
+      <li>Times of Israel / JTA — Steven Gruzd and Jeremy Gordin coverage, 2023 and 2026</li>
+      <li>Globe and Mail — "White South African Man Not a Legitimate Refugee, Judge Says," November 25, 2010</li>
+      <li>CBC News — "Lawyer's Sister a Key Witness at S. African's Hearing," September 4, 2009</li>
+      <li>Wikipedia — "Anti-Defamation League," "Julius Malema," "South African farm attacks," accessed April 2026</li>
+      <li>Jewish Socialists' Group — "How ADL Got Caught in Apartheid Spy Case," 2002</li>
+      <li>SAJBD, "Who We Are" — Charnas, Farber Cohen, Kahn profiles (sajbd.org)</li>
+      <li>World Jewish Congress — "WJC and SAJBD Highlight Antisemitism in Washington DC," April 2024</li>
+      <li>FBI Director Kash Patel — Statement on ADL severance, October 1-2, 2025 (Fox News, Newsweek, Axios)</li>
+      <li>Africa Check — "How We Are Funded," africacheck.org, October 2025</li>
+      <li>IFCN Transparency Statement — Poynter Institute, funders confirmed, 2024</li>
+      <li>OpenSecrets.org — ADL lobbying profile 2024</li>
+      <li>SA IRR — Sarah Gon statement on ADL "Kill the Boer" response, August 2023</li>
+      <li>Cape Jewish Chronicle — Gabriella Farber resignation statement, October 17, 2023</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Alt Afrikaner</div>
+      <div class="footer-tag">Precision Over Volume. Dignity Holds Ground.</div>
+    </div>
+    <div class="footer-hub">
+      <div class="footer-hub-label">Investigation Hub</div>
+      <a href="https://altafrikaner.github.io/journalist-map/index.html">Netwerk Leaks →</a>
+    </div>
+    <div>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/AltAfrikaner" class="social-link" target="_blank">Facebook</a>
+        <a href="https://substack.com/@altafrikaner" class="social-link" target="_blank">Substack</a>
+        <a href="mailto:AltAfrikaner@outlook.com" class="social-link">Email</a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-sources">
+      This investigation page forms part of the Netwerk Leaks series. All claims are sourced to primary documents, official records, court filings, IRS Form 990 filings, and verified secondary sources. Patterns and connections are stated as patterns and connections — not as allegations of illegality unless explicitly court-established. Readers are invited to verify all sources independently. Alt Afrikaner publishes independently and accepts no funding from any of the organisations investigated on these pages.
+    </div>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.08});
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
