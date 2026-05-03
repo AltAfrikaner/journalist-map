@@ -650,33 +650,36 @@ body{background:linear-gradient(160deg,var(--blue-deep) 0%,var(--blue) 40%,var(-
   <!-- SVG: Africa Check Funding Breakdown -->
   <div class="infographic reveal" style="overflow:hidden">
     <h4>Africa Check Funding Sources (Declared)</h4>
-    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:700px;margin:8px auto;display:block">
-      <!-- Bar chart -->
-      <rect x="40" y="30" width="168" height="44" rx="4" fill="#8B0000" opacity=".85"/>
-      <text x="48" y="58" font-family="Source Sans 3,sans-serif" font-size="15" font-weight="700" fill="#fff">Gates Foundation</text>
-      <text x="200" y="58" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#fff" text-anchor="end">13%</text>
+    <svg viewBox="0 0 780 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:780px;margin:8px auto;display:block">
+      <!-- Row 1: Gates 13% -->
+      <text x="188" y="38" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="600" fill="#222" text-anchor="end">Gates Foundation</text>
+      <rect x="196" y="22" width="260" height="26" rx="3" fill="#8B0000" opacity=".88"/>
+      <text x="448" y="40" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#fff" text-anchor="end">13%</text>
       
-      <rect x="40" y="82" width="156" height="44" rx="4" fill="#C5A258" opacity=".85"/>
-      <text x="48" y="110" font-family="Source Sans 3,sans-serif" font-size="15" font-weight="700" fill="#111">Open Society Foundations</text>
-      <text x="188" y="110" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#111" text-anchor="end">12%</text>
+      <!-- Row 2: OSF 12% -->
+      <text x="188" y="76" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="600" fill="#222" text-anchor="end">Open Society Foundations</text>
+      <rect x="196" y="60" width="240" height="26" rx="3" fill="#C5A258" opacity=".88"/>
+      <text x="428" y="78" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#111" text-anchor="end">12%</text>
       
-      <rect x="40" y="134" width="104" height="44" rx="4" fill="#3a5a80" opacity=".85"/>
-      <text x="48" y="162" font-family="Source Sans 3,sans-serif" font-size="15" font-weight="700" fill="#fff">Luminate (Omidyar)</text>
-      <text x="136" y="162" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#fff" text-anchor="end">8%</text>
+      <!-- Row 3: Luminate 8% -->
+      <text x="188" y="114" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="600" fill="#222" text-anchor="end">Luminate (Omidyar)</text>
+      <rect x="196" y="98" width="160" height="26" rx="3" fill="#3a5a80" opacity=".88"/>
+      <text x="348" y="116" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#fff" text-anchor="end">8%</text>
 
-      <!-- Annotation -->
-      <line x1="230" y1="52" x2="280" y2="52" stroke="#8B0000" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <line x1="230" y1="104" x2="280" y2="104" stroke="#C5A258" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <line x1="230" y1="156" x2="280" y2="156" stroke="#3a5a80" stroke-width="1.5" stroke-dasharray="4,3"/>
-      
-      <rect x="290" y="36" width="380" height="148" rx="6" fill="#f5f1e9" stroke="#C5A258" stroke-width="1"/>
-      <text x="310" y="60" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="700" fill="#111">Three foundations control 33% of Africa Check's</text>
-      <text x="310" y="78" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="700" fill="#111">declared budget. Africa Check determines which</text>
-      <text x="310" y="96" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="700" fill="#111">content Meta suppresses globally via its IFCN</text>
-      <text x="310" y="114" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="700" fill="#111">certification. The co-founder (Cunliffe-Jones)</text>
-      <text x="310" y="132" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="700" fill="#111">now sits on the IFCN board that grants the</text>
-      <text x="310" y="150" font-family="Source Sans 3,sans-serif" font-size="13" font-weight="700" fill="#111">certification his own organisation holds.</text>
-      <text x="310" y="172" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".1em" fill="#8B0000">SOURCE: AFRICA CHECK FUNDING DECLARATION (PUBLISHED)</text>
+      <!-- Combined total -->
+      <line x1="196" y1="138" x2="456" y2="138" stroke="#8B0000" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="326" y="154" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" fill="#8B0000" text-anchor="middle">COMBINED: 33% OF DECLARED BUDGET</text>
+
+      <!-- Annotation box -->
+      <rect x="480" y="16" width="288" height="152" rx="5" fill="#f5f1e9" stroke="#C5A258" stroke-width="1"/>
+      <text x="496" y="38" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">Three foundations control 33% of</text>
+      <text x="496" y="54" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">Africa Check's declared budget.</text>
+      <text x="496" y="74" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">Africa Check determines which</text>
+      <text x="496" y="90" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">content Meta suppresses globally</text>
+      <text x="496" y="106" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">via its IFCN certification. The co-</text>
+      <text x="496" y="122" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">founder (Cunliffe-Jones) now sits</text>
+      <text x="496" y="138" font-family="Source Sans 3,sans-serif" font-size="12" font-weight="600" fill="#111">on the board that grants it.</text>
+      <text x="496" y="158" font-family="JetBrains Mono,monospace" font-size="8" letter-spacing=".1em" fill="#8B0000">SOURCE: AFRICA CHECK FUNDING DECLARATION</text>
     </svg>
   </div>
 
