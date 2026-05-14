@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ArchiMate – Synapse Replacement HLD (Proper Notation)</title>
+<style>
+  body { margin:0; padding:10px; background:#ccc; font-family:Arial,sans-serif; }
+  h2   { text-align:center; font-size:15px; margin:6px 0 2px; }
+  .sub { text-align:center; font-size:10px; color:#c00; font-style:italic; margin:0 0 6px; }
+  .wrap { overflow-x:auto; }
+  canvas { display:block; background:white;
+           box-shadow:0 2px 10px rgba(0,0,0,.4); cursor:default; }
+</style>
+</head>
+<body>
+<h2>ArchiMate Diagram – Synapse Replacement HLD (Proper Notation)</h2>
+<p class="sub">Every element drawn with its correct ArchiMate 3 shape&nbsp;|&nbsp;
+Red italic = palette item chosen to guide you</p>
+<div class="wrap">
+<canvas id="c" width="1620" height="1020"></canvas>
+</div>
+<script>
+'use strict';
+const C  = document.getElementById('c');
+const cx = C.getContext('2d');
+
+// ── Layer colour palette ──────────────────────────────────────────────
+const BIZ  = { fill:'#FFFACC', stroke:'#B8860B', txt:'#5a3200' };
+const APP  = { fill:'#CCE0FF', stroke:'#336699', txt:'#0e2860' };
+const TECH = { fill:'#CCFFCC', stroke:'#228B22', txt:'#0a3a0a' };
+
+// ── Arrow helper ──────────────────────────────────────────────────────
+function arrowTip(x, y, ang, sz=7, solid=true) {
+  cx.save();
+  cx.translate(x, y); cx.rotate(ang);
+  cx.beginPath();
+  cx.moveTo(0,0); cx.lineTo(-sz,-sz*.5); cx.lineTo(-sz, sz*.5);
+  cx.closePath();
+  solid ? cx.fill() : cx.stroke();
+  cx.restore();
+}
+
+function rr(x,y,w,h,r=3) {          // rounded rect path (no fill/stroke)
+  cx.beginPath();
+  cx.moveTo(x+r,y); cx.lineTo(x+w-r,y);
+  cx.arcTo(x+w,y,x+w,y+r,r);
+  cx.lineTo(x+w,y+h-r);
+  cx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  cx.lineTo(x+r,y+h);
+  cx.arcTo(x,y+h,x,y+h-r,r);
+  cx.lineTo(x,y+r);
+  cx.arcTo(x,y,x+r,y,r);
+  cx.closePath();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  BADGE DRAWING  – each fits in a 22 × 22 area at (bx,by)
+// ═══════════════════════════════════════════════════════════════════════
+
+function badgeBizService(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle=col.fill; cx.lineWidth=1.3;
+  rr(bx,by+2,13,16,1); cx.fill(); cx.stroke();
+  cx.beginPath(); cx.arc(bx+17,by+10,5,-Math.PI/2,Math.PI/2);
+  cx.fillStyle=col.stroke; cx.fill();
+  cx.restore();
+}
+
+function badgeAppComponent(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle='white'; cx.lineWidth=1.3;
+  cx.strokeRect(bx,by+3,12,15);
+  cx.fillRect(bx+9,by+4,11,5);  cx.strokeRect(bx+9,by+4,11,5);
+  cx.fillRect(bx+9,by+12,11,5); cx.strokeRect(bx+9,by+12,11,5);
+  cx.restore();
+}
+
+function badgeAppService(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle=col.fill; cx.lineWidth=1.3;
+  rr(bx,by+2,13,16,1); cx.fill(); cx.stroke();
+  cx.beginPath(); cx.arc(bx+17,by+10,5,-Math.PI/2,Math.PI/2);
+  cx.fillStyle=col.stroke; cx.fill();
+  cx.restore();
+}
+
+function badgeAppFunction(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle='white'; cx.lineWidth=1.3;
+  rr(bx,by,20,20,2); cx.fill(); cx.stroke();
+  cx.font='italic bold 12px serif'; cx.fillStyle=col.stroke;
+  cx.textAlign='center'; cx.textBaseline='middle';
+  cx.fillText('f()',bx+10,by+11);
+  cx.restore();
+}
+
+// Technology: Node – element IS a 3D cube (called separately)
+function draw3DBox(x,y,w,h,col,d=10) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.lineWidth=1.5;
+  const fw=w-d, fh=h-d;
+  cx.fillStyle=col.fill;                        // front face
+  cx.fillRect(x,y+d,fw,fh); cx.strokeRect(x,y+d,fw,fh);
+  cx.fillStyle='#eeffee';                        // top face
+  cx.beginPath();
+  cx.moveTo(x,y+d); cx.lineTo(x+d,y);
+  cx.lineTo(x+d+fw,y); cx.lineTo(x+fw,y+d);
+  cx.closePath(); cx.fill(); cx.stroke();
+  cx.fillStyle='#aaddaa';                        // right face
+  cx.beginPath();
+  cx.moveTo(x+fw,y+d); cx.lineTo(x+fw+d,y);
+  cx.lineTo(x+fw+d,y+fh); cx.lineTo(x+fw,y+d+fh);
+  cx.closePath(); cx.fill(); cx.stroke();
+  cx.restore();
+}
+
+// Technology: Artifact – folded-corner rectangle
+function drawArtifact(x,y,w,h,col,fold=12) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle=col.fill; cx.lineWidth=1.5;
+  cx.beginPath();
+  cx.moveTo(x,y); cx.lineTo(x+w-fold,y); cx.lineTo(x+w,y+fold);
+  cx.lineTo(x+w,y+h); cx.lineTo(x,y+h); cx.closePath();
+  cx.fill(); cx.stroke();
+  cx.beginPath();                                // fold crease
+  cx.moveTo(x+w-fold,y); cx.lineTo(x+w-fold,y+fold); cx.lineTo(x+w,y+fold);
+  cx.stroke();
+  cx.restore();
+}
+
+function badgeTechSysSoft(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle=col.fill; cx.lineWidth=1.3;
+  cx.beginPath(); cx.ellipse(bx+10,by+4,9,3.5,0,0,Math.PI*2);
+  cx.fill(); cx.stroke();
+  cx.fillRect(bx+1,by+4,18,14);
+  cx.beginPath(); cx.moveTo(bx+1,by+4); cx.lineTo(bx+1,by+18);
+  cx.moveTo(bx+19,by+4); cx.lineTo(bx+19,by+18); cx.stroke();
+  cx.fillStyle='#e8ffe8';
+  cx.beginPath(); cx.ellipse(bx+10,by+18,9,3.5,0,0,Math.PI*2);
+  cx.fill(); cx.stroke();
+  cx.restore();
+}
+
+function badgeCommNetwork(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.fillStyle=col.stroke; cx.lineWidth=1.2;
+  cx.beginPath(); cx.arc(bx+10,by+10,3.5,0,Math.PI*2); cx.fill();
+  [[45],[135],[225],[315]].forEach(([deg])=>{
+    const a=deg*Math.PI/180;
+    const nx=bx+10+Math.cos(a)*8, ny=by+10+Math.sin(a)*8;
+    cx.fillStyle='white'; cx.strokeStyle=col.stroke;
+    cx.beginPath(); cx.arc(nx,ny,2.5,0,Math.PI*2); cx.fill(); cx.stroke();
+    cx.beginPath();
+    cx.moveTo(bx+10+Math.cos(a)*3.5, by+10+Math.sin(a)*3.5);
+    cx.lineTo(nx-Math.cos(a)*2.5,    ny-Math.sin(a)*2.5);
+    cx.stroke();
+  });
+  cx.restore();
+}
+
+function badgeCommPath(bx, by, col) {
+  cx.save(); cx.strokeStyle=col.stroke; cx.lineWidth=1.5;
+  cx.beginPath(); cx.arc(bx+4,  by+10,4,0,Math.PI*2); cx.stroke();
+  cx.beginPath(); cx.arc(bx+18, by+10,4,0,Math.PI*2); cx.stroke();
+  cx.beginPath(); cx.moveTo(bx+8,by+10); cx.lineTo(bx+14,by+10); cx.stroke();
+  cx.restore();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  ELEMENT RENDERER
+//  type: 'biz-svc' | 'app-comp' | 'app-svc' | 'app-func'
+//        'tech-node' | 'tech-art' | 'tech-ss'
+//        'comm-net'  | 'comm-path'
+// ═══════════════════════════════════════════════════════════════════════
+
+function el(x,y,w,h,type,name,palette){
+  const isNode = type==='tech-node';
+  const isArt  = type==='tech-art';
+  const col = type.startsWith('biz')?BIZ: type.startsWith('app')?APP: TECH;
+  const D = 10;   // 3D depth for nodes
+
+  if(isNode){
+    draw3DBox(x,y,w,h,col,D);
+    txt(name, x+(w-D)/2, y+D+(h-D)/2-5, w-D-10, col.txt);
+    palLabel(palette, x+w/2-D/2, y+D+(h-D)-2);
+  } else if(isArt){
+    const fold=12;
+    drawArtifact(x,y,w,h,col,fold);
+    txt(name, x+w/2-fold/4, y+h/2-5, w-fold-4, col.txt);
+    palLabel(palette, x+w/2, y+h-2);
+  } else {
+    cx.fillStyle=col.fill; cx.strokeStyle=col.stroke; cx.lineWidth=1.5;
+    rr(x,y,w,h); cx.fill(); cx.stroke();
+    const bx=x+w-24, by=y+2;
+    if(type==='biz-svc')   badgeBizService(bx,by,col);
+    if(type==='app-comp')  badgeAppComponent(bx,by,col);
+    if(type==='app-svc')   badgeAppService(bx,by,col);
+    if(type==='app-func')  badgeAppFunction(bx,by,col);
+    if(type==='tech-ss')   badgeTechSysSoft(bx,by,col);
+    if(type==='comm-net')  badgeCommNetwork(bx,by,col);
+    if(type==='comm-path') badgeCommPath(bx,by,col);
+    txt(name, x+w/2, y+h/2-6, w-30, col.txt);
+    palLabel(palette, x+w/2, y+h-2);
+  }
+}
+
+function txt(name, mx, my, maxW, color){
+  const lines=name.split('\n');
+  const fs=lines.length>2?8:9;
+  const lh=fs+4;
+  const oy=-(lines.length-1)*lh/2;
+  cx.textAlign='center'; cx.textBaseline='top';
+  lines.forEach((l,i)=>{
+    cx.font=`${i===0?'bold ':''} ${fs}px Arial`;
+    cx.fillStyle=color;
+    cx.fillText(l, mx, my+oy+i*lh, maxW);
+  });
+}
+
+function palLabel(txt2, mx, by){
+  cx.save();
+  cx.font='italic 7.5px Arial'; cx.fillStyle='#cc0000';
+  cx.textAlign='center'; cx.textBaseline='bottom';
+  cx.fillText(txt2, mx, by);
+  cx.restore();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  GROUPING / ZONE BOUNDARY
+// ═══════════════════════════════════════════════════════════════════════
+
+function zone(x,y,w,h, label, sublabel, stCol, fillCol, dash=[7,3]){
+  cx.save();
+  cx.setLineDash(dash);
+  cx.fillStyle=fillCol; cx.strokeStyle=stCol; cx.lineWidth=2;
+  rr(x,y,w,h,5); cx.fill(); cx.stroke();
+  cx.setLineDash([]);
+  cx.font='bold 11px Arial'; cx.fillStyle=stCol==='#B8860B'?'#7a5010':'#1a3a6a';
+  if(stCol==='#228B22') cx.fillStyle='#1a5a1a';
+  cx.textAlign='center'; cx.textBaseline='top';
+  cx.fillText(label, x+w/2, y+7);
+  if(sublabel){
+    cx.font='italic 7.5px Arial'; cx.fillStyle='#cc0000';
+    cx.fillText(sublabel, x+w/2, y+21);
+  }
+  cx.restore();
+}
+
+function subnet(x,y,w,h, label, sublabel, stCol='#336699'){
+  cx.save();
+  cx.setLineDash([5,2.5]);
+  cx.fillStyle='rgba(210,225,255,0.18)'; cx.strokeStyle=stCol; cx.lineWidth=1.4;
+  rr(x,y,w,h,4); cx.fill(); cx.stroke();
+  cx.setLineDash([]);
+  cx.font='bold 9px Arial'; cx.fillStyle='#1a3a6a';
+  cx.textAlign='center'; cx.textBaseline='top';
+  cx.fillText(label, x+w/2, y+6);
+  if(sublabel){
+    cx.font='italic 7.5px Arial'; cx.fillStyle='#cc0000';
+    cx.fillText(sublabel, x+w/2, y+17);
+  }
+  cx.restore();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  RELATIONSHIP DRAWING
+// ═══════════════════════════════════════════════════════════════════════
+
+function rel(pts, style='flow', label=''){
+  if(pts.length<2) return;
+  cx.save();
+  let col='#cc0000', dash=[6,3], solid=true, diamond=false;
+  switch(style){
+    case 'serving':    col='#336699'; dash=[]; break;
+    case 'triggering': col='#336699'; dash=[4,2]; break;
+    case 'realisation':col='#666';    dash=[4,2]; solid=false; break;
+    case 'access':     col='#888';    dash=[4,2]; solid=false; break;
+    case 'assoc':      col='#888';    dash=[3,2]; solid=false; break;
+    case 'xserve':     col='#228B22'; dash=[5,2.5]; break;
+    case 'compose':    col='#444';    dash=[]; diamond=true; break;
+  }
+  cx.strokeStyle=col; cx.fillStyle=col;
+  cx.lineWidth=1.4; cx.setLineDash(dash);
+  cx.beginPath();
+  cx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++) cx.lineTo(pts[i][0],pts[i][1]);
+  cx.stroke(); cx.setLineDash([]);
+
+  // Arrow at destination
+  const L=pts[pts.length-1], P=pts[pts.length-2];
+  const ang=Math.atan2(L[1]-P[1],L[0]-P[0]);
+  arrowTip(L[0],L[1],ang,7,solid);
+
+  // Diamond at origin for composition
+  if(diamond){
+    const F=pts[0], S=pts[1];
+    const a=Math.atan2(S[1]-F[1],S[0]-F[0]);
+    cx.save(); cx.translate(F[0],F[1]); cx.rotate(a);
+    cx.beginPath();
+    cx.moveTo(0,0); cx.lineTo(-8,-4); cx.lineTo(-16,0); cx.lineTo(-8,4);
+    cx.closePath(); cx.fill();
+    cx.restore();
+  }
+
+  // Inline label
+  if(label){
+    const mi=Math.floor(pts.length/2);
+    const lx=(pts[mi-1][0]+pts[mi][0])/2;
+    const ly=(pts[mi-1][1]+pts[mi][1])/2;
+    cx.font='italic 7.5px Arial'; cx.fillStyle=col;
+    cx.textAlign='center'; cx.textBaseline='bottom';
+    cx.fillText(label,lx,ly-2);
+  }
+  cx.restore();
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  MAIN DRAW
+// ═══════════════════════════════════════════════════════════════════════
+
+function draw(){
+  cx.clearRect(0,0,1620,1020);
+  cx.fillStyle='white'; cx.fillRect(0,0,1620,1020);
+
+  /* ── subtle layer-band tints ── */
+  cx.fillStyle='rgba(255,250,200,.15)'; cx.fillRect(0,55,1620,100);  // business band
+  cx.fillStyle='rgba(200,220,255,.12)'; cx.fillRect(0,155,1620,470); // app band
+  cx.fillStyle='rgba(200,255,200,.12)'; cx.fillRect(0,625,1620,380); // tech band
+
+  /* ── OUTER ZONES ── */
+  zone(5,  55,170,940,'Data Sources',         '«Grouping»','#B8860B','rgba(255,250,210,.4)');
+  zone(183,55,912,940,'Processing and Orchestration','«Grouping»','#336699','rgba(230,240,255,.35)');
+  zone(1103,55,512,940,'Presentation / Consumption / Downstream','«Grouping»','#228B22','rgba(210,255,210,.35)');
+
+  /* ── SUB-ZONE: Ofgem Delegated Subnet (ingestion) ── */
+  subnet(193,94,390,316,'Ofgem Delegated Subnet (ingestion)',
+         'Technology: Communication Network');
+  badgeCommNetwork(561,94,TECH);
+
+  /* ── SUB-ZONE: CDP Subnet ── */
+  subnet(193,424,504,444,'CDP Subnet','Technology: Network','#228B22');
+  badgeCommNetwork(675,424,TECH);
+
+  /* ── SUB-ZONE: Ofgem Delegated Subnet (presentation) ── */
+  subnet(1113,94,494,318,'Ofgem Delegated Subnet (presentation)',
+         'Technology: Communication Network');
+  badgeCommNetwork(1585,94,TECH);
+
+  /* ═══════════════════════════════════════════════
+     ELEMENTS
+  ════════════════════════════════════════════════ */
+
+  // DATA SOURCES
+  el(15,340,152,82, 'biz-svc',
+     'Sharepoint /\nAPI etc',
+     'Business Service');
+
+  // ── INGESTION SUBNET ──
+  el(205,130,176,72, 'app-comp',
+     'Power Platform\nInjected Container',
+     'Application Component');
+
+  el(392,130,185,72, 'app-svc',
+     'Blob Storage Connector\n(WRITE)',
+     'Application Service');
+
+  // ── CDP SUBNET ──
+  el(205,458,228,86, 'tech-art',
+     'CDP Blob Storage\nLanding Zone\nuksdevfdevcdpsa',
+     'Technology: Artifact');
+
+  el(205,558,228,80, 'tech-ss',
+     'Azure Defender\nMalware scanning',
+     'Technology: System Software');
+
+  el(448,458,240,120,'app-func',
+     'Orchestration Layer\n· Workflow orchestration\n· Validate schema / Metadata\n· Reliable streaming\n· Run-not capability',
+     'Application Function');
+
+  el(448,710,240,80, 'tech-ss',
+     'Data Lake Ignite /\nAzure Databricks',
+     'Technology: System Software');
+
+  // ── DATA LAKE AREA ──
+  el(720,424,190,80, 'tech-node',
+     'Data Lake\nStorage Account',
+     'Technology: Node');
+
+  el(720,517,190,80, 'tech-art',
+     'Data Lake Gen2',
+     'Technology: Artifact');
+
+  el(720,610,232,82, 'tech-node',
+     'CDP Databricks\nPrivate Endpoint\n(Processing)',
+     'Technology: Node');
+
+  el(720,706,232,84, 'app-svc',
+     'Structured Data\nAvailable for Access\nuksdevfdevcdpdatadlsa',
+     'Application Service');
+
+  el(966,610,126,82, 'app-comp',
+     'Azure Monitor\nDashboard',
+     'Application Component');
+
+  el(966,706,126,84, 'app-comp',
+     'Log Analytics\nWorkspace',
+     'Application Component');
+
+  // ── PRESENTATION ZONE ──
+  el(1123,130,175,72, 'app-comp',
+     'Power Platform\nInjected Container',
+     'Application Component');
+
+  el(1123,218,476,82, 'app-svc',
+     'Data Lake Gen2 Connector\n(READ ONLY – scoped by RBAC)',
+     'Application Service');
+
+  el(1113,430,476,78, 'app-func',
+     'BPI Refresh\nthrough Logic App',
+     'Application Function');
+
+  el(1113,522,476,78, 'comm-path',
+     'TLS Encrypted (HTTPS 443)\nPrivate Endpoints only',
+     'Technology: Communication Path');
+
+  el(1113,614,476,80, 'app-comp',
+     'Power BI\nReports / Dashboards',
+     'Application Component');
+
+  /* ═══════════════════════════════════════════════
+     RELATIONSHIPS
+  ════════════════════════════════════════════════ */
+
+  // 1  Sharepoint → Blob Storage WRITE   [Flow]
+  rel([[167,381],[295,240],[390,166]], 'flow','Flow');
+
+  // 2  Power Platform In → Blob Storage  [Serving]
+  rel([[381,166],[390,166]], 'serving');
+
+  // 3  Blob Storage → CDP Landing Zone   [Flow + "Data enters"]
+  rel([[484,202],[484,315],[350,388],[319,456]], 'flow','Data enters');
+
+  // 4  CDP LZ → Azure Defender           [Association]
+  rel([[319,544],[319,556]], 'assoc');
+
+  // 5  Azure Defender → Orchestration    [Triggering]
+  rel([[433,596],[448,530]], 'triggering','Triggering');
+
+  // 6  Orchestration → Data Lake Gen2    [Flow]
+  rel([[688,518],[718,549]], 'flow','Flow');
+
+  // 7  DL Storage Account ◆→ DL Gen2    [Composition]
+  rel([[815,504],[815,517]], 'compose');
+
+  // 8  DL Gen2 → CDP Databricks          [Serving]
+  rel([[815,597],[815,610]], 'serving','Serving');
+
+  // 9  CDP Databricks → Structured Data  [Flow]
+  rel([[836,692],[836,706]], 'flow');
+
+  // 10 Azure Databricks → CDP Databricks [Realisation]
+  rel([[568,710],[720,650]], 'realisation','Realisation');
+
+  // 11 Azure Databricks → Azure Monitor  [Association]
+  rel([[688,750],[964,648]], 'assoc','Association');
+
+  // 12 Azure Monitor ◆→ Log Analytics   [Composition]
+  rel([[1029,692],[1029,706]], 'compose');
+
+  // 13 Structured Data → Power BI        [Serving cross-zone]
+  rel([[952,748],[1050,748],[1098,654]], 'xserve','Serving');
+
+  // 14 DL Gen2 Connector → Structured Data  [Access]
+  rel([[1121,259],[1082,400],[1062,560],[1062,720],[952,748]],
+      'access','Access');
+
+  // 15 BPI Refresh → DL Gen2 Connector   [Triggering – refreshes]
+  rel([[1351,430],[1351,302]], 'triggering','Triggers Refresh');
+
+  // 16 Write-logs note
+  rel([[952,748],[958,790]], 'assoc');
+  cx.save();
+  cx.font='italic 7.5px Arial'; cx.fillStyle='#666';
+  cx.textAlign='left'; cx.textBaseline='top';
+  cx.fillText('Write logs – Diagnostics Enabled', 962, 792);
+  cx.restore();
+
+  /* ═══════════════════════════════════════════════
+     LEGEND
+  ════════════════════════════════════════════════ */
+  drawLegend();
+}
+
+function drawLegend(){
+  const lx=183, ly=866;
+  cx.save();
+  rr(lx,ly,912,88,3);
+  cx.fillStyle='#fffff8'; cx.fill();
+  cx.strokeStyle='#ccc'; cx.lineWidth=1; cx.stroke();
+
+  cx.font='bold 8.5px Arial'; cx.fillStyle='#222';
+  cx.textAlign='left'; cx.textBaseline='top';
+  cx.fillText('RELATIONSHIP KEY:',lx+8,ly+8);
+
+  function rleg(x,y,col,dash,solid,lbl){
+    cx.strokeStyle=col; cx.fillStyle=col; cx.lineWidth=1.4;
+    cx.setLineDash(dash);
+    cx.beginPath(); cx.moveTo(x,y); cx.lineTo(x+34,y); cx.stroke();
+    cx.setLineDash([]);
+    arrowTip(x+34,y,0,6,solid);
+    cx.font='8px Arial'; cx.fillStyle=col;
+    cx.textAlign='left'; cx.textBaseline='middle';
+    cx.fillText(lbl,x+40,y);
+  }
+  rleg(lx+140,ly+13,'#cc0000',[5,2.5],true,'Flow');
+  rleg(lx+230,ly+13,'#336699',[],true,'Serving');
+  rleg(lx+320,ly+13,'#336699',[4,2],true,'Triggering');
+  rleg(lx+420,ly+13,'#228B22',[4,2],true,'Cross-zone Serving');
+  rleg(lx+570,ly+13,'#888',[4,2],false,'Access / Realisation');
+  rleg(lx+710,ly+13,'#888',[3,2],false,'Association');
+
+  // composition diamond
+  cx.fillStyle='#444'; cx.strokeStyle='#444'; cx.lineWidth=1.4;
+  const dx=lx+820, dy=ly+13;
+  cx.beginPath();
+  cx.moveTo(dx,dy); cx.lineTo(dx-8,-4+dy); cx.lineTo(dx-16,dy);
+  cx.lineTo(dx-8,4+dy); cx.closePath(); cx.fill();
+  cx.beginPath(); cx.moveTo(dx,dy); cx.lineTo(dx+16,dy); cx.stroke();
+  cx.font='8px Arial'; cx.fillStyle='#444'; cx.textBaseline='middle';
+  cx.fillText('Composition',dx+20,dy);
+
+  // layer chips
+  function chip(x,y,f,s,lbl){
+    cx.fillStyle=f; cx.strokeStyle=s; cx.lineWidth=1;
+    cx.fillRect(x,y,14,12); cx.strokeRect(x,y,14,12);
+    cx.font='8px Arial'; cx.fillStyle='#333';
+    cx.textAlign='left'; cx.textBaseline='middle';
+    cx.fillText(lbl,x+18,y+6);
+  }
+  chip(lx+8,  ly+34,'#FFFACC','#B8860B','Business Layer');
+  chip(lx+120,ly+34,'#CCE0FF','#336699','Application Layer');
+  chip(lx+250,ly+34,'#CCFFCC','#228B22','Technology Layer');
+  chip(lx+380,ly+34,'rgba(200,225,255,.3)','#336699','Grouping (dashed)');
+
+  // badge key row
+  cx.font='bold 8px Arial'; cx.fillStyle='#222';
+  cx.textAlign='left'; cx.textBaseline='top';
+  cx.fillText('BADGE KEY:', lx+8, ly+56);
+
+  function bleg(bx,by,fn,col,lbl){
+    fn(bx,by,col);
+    cx.font='6.5px Arial'; cx.fillStyle='#555';
+    cx.textAlign='center'; cx.textBaseline='top';
+    cx.fillText(lbl,bx+10,by+24);
+  }
+  bleg(lx+100,ly+54, badgeBizService,  BIZ, 'Biz\nService');
+  bleg(lx+170,ly+54, badgeAppComponent,APP, 'App\nComponent');
+  bleg(lx+240,ly+54, badgeAppService,  APP, 'App\nService');
+  bleg(lx+310,ly+54, badgeAppFunction, APP, 'App\nFunction');
+  bleg(lx+380,ly+54, badgeTechSysSoft, TECH,'Tech\nSys Soft');
+  bleg(lx+450,ly+54, badgeCommNetwork, TECH,'Comm\nNetwork');
+  bleg(lx+520,ly+54, badgeCommPath,    TECH,'Comm\nPath');
+
+  // mini 3D node example
+  draw3DBox(lx+590,ly+54,22,22,TECH,6);
+  cx.font='6.5px Arial'; cx.fillStyle='#555';
+  cx.textAlign='center'; cx.textBaseline='top';
+  cx.fillText('Tech',lx+601,ly+78);
+  cx.fillText('Node',lx+601,ly+85);
+
+  // mini artifact example
+  drawArtifact(lx+625,ly+54,18,22,TECH,7);
+  cx.font='6.5px Arial'; cx.fillStyle='#555';
+  cx.textAlign='center'; cx.textBaseline='top';
+  cx.fillText('Tech',lx+634,ly+78);
+  cx.fillText('Artifact',lx+634,ly+85);
+
+  cx.font='italic 8px Arial'; cx.fillStyle='#cc0000';
+  cx.textAlign='left';
+  cx.fillText(
+    'Red italic text on every element = ArchiMate 3 palette item chosen to guide you',
+    lx+8, ly+80);
+
+  cx.restore();
+}
+
+draw();
+</script>
+</body>
+</html>
