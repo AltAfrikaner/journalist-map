@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ArchiMate – Synapse Replacement HLD</title>
+<style>
+  body { margin: 0; background: #f5f5f5; font-family: Arial, sans-serif; }
+  h2 { text-align: center; padding: 12px 0 4px; font-size: 15px; color: #222; }
+  .legend { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; padding: 6px 20px 10px; font-size: 11px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-box { width: 18px; height: 14px; border: 1.5px solid #555; }
+  svg { display: block; margin: 0 auto; background: white; border: 1px solid #ccc; }
+  .palette-label { font-size: 8.5px; fill: red; font-style: italic; }
+</style>
+</head>
+<body>
+<h2>ArchiMate Diagram – Synapse Replacement HLD</h2>
+<div class="legend">
+  <div class="legend-item"><div class="legend-box" style="background:#dce8f5;border-color:#4a7ab5"></div> Technology Layer</div>
+  <div class="legend-item"><div class="legend-box" style="background:#e8f5dc;border-color:#5a9a3a"></div> Application Layer</div>
+  <div class="legend-item"><div class="legend-box" style="background:#fff0dc;border-color:#c08020"></div> Business Layer</div>
+  <div class="legend-item"><div class="legend-box" style="background:#f8f8f8;border-color:#888;border-style:dashed"></div> Grouping</div>
+  <div class="legend-item" style="color:red;font-style:italic">Red labels = ArchiMate palette item</div>
+</div>
+
+<svg width="1280" height="820" viewBox="0 0 1280 820" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#c00"/>
+  </marker>
+  <marker id="arrow-black" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+  </marker>
+  <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#3366cc"/>
+  </marker>
+</defs>
+
+<!-- ═══════════════════════════════════════════════
+     ZONE BANDS (outer groupings)
+════════════════════════════════════════════════ -->
+
+<!-- Data Sources zone -->
+<rect x="10" y="40" width="160" height="760" rx="4"
+      fill="#fff8ee" stroke="#c08020" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="90" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#7a5010">Data Sources</text>
+<text x="90" y="75" text-anchor="middle" class="palette-label">Grouping</text>
+
+<!-- Processing & Orchestration zone -->
+<rect x="178" y="40" width="870" height="760" rx="4"
+      fill="#f0f6ff" stroke="#4a7ab5" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="613" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3a6a">Processing and Orchestration</text>
+<text x="613" y="75" text-anchor="middle" class="palette-label">Grouping</text>
+
+<!-- Presentation zone -->
+<rect x="1056" y="40" width="214" height="760" rx="4"
+      fill="#f0fff0" stroke="#5a9a3a" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="1163" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#2a6a1a">Presentation / Consumption / Downstream</text>
+<text x="1163" y="75" text-anchor="middle" class="palette-label">Grouping</text>
+
+<!-- ═══════════════════════════════════════════════
+     BUSINESS LAYER
+════════════════════════════════════════════════ -->
+
+<!-- Sharepoint / API etc — Business Service -->
+<rect x="20" y="340" width="140" height="60" rx="3"
+      fill="#fff0dc" stroke="#c08020" stroke-width="1.5"/>
+<!-- Business Service notation corner -->
+<rect x="138" y="340" width="14" height="10" rx="1" fill="#c08020"/>
+<text x="90" y="362" text-anchor="middle" font-size="10" font-weight="bold" fill="#5a3a00">Sharepoint /</text>
+<text x="90" y="376" text-anchor="middle" font-size="10" font-weight="bold" fill="#5a3a00">API etc</text>
+<text x="90" y="392" text-anchor="middle" class="palette-label">Business Service</text>
+
+<!-- ═══════════════════════════════════════════════
+     INGESTION SIDE — Technology & Application
+════════════════════════════════════════════════ -->
+
+<!-- Ofgem Delegated Subnet (left ingestion) — Technology: Communication Network -->
+<rect x="188" y="90" width="370" height="310" rx="4"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="373" y="108" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3a6a">Ofgem Delegated Subnet</text>
+<text x="373" y="120" text-anchor="middle" class="palette-label">Technology: Communication Network</text>
+
+<!-- Power Platform Injected Container (ingestion) — Application Component -->
+<rect x="200" y="130" width="140" height="70" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<!-- AppComponent notation: small double-rect top-right -->
+<rect x="322" y="130" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<rect x="326" y="134" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<text x="270" y="155" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Power Platform</text>
+<text x="270" y="168" text-anchor="middle" font-size="9" fill="#1a4a00">Injected Container</text>
+<text x="270" y="193" text-anchor="middle" class="palette-label">Application Component</text>
+
+<!-- Blob Storage connector WRITE — Application Service -->
+<rect x="260" y="218" width="200" height="55" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<!-- AppService notation: filled circle top-right -->
+<circle cx="451" cy="224" r="5" fill="#5a9a3a"/>
+<text x="360" y="240" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1a4a00">Blob Storage Connector</text>
+<text x="360" y="254" text-anchor="middle" font-size="9" fill="#c00">(WRITE)</text>
+<text x="360" y="267" text-anchor="middle" class="palette-label">Application Service</text>
+
+<!-- Data enters label -->
+<text x="360" y="295" text-anchor="middle" font-size="9" fill="#c00" font-style="italic">Data enters</text>
+
+<!-- ═══════════════════════════════════════════════
+     CDP SUBNET — Technology: Network (Node)
+════════════════════════════════════════════════ -->
+<rect x="188" y="415" width="480" height="360" rx="4"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="428" y="433" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3a6a">CDP Subnet</text>
+<text x="428" y="445" text-anchor="middle" class="palette-label">Technology: Network</text>
+
+<!-- CDP Blob Storage Landing Zone — Technology: Artifact -->
+<rect x="200" y="455" width="220" height="65" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<!-- Artifact notation: dog-eared page -->
+<polygon points="400,455 412,455 412,467 400,467" fill="#4a7ab5"/>
+<text x="310" y="476" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">CDP Blob Storage Landing Zone</text>
+<text x="310" y="489" text-anchor="middle" font-size="8.5" fill="#1a3a6a">uksdevfdevcdpsa</text>
+<text x="310" y="512" text-anchor="middle" class="palette-label">Technology: Artifact</text>
+
+<!-- Azure Defender / Malware — Technology: System Software -->
+<rect x="200" y="540" width="220" height="55" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<!-- SystemSoftware: gear icon hint (simple) -->
+<circle cx="213" cy="560" r="6" fill="none" stroke="#4a7ab5" stroke-width="1.5"/>
+<text x="310" y="558" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">Azure Defender</text>
+<text x="310" y="570" text-anchor="middle" font-size="8.5" fill="#1a3a6a">Malware scanning applies here</text>
+<text x="310" y="587" text-anchor="middle" class="palette-label">Technology: System Software</text>
+
+<!-- Orchestration Layer — Application Function -->
+<rect x="440" y="455" width="215" height="110" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<!-- AppFunction notation: f() top-right -->
+<text x="645" y="468" font-size="9" fill="#5a9a3a" font-style="italic">f()</text>
+<text x="547" y="473" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Orchestration Layer</text>
+<text x="547" y="487" text-anchor="middle" font-size="8" fill="#1a4a00">· Workflow orchestration</text>
+<text x="547" y="499" text-anchor="middle" font-size="8" fill="#1a4a00">· Validate schema / Metadata</text>
+<text x="547" y="511" text-anchor="middle" font-size="8" fill="#1a4a00">· Reliable streaming</text>
+<text x="547" y="523" text-anchor="middle" font-size="8" fill="#1a4a00">· Run-not capability</text>
+<text x="547" y="558" text-anchor="middle" class="palette-label">Application Function</text>
+
+<!-- ═══════════════════════════════════════════════
+     DATA LAKE AREA — right of orchestration
+════════════════════════════════════════════════ -->
+
+<!-- Data Lake Storage Account — Technology: Node -->
+<rect x="680" y="415" width="170" height="60" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<!-- Node notation: 3D-box top-right -->
+<rect x="826" y="415" width="14" height="10" rx="1" fill="#4a7ab5" opacity="0.6"/>
+<line x1="826" y1="415" x2="840" y2="408" stroke="#4a7ab5" stroke-width="1"/>
+<line x1="840" y1="408" x2="840" y2="418" stroke="#4a7ab5" stroke-width="1"/>
+<text x="765" y="440" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">Data Lake</text>
+<text x="765" y="453" text-anchor="middle" font-size="9" fill="#1a3a6a">Storage Account</text>
+<text x="765" y="469" text-anchor="middle" class="palette-label">Technology: Node</text>
+
+<!-- Data Lake Gen2 — Technology: Artifact -->
+<rect x="680" y="490" width="140" height="55" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<polygon points="800,490 812,490 812,502 800,502" fill="#4a7ab5"/>
+<text x="750" y="513" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">Data Lake Gen2</text>
+<text x="750" y="538" text-anchor="middle" class="palette-label">Technology: Artifact</text>
+
+<!-- CDP Databricks Private Endpoint — Technology: Node -->
+<rect x="680" y="560" width="200" height="65" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<rect x="856" y="560" width="14" height="10" rx="1" fill="#4a7ab5" opacity="0.6"/>
+<text x="780" y="580" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">CDP Databricks</text>
+<text x="780" y="592" text-anchor="middle" font-size="8.5" fill="#1a3a6a">Private Endpoint (Processing)</text>
+<text x="780" y="618" text-anchor="middle" class="palette-label">Technology: Node</text>
+
+<!-- Structured Data Available — Application Service -->
+<rect x="680" y="640" width="220" height="55" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<circle cx="891" cy="646" r="5" fill="#5a9a3a"/>
+<text x="790" y="658" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Structured Data Available for Access</text>
+<text x="790" y="670" text-anchor="middle" font-size="8" fill="#1a4a00">uksdevfdevcdpdatadlsa</text>
+<text x="790" y="688" text-anchor="middle" class="palette-label">Application Service</text>
+
+<!-- Data Lake Ignite / Azure Databricks — Technology: System Software -->
+<rect x="440" y="640" width="220" height="55" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<circle cx="453" cy="660" r="6" fill="none" stroke="#4a7ab5" stroke-width="1.5"/>
+<text x="550" y="658" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">Data Lake Ignite /</text>
+<text x="550" y="671" text-anchor="middle" font-size="9" fill="#1a3a6a">Azure Databricks</text>
+<text x="550" y="688" text-anchor="middle" class="palette-label">Technology: System Software</text>
+
+<!-- ═══════════════════════════════════════════════
+     MONITORING
+════════════════════════════════════════════════ -->
+
+<!-- Azure Monitor Dashboard — Application Component -->
+<rect x="860" y="640" width="175" height="55" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<rect x="1017" y="640" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<rect x="1021" y="644" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<text x="947" y="658" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Azure Monitor Dashboard</text>
+<text x="947" y="688" text-anchor="middle" class="palette-label">Application Component</text>
+
+<!-- Log Analytics Workspace — Application Component -->
+<rect x="860" y="705" width="175" height="45" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<rect x="1017" y="705" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<rect x="1021" y="709" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<text x="947" y="723" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Log Analytics Workspace</text>
+<text x="947" y="743" text-anchor="middle" class="palette-label">Application Component</text>
+
+<!-- Write-logs annotation -->
+<text x="800" y="730" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Write logs – Diagnostics Enabled</text>
+
+<!-- ═══════════════════════════════════════════════
+     PRESENTATION ZONE INTERNALS
+════════════════════════════════════════════════ -->
+
+<!-- Ofgem Delegated Subnet (read side) — Technology: Communication Network -->
+<rect x="1064" y="90" width="198" height="310" rx="4"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="1163" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">Ofgem Delegated Subnet</text>
+<text x="1163" y="120" text-anchor="middle" class="palette-label">Technology: Communication Network</text>
+
+<!-- Power Platform Injected Container (read) — Application Component -->
+<rect x="1074" y="130" width="140" height="60" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<rect x="1196" y="130" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<rect x="1200" y="134" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<text x="1144" y="154" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Power Platform</text>
+<text x="1144" y="167" text-anchor="middle" font-size="9" fill="#1a4a00">Injected Container</text>
+<text x="1144" y="183" text-anchor="middle" class="palette-label">Application Component</text>
+
+<!-- Data Lake Gen2 Connector READ ONLY — Application Service -->
+<rect x="1074" y="210" width="178" height="65" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<circle cx="1244" cy="216" r="5" fill="#5a9a3a"/>
+<text x="1163" y="230" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Data Lake Gen2 Connector</text>
+<text x="1163" y="243" text-anchor="middle" font-size="8.5" fill="#c00">(READ ONLY scoped by RBAC)</text>
+<text x="1163" y="268" text-anchor="middle" class="palette-label">Application Service</text>
+
+<!-- BPI Refresh / Logic App — Application Function -->
+<rect x="1064" y="400" width="198" height="55" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<text x="1253" y="413" font-size="9" fill="#5a9a3a" font-style="italic">f()</text>
+<text x="1163" y="420" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">BPI Refresh</text>
+<text x="1163" y="433" text-anchor="middle" font-size="8.5" fill="#1a4a00">through Logic App</text>
+<text x="1163" y="448" text-anchor="middle" class="palette-label">Application Function</text>
+
+<!-- TLS encrypted / Private Endpoints — Technology: Communication Path -->
+<rect x="1064" y="470" width="198" height="55" rx="3"
+      fill="#dce8f5" stroke="#4a7ab5" stroke-width="1.5"/>
+<!-- Communication Path: line with endpoints -->
+<line x1="1074" y1="490" x2="1090" y2="490" stroke="#4a7ab5" stroke-width="1.5"/>
+<circle cx="1074" cy="490" r="3" fill="#4a7ab5"/>
+<circle cx="1090" cy="490" r="3" fill="#4a7ab5"/>
+<text x="1163" y="488" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3a6a">TLS Encrypted (HTTPS 443)</text>
+<text x="1163" y="501" text-anchor="middle" font-size="8.5" fill="#1a3a6a">Private Endpoints only</text>
+<text x="1163" y="518" text-anchor="middle" class="palette-label">Technology: Communication Path</text>
+
+<!-- Power BI — Application Component -->
+<rect x="1074" y="545" width="178" height="55" rx="3"
+      fill="#e8f5dc" stroke="#5a9a3a" stroke-width="1.5"/>
+<rect x="1234" y="545" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<rect x="1238" y="549" width="12" height="8" rx="1" fill="#5a9a3a"/>
+<text x="1163" y="568" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a4a00">Power BI</text>
+<text x="1163" y="581" text-anchor="middle" font-size="8.5" fill="#1a4a00">Reports / Dashboards</text>
+<text x="1163" y="593" text-anchor="middle" class="palette-label">Application Component</text>
+
+<!-- ═══════════════════════════════════════════════
+     FLOW RELATIONSHIPS (arrows)
+════════════════════════════════════════════════ -->
+
+<!-- Sharepoint → Blob Storage connector (Flow Relationship) -->
+<line x1="160" y1="370" x2="258" y2="245" stroke="#c00" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+<text x="200" y="300" text-anchor="middle" font-size="8" fill="#c00" font-style="italic">Flow Relationship</text>
+
+<!-- Blob Storage → CDP Landing Zone (Flow) -->
+<line x1="360" y1="273" x2="310" y2="453" stroke="#c00" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Landing Zone → Malware scan (Association) -->
+<line x1="310" y1="520" x2="310" y2="538" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-black)"/>
+
+<!-- Malware scan → Orchestration layer (Triggering) -->
+<line x1="422" y1="567" x2="438" y2="510" stroke="#3366cc" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<text x="425" y="545" text-anchor="middle" font-size="8" fill="#3366cc" font-style="italic">Triggering</text>
+
+<!-- Orchestration → Data Lake Gen2 (Flow) -->
+<line x1="655" y1="510" x2="678" y2="517" stroke="#c00" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Data Lake Gen2 → CDP Databricks (Serving) -->
+<line x1="750" y1="545" x2="760" y2="558" stroke="#3366cc" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+<text x="720" y="556" font-size="8" fill="#3366cc" font-style="italic">Serving</text>
+
+<!-- CDP Databricks → Structured Data (Flow) -->
+<line x1="780" y1="625" x2="780" y2="638" stroke="#c00" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Structured Data → Power BI (Serving) -->
+<line x1="900" y1="667" x2="1062" y2="570" stroke="#3366cc" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-blue)"/>
+<text x="980" y="610" font-size="8" fill="#3366cc" font-style="italic">Serving Relationship</text>
+
+<!-- Data Lake Gen2 Connector read → Structured Data (Access) -->
+<line x1="1063" y1="242" x2="900" y2="660" stroke="#888" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow-black)"/>
+<text x="990" y="440" font-size="8" fill="#888" font-style="italic">Access Relationship</text>
+
+<!-- BPI Refresh line from structured data area -->
+<line x1="1163" y1="390" x2="1163" y2="398" stroke="#3366cc" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+
+<!-- Azure Databricks → Monitor (Association) -->
+<line x1="660" y1="667" x2="858" y2="667" stroke="#888" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow-black)"/>
+<text x="760" y="660" font-size="8" fill="#888" font-style="italic">Association</text>
+
+<!-- Monitor → Log Analytics (Composition) -->
+<line x1="947" y1="695" x2="947" y2="703" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-black)"/>
+
+<!-- Data Lake Gen2 Connector connects down to BPI Refresh -->
+<line x1="1163" y1="275" x2="1163" y2="398" stroke="#5a9a3a" stroke-width="1.2" stroke-dasharray="3,3"/>
+
+<!-- ═══════════════════════════════════════════════
+     LAYER BAND LABELS (left margin)
+════════════════════════════════════════════════ -->
+<rect x="0" y="85" width="8" height="140" fill="#c08020" opacity="0.7" rx="2"/>
+<text x="4" y="115" text-anchor="middle" font-size="8" fill="white" font-weight="bold"
+      transform="rotate(-90, 4, 155)">BUSINESS</text>
+
+<rect x="0" y="230" width="8" height="300" fill="#5a9a3a" opacity="0.7" rx="2"/>
+<text x="4" y="320" text-anchor="middle" font-size="8" fill="white" font-weight="bold"
+      transform="rotate(-90, 4, 380)">APPLICATION</text>
+
+<rect x="0" y="535" width="8" height="260" fill="#4a7ab5" opacity="0.7" rx="2"/>
+<text x="4" y="590" text-anchor="middle" font-size="8" fill="white" font-weight="bold"
+      transform="rotate(-90, 4, 665)">TECHNOLOGY</text>
+
+<!-- ═══════════════════════════════════════════════
+     RELATIONSHIP LEGEND (bottom)
+════════════════════════════════════════════════ -->
+<rect x="188" y="775" width="800" height="38" rx="3" fill="#fffff0" stroke="#ccc" stroke-width="1"/>
+<text x="200" y="790" font-size="8.5" fill="#333" font-weight="bold">Relationship key:</text>
+<line x1="310" y1="787" x2="350" y2="787" stroke="#c00" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="355" y="790" font-size="8" fill="#c00">Flow</text>
+<line x1="410" y1="787" x2="450" y2="787" stroke="#3366cc" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-blue)"/>
+<text x="455" y="790" font-size="8" fill="#3366cc">Serving / Triggering</text>
+<line x1="565" y1="787" x2="605" y2="787" stroke="#888" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow-black)"/>
+<text x="610" y="790" font-size="8" fill="#888">Association / Access</text>
+<line x1="710" y1="787" x2="750" y2="787" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-black)"/>
+<text x="755" y="790" font-size="8" fill="#444">Composition / Realisation</text>
+
+<text x="200" y="806" font-size="8.5" fill="#c00" font-weight="bold">Red italic labels = ArchiMate palette item chosen</text>
+
+</svg>
+</body>
+</html>
