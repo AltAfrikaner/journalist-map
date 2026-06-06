@@ -45,9 +45,8 @@ echo "[3/5] Installing PyInstaller into the Windows Python ..."
 wine "$WINPY" -m ensurepip --upgrade >/dev/null 2>&1 || true
 wine "$WINPY" -m pip install --no-warn-script-location --quiet pyinstaller
 
-echo "[3b/5] Fetching helper binaries to ship beside the app ..."
+echo "[3b/5] Fetching c2patool.exe to ship beside the app (offline C2PA) ..."
 mkdir -p msi/vendor
-# c2patool: offline C2PA verification
 C2PATOOL_VER="${C2PATOOL_VER:-v0.9.12}"
 if [ ! -f msi/vendor/c2patool.exe ]; then
     curl -fsSL -o /tmp/c2patool.zip \
@@ -55,17 +54,11 @@ if [ ! -f msi/vendor/c2patool.exe ]; then
     ( cd /tmp && rm -rf c2pt && mkdir c2pt && cd c2pt && unzip -oq /tmp/c2patool.zip )
     cp "$(find /tmp/c2pt -iname c2patool.exe | head -1)" msi/vendor/c2patool.exe
 fi
-# ffmpeg: universal format support + audio editing (any sound file)
-if [ ! -f msi/vendor/ffmpeg.exe ]; then
-    FF_TAG="$(curl -fsSL https://github.com/GyanD/codexffmpeg/releases 2>/dev/null \
-              | grep -oE 'releases/tag/[^"]+' | head -1 | sed 's#releases/tag/##')"
-    curl -fsSL -o /tmp/ffmpeg.zip \
-        "https://github.com/GyanD/codexffmpeg/releases/download/${FF_TAG}/ffmpeg-${FF_TAG}-essentials_build.zip"
-    ( cd /tmp && rm -rf ffm && mkdir ffm && cd ffm && unzip -oq /tmp/ffmpeg.zip )
-    cp "$(find /tmp/ffm -iname ffmpeg.exe | head -1)" msi/vendor/ffmpeg.exe
-fi
+# NOTE: ffmpeg is NOT bundled (it is ~100 MB, which bloats the installer past
+# typical download limits). The app fetches it on first use of an any-format /
+# editing feature, into %LOCALAPPDATA%\AISoundStripper (see download_ffmpeg()).
 
-echo "[4/5] Building Windows exe (plain onefile; helpers ship beside it) ..."
+echo "[4/5] Building Windows exe (plain onefile; c2patool ships beside it) ..."
 ICON_WIN="$(wine winepath -w "$PWD/msi/aisoundstripper.ico" 2>/dev/null | tr -d '\r')"
 SCRIPT_WIN="$(wine winepath -w "$PWD/provenance.py" 2>/dev/null | tr -d '\r')"
 wine "$WINPY" -m PyInstaller --onefile --windowed \

@@ -18,7 +18,7 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 | You want… | Do this | Result |
 |-----------|---------|--------|
-| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk + ffmpeg + c2patool, so the target PC needs **nothing** preinstalled. |
+| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk + c2patool (~16 MB). ffmpeg (for any-format support + audio editing) is downloaded automatically on first use of those features, into your user folder. |
 | **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. Needs Python 3 on the PC. |
 | **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. Needs Python 3. |
 
@@ -33,14 +33,16 @@ After installing, double-click the **AI SoundStripper** desktop icon:
 - **Detectors…** — verifies the C2PA manifest in-app with the bundled
   `c2patool` (offline, no website needed).
 - **Convert… / Normalize / Set cover… / Batch folder…** — any-format audio
-  editing and whole-folder processing, powered by the bundled `ffmpeg`.
+  editing and whole-folder processing (the app offers a one-time `ffmpeg`
+  download the first time you use these).
 
 ### The `Setup.exe` installer
 
 `AISoundStripper-Setup.exe` is a single-file Windows installer (NSIS) that wraps
 a fully self-contained `AISoundStripper.exe` — the Python interpreter and Tcl/Tk
-are bundled inside (along with `ffmpeg` for any-format support/editing and `c2patool` for C2PA verification), so the
-target PC needs **nothing** preinstalled. It installs
+are bundled inside, along with `c2patool` for offline C2PA verification. `ffmpeg`
+(for any-format support + audio editing) is fetched on first use into
+`%LOCALAPPDATA%\AISoundStripper`, keeping the installer ~16 MB. It installs
 to `Program Files`, drops branded Desktop + Start Menu shortcuts, registers an
 Add/Remove Programs entry with the icon, and ships an uninstaller.
 
@@ -102,7 +104,9 @@ replaces values rather than stacking duplicates.
 
 MP3/WAV/FLAC use the pure-Python, zero-dependency, guaranteed-lossless paths
 above. **Every other format** (M4A, MP4, AAC, OGG, Opus, AIFF, WMA, …) is
-handled by **bundled `ffmpeg`** — the installer ships it, so it just works:
+handled by **`ffmpeg`**, which the app downloads automatically the first time
+you use an any-format or editing feature (one-time ~100 MB, saved for next time;
+or run `provenance.py install-ffmpeg`). After that it just works:
 
 - **Inspect / tag / strip** any format. Metadata ops use ffmpeg `-c copy`
   (stream copy = lossless, no re-encode). `creation_type` persists natively on

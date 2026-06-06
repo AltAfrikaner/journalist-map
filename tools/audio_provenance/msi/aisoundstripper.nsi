@@ -49,10 +49,9 @@ Section "Install"
   SetOutPath "$INSTDIR"
   File "dist\${APPEXE}"
   File "..\README.md"
-  ; Helper binaries installed beside the app (the app locates them there):
-  ;  - ffmpeg.exe : universal format support + audio editing
-  ;  - c2patool.exe : offline C2PA verification
-  File "vendor\ffmpeg.exe"
+  ; c2patool ships in the installer (small, gives offline C2PA out of the box).
+  ; ffmpeg is NOT bundled (it is ~100 MB); the app downloads it on first use of
+  ; an any-format / editing feature, into %LOCALAPPDATA%\AISoundStripper.
   File "vendor\c2patool.exe"
 
   ; shortcuts (icon pulled from the exe's own embedded icon)
@@ -75,7 +74,6 @@ SectionEnd
 
 Section "Uninstall"
   Delete "$INSTDIR\${APPEXE}"
-  Delete "$INSTDIR\ffmpeg.exe"
   Delete "$INSTDIR\c2patool.exe"
   Delete "$INSTDIR\README.md"
   Delete "$INSTDIR\Uninstall.exe"

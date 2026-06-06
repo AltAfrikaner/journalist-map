@@ -126,9 +126,18 @@ DETECTOR_VERIFY_URL = "https://contentcredentials.org/verify"
 DETECTOR_SYNTHID_INFO = "https://deepmind.google/science/synthid/"
 
 
+def _user_data_dir() -> str:
+    """Per-user, writable dir for tools we fetch at runtime (e.g. ffmpeg)."""
+    base = os.environ.get("LOCALAPPDATA") or os.path.join(
+        os.path.expanduser("~"), ".local", "share")
+    d = os.path.join(base, "AISoundStripper")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
 def _tool_path(*names):
     """Find a helper binary: next to the frozen exe, in the PyInstaller bundle,
-    beside this script, or on PATH. Pass candidates, e.g. 'ffmpeg.exe','ffmpeg'."""
+    beside this script, the per-user data dir, or on PATH."""
     dirs = []
     if getattr(sys, "frozen", False):
         dirs.append(os.path.dirname(sys.executable))
@@ -136,6 +145,10 @@ def _tool_path(*names):
     if base:
         dirs.append(base)
     dirs.append(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        dirs.append(_user_data_dir())
+    except Exception:  # noqa: BLE001
+        pass
     for d in dirs:
         for n in names:
             cand = os.path.join(d, n)
@@ -704,6 +717,45 @@ def have_ffmpeg() -> bool:
     return ffmpeg_path() is not None
 
 
+# Pinned ffmpeg build fetched on first use when not already present (keeps the
+# installer small). gyan.dev keeps old releases, so this URL stays valid.
+FFMPEG_DOWNLOAD_URL = (
+    "https://github.com/GyanD/codexffmpeg/releases/download/"
+    "2026-06-04-git-c27a3b12e3/ffmpeg-2026-06-04-git-c27a3b12e3-essentials_build.zip")
+
+
+def download_ffmpeg(progress=None) -> str:
+    """Fetch ffmpeg.exe into the per-user data dir. progress(fraction) optional.
+
+    One-time ~100 MB download; afterwards _tool_path() finds it automatically.
+    """
+    import tempfile
+    import urllib.request
+    import zipfile
+    dest = os.path.join(_user_data_dir(), "ffmpeg.exe")
+    tmpzip = os.path.join(tempfile.gettempdir(), "aiss_ffmpeg_dl.zip")
+
+    def hook(blocks, bs, total):
+        if progress and total > 0:
+            progress(min(1.0, (blocks * bs) / total))
+
+    urllib.request.urlretrieve(FFMPEG_DOWNLOAD_URL, tmpzip, hook)
+    with zipfile.ZipFile(tmpzip) as z:
+        name = next(n for n in z.namelist() if n.lower().endswith("bin/ffmpeg.exe"))
+        with z.open(name) as src, open(dest, "wb") as out:
+            shutil.copyfileobj(src, out)
+    try:
+        os.remove(tmpzip)
+    except OSError:
+        pass
+    return dest
+
+
+def ensure_ffmpeg(progress=None) -> str | None:
+    existing = ffmpeg_path()
+    return existing if existing else download_ffmpeg(progress)
+
+
 def _run_ffmpeg(args: list[str], timeout: int = 300):
     exe = ffmpeg_path()
     if not exe:
@@ -1028,10 +1080,31 @@ def cmd_batch(folder: str, action: str, tags: dict, recursive: bool) -> int:
     return 0 if ok else 2
 
 
+def cmd_install_ffmpeg() -> int:
+    if have_ffmpeg():
+        print(f"ffmpeg already available: {ffmpeg_path()}")
+        return 0
+    print("Downloading ffmpeg (~100 MB, one-time)...")
+    last = [-1]
+
+    def prog(frac):
+        pct = int(frac * 100)
+        if pct != last[0] and pct % 5 == 0:
+            last[0] = pct
+            print(f"  {pct}%", end="\r", flush=True)
+    try:
+        dest = download_ffmpeg(prog)
+    except Exception as exc:  # noqa: BLE001
+        print(f"\nffmpeg download failed: {exc}", file=sys.stderr)
+        return 2
+    print(f"\nInstalled ffmpeg -> {dest}")
+    return 0
+
+
 def cmd_edit(op: str, path: str, out: str | None, **kw) -> int:
     if not ffmpeg_path():
-        print("error: audio editing needs ffmpeg (bundled in the installer; or "
-              "install it on PATH).", file=sys.stderr)
+        print("error: this needs ffmpeg. Run:  provenance.py install-ffmpeg  "
+              "(one-time ~100 MB), or put ffmpeg on PATH.", file=sys.stderr)
         return 2
     try:
         if op == "convert":
@@ -1155,6 +1228,11 @@ def cmd_gui(initial: str | None = None) -> int:
         if not p or not os.path.isfile(p):
             write("Pick a file first.\n")
             return
+        ext = os.path.splitext(p)[1].lower()
+        if ext not in _INSPECTORS and not have_ffmpeg():
+            if not ensure_ff():
+                write(f"'{ext}' needs ffmpeg to read; skipped.\n")
+                return
         log.delete("1.0", "end")
         info = inspect_any(p)  # native parser, or ffmpeg for other formats
         fill_form(info.get("tags", {}))
@@ -1189,6 +1267,10 @@ def cmd_gui(initial: str | None = None) -> int:
         if not any(v.strip() for v in tags.values()):
             write("Fill at least one tag field first (e.g. Artist / Title).\n")
             return
+        ext = os.path.splitext(p)[1].lower()
+        if ext not in _TAG_WRITERS and not have_ffmpeg() and not ensure_ff():
+            write(f"'{ext}' needs ffmpeg to tag; skipped.\n")
+            return
         try:
             out_path, n_in, n_out, written = process_tag(p, tags, None)
         except ValueError as exc:
@@ -1200,13 +1282,45 @@ def cmd_gui(initial: str | None = None) -> int:
         show_report("tagged (verified)", inspect_any(out_path), out_path)
 
     # ---- audio editing (ffmpeg) ---------------------------------------- #
+    def ensure_ff():
+        """Return True if ffmpeg is available, downloading it (with consent) if not."""
+        if have_ffmpeg():
+            return True
+        if not messagebox.askyesno(
+                "Install ffmpeg",
+                "This feature needs ffmpeg, which isn't installed yet.\n\n"
+                "Download it now? (one-time, ~100 MB, saved for next time)"):
+            return False
+        win = tk.Toplevel(root)
+        win.title("Downloading ffmpeg…")
+        win.geometry("440x100")
+        lbl = tk.Label(win, text="Starting download…")
+        lbl.pack(pady=(14, 6))
+        pb = ttk.Progressbar(win, length=400, maximum=100)
+        pb.pack()
+        win.update()
+
+        def prog(frac):
+            pb["value"] = frac * 100
+            lbl.config(text=f"Downloading ffmpeg…  {int(frac * 100)}%")
+            win.update()
+        try:
+            download_ffmpeg(prog)
+        except Exception as exc:  # noqa: BLE001
+            win.destroy()
+            messagebox.showerror("ffmpeg download failed",
+                                 f"{exc}\n\nCheck your internet connection and retry.")
+            return False
+        win.destroy()
+        write("ffmpeg installed — any-format and editing features are now enabled.\n")
+        return True
+
     def _need_file():
         p = state["path"]
         if not p or not os.path.isfile(p):
             write("Pick a file first.\n")
             return None
-        if not have_ffmpeg():
-            write("This action needs ffmpeg (bundled in the installer).\n")
+        if not ensure_ff():
             return None
         return p
 
@@ -1355,16 +1469,20 @@ def cmd_gui(initial: str | None = None) -> int:
               width=11).pack(side="left", padx=4)
 
     # Second row: ffmpeg-powered editing + batch (works on any format).
-    ff = have_ffmpeg()
+    # Buttons stay enabled; the first use offers a one-time ffmpeg download.
     bar2 = tk.Frame(root)
     bar2.pack(pady=(0, 8))
-    st = "normal" if ff else "disabled"
-    suffix = "" if ff else "  (needs ffmpeg)"
-    tk.Button(bar2, text="Convert…", command=do_convert, width=10, state=st).pack(side="left", padx=4)
-    tk.Button(bar2, text="Normalize", command=do_normalize, width=10, state=st).pack(side="left", padx=4)
-    tk.Button(bar2, text="Set cover…", command=do_cover, width=10, state=st).pack(side="left", padx=4)
+    tk.Button(bar2, text="Convert…", command=do_convert, width=10).pack(side="left", padx=4)
+    tk.Button(bar2, text="Normalize", command=do_normalize, width=10).pack(side="left", padx=4)
+    tk.Button(bar2, text="Set cover…", command=do_cover, width=10).pack(side="left", padx=4)
     tk.Button(bar2, text="Batch folder…", command=do_batch, width=13).pack(side="left", padx=4)
-    tk.Label(bar2, text="(edits any format" + suffix + ")", fg="#888").pack(side="left", padx=6)
+
+    def do_get_ffmpeg():
+        if have_ffmpeg():
+            write(f"ffmpeg already installed: {ffmpeg_path()}\n")
+        elif ensure_ff():
+            pass
+    tk.Button(bar2, text="Get ffmpeg", command=do_get_ffmpeg, width=10).pack(side="left", padx=4)
 
     # Prefill the form from a saved preset (overwritten by a file's own tags).
     defaults = _load_default_tags()
@@ -1379,7 +1497,7 @@ def cmd_gui(initial: str | None = None) -> int:
 
 
 _SUBCOMMANDS = {"inspect", "clean", "tag", "gui", "convert", "trim",
-                "normalize", "cover", "extract-cover"}
+                "normalize", "cover", "extract-cover", "install-ffmpeg"}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1439,12 +1557,15 @@ def main(argv: list[str] | None = None) -> int:
     pxc.add_argument("file")
     pxc.add_argument("-o", "--out", default=None)
 
+    sub.add_parser("install-ffmpeg", help="download ffmpeg for any-format + editing")
     pg = sub.add_parser("gui", help="launch the click-to-run window")
     pg.add_argument("file", nargs="?", default=None, help="optional file to preload")
     args = p.parse_args(raw)
 
     if args.cmd == "gui":
         return cmd_gui(args.file)
+    if args.cmd == "install-ffmpeg":
+        return cmd_install_ffmpeg()
 
     # Batch mode: clean/tag accept a directory.
     if args.cmd in ("clean", "tag") and os.path.isdir(args.file):
