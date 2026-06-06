@@ -42,11 +42,32 @@ cd msi && ./build_msi.sh          # Linux/macOS, needs: apt-get install wixl
 # or on Windows with the WiX Toolset:  candle aisoundstripper.wxs && light aisoundstripper.wixobj
 ```
 
-> The `.msi` installs the script + launcher (lightweight, but requires Python).
-> If you want a **single self-contained `.msi` that bundles Python too** (no
-> dependency on the target machine), build `AISoundStripper.exe` with
-> `build_exe.bat` first, then say so — I'll point the WiX source at the `.exe`
-> instead of `provenance.py` so the MSI is fully standalone.
+The installer and both shortcuts use a branded icon
+(`msi/aisoundstripper.ico`, regenerate with `python3 msi/make_icon.py`).
+
+### Self-contained `.msi` (bundles Python — no dependency on the target PC)
+
+If you want an MSI that needs **nothing** preinstalled, there is a second,
+fully-wired WiX source (`msi/aisoundstripper-standalone.wxs`) that packages a
+PyInstaller one-file `AISoundStripper.exe` instead of the script. It is verified
+to compile; it just needs the `.exe`, which must be built **on Windows**
+(PyInstaller can't cross-compile from Linux). Two ways:
+
+```bat
+REM  All on Windows, one step (needs Python + WiX Toolset v3 on PATH):
+build_standalone_msi.bat
+REM  -> AISoundStripper-Standalone.msi
+```
+
+```bash
+# Or split it: build the exe on Windows, then build the MSI anywhere with wixl.
+#   on Windows:  pyinstaller --onefile --windowed --icon msi/aisoundstripper.ico \
+#                            --name AISoundStripper --distpath msi/dist provenance.py
+#   then:        ./build_standalone_msi.sh     # -> AISoundStripper-Standalone.msi
+```
+
+(If you build `AISoundStripper.exe` on Windows and hand it to me, I can produce
+the standalone `.msi` here with `wixl`.)
 
 ## Quick start (any OS, from source)
 

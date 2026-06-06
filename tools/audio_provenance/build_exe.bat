@@ -32,8 +32,13 @@ echo [+] Ensuring PyInstaller is installed...
 )
 
 echo [+] Building single-file executable...
-REM --windowed: no console window when the GUI opens.
-%PYEXE% -m PyInstaller --onefile --windowed --name AISoundStripper "%~dp0provenance.py"
+REM --windowed: no console window when the GUI opens.  --icon: branded icon.
+set "ICON=%~dp0msi\aisoundstripper.ico"
+if exist "%ICON%" (
+    %PYEXE% -m PyInstaller --onefile --windowed --icon "%ICON%" --name AISoundStripper "%~dp0provenance.py"
+) else (
+    %PYEXE% -m PyInstaller --onefile --windowed --name AISoundStripper "%~dp0provenance.py"
+)
 
 echo.
 echo === Build complete ===

@@ -446,13 +446,22 @@ def cmd_gui(initial: str | None = None) -> int:
     return 0
 
 
+_SUBCOMMANDS = {"inspect", "clean", "gui"}
+
+
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description=__doc__,
-                                formatter_class=argparse.RawDescriptionHelpFormatter)
+    raw = list(sys.argv[1:]) if argv is None else list(argv)
+
     # No arguments at all -> launch the GUI (double-click friendly).
-    if argv is None and len(sys.argv) == 1:
+    if not raw:
         return cmd_gui(None)
 
+    # A bare file path (e.g. an audio file dropped onto the .exe/.bat) -> clean.
+    if len(raw) == 1 and raw[0] not in _SUBCOMMANDS and os.path.isfile(raw[0]):
+        raw = ["clean", raw[0]]
+
+    p = argparse.ArgumentParser(description=__doc__,
+                                formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
     pi = sub.add_parser("inspect", help="report which provenance layers are present")
     pi.add_argument("file")
@@ -461,7 +470,7 @@ def main(argv: list[str] | None = None) -> int:
     pc.add_argument("-o", "--out", default=None, help="output path")
     pg = sub.add_parser("gui", help="launch the click-to-run window")
     pg.add_argument("file", nargs="?", default=None, help="optional file to preload")
-    args = p.parse_args(argv)
+    args = p.parse_args(raw)
 
     if args.cmd == "gui":
         return cmd_gui(args.file)
