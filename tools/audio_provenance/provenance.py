@@ -30,9 +30,12 @@ differ enormously in how removable they are:
            (re-performing, live instrumentation, real arrangement/mix work),
            which is also what current copyright guidance rewards.
 
-Pure standard library.  No third-party dependencies, no re-encoding: layer-1
-stripping rewrites only the metadata regions and copies the audio bytes
-verbatim, so there is zero generation loss and no new encoder signature.
+MP3/WAV/FLAC use a pure standard-library path: no dependencies, no re-encoding
+(layer-1 stripping rewrites only the metadata regions and copies the audio bytes
+verbatim, so there is zero generation loss). Any OTHER format (m4a/ogg/opus/...)
+and audio editing (convert/trim/normalize/cover) route through ffmpeg if it is
+available (bundled in the Windows installer); metadata ops there still use
+stream-copy, so they remain lossless.
 
 It can also IMPRINT honest provenance: write standard tags (artist, title,
 album, year, genre, comment) plus a "creation type" field (e.g. AI-generated /
@@ -123,14 +126,34 @@ DETECTOR_VERIFY_URL = "https://contentcredentials.org/verify"
 DETECTOR_SYNTHID_INFO = "https://deepmind.google/science/synthid/"
 
 
-def _c2patool_path():
-    """Locate c2patool: bundled next to the frozen exe, else on PATH."""
-    base = getattr(sys, "_MEIPASS", None)  # PyInstaller onefile extract dir
+def _tool_path(*names):
+    """Find a helper binary: next to the frozen exe, in the PyInstaller bundle,
+    beside this script, or on PATH. Pass candidates, e.g. 'ffmpeg.exe','ffmpeg'."""
+    dirs = []
+    if getattr(sys, "frozen", False):
+        dirs.append(os.path.dirname(sys.executable))
+    base = getattr(sys, "_MEIPASS", None)
     if base:
-        cand = os.path.join(base, "c2patool.exe")
-        if os.path.isfile(cand):
-            return cand
-    return shutil.which("c2patool") or shutil.which("c2patool.exe")
+        dirs.append(base)
+    dirs.append(os.path.dirname(os.path.abspath(__file__)))
+    for d in dirs:
+        for n in names:
+            cand = os.path.join(d, n)
+            if os.path.isfile(cand):
+                return cand
+    for n in names:
+        found = shutil.which(n)
+        if found:
+            return found
+    return None
+
+
+def _c2patool_path():
+    return _tool_path("c2patool.exe", "c2patool")
+
+
+def ffmpeg_path():
+    return _tool_path("ffmpeg.exe", "ffmpeg")
 
 
 def detect_c2pa_external(path: str):
@@ -352,6 +375,27 @@ CREATION_TYPE_CHOICES = [
     "", "Human-made", "AI-assisted (human-edited)", "AI-generated",
     "Sample-based", "Cover / arrangement", "Field recording",
 ]
+
+# Saved tag preset (so you don't retype Artist / Creation-type every track).
+_PRESET_PATH = os.path.join(os.path.expanduser("~"), ".aisoundstripper_tags.json")
+
+
+def _load_default_tags() -> dict:
+    try:
+        with open(_PRESET_PATH, "r", encoding="utf-8") as fh:
+            d = json.load(fh)
+        return {k: d.get(k, "") for k in TAG_FIELDS}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _save_default_tags(tags: dict) -> None:
+    try:
+        keep = {k: tags.get(k, "") for k in TAG_FIELDS if tags.get(k, "").strip()}
+        with open(_PRESET_PATH, "w", encoding="utf-8") as fh:
+            json.dump(keep, fh)
+    except Exception:  # noqa: BLE001
+        pass
 
 
 # ----- ID3v2 (MP3) --------------------------------------------------------- #
@@ -598,18 +642,216 @@ def read_tags(ext: str, data: bytes) -> dict:
 def process_tag(path: str, tags: dict, out: str | None = None):
     """Write metadata tags; audio copied verbatim. Returns (out, n_in, n_out, written)."""
     ext = os.path.splitext(path)[1].lower()
-    writer = _TAG_WRITERS.get(ext)
-    if not writer:
-        raise ValueError(f"tag writing not supported for '{ext}'. "
-                         f"Supported: {', '.join(sorted(SUPPORTED_TAG))}")
-    data = _read(path)
-    tagged = writer(data, {k: v for k, v in tags.items() if v})
+    tags = {k: v for k, v in tags.items() if v}
+    n_in = os.path.getsize(path)
     if out is None:
         root, e = os.path.splitext(path)
         out = f"{root}.tagged{e}"
-    with open(out, "wb") as fh:
-        fh.write(tagged)
-    return out, len(data), len(tagged), read_tags(ext, _read(out))
+    writer = _TAG_WRITERS.get(ext)
+    if writer:  # native, lossless
+        tagged = writer(_read(path), tags)
+        with open(out, "wb") as fh:
+            fh.write(tagged)
+        return out, n_in, len(tagged), read_tags(ext, _read(out))
+    if ffmpeg_path() and ext in FFMPEG_AUDIO_EXTS:  # universal via ffmpeg (stream copy)
+        ffmpeg_write_tags(path, tags, out)
+        return out, n_in, os.path.getsize(out), ffmpeg_read_tags(out)
+    raise ValueError(f"tag writing not supported for '{ext}'. "
+                     f"Native: {', '.join(sorted(SUPPORTED_TAG))}; "
+                     "other formats need ffmpeg (bundled in the installer).")
+
+
+def inspect_any(path: str) -> dict:
+    """Inspect any file: native parser if we have one, else ffmpeg-read tags."""
+    ext = os.path.splitext(path)[1].lower()
+    ins = _INSPECTORS.get(ext)
+    if ins:
+        return ins(_read(path))
+    data = _read(path)
+    info = {"format": ext.lstrip(".").upper() + (" (via ffmpeg)" if ffmpeg_path() else ""),
+            "layers": {"1_container": [], "2_c2pa": _scan_c2pa(data)}, "tags": {}}
+    if ffmpeg_path():
+        tags = ffmpeg_read_tags(path)
+        info["tags"] = tags
+        info["layers"]["1_container"] = (
+            [f"{len(tags)} metadata field(s) read via ffmpeg"] if tags
+            else ["no readable container metadata"])
+    else:
+        info["layers"]["1_container"] = [f"install ffmpeg to read '{ext}' files"]
+    return info
+
+
+# --------------------------------------------------------------------------- #
+# ffmpeg engine: universal support for "any sound file" + audio editing
+# --------------------------------------------------------------------------- #
+# MP3/WAV/FLAC are handled natively above (pure-Python, guaranteed zero re-encode).
+# Everything else routes through bundled ffmpeg. Metadata ops use `-c copy`
+# (stream copy = lossless, no re-encode); convert/normalize re-encode by nature.
+FFMPEG_AUDIO_EXTS = {
+    ".m4a", ".mp4", ".m4b", ".aac", ".ogg", ".oga", ".opus", ".aiff", ".aif",
+    ".aifc", ".wma", ".alac", ".ac3", ".amr", ".mka", ".wv", ".ape", ".mp3",
+    ".wav", ".flac",
+}
+# ffmpeg's generic metadata keys <-> our canonical fields.
+_FFM_META = {"title": "title", "artist": "artist", "album": "album",
+             "year": "date", "genre": "genre", "comment": "comment",
+             "creation_type": "creation_type"}
+_FFM_META_READ = {v: k for k, v in _FFM_META.items()}
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+
+def have_ffmpeg() -> bool:
+    return ffmpeg_path() is not None
+
+
+def _run_ffmpeg(args: list[str], timeout: int = 300):
+    exe = ffmpeg_path()
+    if not exe:
+        raise ValueError("ffmpeg is not available (install it, or use the installer "
+                         "which bundles it). Native MP3/WAV/FLAC still work without it.")
+    return subprocess.run([exe, "-nostdin", "-y", *args], capture_output=True,
+                          text=True, timeout=timeout, creationflags=_NO_WINDOW)
+
+
+# Container plumbing that ffmpeg prints but which isn't a user tag.
+_FFM_NOISE = {"major_brand", "minor_version", "compatible_brands", "encoder",
+              "handler_name", "vendor_id", "duration", "creation_time", "bitrate",
+              "start", "encoder_options", "language", "track", "disc"}
+
+
+def ffmpeg_read_tags(path: str) -> dict:
+    """Read container metadata from any format by parsing `ffmpeg -i` (>=4-space
+    indented entries are real tags; 'Duration'/'Stream' lines are 2-space)."""
+    exe = ffmpeg_path()
+    if not exe:
+        return {}
+    r = subprocess.run([exe, "-nostdin", "-i", path], capture_output=True,
+                       text=True, timeout=60, creationflags=_NO_WINDOW)
+    tags = {}
+    for line in (r.stderr or "").splitlines():
+        m = re.match(r"^\s{4,}([A-Za-z0-9_\-]+)\s*:\s*(.+?)\s*$", line)
+        if not m:
+            continue
+        k, v = m.group(1).lower(), m.group(2)
+        if k in _FFM_NOISE or not v:
+            continue
+        canon = _FFM_META_READ.get(k)
+        if canon:
+            tags.setdefault(canon, v)
+        else:
+            tags.setdefault("_" + k, v)
+    return tags
+
+
+# MP4-family containers only accept a fixed atom set and silently drop unknown
+# keys like creation_type, so we fold it into the comment there to keep it.
+_MP4_FAMILY = {".m4a", ".mp4", ".m4b", ".aac"}
+
+
+def ffmpeg_write_tags(path: str, tags: dict, out: str) -> None:
+    ext = os.path.splitext(path)[1].lower()
+    tags = dict(tags)
+    if ext in _MP4_FAMILY and tags.get("creation_type"):
+        base = tags.get("comment", "")
+        tags["comment"] = (f"{base} | " if base else "") + \
+            f"Creation type: {tags['creation_type']}"
+    args = ["-i", path, "-map_metadata", "0", "-c", "copy"]
+    for key, ffk in _FFM_META.items():
+        if tags.get(key):
+            args += ["-metadata", f"{ffk}={tags[key]}"]
+    args.append(out)
+    r = _run_ffmpeg(args)
+    if r.returncode != 0:
+        raise ValueError(f"ffmpeg tag write failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+
+
+def ffmpeg_strip(path: str, out: str) -> None:
+    r = _run_ffmpeg(["-i", path, "-map_metadata", "-1", "-map_chapters", "-1",
+                     "-c", "copy", out])
+    if r.returncode != 0:
+        raise ValueError(f"ffmpeg strip failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+
+
+# Sensible per-target encoder defaults for the convert feature.
+_CONVERT_ARGS = {
+    ".mp3": ["-c:a", "libmp3lame", "-q:a", "2"],
+    ".m4a": ["-c:a", "aac", "-b:a", "256k"],
+    ".aac": ["-c:a", "aac", "-b:a", "256k"],
+    ".ogg": ["-c:a", "libvorbis", "-q:a", "6"],
+    ".opus": ["-c:a", "libopus", "-b:a", "160k"],
+    ".flac": ["-c:a", "flac"],
+    ".wav": ["-c:a", "pcm_s16le"],
+    ".aiff": ["-c:a", "pcm_s16be"],
+}
+
+
+def convert_audio(path: str, target_ext: str, out: str | None = None) -> str:
+    target_ext = target_ext if target_ext.startswith(".") else "." + target_ext
+    if target_ext not in _CONVERT_ARGS:
+        raise ValueError(f"convert target '{target_ext}' not supported. "
+                         f"Choose from: {', '.join(sorted(_CONVERT_ARGS))}")
+    if out is None:
+        out = os.path.splitext(path)[0] + target_ext
+    r = _run_ffmpeg(["-i", path, *_CONVERT_ARGS[target_ext], out])
+    if r.returncode != 0:
+        raise ValueError(f"convert failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+    return out
+
+
+def trim_audio(path: str, start: str | None, end: str | None,
+               out: str | None = None) -> str:
+    if out is None:
+        root, e = os.path.splitext(path)
+        out = f"{root}.trim{e}"
+    args = []
+    if start:
+        args += ["-ss", start]
+    if end:
+        args += ["-to", end]
+    args += ["-i", path, "-c", "copy", out]  # stream copy = lossless trim
+    r = _run_ffmpeg(args)
+    if r.returncode != 0:  # fall back to a re-encode if copy can't cut cleanly
+        r = _run_ffmpeg([*(["-ss", start] if start else []),
+                         *(["-to", end] if end else []), "-i", path, out])
+        if r.returncode != 0:
+            raise ValueError(f"trim failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+    return out
+
+
+def normalize_audio(path: str, out: str | None = None) -> str:
+    if out is None:
+        root, e = os.path.splitext(path)
+        out = f"{root}.norm{e}"
+    r = _run_ffmpeg(["-i", path, "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", out])
+    if r.returncode != 0:
+        raise ValueError(f"normalize failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+    return out
+
+
+def set_cover(path: str, image: str, out: str | None = None) -> str:
+    if out is None:
+        root, e = os.path.splitext(path)
+        out = f"{root}.cover{e}"
+    ext = os.path.splitext(path)[1].lower()
+    args = ["-i", path, "-i", image, "-map", "0:a", "-map", "1:v", "-c", "copy",
+            "-disposition:v", "attached_pic"]
+    if ext == ".mp3":
+        args += ["-id3v2_version", "3", "-metadata:s:v", "title=Album cover",
+                 "-metadata:s:v", "comment=Cover (front)"]
+    args.append(out)
+    r = _run_ffmpeg(args)
+    if r.returncode != 0:
+        raise ValueError(f"set cover failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+    return out
+
+
+def extract_cover(path: str, out: str | None = None) -> str:
+    if out is None:
+        out = os.path.splitext(path)[0] + ".cover.jpg"
+    r = _run_ffmpeg(["-i", path, "-an", "-map", "0:v", "-c:v", "copy", out])
+    if r.returncode != 0:
+        raise ValueError("no embedded cover found, or extract failed")
+    return out
 
 
 def _format_tags(tags: dict) -> list[str]:
@@ -657,17 +899,7 @@ def _report(path: str, info: dict) -> None:
 
 
 def cmd_inspect(path: str) -> int:
-    ext = os.path.splitext(path)[1].lower()
-    data = _read(path)
-    inspector = _INSPECTORS.get(ext)
-    if inspector:
-        _report(path, inspector(data))
-    else:
-        print(f"\n=== {os.path.basename(path)} ===")
-        print(f"Inspect-only for '{ext}'.  Container structure not parsed by "
-              "this tool;")
-        print("C2PA scan:",
-              "DETECTED" if _scan_c2pa(data) else "none detected")
+    _report(path, inspect_any(path))
     return 0
 
 
@@ -686,31 +918,35 @@ class CleanResult:
 def process_clean(path: str, out: str | None) -> CleanResult:
     """Strip Layer-1 metadata; write output; verify. Raises ValueError on bad input."""
     ext = os.path.splitext(path)[1].lower()
-    cleaner = _CLEANERS.get(ext)
-    if not cleaner:
-        raise ValueError(
-            f"Layer-1 stripping not supported for '{ext}'. "
-            f"Supported: {', '.join(sorted(SUPPORTED_STRIP))}")
-
-    data = _read(path)
-    before = _INSPECTORS[ext](data)
-    cleaned = cleaner(data)
-
+    n_in = os.path.getsize(path)
+    before = inspect_any(path)
     if out is None:
         root, e = os.path.splitext(path)
         out = f"{root}.clean{e}"
-    with open(out, "wb") as fh:
-        fh.write(cleaned)
-
-    after = _INSPECTORS[ext](_read(out))
-    return CleanResult(path, out, before, after, len(data), len(cleaned))
+    cleaner = _CLEANERS.get(ext)
+    if cleaner:  # native, lossless
+        cleaned = cleaner(_read(path))
+        with open(out, "wb") as fh:
+            fh.write(cleaned)
+        n_out = len(cleaned)
+    elif ffmpeg_path() and ext in FFMPEG_AUDIO_EXTS:  # universal via ffmpeg (stream copy)
+        ffmpeg_strip(path, out)
+        n_out = os.path.getsize(out)
+    else:
+        raise ValueError(
+            f"Layer-1 stripping not supported for '{ext}'. "
+            f"Native: {', '.join(sorted(SUPPORTED_STRIP))}; "
+            "other formats need ffmpeg (bundled in the installer).")
+    after = inspect_any(out)
+    return CleanResult(path, out, before, after, n_in, n_out)
 
 
 def cmd_clean(path: str, out: str | None) -> int:
     ext = os.path.splitext(path)[1].lower()
-    if ext not in _CLEANERS:
-        print(f"error: layer-1 stripping not implemented for '{ext}'. "
-              f"Supported: {', '.join(sorted(SUPPORTED_STRIP))}", file=sys.stderr)
+    if ext not in _CLEANERS and not (ffmpeg_path() and ext in FFMPEG_AUDIO_EXTS):
+        print(f"error: layer-1 stripping not available for '{ext}'. "
+              f"Native: {', '.join(sorted(SUPPORTED_STRIP))}; other formats need "
+              "ffmpeg.", file=sys.stderr)
         return 2
 
     res = process_clean(path, out)
@@ -731,17 +967,16 @@ def cmd_clean(path: str, out: str | None) -> int:
 
 
 def cmd_tag(path: str, tags: dict, out: str | None) -> int:
-    ext = os.path.splitext(path)[1].lower()
-    if ext not in _TAG_WRITERS:
-        print(f"error: tag writing not implemented for '{ext}'. "
-              f"Supported: {', '.join(sorted(SUPPORTED_TAG))}", file=sys.stderr)
-        return 2
     if not any(v.strip() for v in tags.values()):
         print("error: nothing to write — give at least one of "
               "--title/--artist/--album/--year/--genre/--comment/--creation-type",
               file=sys.stderr)
         return 2
-    out_path, n_in, n_out, written = process_tag(path, tags, out)
+    try:
+        out_path, n_in, n_out, written = process_tag(path, tags, out)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
     print(f"\nWrote {out_path}  ({n_in} -> {n_out} bytes; audio copied verbatim)")
     print("Tags now in the file:")
     for line in _format_tags(written):
@@ -749,11 +984,83 @@ def cmd_tag(path: str, tags: dict, out: str | None) -> int:
     return 0
 
 
+# Extensions we can act on (native always; the rest once ffmpeg is present).
+def supported_exts() -> set:
+    exts = set(SUPPORTED_STRIP)
+    if ffmpeg_path():
+        exts |= FFMPEG_AUDIO_EXTS
+    return exts
+
+
+def iter_audio_files(folder: str, recursive: bool):
+    exts = supported_exts()
+    if recursive:
+        for dirpath, _dirs, files in os.walk(folder):
+            for f in sorted(files):
+                if os.path.splitext(f)[1].lower() in exts:
+                    yield os.path.join(dirpath, f)
+    else:
+        for f in sorted(os.listdir(folder)):
+            full = os.path.join(folder, f)
+            if os.path.isfile(full) and os.path.splitext(f)[1].lower() in exts:
+                yield full
+
+
+def cmd_batch(folder: str, action: str, tags: dict, recursive: bool) -> int:
+    files = list(iter_audio_files(folder, recursive))
+    if not files:
+        print(f"No supported audio files found in {folder}", file=sys.stderr)
+        return 2
+    ok = fail = 0
+    for f in files:
+        try:
+            if action == "clean":
+                res = process_clean(f, None)
+                print(f"  stripped  {os.path.basename(f)} -> {os.path.basename(res.out)}")
+            else:
+                out, _ni, _no, _w = process_tag(f, tags, None)
+                print(f"  tagged    {os.path.basename(f)} -> {os.path.basename(out)}")
+            ok += 1
+        except Exception as exc:  # noqa: BLE001
+            print(f"  SKIP      {os.path.basename(f)}: {exc}")
+            fail += 1
+    print(f"\nBatch {action}: {ok} done, {fail} skipped, in {folder}")
+    return 0 if ok else 2
+
+
+def cmd_edit(op: str, path: str, out: str | None, **kw) -> int:
+    if not ffmpeg_path():
+        print("error: audio editing needs ffmpeg (bundled in the installer; or "
+              "install it on PATH).", file=sys.stderr)
+        return 2
+    try:
+        if op == "convert":
+            res = convert_audio(path, kw["to"], out)
+        elif op == "trim":
+            res = trim_audio(path, kw.get("start"), kw.get("end"), out)
+        elif op == "normalize":
+            res = normalize_audio(path, out)
+        elif op == "cover":
+            res = set_cover(path, kw["image"], out)
+        elif op == "extract-cover":
+            res = extract_cover(path, out)
+        else:
+            print(f"unknown edit op {op}", file=sys.stderr)
+            return 2
+    except (ValueError, KeyError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    note = "" if op in ("trim", "cover", "extract-cover") else \
+        "  (re-encoded — this op changes the audio stream)"
+    print(f"Wrote {res}{note}")
+    return 0
+
+
 def cmd_gui(initial: str | None = None) -> int:
     """Click-to-run window: inspect, strip, and imprint provenance tags."""
     try:
         import tkinter as tk
-        from tkinter import filedialog, scrolledtext, ttk
+        from tkinter import filedialog, scrolledtext, ttk, simpledialog, messagebox
     except Exception as exc:  # noqa: BLE001
         print(f"error: GUI needs tkinter, which isn't available ({exc}).\n"
               "Use the CLI instead:  python provenance.py clean FILE", file=sys.stderr)
@@ -836,8 +1143,8 @@ def cmd_gui(initial: str | None = None) -> int:
     def pick():
         f = filedialog.askopenfilename(
             title="Choose an audio file",
-            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg"),
-                       ("All files", "*.*")])
+            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg "
+                        "*.opus *.aiff *.wma"), ("All files", "*.*")])
         if f:
             state["path"] = f
             path_var.set(f)
@@ -848,16 +1155,10 @@ def cmd_gui(initial: str | None = None) -> int:
         if not p or not os.path.isfile(p):
             write("Pick a file first.\n")
             return
-        ext = os.path.splitext(p)[1].lower()
-        ins = _INSPECTORS.get(ext)
         log.delete("1.0", "end")
-        if ins:
-            info = ins(_read(p))
-            fill_form(info.get("tags", {}))  # prefill editable fields
-            show_report(os.path.basename(p), info, p)
-        else:
-            write(f"Inspect-only for '{ext}'. C2PA scan: "
-                  + ("DETECTED" if _scan_c2pa(_read(p)) else "none detected") + "\n")
+        info = inspect_any(p)  # native parser, or ffmpeg for other formats
+        fill_form(info.get("tags", {}))
+        show_report(os.path.basename(p), info, p)
 
     def do_clean():
         p = state["path"]
@@ -895,8 +1196,92 @@ def cmd_gui(initial: str | None = None) -> int:
             return
         write(f"Imprinted tags -> {out_path}")
         write(f"  {n_in} -> {n_out} bytes; audio copied verbatim.\n")
-        ext = os.path.splitext(out_path)[1].lower()
-        show_report("tagged (verified)", _INSPECTORS[ext](_read(out_path)), out_path)
+        _save_default_tags(tags)  # remember as preset
+        show_report("tagged (verified)", inspect_any(out_path), out_path)
+
+    # ---- audio editing (ffmpeg) ---------------------------------------- #
+    def _need_file():
+        p = state["path"]
+        if not p or not os.path.isfile(p):
+            write("Pick a file first.\n")
+            return None
+        if not have_ffmpeg():
+            write("This action needs ffmpeg (bundled in the installer).\n")
+            return None
+        return p
+
+    def do_convert():
+        p = _need_file()
+        if not p:
+            return
+        fmt = simpledialog.askstring("Convert", "Target format "
+                                     "(mp3 / wav / flac / m4a / ogg / opus / aiff):",
+                                     parent=root)
+        if not fmt:
+            return
+        try:
+            out = convert_audio(p, fmt.strip().lower())
+        except ValueError as exc:
+            write(f"Convert failed: {exc}\n")
+            return
+        write(f"Converted -> {out}  (re-encoded: this changes the audio stream)\n")
+
+    def do_normalize():
+        p = _need_file()
+        if not p:
+            return
+        try:
+            out = normalize_audio(p)
+        except ValueError as exc:
+            write(f"Normalize failed: {exc}\n")
+            return
+        write(f"Normalized to -14 LUFS -> {out}  (re-encoded)\n")
+
+    def do_cover():
+        p = _need_file()
+        if not p:
+            return
+        img = filedialog.askopenfilename(title="Choose a cover image",
+                                         filetypes=[("Images", "*.jpg *.jpeg *.png"),
+                                                    ("All files", "*.*")])
+        if not img:
+            return
+        try:
+            out = set_cover(p, img)
+        except ValueError as exc:
+            write(f"Set cover failed: {exc}\n")
+            return
+        write(f"Embedded cover -> {out}  (audio copied verbatim)\n")
+
+    def do_batch():
+        folder = filedialog.askdirectory(title="Choose a folder to process")
+        if not folder:
+            return
+        action = "tag" if any(v.strip() for v in collect_tags().values()) else "clean"
+        if action == "tag":
+            if not messagebox.askyesno("Batch tag", "Apply the tag-form values to "
+                                       "EVERY supported file in:\n" + folder + " ?"):
+                return
+        else:
+            if not messagebox.askyesno("Batch strip", "Strip metadata from EVERY "
+                                       "supported file in:\n" + folder +
+                                       " ?\n(Tag fields are empty, so this strips.)"):
+                return
+        write(f"Batch {action} in {folder} ...")
+        files = list(iter_audio_files(folder, recursive=False))
+        ok = 0
+        for f in files:
+            try:
+                if action == "clean":
+                    r = process_clean(f, None)
+                    write(f"  stripped {os.path.basename(f)} -> {os.path.basename(r.out)}")
+                else:
+                    o, _i, _n, _w = process_tag(f, collect_tags(), None)
+                    write(f"  tagged   {os.path.basename(f)} -> {os.path.basename(o)}")
+                ok += 1
+            except Exception as exc:  # noqa: BLE001
+                write(f"  SKIP {os.path.basename(f)}: {exc}")
+        write(f"Batch done: {ok}/{len(files)} files.\n")
 
     def do_detectors():
         import webbrowser
@@ -959,7 +1344,7 @@ def cmd_gui(initial: str | None = None) -> int:
                   width=36).pack(anchor="w", padx=12, pady=(6, 12))
 
     bar = tk.Frame(root)
-    bar.pack(pady=(0, 6))
+    bar.pack(pady=(0, 2))
     tk.Button(bar, text="1. Upload…", command=pick, width=11).pack(side="left", padx=4)
     tk.Button(bar, text="2. Inspect", command=do_inspect, width=11).pack(side="left", padx=4)
     tk.Button(bar, text="Strip junk + save", command=do_clean,
@@ -969,6 +1354,23 @@ def cmd_gui(initial: str | None = None) -> int:
     tk.Button(bar, text="Detectors…", command=do_detectors,
               width=11).pack(side="left", padx=4)
 
+    # Second row: ffmpeg-powered editing + batch (works on any format).
+    ff = have_ffmpeg()
+    bar2 = tk.Frame(root)
+    bar2.pack(pady=(0, 8))
+    st = "normal" if ff else "disabled"
+    suffix = "" if ff else "  (needs ffmpeg)"
+    tk.Button(bar2, text="Convert…", command=do_convert, width=10, state=st).pack(side="left", padx=4)
+    tk.Button(bar2, text="Normalize", command=do_normalize, width=10, state=st).pack(side="left", padx=4)
+    tk.Button(bar2, text="Set cover…", command=do_cover, width=10, state=st).pack(side="left", padx=4)
+    tk.Button(bar2, text="Batch folder…", command=do_batch, width=13).pack(side="left", padx=4)
+    tk.Label(bar2, text="(edits any format" + suffix + ")", fg="#888").pack(side="left", padx=6)
+
+    # Prefill the form from a saved preset (overwritten by a file's own tags).
+    defaults = _load_default_tags()
+    if defaults:
+        fill_form(defaults)
+
     if initial and os.path.isfile(initial):
         do_inspect()
 
@@ -976,7 +1378,8 @@ def cmd_gui(initial: str | None = None) -> int:
     return 0
 
 
-_SUBCOMMANDS = {"inspect", "clean", "tag", "gui"}
+_SUBCOMMANDS = {"inspect", "clean", "tag", "gui", "convert", "trim",
+                "normalize", "cover", "extract-cover"}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -996,25 +1399,57 @@ def main(argv: list[str] | None = None) -> int:
     pi = sub.add_parser("inspect", help="report which provenance layers are present")
     pi.add_argument("file")
     pc = sub.add_parser("clean", help="strip Layer-1 container metadata (no re-encode)")
-    pc.add_argument("file")
+    pc.add_argument("file", help="audio file, or a folder for batch mode")
     pc.add_argument("-o", "--out", default=None, help="output path")
+    pc.add_argument("-r", "--recursive", action="store_true", help="recurse into subfolders (batch)")
+
+    def add_tag_args(sp):
+        sp.add_argument("--title", default="")
+        sp.add_argument("--artist", default="")
+        sp.add_argument("--album", default="")
+        sp.add_argument("--year", default="")
+        sp.add_argument("--genre", default="")
+        sp.add_argument("--comment", default="")
+        sp.add_argument("--creation-type", dest="creation_type", default="",
+                        help="e.g. 'AI-generated', 'AI-assisted (human-edited)', 'Human-made'")
+
     pt = sub.add_parser("tag", help="imprint provenance tags (no re-encode)")
-    pt.add_argument("file")
-    pt.add_argument("--title", default="")
-    pt.add_argument("--artist", default="")
-    pt.add_argument("--album", default="")
-    pt.add_argument("--year", default="")
-    pt.add_argument("--genre", default="")
-    pt.add_argument("--comment", default="")
-    pt.add_argument("--creation-type", dest="creation_type", default="",
-                    help="e.g. 'AI-generated', 'AI-assisted (human-edited)', 'Human-made'")
+    pt.add_argument("file", help="audio file, or a folder for batch mode")
+    add_tag_args(pt)
     pt.add_argument("-o", "--out", default=None, help="output path")
+    pt.add_argument("-r", "--recursive", action="store_true", help="recurse into subfolders (batch)")
+
+    pcv = sub.add_parser("convert", help="convert to another format (ffmpeg; re-encodes)")
+    pcv.add_argument("file")
+    pcv.add_argument("--to", required=True, help="target ext: mp3/wav/flac/m4a/ogg/opus/aiff")
+    pcv.add_argument("-o", "--out", default=None)
+    ptr = sub.add_parser("trim", help="cut a section (ffmpeg; lossless stream copy)")
+    ptr.add_argument("file")
+    ptr.add_argument("--start", default=None, help="start time, e.g. 0:30 or 12.5")
+    ptr.add_argument("--end", default=None, help="end time, e.g. 1:45")
+    ptr.add_argument("-o", "--out", default=None)
+    pnm = sub.add_parser("normalize", help="loudness-normalize to -14 LUFS (ffmpeg; re-encodes)")
+    pnm.add_argument("file")
+    pnm.add_argument("-o", "--out", default=None)
+    pco = sub.add_parser("cover", help="embed a cover image (ffmpeg; lossless)")
+    pco.add_argument("file")
+    pco.add_argument("--image", required=True, help="path to JPG/PNG cover")
+    pco.add_argument("-o", "--out", default=None)
+    pxc = sub.add_parser("extract-cover", help="save the embedded cover image (ffmpeg)")
+    pxc.add_argument("file")
+    pxc.add_argument("-o", "--out", default=None)
+
     pg = sub.add_parser("gui", help="launch the click-to-run window")
     pg.add_argument("file", nargs="?", default=None, help="optional file to preload")
     args = p.parse_args(raw)
 
     if args.cmd == "gui":
         return cmd_gui(args.file)
+
+    # Batch mode: clean/tag accept a directory.
+    if args.cmd in ("clean", "tag") and os.path.isdir(args.file):
+        tags = {k: getattr(args, k) for k in TAG_FIELDS} if args.cmd == "tag" else {}
+        return cmd_batch(args.file, args.cmd, tags, args.recursive)
 
     if not os.path.isfile(args.file):
         print(f"error: no such file: {args.file}", file=sys.stderr)
@@ -1025,7 +1460,19 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "tag":
         tags = {k: getattr(args, k) for k in TAG_FIELDS}
         return cmd_tag(args.file, tags, args.out)
-    return cmd_clean(args.file, args.out)
+    if args.cmd == "clean":
+        return cmd_clean(args.file, args.out)
+    if args.cmd == "convert":
+        return cmd_edit("convert", args.file, args.out, to=args.to)
+    if args.cmd == "trim":
+        return cmd_edit("trim", args.file, args.out, start=args.start, end=args.end)
+    if args.cmd == "normalize":
+        return cmd_edit("normalize", args.file, args.out)
+    if args.cmd == "cover":
+        return cmd_edit("cover", args.file, args.out, image=args.image)
+    if args.cmd == "extract-cover":
+        return cmd_edit("extract-cover", args.file, args.out)
+    return 2
 
 
 if __name__ == "__main__":

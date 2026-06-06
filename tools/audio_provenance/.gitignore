@@ -7,5 +7,6 @@ dist/
 # Large generated installer (delivered as a release/download, not via git).
 # Reproduce with build_exe_wine.sh (Linux+Wine) or build_exe.bat + makensis (Windows).
 msi/AISoundStripper-Setup.exe
-# Bundled third-party binary, fetched by build_exe_wine.sh (not committed).
+# Bundled third-party binaries, fetched by build_exe_wine.sh (not committed).
 msi/vendor/c2patool.exe
+msi/vendor/ffmpeg.exe

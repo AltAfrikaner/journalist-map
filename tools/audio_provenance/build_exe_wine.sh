@@ -45,23 +45,31 @@ echo "[3/5] Installing PyInstaller into the Windows Python ..."
 wine "$WINPY" -m ensurepip --upgrade >/dev/null 2>&1 || true
 wine "$WINPY" -m pip install --no-warn-script-location --quiet pyinstaller
 
-echo "[3b/5] Fetching c2patool.exe to bundle (real C2PA verification) ..."
+echo "[3b/5] Fetching helper binaries to ship beside the app ..."
+mkdir -p msi/vendor
+# c2patool: offline C2PA verification
 C2PATOOL_VER="${C2PATOOL_VER:-v0.9.12}"
 if [ ! -f msi/vendor/c2patool.exe ]; then
-    mkdir -p msi/vendor
     curl -fsSL -o /tmp/c2patool.zip \
         "https://github.com/contentauth/c2patool/releases/download/${C2PATOOL_VER}/c2patool-${C2PATOOL_VER}-x86_64-pc-windows-msvc.zip"
     ( cd /tmp && rm -rf c2pt && mkdir c2pt && cd c2pt && unzip -oq /tmp/c2patool.zip )
     cp "$(find /tmp/c2pt -iname c2patool.exe | head -1)" msi/vendor/c2patool.exe
 fi
+# ffmpeg: universal format support + audio editing (any sound file)
+if [ ! -f msi/vendor/ffmpeg.exe ]; then
+    FF_TAG="$(curl -fsSL https://github.com/GyanD/codexffmpeg/releases 2>/dev/null \
+              | grep -oE 'releases/tag/[^"]+' | head -1 | sed 's#releases/tag/##')"
+    curl -fsSL -o /tmp/ffmpeg.zip \
+        "https://github.com/GyanD/codexffmpeg/releases/download/${FF_TAG}/ffmpeg-${FF_TAG}-essentials_build.zip"
+    ( cd /tmp && rm -rf ffm && mkdir ffm && cd ffm && unzip -oq /tmp/ffmpeg.zip )
+    cp "$(find /tmp/ffm -iname ffmpeg.exe | head -1)" msi/vendor/ffmpeg.exe
+fi
 
-echo "[4/5] Building Windows exe (absolute paths so --icon resolves) ..."
+echo "[4/5] Building Windows exe (plain onefile; helpers ship beside it) ..."
 ICON_WIN="$(wine winepath -w "$PWD/msi/aisoundstripper.ico" 2>/dev/null | tr -d '\r')"
 SCRIPT_WIN="$(wine winepath -w "$PWD/provenance.py" 2>/dev/null | tr -d '\r')"
-C2PA_WIN="$(wine winepath -w "$PWD/msi/vendor/c2patool.exe" 2>/dev/null | tr -d '\r')"
 wine "$WINPY" -m PyInstaller --onefile --windowed \
     --icon "$ICON_WIN" --name AISoundStripper \
-    --add-binary "${C2PA_WIN};." \
     --distpath msi/dist --workpath /tmp/wpyi-build --specpath /tmp/wpyi-spec \
     "$SCRIPT_WIN"
 file msi/dist/AISoundStripper.exe

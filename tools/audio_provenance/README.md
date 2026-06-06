@@ -18,27 +18,28 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 | You want… | Do this | Result |
 |-----------|---------|--------|
-| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk + c2patool, so the target PC needs **nothing** preinstalled. |
+| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk + ffmpeg + c2patool, so the target PC needs **nothing** preinstalled. |
 | **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. Needs Python 3 on the PC. |
 | **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. Needs Python 3. |
 
-After installing, double-click the **AI SoundStripper** desktop icon. The window
-gives you four actions on any file:
+After installing, double-click the **AI SoundStripper** desktop icon:
 
 - **Inspect** — shows the readable tags (artist/title/etc.) *and* which of the
-  three provenance layers are present.
+  three provenance layers are present (works on any format).
 - **Strip junk + save** — removes Layer-1 container metadata losslessly.
 - **Imprint tags + save** — writes honest provenance into a saved copy: Artist,
   Title, Album, Year, Genre, Comment, and a **Creation type** field
   (AI-generated / AI-assisted / Human-made / …). Audio is copied verbatim.
-- **Detectors…** — opens the Layer-2/3 verifier portals, and (if `c2patool` is
-  installed) verifies the C2PA manifest for real.
+- **Detectors…** — verifies the C2PA manifest in-app with the bundled
+  `c2patool` (offline, no website needed).
+- **Convert… / Normalize / Set cover… / Batch folder…** — any-format audio
+  editing and whole-folder processing, powered by the bundled `ffmpeg`.
 
 ### The `Setup.exe` installer
 
 `AISoundStripper-Setup.exe` is a single-file Windows installer (NSIS) that wraps
 a fully self-contained `AISoundStripper.exe` — the Python interpreter and Tcl/Tk
-are bundled inside (along with `c2patool` for offline C2PA verification), so the
+are bundled inside (along with `ffmpeg` for any-format support/editing and `c2patool` for C2PA verification), so the
 target PC needs **nothing** preinstalled. It installs
 to `Program Files`, drops branded Desktop + Start Menu shortcuts, registers an
 Add/Remove Programs entry with the icon, and ships an uninstaller.
@@ -71,6 +72,15 @@ python3 provenance.py clean   in.wav -o cleaned.wav
 python3 provenance.py tag mytrack.mp3 --artist "DuneSurfer" --title "Dans Ritme" \
         --year 2026 --genre Electronic \
         --creation-type "AI-assisted (human-edited)"   # -> mytrack.tagged.mp3
+
+# Any format + audio editing (needs ffmpeg; bundled in the installer):
+python3 provenance.py inspect track.m4a            # works on m4a/ogg/opus/aiff/wma/...
+python3 provenance.py tag     track.ogg --artist X # universal tagging (stream copy)
+python3 provenance.py convert track.wav --to mp3   # re-encode to another format
+python3 provenance.py trim    track.mp3 --start 0:30 --end 1:45   # lossless cut
+python3 provenance.py normalize track.flac         # loudness to -14 LUFS
+python3 provenance.py cover   track.mp3 --image art.jpg          # embed cover art
+python3 provenance.py clean   ./album_folder -r    # batch: strip a whole folder
 ```
 
 ### Imprinting honest provenance (the constructive half)
@@ -87,6 +97,25 @@ Explorer, players, and DAWs all read them:
 
 The audio stream is copied byte-for-byte — tagging never re-encodes. Re-tagging
 replaces values rather than stacking duplicates.
+
+### Any sound file + audio editing (ffmpeg engine)
+
+MP3/WAV/FLAC use the pure-Python, zero-dependency, guaranteed-lossless paths
+above. **Every other format** (M4A, MP4, AAC, OGG, Opus, AIFF, WMA, …) is
+handled by **bundled `ffmpeg`** — the installer ships it, so it just works:
+
+- **Inspect / tag / strip** any format. Metadata ops use ffmpeg `-c copy`
+  (stream copy = lossless, no re-encode). `creation_type` persists natively on
+  OGG/Opus; on MP4-family containers (which only allow a fixed atom set) it is
+  folded into the comment so it is never lost.
+- **Convert** between formats, **trim** (lossless stream copy), **normalize**
+  loudness to −14 LUFS, and **embed/extract cover art** — in the GUI's second
+  toolbar (*Convert… / Normalize / Set cover… / Batch folder…*) or via the CLI
+  subcommands above. Convert and normalize re-encode by nature (stated in the
+  output); trim and cover are lossless.
+- **Batch / folder mode**: point `clean`/`tag` (or the GUI *Batch folder…*
+  button) at a directory to process every supported file at once. The GUI also
+  remembers your last tag values as a preset (`~/.aisoundstripper_tags.json`).
 
 ### Layer-2 / Layer-3 detection
 
@@ -116,8 +145,10 @@ Run the tests:
 python3 test_provenance.py
 ```
 
-Supported for **strip**: `.mp3` (ID3v2/ID3v1), `.wav` (RIFF chunks),
-`.flac` (metadata blocks). Inspect also recognises `.m4a/.mp4/.aac/.ogg`.
+Supported **natively** (lossless, no dependency): `.mp3` (ID3v2/ID3v1),
+`.wav` (RIFF chunks), `.flac` (metadata blocks). With ffmpeg (bundled in the
+installer): **any** audio format — `.m4a/.mp4/.aac/.ogg/.opus/.aiff/.wma/…` —
+for inspect, tag, strip, convert, trim, normalize, and cover art.
 
 ## The three layers (read this before trusting any "AI remover")
 

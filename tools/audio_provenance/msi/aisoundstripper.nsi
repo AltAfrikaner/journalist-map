@@ -49,6 +49,11 @@ Section "Install"
   SetOutPath "$INSTDIR"
   File "dist\${APPEXE}"
   File "..\README.md"
+  ; Helper binaries installed beside the app (the app locates them there):
+  ;  - ffmpeg.exe : universal format support + audio editing
+  ;  - c2patool.exe : offline C2PA verification
+  File "vendor\ffmpeg.exe"
+  File "vendor\c2patool.exe"
 
   ; shortcuts (icon pulled from the exe's own embedded icon)
   CreateDirectory "$SMPROGRAMS\${APPNAME}"
@@ -70,6 +75,8 @@ SectionEnd
 
 Section "Uninstall"
   Delete "$INSTDIR\${APPEXE}"
+  Delete "$INSTDIR\ffmpeg.exe"
+  Delete "$INSTDIR\c2patool.exe"
   Delete "$INSTDIR\README.md"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir  "$INSTDIR"
