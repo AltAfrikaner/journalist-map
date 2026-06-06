@@ -50,6 +50,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import struct
 import subprocess
@@ -80,18 +81,46 @@ def _scan_c2pa(data: bytes) -> bool:
     return any(sig in low for sig in C2PA_SIGNATURES)
 
 
+# Tokens that mark genuinely useful strings inside a C2PA/JUMBF manifest.
+_C2PA_HINTS = (
+    "c2pa.", "claim", "generator", "softwareagent", "urn:uuid", "contentauth",
+    "signer", "issuer", "sha256", "ps256", "es256", "adobe", "openai", "sora",
+    "firefly", "stability", "midjourney", "leonardo", "suno", "udio", "elevenlabs",
+)
+
+
+def c2pa_local(data: bytes):
+    """Offline C2PA check. Returns (present, details).
+
+    No external tool needed: if a manifest is present we pull readable strings
+    from the JUMBF region (claim generator, signer, action labels) so the user
+    sees *what* signed it, not just yes/no.
+    """
+    low = data.lower()
+    hits = [h for h in (low.find(s) for s in C2PA_SIGNATURES) if h != -1]
+    if not hits:
+        return False, []
+    idx = min(hits)
+    region = data[max(0, idx - 64): idx + 8192]
+    details, seen = [], set()
+    for m in re.findall(rb"[\x20-\x7e]{5,}", region):
+        t = m.decode("ascii", "replace").strip()
+        tl = t.lower()
+        if any(k in tl for k in _C2PA_HINTS) and t not in seen and len(t) <= 80:
+            seen.add(t)
+            details.append(t)
+    return True, details[:8]
+
+
 # External detectors for the layers this script cannot read on its own.
 # Layer 2 (C2PA) CAN be verified locally if `c2patool` is installed.
 # Layer 3 (SynthID / acoustic) has no reliable offline detector; we link the
 # vendor portals rather than pretend to detect it.
-DETECTOR_LINKS = [
-    ("Content Credentials — verify a C2PA manifest (Layer 2)",
-     "https://contentcredentials.org/verify"),
-    ("Google SynthID — watermark info / detector (Layer 3)",
-     "https://deepmind.google/science/synthid/"),
-    ("Adobe — Content Authenticity verify (Layer 2)",
-     "https://verify.contentauthenticity.org/"),
-]
+# Only ONE genuinely-working public tool: the Content Credentials verifier
+# (upload a file, it reads any C2PA manifest). The SynthID link is INFO only —
+# there is no public self-serve audio detector — so it is labelled as such.
+DETECTOR_VERIFY_URL = "https://contentcredentials.org/verify"
+DETECTOR_SYNTHID_INFO = "https://deepmind.google/science/synthid/"
 
 
 def detect_c2pa_external(path: str):
@@ -595,14 +624,17 @@ def _report(path: str, info: dict) -> None:
     print("Layer 1  container metadata (removable):")
     for line in info["layers"]["1_container"]:
         print(f"    - {line}")
-    c2pa = info["layers"]["2_c2pa"]
-    ext_found, ext_detail = detect_c2pa_external(path)
     print("Layer 2  C2PA Content Credentials:")
+    present, details = c2pa_local(_read(path))
+    if present:
+        print("    - signed manifest present (local scan)")
+        for d in details:
+            print(f"        · {d}")
+    else:
+        print("    - none detected (local scan)")
+    _, ext_detail = detect_c2pa_external(path)
     if ext_detail:
         print(f"    - {ext_detail}")
-    else:
-        print(f"    - {'DETECTED (signed provenance present)' if c2pa else 'none detected'}"
-              "  [byte-scan; install c2patool to verify]")
     print("Layer 3  signal watermark / model fingerprint:")
     print("    - not inspectable here; lives in the waveform, not the file "
           "structure.")
@@ -775,13 +807,16 @@ def cmd_gui(initial: str | None = None) -> int:
         write("Layer 1  container metadata (removable):")
         for line in info["layers"]["1_container"]:
             write(f"    - {line}")
-        ext_found, ext_detail = detect_c2pa_external(path)
-        if ext_detail:
-            write(f"Layer 2  C2PA: {ext_detail}")
+        present, details = c2pa_local(_read(path))
+        if present:
+            write("Layer 2  C2PA: signed manifest present (local scan)")
+            for d in details:
+                write(f"        · {d}")
         else:
-            write("Layer 2  C2PA: "
-                  + ("DETECTED" if info["layers"]["2_c2pa"] else "none detected")
-                  + "  (byte-scan; install c2patool to verify)")
+            write("Layer 2  C2PA: none detected (local scan)")
+        _, ext_detail = detect_c2pa_external(path)
+        if ext_detail:
+            write(f"         {ext_detail}")
         write("Layer 3  signal watermark / model fingerprint: lives in the")
         write("    waveform, not the file. Metadata changes do NOT affect it.")
         write("")
@@ -852,31 +887,57 @@ def cmd_gui(initial: str | None = None) -> int:
         show_report("tagged (verified)", _INSPECTORS[ext](_read(out_path)), out_path)
 
     def do_detectors():
-        try:
-            import webbrowser
-        except Exception:  # noqa: BLE001
-            webbrowser = None
+        import webbrowser
         win = tk.Toplevel(root)
-        win.title("Layer 2 / 3 detectors")
-        win.geometry("560x260")
-        tk.Label(win, text="This tool reads tags (Layer 1) and can verify C2PA "
-                 "(Layer 2) if c2patool\nis installed. No offline tool reliably "
-                 "detects SynthID / acoustic\nfingerprints (Layer 3) — use the "
-                 "vendor portals below.",
-                 justify="left", fg="#444").pack(padx=12, pady=(12, 8), anchor="w")
-        for label, url in DETECTOR_LINKS:
-            def _open(u=url):
-                if webbrowser:
-                    webbrowser.open(u)
-            tk.Button(win, text=label, anchor="w", width=58,
-                      command=_open).pack(padx=12, pady=3, anchor="w")
-        has = shutil.which("c2patool")
-        tk.Label(win, text=("c2patool detected — Layer 2 is verified above."
-                            if has else
-                            "c2patool not found — Layer 2 shows a byte-scan guess. "
-                            "Install it for real verification."),
-                 fg=("#0a4" if has else "#a40"), wraplength=520,
-                 justify="left").pack(padx=12, pady=(10, 8), anchor="w")
+        win.title("Layer 2 / 3 — verify provenance")
+        win.geometry("600x460")
+
+        # --- Layer 2: scan THIS file locally, right now ---------------------
+        tk.Label(win, text="Layer 2 — C2PA Content Credentials",
+                 font=("Segoe UI", 11, "bold")).pack(anchor="w", padx=12, pady=(12, 2))
+        box = scrolledtext.ScrolledText(win, height=8, wrap="word",
+                                        font=("Consolas", 9))
+        box.pack(fill="x", padx=12)
+        p = state["path"]
+        if p and os.path.isfile(p):
+            present, details = c2pa_local(_read(p))
+            if present:
+                box.insert("end", f"Signed C2PA manifest FOUND in "
+                                  f"{os.path.basename(p)}:\n")
+                for d in details:
+                    box.insert("end", f"  - {d}\n")
+                if not details:
+                    box.insert("end", "  (present, but no readable generator strings)\n")
+            else:
+                box.insert("end", f"No C2PA manifest in {os.path.basename(p)} "
+                                  "(local scan).\n")
+            if shutil.which("c2patool"):
+                _, detail = detect_c2pa_external(p)
+                box.insert("end", f"\n{detail}\n")
+            else:
+                box.insert("end", "\nThis is a local string scan. For cryptographic "
+                                  "verification, install c2patool\n(`cargo install "
+                                  "c2patool`) or use the online verifier below.\n")
+        else:
+            box.insert("end", "No file loaded — click 'Upload…' first, then reopen "
+                              "this window.\n")
+        box.configure(state="disabled")
+        tk.Button(win, text="Open Content Credentials verifier  (upload a file)",
+                  command=lambda: webbrowser.open(DETECTOR_VERIFY_URL),
+                  width=52).pack(padx=12, pady=(8, 4))
+
+        # --- Layer 3: be honest, no working detector exists ----------------
+        tk.Label(win, text="Layer 3 — SynthID / acoustic fingerprint",
+                 font=("Segoe UI", 11, "bold")).pack(anchor="w", padx=12, pady=(12, 2))
+        tk.Label(win, text="No public, self-serve detector exists for AI-audio "
+                 "watermarks or model\nfingerprints. They live in the waveform, not "
+                 "the file, so nothing here — or in\nany metadata tool — can read or "
+                 "remove them. The link below explains how\nSynthID works; it is "
+                 "information, NOT a working detector.",
+                 justify="left", fg="#444").pack(anchor="w", padx=12)
+        tk.Button(win, text="How SynthID works (info only)",
+                  command=lambda: webbrowser.open(DETECTOR_SYNTHID_INFO),
+                  width=36).pack(anchor="w", padx=12, pady=(6, 12))
 
     bar = tk.Frame(root)
     bar.pack(pady=(0, 6))

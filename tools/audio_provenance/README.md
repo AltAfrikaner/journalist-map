@@ -89,11 +89,19 @@ replaces values rather than stacking duplicates.
 
 ### Layer-2 / Layer-3 detection
 
-`inspect` reports C2PA by byte-scan, and **verifies it for real if `c2patool`
-is on your PATH** (`cargo install c2patool` or grab a release binary). There is
-no reliable *offline* detector for Layer 3 (SynthID / acoustic fingerprint) —
-the GUI's **Detectors…** button links the vendor portals
-(`contentcredentials.org/verify`, Google SynthID) instead of pretending to.
+- **Layer 2 (C2PA)** — `inspect` scans for a manifest **offline, with no
+  dependency**, and when one is present it surfaces the readable manifest
+  strings (claim generator, signer, action labels), so you see *what* signed
+  the file, not just yes/no. If `c2patool` is on your PATH
+  (`cargo install c2patool`) it additionally runs a real cryptographic
+  verification. The GUI's **Detectors…** window shows the current file's
+  result and a button to the one public verifier that actually works,
+  `contentcredentials.org/verify` (upload a file).
+- **Layer 3 (SynthID / acoustic fingerprint)** — there is **no public,
+  self-serve detector**, and this tool does not pretend to have one. The
+  Detectors window says so plainly and links Google's SynthID page as
+  *information only*. These marks live in the waveform; no metadata tool can
+  read or remove them.
 
 Run the tests:
 
