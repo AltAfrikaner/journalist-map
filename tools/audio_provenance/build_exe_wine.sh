@@ -56,6 +56,16 @@ file msi/dist/AISoundStripper.exe
 command -v wrestool >/dev/null && \
     echo "icon resources embedded: $(wrestool -l msi/dist/AISoundStripper.exe | grep -c 'type=icon')"
 
-echo "[5/5] Packaging self-contained MSI with wixl ..."
-( cd msi && wixl -o ../AISoundStripper-Standalone.msi aisoundstripper-standalone.wxs )
-echo "Built: $PWD/AISoundStripper-Standalone.msi (no Python needed on target)"
+echo "[5/5] Packaging installers (no Python needed on target) ..."
+# Preferred: a single Setup.exe installer (NSIS).  Requires: apt-get install nsis
+if command -v makensis >/dev/null; then
+    ( cd msi && makensis aisoundstripper.nsi >/dev/null )
+    echo "Built: $PWD/msi/AISoundStripper-Setup.exe"
+else
+    echo "  (skipped Setup.exe: 'makensis' not found - apt-get install nsis)"
+fi
+# Optional: also produce the MSI variant.  Requires: apt-get install wixl
+if command -v wixl >/dev/null; then
+    ( cd msi && wixl -o ../AISoundStripper-Standalone.msi aisoundstripper-standalone.wxs )
+    echo "Built: $PWD/AISoundStripper-Standalone.msi"
+fi

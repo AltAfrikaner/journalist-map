@@ -4,6 +4,7 @@ build/
 dist/
 *.spec
 *.clean.*
-# Large generated artifact (delivered as a release/download, not via git).
+# Large generated artifacts (delivered as a release/download, not via git).
 # Reproduce with build_exe_wine.sh (Linux+Wine) or build_standalone_msi.bat (Windows).
 AISoundStripper-Standalone.msi
+msi/AISoundStripper-Setup.exe
