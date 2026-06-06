@@ -278,22 +278,29 @@ def cmd_inspect(path: str) -> int:
     return 0
 
 
-def cmd_clean(path: str, out: str | None) -> int:
+class CleanResult:
+    """Outcome of a clean operation, usable by both CLI and GUI."""
+    def __init__(self, path, out, before, after, n_in, n_out):
+        self.path = path
+        self.out = out
+        self.before = before
+        self.after = after
+        self.n_in = n_in
+        self.n_out = n_out
+        self.removed = n_in - n_out
+
+
+def process_clean(path: str, out: str | None) -> CleanResult:
+    """Strip Layer-1 metadata; write output; verify. Raises ValueError on bad input."""
     ext = os.path.splitext(path)[1].lower()
     cleaner = _CLEANERS.get(ext)
     if not cleaner:
-        print(f"error: layer-1 stripping not implemented for '{ext}'. "
-              f"Supported: {', '.join(sorted(SUPPORTED_STRIP))}", file=sys.stderr)
-        return 2
+        raise ValueError(
+            f"Layer-1 stripping not supported for '{ext}'. "
+            f"Supported: {', '.join(sorted(SUPPORTED_STRIP))}")
 
     data = _read(path)
     before = _INSPECTORS[ext](data)
-    if before["layers"]["2_c2pa"]:
-        print("NOTE: a C2PA signed manifest was detected. This tool removes "
-              "Layer-1\n      container metadata only; it does not strip "
-              "signed provenance.\n      See EU AI Act Art. 50 before "
-              "distributing AI content without it.")
-
     cleaned = cleaner(data)
 
     if out is None:
@@ -303,26 +310,161 @@ def cmd_clean(path: str, out: str | None) -> int:
         fh.write(cleaned)
 
     after = _INSPECTORS[ext](_read(out))
-    print(f"\nWrote {out}  ({len(data)} -> {len(cleaned)} bytes; "
-          f"{len(data) - len(cleaned)} bytes of metadata removed)")
+    return CleanResult(path, out, before, after, len(data), len(cleaned))
+
+
+def cmd_clean(path: str, out: str | None) -> int:
+    ext = os.path.splitext(path)[1].lower()
+    if ext not in _CLEANERS:
+        print(f"error: layer-1 stripping not implemented for '{ext}'. "
+              f"Supported: {', '.join(sorted(SUPPORTED_STRIP))}", file=sys.stderr)
+        return 2
+
+    res = process_clean(path, out)
+    if res.before["layers"]["2_c2pa"]:
+        print("NOTE: a C2PA signed manifest was detected. This tool removes "
+              "Layer-1\n      container metadata only; it does not strip "
+              "signed provenance.\n      See EU AI Act Art. 50 before "
+              "distributing AI content without it.")
+
+    print(f"\nWrote {res.out}  ({res.n_in} -> {res.n_out} bytes; "
+          f"{res.removed} bytes of metadata removed)")
     print("Verification of output:")
-    _report(out, after)
+    _report(res.out, res.after)
     print("\nReminder: the audio stream was copied verbatim (no re-encode). "
           "That means\nLayer-3 acoustic fingerprints are unchanged by design — "
           "this is a metadata\ncleaner, not a watermark remover.")
     return 0
 
 
+def cmd_gui(initial: str | None = None) -> int:
+    """Minimal click-to-run window: choose a file, inspect, clean, save."""
+    try:
+        import tkinter as tk
+        from tkinter import filedialog, scrolledtext
+    except Exception as exc:  # noqa: BLE001
+        print(f"error: GUI needs tkinter, which isn't available ({exc}).\n"
+              "Use the CLI instead:  python provenance.py clean FILE", file=sys.stderr)
+        return 2
+
+    state = {"path": initial}
+
+    root = tk.Tk()
+    root.title("AI SoundStripper")
+    root.geometry("720x560")
+
+    header = tk.Label(root, text="AI SoundStripper",
+                      font=("Segoe UI", 16, "bold"))
+    header.pack(pady=(12, 0))
+    tk.Label(root,
+             text="Inspects AI-provenance layers and strips Layer-1 container "
+                  "metadata.\nMetadata cleaner — NOT a watermark remover "
+                  "(see notes below).",
+             fg="#555", justify="center").pack()
+
+    path_var = tk.StringVar(value=initial or "No file selected")
+    tk.Label(root, textvariable=path_var, fg="#0a4",
+             wraplength=680).pack(pady=(8, 4))
+
+    log = scrolledtext.ScrolledText(root, height=20, wrap="word",
+                                    font=("Consolas", 9))
+    log.pack(fill="both", expand=True, padx=12, pady=6)
+
+    def write(msg):
+        log.insert("end", msg + "\n")
+        log.see("end")
+        root.update_idletasks()
+
+    def show_report(title, info):
+        write(f"=== {title} : {info['format']} ===")
+        write("Layer 1  container metadata (removable):")
+        for line in info["layers"]["1_container"]:
+            write(f"    - {line}")
+        write("Layer 2  C2PA Content Credentials: "
+              + ("DETECTED" if info["layers"]["2_c2pa"] else "none detected"))
+        write("Layer 3  signal watermark / model fingerprint: lives in the")
+        write("    waveform, not the file. Metadata stripping does NOT remove it.")
+        write("")
+
+    def pick():
+        f = filedialog.askopenfilename(
+            title="Choose an audio file",
+            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg"),
+                       ("All files", "*.*")])
+        if f:
+            state["path"] = f
+            path_var.set(f)
+            do_inspect()
+
+    def do_inspect():
+        p = state["path"]
+        if not p or not os.path.isfile(p):
+            write("Pick a file first.\n")
+            return
+        ext = os.path.splitext(p)[1].lower()
+        ins = _INSPECTORS.get(ext)
+        log.delete("1.0", "end")
+        if ins:
+            show_report(os.path.basename(p), ins(_read(p)))
+        else:
+            write(f"Inspect-only for '{ext}'. C2PA scan: "
+                  + ("DETECTED" if _scan_c2pa(_read(p)) else "none detected") + "\n")
+
+    def do_clean():
+        p = state["path"]
+        if not p or not os.path.isfile(p):
+            write("Pick a file first.\n")
+            return
+        try:
+            res = process_clean(p, None)
+        except ValueError as exc:
+            write(f"Cannot clean: {exc}\n")
+            return
+        if res.before["layers"]["2_c2pa"]:
+            write("NOTE: signed C2PA manifest detected; this tool does not "
+                  "strip it (see EU AI Act Art. 50).")
+        write(f"Saved: {res.out}")
+        write(f"  {res.n_in} -> {res.n_out} bytes "
+              f"({res.removed} bytes of metadata removed)")
+        write("  Audio stream copied verbatim — no re-encode, same format.\n")
+        show_report("output (verified)", res.after)
+        write("Reminder: Layer-3 acoustic fingerprint is unchanged by design.\n")
+
+    bar = tk.Frame(root)
+    bar.pack(pady=(0, 12))
+    tk.Button(bar, text="1. Upload audio…", command=pick,
+              width=16).pack(side="left", padx=6)
+    tk.Button(bar, text="2. Inspect", command=do_inspect,
+              width=14).pack(side="left", padx=6)
+    tk.Button(bar, text="3. Run (strip + save)", command=do_clean,
+              width=20, bg="#1565c0", fg="white").pack(side="left", padx=6)
+
+    if initial and os.path.isfile(initial):
+        do_inspect()
+
+    root.mainloop()
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    # No arguments at all -> launch the GUI (double-click friendly).
+    if argv is None and len(sys.argv) == 1:
+        return cmd_gui(None)
+
     sub = p.add_subparsers(dest="cmd", required=True)
     pi = sub.add_parser("inspect", help="report which provenance layers are present")
     pi.add_argument("file")
     pc = sub.add_parser("clean", help="strip Layer-1 container metadata (no re-encode)")
     pc.add_argument("file")
     pc.add_argument("-o", "--out", default=None, help="output path")
+    pg = sub.add_parser("gui", help="launch the click-to-run window")
+    pg.add_argument("file", nargs="?", default=None, help="optional file to preload")
     args = p.parse_args(argv)
+
+    if args.cmd == "gui":
+        return cmd_gui(args.file)
 
     if not os.path.isfile(args.file):
         print(f"error: no such file: {args.file}", file=sys.stderr)

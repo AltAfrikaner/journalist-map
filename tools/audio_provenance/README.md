@@ -1,18 +1,44 @@
-# Audio Provenance Inspector + Metadata Cleaner
+# AI SoundStripper
 
-A small, dependency-free CLI that tells you **which provenance layers an audio
+A small, dependency-free tool that tells you **which provenance layers an audio
 file carries** and cleanly removes the one layer that is legitimately and
-losslessly removable: container metadata.
+losslessly removable: container metadata. Ships with a click-to-run window and
+a Windows installer.
 
-## Quick start
+> **Scope, stated plainly:** this is a **metadata cleaner, not a watermark
+> remover.** It strips Layer-1 container tags losslessly and reports Layers 2/3.
+> It does **not** remove signal watermarks or model fingerprints (Layer 3) —
+> those are acoustic, not removable by editing the file, and they are what
+> distributor classifiers actually screen on. See the table below.
+
+## Install on Windows (local machine)
+
+Pick whichever fits — all three keep the audio stream byte-for-byte and write
+output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
+
+| You want… | Do this | Result |
+|-----------|---------|--------|
+| **A real installer** | Double-click **`install.bat`** | Installs to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, creates Desktop + Start Menu shortcuts. Needs Python 3 (it tells you how to get it). No admin rights. |
+| **A true standalone `.exe`** (no Python on the machine) | Run **`build_exe.bat`** once on any Windows box with Python | Produces `dist\AISoundStripper.exe` — copy it anywhere and double-click. |
+| **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. |
+
+After `install.bat`, double-click the **AI SoundStripper** desktop icon: choose
+a file → **Inspect** → **Run (strip + save)**. That's the upload → run →
+download flow.
+
+> **MSI note:** a true `.msi` requires the WiX Toolset on a Windows build host
+> (`candle`/`light`), which can't be produced from this Linux repo. The
+> `.exe` from `build_exe.bat` is the equivalent self-contained installer-free
+> artifact; if you specifically need an `.msi`, say so and I'll add a WiX
+> `product.wxs` + build script you run on Windows.
+
+## Quick start (any OS, from source)
 
 ```bash
-# See what's in a file
-python3 provenance.py inspect mytrack.mp3
-
-# Strip container metadata into mytrack.clean.mp3 (same format, no re-encode)
-python3 provenance.py clean mytrack.mp3
-python3 provenance.py clean mytrack.wav -o cleaned.wav
+python3 provenance.py gui                 # click-to-run window (needs tkinter)
+python3 provenance.py inspect mytrack.mp3 # see what's in a file
+python3 provenance.py clean   mytrack.mp3 # -> mytrack.clean.mp3 (no re-encode)
+python3 provenance.py clean   in.wav -o cleaned.wav
 ```
 
 Run the tests:
