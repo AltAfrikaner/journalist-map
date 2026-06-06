@@ -18,19 +18,35 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 | You want… | Do this | Result |
 |-----------|---------|--------|
-| **A real installer** | Double-click **`install.bat`** | Installs to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, creates Desktop + Start Menu shortcuts. Needs Python 3 (it tells you how to get it). No admin rights. |
-| **A true standalone `.exe`** (no Python on the machine) | Run **`build_exe.bat`** once on any Windows box with Python | Produces `dist\AISoundStripper.exe` — copy it anywhere and double-click. |
+| **A real `.msi` installer** | Double-click **`msi/AISoundStripper.msi`** | Standard Windows Installer. Installs to `Program Files\AI SoundStripper`, creates Desktop + Start Menu shortcuts, and registers in Add/Remove Programs. Needs Python 3 on the PC (the launcher prompts with a download link if it's missing). |
+| **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. |
+| **A true standalone `.exe`** (no Python needed) | Run **`build_exe.bat`** once on any Windows box with Python | Produces `dist\AISoundStripper.exe` — copy it anywhere and double-click. |
 | **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. |
 
-After `install.bat`, double-click the **AI SoundStripper** desktop icon: choose
+After installing, double-click the **AI SoundStripper** desktop icon: choose
 a file → **Inspect** → **Run (strip + save)**. That's the upload → run →
-download flow.
+download flow. The CLI is at `Program Files\AI SoundStripper\soundstrip.cmd`.
 
-> **MSI note:** a true `.msi` requires the WiX Toolset on a Windows build host
-> (`candle`/`light`), which can't be produced from this Linux repo. The
-> `.exe` from `build_exe.bat` is the equivalent self-contained installer-free
-> artifact; if you specifically need an `.msi`, say so and I'll add a WiX
-> `product.wxs` + build script you run on Windows.
+### The `.msi`
+
+A prebuilt **`msi/AISoundStripper.msi`** is included — double-click to install.
+
+It is a genuine Windows Installer package (verified with `msiinfo`): MajorUpgrade
+handling, embedded CAB payload, Start Menu + Desktop shortcuts, Add/Remove
+Programs entry. It installs the Python engine + launchers, so the target PC
+needs **Python 3** (the launcher detects it and shows a download prompt if it
+is absent). To rebuild from source:
+
+```bash
+cd msi && ./build_msi.sh          # Linux/macOS, needs: apt-get install wixl
+# or on Windows with the WiX Toolset:  candle aisoundstripper.wxs && light aisoundstripper.wixobj
+```
+
+> The `.msi` installs the script + launcher (lightweight, but requires Python).
+> If you want a **single self-contained `.msi` that bundles Python too** (no
+> dependency on the target machine), build `AISoundStripper.exe` with
+> `build_exe.bat` first, then say so — I'll point the WiX source at the `.exe`
+> instead of `provenance.py` so the MSI is fully standalone.
 
 ## Quick start (any OS, from source)
 
