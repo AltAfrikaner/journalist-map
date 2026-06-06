@@ -123,17 +123,29 @@ DETECTOR_VERIFY_URL = "https://contentcredentials.org/verify"
 DETECTOR_SYNTHID_INFO = "https://deepmind.google/science/synthid/"
 
 
+def _c2patool_path():
+    """Locate c2patool: bundled next to the frozen exe, else on PATH."""
+    base = getattr(sys, "_MEIPASS", None)  # PyInstaller onefile extract dir
+    if base:
+        cand = os.path.join(base, "c2patool.exe")
+        if os.path.isfile(cand):
+            return cand
+    return shutil.which("c2patool") or shutil.which("c2patool.exe")
+
+
 def detect_c2pa_external(path: str):
-    """If c2patool is installed, verify the C2PA manifest for real.
+    """Verify the C2PA manifest with c2patool (bundled or on PATH).
 
     Returns (found, detail): found is True/False/None (None = inconclusive,
     tool absent), detail is a human-readable one-liner or None.
     """
-    exe = shutil.which("c2patool")
+    exe = _c2patool_path()
     if not exe:
         return None, None
+    flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)  # no console flash on Windows
     try:
-        r = subprocess.run([exe, path], capture_output=True, text=True, timeout=30)
+        r = subprocess.run([exe, path], capture_output=True, text=True,
+                           timeout=30, creationflags=flags)
     except Exception as exc:  # noqa: BLE001
         return None, f"c2patool present but failed to run ({exc})"
     blob = ((r.stdout or "") + "\n" + (r.stderr or "")).lower()
@@ -911,20 +923,27 @@ def cmd_gui(initial: str | None = None) -> int:
             else:
                 box.insert("end", f"No C2PA manifest in {os.path.basename(p)} "
                                   "(local scan).\n")
-            if shutil.which("c2patool"):
+            if _c2patool_path():
                 _, detail = detect_c2pa_external(p)
-                box.insert("end", f"\n{detail}\n")
+                box.insert("end", f"\nVerified with bundled c2patool -> {detail}\n")
             else:
-                box.insert("end", "\nThis is a local string scan. For cryptographic "
-                                  "verification, install c2patool\n(`cargo install "
-                                  "c2patool`) or use the online verifier below.\n")
+                box.insert("end", "\n(Local string scan only; bundled c2patool "
+                                  "not found.)\n")
         else:
-            box.insert("end", "No file loaded — click 'Upload…' first, then reopen "
-                              "this window.\n")
+            box.insert("end", "No file loaded - click 'Upload...' first, then "
+                              "reopen this window.\n")
         box.configure(state="disabled")
-        tk.Button(win, text="Open Content Credentials verifier  (upload a file)",
+        tk.Label(win, text="Most music files (incl. AI tracks from Suno / Udio) "
+                 "carry NO Content\nCredentials - 'none detected' here is the "
+                 "normal, correct answer.",
+                 justify="left", fg="#777").pack(anchor="w", padx=12, pady=(6, 0))
+        tk.Button(win, text="Second opinion: open the online verifier (optional)",
                   command=lambda: webbrowser.open(DETECTOR_VERIFY_URL),
-                  width=52).pack(padx=12, pady=(8, 4))
+                  width=52).pack(anchor="w", padx=12, pady=(4, 2))
+        tk.Label(win, text="Note: that website often shows 'unknown error' for "
+                 "files that simply have\nno credentials - that is the site's "
+                 "quirk, not a problem with your file.",
+                 justify="left", fg="#a40").pack(anchor="w", padx=12)
 
         # --- Layer 3: be honest, no working detector exists ----------------
         tk.Label(win, text="Layer 3 — SynthID / acoustic fingerprint",

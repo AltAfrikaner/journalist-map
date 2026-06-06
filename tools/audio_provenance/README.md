@@ -18,7 +18,7 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 | You want… | Do this | Result |
 |-----------|---------|--------|
-| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk, so the target PC needs **nothing** preinstalled. |
+| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk + c2patool, so the target PC needs **nothing** preinstalled. |
 | **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. Needs Python 3 on the PC. |
 | **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. Needs Python 3. |
 
@@ -38,7 +38,8 @@ gives you four actions on any file:
 
 `AISoundStripper-Setup.exe` is a single-file Windows installer (NSIS) that wraps
 a fully self-contained `AISoundStripper.exe` — the Python interpreter and Tcl/Tk
-are bundled inside, so the target PC needs **nothing** preinstalled. It installs
+are bundled inside (along with `c2patool` for offline C2PA verification), so the
+target PC needs **nothing** preinstalled. It installs
 to `Program Files`, drops branded Desktop + Start Menu shortcuts, registers an
 Add/Remove Programs entry with the icon, and ships an uninstaller.
 
@@ -89,19 +90,25 @@ replaces values rather than stacking duplicates.
 
 ### Layer-2 / Layer-3 detection
 
-- **Layer 2 (C2PA)** — `inspect` scans for a manifest **offline, with no
-  dependency**, and when one is present it surfaces the readable manifest
-  strings (claim generator, signer, action labels), so you see *what* signed
-  the file, not just yes/no. If `c2patool` is on your PATH
-  (`cargo install c2patool`) it additionally runs a real cryptographic
-  verification. The GUI's **Detectors…** window shows the current file's
-  result and a button to the one public verifier that actually works,
-  `contentcredentials.org/verify` (upload a file).
+- **Layer 2 (C2PA)** — verified **in-app, offline**. The Windows installer
+  **bundles `c2patool`**, so the GUI's **Detectors…** window cryptographically
+  verifies the loaded file with no upload and no website. `inspect` also does a
+  dependency-free string scan that surfaces readable manifest details (claim
+  generator, signer, action labels) so you see *what* signed the file. The
+  online verifier (`contentcredentials.org/verify`) is offered only as an
+  optional second opinion — note that **that website often returns "unknown
+  error" for files that simply have no credentials**; that is the site's quirk,
+  not a problem with your file. Most music (including AI tracks from Suno/Udio)
+  carries **no** C2PA, so "none detected" is the normal, correct result.
 - **Layer 3 (SynthID / acoustic fingerprint)** — there is **no public,
   self-serve detector**, and this tool does not pretend to have one. The
   Detectors window says so plainly and links Google's SynthID page as
   *information only*. These marks live in the waveform; no metadata tool can
   read or remove them.
+
+> Running from source (not the installer)? Put `c2patool` on your PATH
+> (`cargo install c2patool` or a release binary) to get the same in-app
+> verification; otherwise the string scan still works.
 
 Run the tests:
 
