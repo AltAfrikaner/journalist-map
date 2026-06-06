@@ -73,11 +73,43 @@ def _run(tag, raw_factory, audio, ext):
               f"audio intact, markers removed")
 
 
+def _run_tag(tag, raw_factory, audio, ext):
+    """Write provenance tags, read them back, assert round-trip + audio intact."""
+    want = {
+        "title": "Dans Ritme", "artist": "DuneSurfer",
+        "album": "Desert Sessions", "year": "2026", "genre": "Electronic",
+        "comment": "made in a DAW", "creation_type": "AI-assisted (human-edited)",
+    }
+    with tempfile.TemporaryDirectory() as d:
+        inp = os.path.join(d, f"in{ext}")
+        with open(inp, "wb") as fh:
+            fh.write(raw_factory(audio))
+
+        out, n_in, n_out, written = P.process_tag(inp, want, os.path.join(d, f"out{ext}"))
+        blob = P._read(out)
+
+        # (1) audio survives byte-for-byte
+        assert audio in blob, f"{tag}-tag: audio payload lost!"
+        # (2) every field round-trips through the real container format
+        for k, v in want.items():
+            assert written.get(k) == v, (
+                f"{tag}-tag: field {k!r} got {written.get(k)!r}, expected {v!r}")
+        # (3) re-tagging replaces (not duplicates) — write again, still one value
+        out2, _, _, written2 = P.process_tag(out, {"artist": "Someone Else"},
+                                              os.path.join(d, f"re{ext}"))
+        assert written2.get("artist") == "Someone Else", f"{tag}-tag: retag failed"
+        assert audio in P._read(out2), f"{tag}-tag: audio lost on retag"
+        print(f"PASS {tag}-tag: 7 fields round-tripped, audio intact, retag clean")
+
+
 def main():
     audio = bytes(range(256)) * 8  # 2 KiB of distinctive 'audio'
     _run("MP3", _synth_mp3, audio, ".mp3")
     _run("WAV", _synth_wav, audio, ".wav")
     _run("FLAC", _synth_flac, audio, ".flac")
+    _run_tag("MP3", _synth_mp3, audio, ".mp3")
+    _run_tag("WAV", _synth_wav, audio, ".wav")
+    _run_tag("FLAC", _synth_flac, audio, ".flac")
     print("\nALL TESTS PASSED")
 
 

@@ -22,9 +22,17 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 | **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. Needs Python 3 on the PC. |
 | **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. Needs Python 3. |
 
-After installing, double-click the **AI SoundStripper** desktop icon: choose
-a file → **Inspect** → **Run (strip + save)**. That's the upload → run →
-download flow.
+After installing, double-click the **AI SoundStripper** desktop icon. The window
+gives you four actions on any file:
+
+- **Inspect** — shows the readable tags (artist/title/etc.) *and* which of the
+  three provenance layers are present.
+- **Strip junk + save** — removes Layer-1 container metadata losslessly.
+- **Imprint tags + save** — writes honest provenance into a saved copy: Artist,
+  Title, Album, Year, Genre, Comment, and a **Creation type** field
+  (AI-generated / AI-assisted / Human-made / …). Audio is copied verbatim.
+- **Detectors…** — opens the Layer-2/3 verifier portals, and (if `c2patool` is
+  installed) verifies the C2PA manifest for real.
 
 ### The `Setup.exe` installer
 
@@ -54,10 +62,38 @@ The installer and both shortcuts use a branded icon
 
 ```bash
 python3 provenance.py gui                 # click-to-run window (needs tkinter)
-python3 provenance.py inspect mytrack.mp3 # see what's in a file
+python3 provenance.py inspect mytrack.mp3 # see tags + which layers are present
 python3 provenance.py clean   mytrack.mp3 # -> mytrack.clean.mp3 (no re-encode)
 python3 provenance.py clean   in.wav -o cleaned.wav
+
+# Imprint provenance tags (writes a copy; audio copied verbatim):
+python3 provenance.py tag mytrack.mp3 --artist "DuneSurfer" --title "Dans Ritme" \
+        --year 2026 --genre Electronic \
+        --creation-type "AI-assisted (human-edited)"   # -> mytrack.tagged.mp3
 ```
+
+### Imprinting honest provenance (the constructive half)
+
+Stripping removes junk; **tagging adds truth.** `tag` (and the GUI's *Imprint
+tags* button) writes standard fields into the right native container tag, so
+Explorer, players, and DAWs all read them:
+
+| Field | MP3 (ID3v2.3) | WAV (RIFF INFO) | FLAC (Vorbis) |
+|-------|---------------|-----------------|---------------|
+| Title / Artist / Album | TIT2 / TPE1 / TALB | INAM / IART / IPRD | TITLE / ARTIST / ALBUM |
+| Year / Genre / Comment | TYER / TCON / COMM | ICRD / IGNR / ICMT | DATE / GENRE / COMMENT |
+| **Creation type** | TXXX "Creation type" | ICRT | CREATIONTYPE |
+
+The audio stream is copied byte-for-byte — tagging never re-encodes. Re-tagging
+replaces values rather than stacking duplicates.
+
+### Layer-2 / Layer-3 detection
+
+`inspect` reports C2PA by byte-scan, and **verifies it for real if `c2patool`
+is on your PATH** (`cargo install c2patool` or grab a release binary). There is
+no reliable *offline* detector for Layer 3 (SynthID / acoustic fingerprint) —
+the GUI's **Detectors…** button links the vendor portals
+(`contentcredentials.org/verify`, Google SynthID) instead of pretending to.
 
 Run the tests:
 
