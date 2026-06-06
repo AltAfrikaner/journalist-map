@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # ===================================================================
-# Build a REAL Windows AISoundStripper.exe on Linux via Wine, then the
-# self-contained MSI. This documents/reproduces exactly how the shipped
-# AISoundStripper-Standalone.msi was produced when no Windows machine
-# was available.
+# Build a REAL Windows AISoundStripper.exe on Linux via Wine, then wrap it
+# in a single Setup.exe installer (NSIS). This documents/reproduces exactly
+# how the shipped AISoundStripper-Setup.exe was produced when no Windows
+# machine was available.
 #
 # Why this exists: PyInstaller only builds for the OS it runs on, so a
 # Windows .exe needs either Windows or a Windows Python under Wine.
 #
 # Requirements (installed on a Debian/Ubuntu box):
-#   sudo apt-get install -y wine64 wine wixl icoutils
+#   sudo apt-get install -y wine64 wine nsis icoutils
 # Network: github.com + pypi.org reachable (python.org may be blocked;
 # we fetch CPython from the python-build-standalone GitHub releases,
 # which include Tcl/Tk so the tkinter GUI works).
@@ -56,16 +56,8 @@ file msi/dist/AISoundStripper.exe
 command -v wrestool >/dev/null && \
     echo "icon resources embedded: $(wrestool -l msi/dist/AISoundStripper.exe | grep -c 'type=icon')"
 
-echo "[5/5] Packaging installers (no Python needed on target) ..."
-# Preferred: a single Setup.exe installer (NSIS).  Requires: apt-get install nsis
-if command -v makensis >/dev/null; then
-    ( cd msi && makensis aisoundstripper.nsi >/dev/null )
-    echo "Built: $PWD/msi/AISoundStripper-Setup.exe"
-else
-    echo "  (skipped Setup.exe: 'makensis' not found - apt-get install nsis)"
-fi
-# Optional: also produce the MSI variant.  Requires: apt-get install wixl
-if command -v wixl >/dev/null; then
-    ( cd msi && wixl -o ../AISoundStripper-Standalone.msi aisoundstripper-standalone.wxs )
-    echo "Built: $PWD/AISoundStripper-Standalone.msi"
-fi
+echo "[5/5] Building the Setup.exe installer (NSIS) ..."
+# Requires: apt-get install nsis
+command -v makensis >/dev/null || { echo "install nsis first (apt-get install nsis)"; exit 1; }
+( cd msi && makensis aisoundstripper.nsi >/dev/null )
+echo "Built: $PWD/msi/AISoundStripper-Setup.exe (no Python needed on target)"

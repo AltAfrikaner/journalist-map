@@ -3,7 +3,7 @@
 A small, dependency-free tool that tells you **which provenance layers an audio
 file carries** and cleanly removes the one layer that is legitimately and
 losslessly removable: container metadata. Ships with a click-to-run window and
-a Windows installer.
+a self-contained Windows `Setup.exe` installer.
 
 > **Scope, stated plainly:** this is a **metadata cleaner, not a watermark
 > remover.** It strips Layer-1 container tags losslessly and reports Layers 2/3.
@@ -13,61 +13,42 @@ a Windows installer.
 
 ## Install on Windows (local machine)
 
-Pick whichever fits — all three keep the audio stream byte-for-byte and write
+Pick whichever fits — all of them keep the audio stream byte-for-byte and write
 output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 | You want… | Do this | Result |
 |-----------|---------|--------|
-| **A real `.msi` installer** | Double-click **`msi/AISoundStripper.msi`** | Standard Windows Installer. Installs to `Program Files\AI SoundStripper`, creates Desktop + Start Menu shortcuts, and registers in Add/Remove Programs. Needs Python 3 on the PC (the launcher prompts with a download link if it's missing). |
-| **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. |
-| **A true standalone `.exe`** (no Python needed) | Run **`build_exe.bat`** once on any Windows box with Python | Produces `dist\AISoundStripper.exe` — copy it anywhere and double-click. |
-| **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. |
+| **A self-contained installer** (recommended, no Python needed) | Double-click **`AISoundStripper-Setup.exe`** | Install wizard → `Program Files\AI SoundStripper`, branded Desktop + Start Menu shortcuts, Add/Remove Programs entry, uninstaller. Bundles Python + Tcl/Tk, so the target PC needs **nothing** preinstalled. |
+| **A `.bat` installer** | Double-click **`install.bat`** | Per-user install to `%LOCALAPPDATA%\AISoundStripper`, adds a `soundstrip` command to PATH, shortcuts. No admin rights. Needs Python 3 on the PC. |
+| **No install at all** | Drag an audio file onto **`AI SoundStripper.bat`** (or double-click it for the window) | Runs in place next to `provenance.py`. Needs Python 3. |
 
 After installing, double-click the **AI SoundStripper** desktop icon: choose
 a file → **Inspect** → **Run (strip + save)**. That's the upload → run →
-download flow. The CLI is at `Program Files\AI SoundStripper\soundstrip.cmd`.
+download flow.
 
-### The `.msi`
+### The `Setup.exe` installer
 
-A prebuilt **`msi/AISoundStripper.msi`** is included — double-click to install.
+`AISoundStripper-Setup.exe` is a single-file Windows installer (NSIS) that wraps
+a fully self-contained `AISoundStripper.exe` — the Python interpreter and Tcl/Tk
+are bundled inside, so the target PC needs **nothing** preinstalled. It installs
+to `Program Files`, drops branded Desktop + Start Menu shortcuts, registers an
+Add/Remove Programs entry with the icon, and ships an uninstaller.
 
-It is a genuine Windows Installer package (verified with `msiinfo`): MajorUpgrade
-handling, embedded CAB payload, Start Menu + Desktop shortcuts, Add/Remove
-Programs entry. It installs the Python engine + launchers, so the target PC
-needs **Python 3** (the launcher detects it and shows a download prompt if it
-is absent). To rebuild from source:
+It's built in two stages — a PyInstaller one-file `.exe`, then the NSIS wrapper:
 
 ```bash
-cd msi && ./build_msi.sh          # Linux/macOS, needs: apt-get install wixl
-# or on Windows with the WiX Toolset:  candle aisoundstripper.wxs && light aisoundstripper.wixobj
+# Linux/macOS, no Windows box required (needs: wine64, nsis):
+./build_exe_wine.sh        # -> msi/AISoundStripper-Setup.exe
+```
+
+```bat
+REM  On Windows (needs Python 3 + NSIS on PATH):
+build_exe.bat              REM -> dist\AISoundStripper.exe
+cd msi && makensis aisoundstripper.nsi    REM -> msi\AISoundStripper-Setup.exe
 ```
 
 The installer and both shortcuts use a branded icon
 (`msi/aisoundstripper.ico`, regenerate with `python3 msi/make_icon.py`).
-
-### Self-contained `.msi` (bundles Python — no dependency on the target PC)
-
-If you want an MSI that needs **nothing** preinstalled, there is a second,
-fully-wired WiX source (`msi/aisoundstripper-standalone.wxs`) that packages a
-PyInstaller one-file `AISoundStripper.exe` instead of the script. It is verified
-to compile; it just needs the `.exe`, which must be built **on Windows**
-(PyInstaller can't cross-compile from Linux). Two ways:
-
-```bat
-REM  All on Windows, one step (needs Python + WiX Toolset v3 on PATH):
-build_standalone_msi.bat
-REM  -> AISoundStripper-Standalone.msi
-```
-
-```bash
-# Or split it: build the exe on Windows, then build the MSI anywhere with wixl.
-#   on Windows:  pyinstaller --onefile --windowed --icon msi/aisoundstripper.ico \
-#                            --name AISoundStripper --distpath msi/dist provenance.py
-#   then:        ./build_standalone_msi.sh     # -> AISoundStripper-Standalone.msi
-```
-
-(If you build `AISoundStripper.exe` on Windows and hand it to me, I can produce
-the standalone `.msi` here with `wixl`.)
 
 ## Quick start (any OS, from source)
 
