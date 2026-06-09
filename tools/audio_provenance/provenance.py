@@ -1211,7 +1211,7 @@ def cmd_edit(op: str, path: str, out: str | None, **kw) -> int:
 
 
 def cmd_gui(initial: str | None = None) -> int:
-    """Click-to-run window: inspect, strip, and imprint provenance tags."""
+    """Modern click-to-run window: inspect, strip, imprint, convert, snip."""
     try:
         import tkinter as tk
         from tkinter import filedialog, scrolledtext, ttk, messagebox
@@ -1221,85 +1221,98 @@ def cmd_gui(initial: str | None = None) -> int:
         return 2
 
     init_files = [initial] if initial and os.path.isfile(initial) else []
-    state = {"files": list(init_files), "path": initial,
-             "wave": {"peaks": [], "duration": 0.0, "sel": (None, None), "path": None}}
-    WAVE_W, WAVE_H = 756, 120
+    state = {"files": list(init_files)}
 
     root = tk.Tk()
     root.title("AI SoundStripper")
-    root.geometry("820x900")
+    root.geometry("860x780")
+    root.minsize(780, 660)
 
-    tk.Label(root, text="AI SoundStripper",
-             font=("Segoe UI", 16, "bold")).pack(pady=(10, 0))
-    tk.Label(root,
-             text="Inspect • strip junk metadata • imprint tags • convert / edit "
-                  "any format.\nMetadata tool — NOT a watermark remover "
-                  "(see notes below).",
-             fg="#555", justify="center").pack()
+    # ---------- modern flat theme ----------
+    BG, INK, MUTE = "#f4f5f7", "#111827", "#6b7280"
+    ACCENT, ACCENT_D, GREEN, GREEN_D = "#2563eb", "#1d4ed8", "#16a34a", "#15803d"
+    root.configure(bg=BG)
+    style = ttk.Style()
+    try:
+        style.theme_use("clam")
+    except tk.TclError:
+        pass
+    style.configure(".", font=("Segoe UI", 10), background=BG, foreground=INK)
+    style.configure("TFrame", background=BG)
+    style.configure("TLabel", background=BG, foreground=INK)
+    style.configure("Muted.TLabel", background=BG, foreground=MUTE, font=("Segoe UI", 9))
+    style.configure("Head.TLabel", background=BG, foreground=INK,
+                    font=("Segoe UI Semibold", 17))
+    style.configure("TLabelframe", background=BG)
+    style.configure("TLabelframe.Label", background=BG, foreground=INK,
+                    font=("Segoe UI Semibold", 10))
+    style.configure("TButton", background="#e5e7eb", foreground=INK, borderwidth=0,
+                    padding=(10, 7), font=("Segoe UI", 9))
+    style.map("TButton", background=[("active", "#d1d5db"), ("pressed", "#cbd5e1")])
+    style.configure("Accent.TButton", background=ACCENT, foreground="white")
+    style.map("Accent.TButton", background=[("active", ACCENT_D), ("pressed", ACCENT_D)])
+    style.configure("Green.TButton", background=GREEN, foreground="white")
+    style.map("Green.TButton", background=[("active", GREEN_D), ("pressed", GREEN_D)])
+    style.configure("TCombobox", fieldbackground="white")
+    style.configure("TEntry", fieldbackground="white")
 
-    # --- file list: add one or many -------------------------------------- #
-    files_frame = tk.LabelFrame(root, text="Files — add one or many (actions apply "
-                                "to selected rows, or all if none selected)",
-                                padx=8, pady=6)
-    files_frame.pack(fill="x", padx=12, pady=(6, 2))
-    files_list = tk.Listbox(files_frame, height=4, selectmode="extended",
-                            font=("Consolas", 9))
-    files_list.pack(side="left", fill="x", expand=True)
-    fbtns = tk.Frame(files_frame)
-    fbtns.pack(side="left", padx=(6, 0))
-    tk.Button(fbtns, text="Add…", width=9, command=lambda: pick()).pack(pady=1)
-    tk.Button(fbtns, text="Remove", width=9, command=lambda: remove_sel()).pack(pady=1)
-    tk.Button(fbtns, text="Clear", width=9, command=lambda: clear_files()).pack(pady=1)
+    # ---------- header ----------
+    head = ttk.Frame(root)
+    head.pack(fill="x", pady=(12, 2))
+    ttk.Label(head, text="AI SoundStripper", style="Head.TLabel").pack()
+    ttk.Label(head, text="Inspect  •  strip junk metadata  •  imprint tags  •  "
+              "convert  •  snip — any format.    Metadata tool, NOT a watermark "
+              "remover.", style="Muted.TLabel").pack()
 
-    # --- tag form (the "imprint" feature) --------------------------------- #
-    form = tk.LabelFrame(root, text="Imprint provenance tags "
-                         "(written into a saved copy; audio untouched)",
-                         padx=10, pady=8)
-    form.pack(fill="x", padx=12, pady=(2, 4))
+    # ---------- file list ----------
+    ff = ttk.Labelframe(root, text="  Files — add one or many  ", padding=10)
+    ff.pack(fill="x", padx=16, pady=(10, 6))
+    lbf = ttk.Frame(ff)
+    lbf.pack(side="left", fill="both", expand=True)
+    files_list = tk.Listbox(lbf, height=4, selectmode="extended", activestyle="none",
+                            font=("Consolas", 9), borderwidth=1, relief="solid",
+                            highlightthickness=0, bg="white")
+    sb = ttk.Scrollbar(lbf, orient="vertical", command=files_list.yview)
+    files_list.configure(yscrollcommand=sb.set)
+    files_list.pack(side="left", fill="both", expand=True)
+    sb.pack(side="left", fill="y")
+    fb = ttk.Frame(ff)
+    fb.pack(side="left", padx=(10, 0), fill="y")
+    ttk.Button(fb, text="Add…", width=10, command=lambda: pick()).pack(pady=2)
+    ttk.Button(fb, text="Remove", width=10, command=lambda: remove_sel()).pack(pady=2)
+    ttk.Button(fb, text="Clear", width=10, command=lambda: clear_files()).pack(pady=2)
+
+    # ---------- tag form ----------
+    tf = ttk.Labelframe(root, text="  Imprint provenance tags (saved as a copy; "
+                        "audio untouched)  ", padding=10)
+    tf.pack(fill="x", padx=16, pady=6)
     field_vars: dict = {}
     for idx, key in enumerate(TAG_FIELDS):
         r, c = divmod(idx, 2)
-        tk.Label(form, text=TAG_LABELS[key], width=12, anchor="e").grid(
-            row=r, column=c * 2, sticky="e", padx=(4, 4), pady=3)
+        ttk.Label(tf, text=TAG_LABELS[key], width=12, anchor="e").grid(
+            row=r, column=c * 2, sticky="e", padx=(4, 6), pady=4)
         var = tk.StringVar()
         field_vars[key] = var
         if key == "creation_type":
-            ttk.Combobox(form, textvariable=var, values=CREATION_TYPE_CHOICES,
-                         width=26).grid(row=r, column=c * 2 + 1, sticky="w", pady=3)
+            ttk.Combobox(tf, textvariable=var, values=CREATION_TYPE_CHOICES,
+                         width=30).grid(row=r, column=c * 2 + 1, sticky="w", pady=4)
         else:
-            tk.Entry(form, textvariable=var, width=29).grid(
-                row=r, column=c * 2 + 1, sticky="w", pady=3)
+            ttk.Entry(tf, textvariable=var, width=32).grid(
+                row=r, column=c * 2 + 1, sticky="w", pady=4)
+    ttk.Button(tf, text="Clear fields", command=lambda: clear_tags()).grid(
+        row=4, column=3, sticky="e", pady=(8, 0))
 
-    # --- waveform + snip --------------------------------------------------- #
-    wave_frame = tk.LabelFrame(root, text="Snip a section — drag across the "
-                               "waveform, then Save snippet (uses the Convert "
-                               "format/quality above)", padx=8, pady=4)
-    wave_frame.pack(fill="x", padx=12, pady=(2, 4))
-    wave_canvas = tk.Canvas(wave_frame, width=WAVE_W, height=WAVE_H, bg="white",
-                            highlightthickness=1, highlightbackground="#ccc",
-                            cursor="tcross")
-    wave_canvas.pack()
-    wrow = tk.Frame(wave_frame)
-    wrow.pack(fill="x", pady=(4, 0))
-    tk.Button(wrow, text="Show waveform", width=14,
-              command=lambda: load_waveform()).pack(side="left", padx=2)
-    sel_var = tk.StringVar(value="selection: (drag across the waveform)")
-    tk.Label(wrow, textvariable=sel_var, fg="#555").pack(side="left", padx=8)
-    tk.Button(wrow, text="Save snippet", width=13, bg="#00695c", fg="white",
-              command=lambda: do_snip()).pack(side="right", padx=2)
-    wave_canvas.bind("<ButtonPress-1>", lambda e: on_wave_press(e))
-    wave_canvas.bind("<B1-Motion>", lambda e: on_wave_drag(e))
-    wave_canvas.bind("<ButtonRelease-1>", lambda e: on_wave_drag(e))
-
-    log = scrolledtext.ScrolledText(root, height=9, wrap="word",
-                                    font=("Consolas", 9))
-    log.pack(fill="both", expand=True, padx=12, pady=6)
+    # ---------- log ----------
+    log = scrolledtext.ScrolledText(root, height=8, wrap="word", font=("Consolas", 9),
+                                    borderwidth=1, relief="solid", bg="white")
+    log.pack(fill="both", expand=True, padx=16, pady=6)
 
     def write(msg):
         log.insert("end", msg + "\n")
         log.see("end")
         root.update_idletasks()
 
+    # ---------- helpers ----------
     def fill_form(tags):
         for key in TAG_FIELDS:
             field_vars[key].set(tags.get(key, ""))
@@ -1307,15 +1320,16 @@ def cmd_gui(initial: str | None = None) -> int:
     def collect_tags():
         return {key: field_vars[key].get() for key in TAG_FIELDS}
 
-    # ---- file list management ------------------------------------------ #
+    def clear_tags():
+        for key in TAG_FIELDS:
+            field_vars[key].set("")
+
     def refresh_files():
         files_list.delete(0, "end")
         for f in state["files"]:
-            files_list.insert("end", os.path.basename(f))
-        state["path"] = state["files"][0] if state["files"] else None
+            files_list.insert("end", "  " + os.path.basename(f))
 
     def sel_files():
-        """Selected rows, or all files if nothing is highlighted."""
         idxs = files_list.curselection()
         if idxs:
             return [state["files"][i] for i in idxs]
@@ -1330,9 +1344,59 @@ def cmd_gui(initial: str | None = None) -> int:
         state["files"].clear()
         refresh_files()
 
-    def _ensure_ff_for(files, native_set):
-        """Prompt to install ffmpeg if any file needs it; True if we can proceed."""
-        if any(os.path.splitext(f)[1].lower() not in native_set for f in files) \
+    def pick():
+        fs = filedialog.askopenfilenames(
+            title="Choose audio file(s) — Ctrl/Shift-click for many",
+            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg "
+                        "*.opus *.aiff *.wma"), ("All files", "*.*")])
+        if not fs:
+            return
+        for f in fs:
+            if f not in state["files"]:
+                state["files"].append(f)
+        refresh_files()
+        if len(state["files"]) == 1:
+            files_list.selection_set(0)
+            do_inspect()
+        else:
+            write(f"{len(state['files'])} files in the list. Highlight some "
+                  "(or none = all), then pick an action.\n")
+
+    def ensure_ff():
+        if have_ffmpeg():
+            return True
+        if not messagebox.askyesno(
+                "Install ffmpeg",
+                "This feature needs ffmpeg, which isn't installed yet.\n\n"
+                "Download it now? (one-time, ~100 MB, saved for next time)"):
+            return False
+        win = tk.Toplevel(root)
+        win.title("Downloading ffmpeg…")
+        win.configure(bg=BG)
+        win.geometry("440x110")
+        ttk.Label(win, text="Downloading ffmpeg…").pack(pady=(16, 6))
+        pb = ttk.Progressbar(win, length=400, maximum=100)
+        pb.pack()
+        lbl = ttk.Label(win, text="0%", style="Muted.TLabel")
+        lbl.pack(pady=4)
+        win.update()
+
+        def prog(frac):
+            pb["value"] = frac * 100
+            lbl.config(text=f"{int(frac * 100)}%")
+            win.update()
+        try:
+            download_ffmpeg(prog)
+        except Exception as exc:  # noqa: BLE001
+            win.destroy()
+            messagebox.showerror("ffmpeg download failed", str(exc))
+            return False
+        win.destroy()
+        write("ffmpeg installed — convert / snip / any-format features enabled.\n")
+        return True
+
+    def _ensure_ff_for(files, native):
+        if any(os.path.splitext(f)[1].lower() not in native for f in files) \
                 and not have_ffmpeg():
             return ensure_ff()
         return True
@@ -1349,55 +1413,32 @@ def cmd_gui(initial: str | None = None) -> int:
         if present:
             write("Layer 2  C2PA: signed manifest present (local scan)")
             for d in details:
-                write(f"        · {d}")
+                write(f"        - {d}")
         else:
             write("Layer 2  C2PA: none detected (local scan)")
         _, ext_detail = detect_c2pa_external(path)
         if ext_detail:
             write(f"         {ext_detail}")
-        write("Layer 3  signal watermark / model fingerprint: lives in the")
-        write("    waveform, not the file. Metadata changes do NOT affect it.")
-        write("")
+        write("Layer 3  signal watermark / fingerprint: lives in the waveform, not "
+              "the file. Metadata changes do NOT affect it.\n")
 
-    def pick():
-        fs = filedialog.askopenfilenames(
-            title="Choose audio file(s) — Ctrl/Shift-click for many",
-            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg "
-                        "*.opus *.aiff *.wma"), ("All files", "*.*")])
-        if not fs:
-            return
-        for f in fs:
-            if f not in state["files"]:
-                state["files"].append(f)
-        refresh_files()
-        if len(state["files"]) == 1:
-            do_inspect()
-        else:
-            write(f"{len(state['files'])} files in the list. Highlight some (or "
-                  "none = all), then pick an action.\n")
+    def primary():
+        fs = sel_files()
+        return fs[0] if fs else None
 
     def do_inspect():
-        fs = sel_files()
-        if not fs:
+        p = primary()
+        if not p:
             write("Add a file first.\n")
             return
-        p = fs[0]
         ext = os.path.splitext(p)[1].lower()
         if ext not in _INSPECTORS and not have_ffmpeg() and not ensure_ff():
             write(f"'{ext}' needs ffmpeg to read; skipped.\n")
             return
         log.delete("1.0", "end")
-        info = inspect_any(p)  # native parser, or ffmpeg for other formats
+        info = inspect_any(p)
         fill_form(info.get("tags", {}))
-        if len(fs) > 1:
-            write(f"(Inspecting the first of {len(fs)} selected; "
-                  "Strip/Imprint/Convert apply to all selected.)\n")
         show_report(os.path.basename(p), info, p)
-        if have_ffmpeg():  # auto-draw the waveform for snipping
-            try:
-                _compute_wave(p)
-            except Exception:  # noqa: BLE001
-                pass
 
     def do_clean():
         fs = sel_files()
@@ -1430,74 +1471,23 @@ def cmd_gui(initial: str | None = None) -> int:
         ok = 0
         for p in fs:
             try:
-                out_path, _ni, _no, _w = process_tag(p, tags, None)
+                out_path, _i, _n, _w = process_tag(p, tags, None)
             except Exception as exc:  # noqa: BLE001
                 write(f"  SKIP {os.path.basename(p)}: {exc}")
                 continue
             write(f"  tagged {os.path.basename(p)} -> {os.path.basename(out_path)}")
             ok += 1
-        _save_default_tags(tags)  # remember as preset
+        _save_default_tags(tags)
         write(f"Imprint done: {ok}/{len(fs)} file(s). Audio copied verbatim.\n")
-
-    # ---- audio editing (ffmpeg) ---------------------------------------- #
-    def ensure_ff():
-        """Return True if ffmpeg is available, downloading it (with consent) if not."""
-        if have_ffmpeg():
-            return True
-        if not messagebox.askyesno(
-                "Install ffmpeg",
-                "This feature needs ffmpeg, which isn't installed yet.\n\n"
-                "Download it now? (one-time, ~100 MB, saved for next time)"):
-            return False
-        win = tk.Toplevel(root)
-        win.title("Downloading ffmpeg…")
-        win.geometry("440x100")
-        lbl = tk.Label(win, text="Starting download…")
-        lbl.pack(pady=(14, 6))
-        pb = ttk.Progressbar(win, length=400, maximum=100)
-        pb.pack()
-        win.update()
-
-        def prog(frac):
-            pb["value"] = frac * 100
-            lbl.config(text=f"Downloading ffmpeg…  {int(frac * 100)}%")
-            win.update()
-        try:
-            download_ffmpeg(prog)
-        except Exception as exc:  # noqa: BLE001
-            win.destroy()
-            messagebox.showerror("ffmpeg download failed",
-                                 f"{exc}\n\nCheck your internet connection and retry.")
-            return False
-        win.destroy()
-        write("ffmpeg installed — any-format and editing features are now enabled.\n")
-        return True
 
     def _edit_files():
         fs = sel_files()
         if not fs:
-            write("Add a file first.\n")
+            messagebox.showinfo("Add files", "Add a file first.")
             return None
         if not ensure_ff():
             return None
         return fs
-
-    def do_convert():
-        fs = _edit_files()
-        if not fs:
-            return
-        fmt, qual = fmt_var.get(), qual_var.get()
-        ok = 0
-        for p in fs:
-            try:
-                out = convert_audio(p, fmt, None, qual)
-            except Exception as exc:  # noqa: BLE001
-                write(f"  SKIP {os.path.basename(p)}: {exc}")
-                continue
-            write(f"  {os.path.basename(p)} -> {os.path.basename(out)}")
-            ok += 1
-        write(f"Converted {ok}/{len(fs)} file(s) to {fmt.upper()} ({qual}). "
-              "Re-encoded — changes the audio stream.\n")
 
     def do_normalize():
         fs = _edit_files()
@@ -1518,9 +1508,9 @@ def cmd_gui(initial: str | None = None) -> int:
         fs = _edit_files()
         if not fs:
             return
-        img = filedialog.askopenfilename(title="Choose a cover image (applied to all)",
-                                         filetypes=[("Images", "*.jpg *.jpeg *.png"),
-                                                    ("All files", "*.*")])
+        img = filedialog.askopenfilename(
+            title="Choose a cover image (applied to all)",
+            filetypes=[("Images", "*.jpg *.jpeg *.png"), ("All files", "*.*")])
         if not img:
             return
         ok = 0
@@ -1532,112 +1522,19 @@ def cmd_gui(initial: str | None = None) -> int:
                 continue
             write(f"  cover -> {os.path.basename(out)}")
             ok += 1
-        write(f"Embedded cover into {ok}/{len(fs)} file(s). Audio copied verbatim.\n")
-
-    # ---- waveform + visual snip ---------------------------------------- #
-    def _wave_time(x):
-        dur = state["wave"]["duration"]
-        return max(0.0, min(1.0, x / WAVE_W)) * dur
-
-    def update_sel_label():
-        s, e = state["wave"]["sel"]
-        if s is None or e is None:
-            sel_var.set("selection: (drag across the waveform)")
-        else:
-            t1, t2 = _wave_time(min(s, e)), _wave_time(max(s, e))
-            sel_var.set(f"selection:  {t1:.2f}s  →  {t2:.2f}s   ({t2 - t1:.2f}s)")
-
-    def draw_waveform():
-        c = wave_canvas
-        c.delete("all")
-        mid = WAVE_H // 2
-        peaks = state["wave"]["peaks"]
-        if not peaks:
-            c.create_text(WAVE_W // 2, mid, fill="#999",
-                          text="Load a file, then click 'Show waveform'  (needs ffmpeg)")
-            return
-        s, e = state["wave"]["sel"]
-        if s is not None and e is not None:
-            c.create_rectangle(min(s, e), 0, max(s, e), WAVE_H, outline="",
-                               fill="#ffe0b2")
-        c.create_line(0, mid, WAVE_W, mid, fill="#e0e0e0")
-        n = len(peaks)
-        for i, (mn, mx) in enumerate(peaks):
-            x = int(i / n * WAVE_W)
-            y1 = mid - int(mx / 32768 * (mid - 2))
-            y2 = mid - int(mn / 32768 * (mid - 2))
-            c.create_line(x, y1, x, y2, fill="#1565c0")
-
-    def _compute_wave(p):
-        peaks, dur = waveform_peaks(p, WAVE_W)
-        state["wave"] = {"peaks": peaks, "duration": dur, "sel": (None, None), "path": p}
-        draw_waveform()
-        update_sel_label()
-
-    def load_waveform():
-        fs = sel_files()
-        if not fs:
-            write("Add a file first.\n")
-            return
-        if not ensure_ff():
-            return
-        try:
-            _compute_wave(fs[0])
-        except Exception as exc:  # noqa: BLE001
-            write(f"Waveform failed: {exc}\n")
-            return
-        write(f"Waveform: {os.path.basename(fs[0])} "
-              f"({state['wave']['duration']:.1f}s). Drag across it to select.\n")
-
-    def on_wave_press(ev):
-        if not state["wave"]["peaks"]:
-            return
-        x = max(0, min(WAVE_W, ev.x))
-        state["wave"]["sel"] = (x, x)
-        draw_waveform()
-        update_sel_label()
-
-    def on_wave_drag(ev):
-        if not state["wave"]["peaks"] or state["wave"]["sel"][0] is None:
-            return
-        x = max(0, min(WAVE_W, ev.x))
-        state["wave"]["sel"] = (state["wave"]["sel"][0], x)
-        draw_waveform()
-        update_sel_label()
-
-    def do_snip():
-        w = state["wave"]
-        if not w["peaks"]:
-            write("Click 'Show waveform' first.\n")
-            return
-        s, e = w["sel"]
-        if s is None or e is None or abs(e - s) < 2:
-            write("Drag across the waveform to select a section first.\n")
-            return
-        t1, t2 = _wave_time(min(s, e)), _wave_time(max(s, e))
-        fmt, qual = fmt_var.get(), qual_var.get()
-        try:
-            out = snip_audio(w["path"], t1, t2, fmt, qual)
-        except Exception as exc:  # noqa: BLE001
-            write(f"Snip failed: {exc}\n")
-            return
-        write(f"Saved snippet  [{t1:.2f}s → {t2:.2f}s]  ->  "
-              f"{os.path.basename(out)}  ({fmt} {qual})\n")
+        write(f"Embedded cover into {ok}/{len(fs)} file(s).\n")
 
     def do_batch():
         folder = filedialog.askdirectory(title="Choose a folder to process")
         if not folder:
             return
-        action = "tag" if any(v.strip() for v in collect_tags().values()) else "clean"
-        if action == "tag":
-            if not messagebox.askyesno("Batch tag", "Apply the tag-form values to "
-                                       "EVERY supported file in:\n" + folder + " ?"):
-                return
-        else:
-            if not messagebox.askyesno("Batch strip", "Strip metadata from EVERY "
-                                       "supported file in:\n" + folder +
-                                       " ?\n(Tag fields are empty, so this strips.)"):
-                return
+        tags = collect_tags()
+        action = "tag" if any(v.strip() for v in tags.values()) else "clean"
+        msg = ("Apply the tag-form values to EVERY supported file in:\n"
+               if action == "tag" else
+               "Strip metadata from EVERY supported file in:\n") + folder + " ?"
+        if not messagebox.askyesno(f"Batch {action}", msg):
+            return
         write(f"Batch {action} in {folder} ...")
         files = list(iter_audio_files(folder, recursive=False))
         ok = 0
@@ -1647,73 +1544,12 @@ def cmd_gui(initial: str | None = None) -> int:
                     r = process_clean(f, None)
                     write(f"  stripped {os.path.basename(f)} -> {os.path.basename(r.out)}")
                 else:
-                    o, _i, _n, _w = process_tag(f, collect_tags(), None)
+                    o, _i, _n, _w = process_tag(f, tags, None)
                     write(f"  tagged   {os.path.basename(f)} -> {os.path.basename(o)}")
                 ok += 1
             except Exception as exc:  # noqa: BLE001
                 write(f"  SKIP {os.path.basename(f)}: {exc}")
         write(f"Batch done: {ok}/{len(files)} files.\n")
-
-    def do_detectors():
-        import webbrowser
-        win = tk.Toplevel(root)
-        win.title("Layer 2 / 3 — verify provenance")
-        win.geometry("600x460")
-
-        # --- Layer 2: scan THIS file locally, right now ---------------------
-        tk.Label(win, text="Layer 2 — C2PA Content Credentials",
-                 font=("Segoe UI", 11, "bold")).pack(anchor="w", padx=12, pady=(12, 2))
-        box = scrolledtext.ScrolledText(win, height=8, wrap="word",
-                                        font=("Consolas", 9))
-        box.pack(fill="x", padx=12)
-        _fs = sel_files()
-        p = _fs[0] if _fs else None
-        if p and os.path.isfile(p):
-            present, details = c2pa_local(_read(p))
-            if present:
-                box.insert("end", f"Signed C2PA manifest FOUND in "
-                                  f"{os.path.basename(p)}:\n")
-                for d in details:
-                    box.insert("end", f"  - {d}\n")
-                if not details:
-                    box.insert("end", "  (present, but no readable generator strings)\n")
-            else:
-                box.insert("end", f"No C2PA manifest in {os.path.basename(p)} "
-                                  "(local scan).\n")
-            if _c2patool_path():
-                _, detail = detect_c2pa_external(p)
-                box.insert("end", f"\nVerified with bundled c2patool -> {detail}\n")
-            else:
-                box.insert("end", "\n(Local string scan only; bundled c2patool "
-                                  "not found.)\n")
-        else:
-            box.insert("end", "No file loaded - click 'Upload...' first, then "
-                              "reopen this window.\n")
-        box.configure(state="disabled")
-        tk.Label(win, text="Most music files (incl. AI tracks from Suno / Udio) "
-                 "carry NO Content\nCredentials - 'none detected' here is the "
-                 "normal, correct answer.",
-                 justify="left", fg="#777").pack(anchor="w", padx=12, pady=(6, 0))
-        tk.Button(win, text="Second opinion: open the online verifier (optional)",
-                  command=lambda: webbrowser.open(DETECTOR_VERIFY_URL),
-                  width=52).pack(anchor="w", padx=12, pady=(4, 2))
-        tk.Label(win, text="Note: that website often shows 'unknown error' for "
-                 "files that simply have\nno credentials - that is the site's "
-                 "quirk, not a problem with your file.",
-                 justify="left", fg="#a40").pack(anchor="w", padx=12)
-
-        # --- Layer 3: be honest, no working detector exists ----------------
-        tk.Label(win, text="Layer 3 — SynthID / acoustic fingerprint",
-                 font=("Segoe UI", 11, "bold")).pack(anchor="w", padx=12, pady=(12, 2))
-        tk.Label(win, text="No public, self-serve detector exists for AI-audio "
-                 "watermarks or model\nfingerprints. They live in the waveform, not "
-                 "the file, so nothing here — or in\nany metadata tool — can read or "
-                 "remove them. The link below explains how\nSynthID works; it is "
-                 "information, NOT a working detector.",
-                 justify="left", fg="#444").pack(anchor="w", padx=12)
-        tk.Button(win, text="How SynthID works (info only)",
-                  command=lambda: webbrowser.open(DETECTOR_SYNTHID_INFO),
-                  width=36).pack(anchor="w", padx=12, pady=(6, 12))
 
     def do_get_ffmpeg():
         if have_ffmpeg():
@@ -1721,49 +1557,240 @@ def cmd_gui(initial: str | None = None) -> int:
         else:
             ensure_ff()
 
-    # Row 1: inspect / strip / tag / detectors (all act on selected files)
-    bar = tk.Frame(root)
-    bar.pack(pady=(2, 2))
-    tk.Button(bar, text="Inspect", command=do_inspect, width=10).pack(side="left", padx=4)
-    tk.Button(bar, text="Strip junk + save", command=do_clean,
-              width=15, bg="#1565c0", fg="white").pack(side="left", padx=4)
-    tk.Button(bar, text="Imprint tags + save", command=do_tag,
-              width=17, bg="#2e7d32", fg="white").pack(side="left", padx=4)
-    tk.Button(bar, text="Detectors…", command=do_detectors, width=10).pack(side="left", padx=4)
+    # ---------- Convert window ----------
+    def open_convert():
+        fs = sel_files()
+        if not fs:
+            messagebox.showinfo("Convert", "Add a file first.")
+            return
+        win = tk.Toplevel(root)
+        win.title("Convert")
+        win.configure(bg=BG)
+        win.geometry("440x250")
+        win.transient(root)
+        ttk.Label(win, text=f"Convert {len(fs)} selected file(s)",
+                  style="Head.TLabel").pack(pady=(16, 6))
+        grid = ttk.Frame(win)
+        grid.pack(pady=6)
+        ttk.Label(grid, text="Format").grid(row=0, column=0, sticky="e", padx=8, pady=8)
+        fmtv = tk.StringVar(value="mp3")
+        ttk.Combobox(grid, textvariable=fmtv, values=CONVERT_TARGETS, width=12,
+                     state="readonly").grid(row=0, column=1, sticky="w")
+        ttk.Label(grid, text="Quality").grid(row=1, column=0, sticky="e", padx=8, pady=8)
+        qv = tk.StringVar(value="High")
+        ttk.Combobox(grid, textvariable=qv, values=QUALITY_TIERS, width=12,
+                     state="readonly").grid(row=1, column=1, sticky="w")
+        ttk.Label(win, text="Re-encodes the audio (a quality step). For lossless "
+                  "output pick wav or flac.", style="Muted.TLabel", wraplength=390,
+                  justify="center").pack(pady=(2, 6))
 
-    # Row 2: the converter — format + quality dropdowns, then Convert
-    conv = tk.Frame(root)
-    conv.pack(pady=(0, 2))
-    tk.Label(conv, text="Convert to:").pack(side="left", padx=(4, 3))
-    fmt_var = tk.StringVar(value="mp3")
-    ttk.Combobox(conv, textvariable=fmt_var, values=CONVERT_TARGETS, width=7,
-                 state="readonly").pack(side="left", padx=2)
-    tk.Label(conv, text="Quality:").pack(side="left", padx=(10, 3))
-    qual_var = tk.StringVar(value="High")
-    ttk.Combobox(conv, textvariable=qual_var, values=QUALITY_TIERS, width=11,
-                 state="readonly").pack(side="left", padx=2)
-    tk.Button(conv, text="Convert selected", command=do_convert,
-              width=16, bg="#6a1b9a", fg="white").pack(side="left", padx=10)
+        def run():
+            if not ensure_ff():
+                return
+            ok = 0
+            for p in fs:
+                try:
+                    o = convert_audio(p, fmtv.get(), None, qv.get())
+                except Exception as exc:  # noqa: BLE001
+                    write(f"  SKIP {os.path.basename(p)}: {exc}")
+                    continue
+                write(f"  {os.path.basename(p)} -> {os.path.basename(o)}")
+                ok += 1
+            write(f"Converted {ok}/{len(fs)} to {fmtv.get().upper()} ({qv.get()}).\n")
+            messagebox.showinfo("Convert", f"Converted {ok}/{len(fs)} file(s).")
+            win.destroy()
+        btns = ttk.Frame(win)
+        btns.pack(fill="x", padx=18, pady=(6, 14))
+        ttk.Button(btns, text="Convert", style="Accent.TButton",
+                   command=run).pack(side="right")
+        ttk.Button(btns, text="Cancel", command=win.destroy).pack(side="right", padx=8)
 
-    # Row 3: other ffmpeg edits + batch folder
-    bar2 = tk.Frame(root)
-    bar2.pack(pady=(0, 8))
-    tk.Button(bar2, text="Normalize", command=do_normalize, width=10).pack(side="left", padx=4)
-    tk.Button(bar2, text="Set cover…", command=do_cover, width=10).pack(side="left", padx=4)
-    tk.Button(bar2, text="Batch folder…", command=do_batch, width=13).pack(side="left", padx=4)
-    tk.Button(bar2, text="Get ffmpeg", command=do_get_ffmpeg, width=10).pack(side="left", padx=4)
+    # ---------- Waveform / snip window ----------
+    def open_waveform():
+        fs = sel_files()
+        if not fs:
+            messagebox.showinfo("Waveform", "Add a file first.")
+            return
+        if not ensure_ff():
+            return
+        p = fs[0]
+        W, H = 900, 220
+        try:
+            peaks, dur = waveform_peaks(p, W)
+        except Exception as exc:  # noqa: BLE001
+            messagebox.showerror("Waveform", str(exc))
+            return
+        win = tk.Toplevel(root)
+        win.title(f"Waveform — {os.path.basename(p)}")
+        win.configure(bg=BG)
+        win.geometry(f"{W + 40}x{H + 150}")
+        win.transient(root)
+        ttk.Label(win, text="Drag across the waveform to select a section, then "
+                  "export it.", style="Muted.TLabel").pack(pady=(12, 4))
+        canvas = tk.Canvas(win, width=W, height=H, bg="white", highlightthickness=1,
+                           highlightbackground="#cbd5e1", cursor="tcross")
+        canvas.pack(padx=20)
+        sel = {"a": None, "b": None}
+        sel_lbl = ttk.Label(win, text="selection: (drag across the waveform)",
+                            style="Muted.TLabel")
+        sel_lbl.pack(pady=6)
 
-    # Prefill the form from a saved preset (overwritten by a file's own tags).
+        def t_of(x):
+            return max(0.0, min(1.0, x / W)) * dur
+
+        def redraw():
+            canvas.delete("all")
+            mid = H // 2
+            if sel["a"] is not None and sel["b"] is not None:
+                canvas.create_rectangle(min(sel["a"], sel["b"]), 0,
+                                        max(sel["a"], sel["b"]), H, outline="",
+                                        fill="#fde68a")
+            canvas.create_line(0, mid, W, mid, fill="#e5e7eb")
+            n = len(peaks)
+            for i, (mn, mx) in enumerate(peaks):
+                x = int(i / n * W)
+                canvas.create_line(x, mid - int(mx / 32768 * (mid - 3)),
+                                   x, mid - int(mn / 32768 * (mid - 3)), fill="#2563eb")
+            for key in ("a", "b"):
+                if sel[key] is not None:
+                    canvas.create_line(sel[key], 0, sel[key], H, fill="#d97706", width=2)
+
+        def upd():
+            if sel["a"] is None or sel["b"] is None:
+                sel_lbl.config(text="selection: (drag across the waveform)")
+            else:
+                a, b = t_of(min(sel["a"], sel["b"])), t_of(max(sel["a"], sel["b"]))
+                sel_lbl.config(text=f"selection:   {a:.2f}s  to  {b:.2f}s    "
+                               f"(length {b - a:.2f}s)")
+
+        def press(ev):
+            x = max(0, min(W, ev.x))
+            sel["a"], sel["b"] = x, x
+            redraw()
+            upd()
+
+        def drag(ev):
+            if sel["a"] is None:
+                return
+            sel["b"] = max(0, min(W, ev.x))
+            redraw()
+            upd()
+        canvas.bind("<ButtonPress-1>", press)
+        canvas.bind("<B1-Motion>", drag)
+        canvas.bind("<ButtonRelease-1>", drag)
+        redraw()
+
+        ctrl = ttk.Frame(win)
+        ctrl.pack(fill="x", padx=20, pady=14)
+        ttk.Label(ctrl, text="Export as").pack(side="left")
+        efmt = tk.StringVar(value="mp3")
+        ttk.Combobox(ctrl, textvariable=efmt, values=["mp3", "wav", "flac", "m4a", "ogg"],
+                     width=7, state="readonly").pack(side="left", padx=6)
+        ttk.Label(ctrl, text="Quality").pack(side="left", padx=(8, 0))
+        eq = tk.StringVar(value="High")
+        ttk.Combobox(ctrl, textvariable=eq, values=QUALITY_TIERS, width=11,
+                     state="readonly").pack(side="left", padx=6)
+
+        def export():
+            if sel["a"] is None or sel["b"] is None or abs(sel["b"] - sel["a"]) < 2:
+                messagebox.showinfo("Snip", "Drag across the waveform to select a "
+                                    "section first.")
+                return
+            a, b = t_of(min(sel["a"], sel["b"])), t_of(max(sel["a"], sel["b"]))
+            try:
+                out = snip_audio(p, a, b, efmt.get(), eq.get())
+            except Exception as exc:  # noqa: BLE001
+                messagebox.showerror("Snip", str(exc))
+                return
+            write(f"Snippet [{a:.2f}s to {b:.2f}s] -> {os.path.basename(out)} "
+                  f"({efmt.get()} {eq.get()})\n")
+            messagebox.showinfo("Saved snippet", out)
+        ttk.Button(ctrl, text="Close", command=win.destroy).pack(side="right")
+        ttk.Button(ctrl, text="Export snippet", style="Accent.TButton",
+                   command=export).pack(side="right", padx=8)
+
+    # ---------- Detectors window ----------
+    def do_detectors():
+        import webbrowser
+        fs = sel_files()
+        p = fs[0] if fs else None
+        win = tk.Toplevel(root)
+        win.title("Layer 2 / 3 — verify provenance")
+        win.configure(bg=BG)
+        win.geometry("600x470")
+        win.transient(root)
+        ttk.Label(win, text="Layer 2 — C2PA Content Credentials",
+                  style="Head.TLabel").pack(anchor="w", padx=16, pady=(14, 4))
+        box = scrolledtext.ScrolledText(win, height=8, wrap="word",
+                                        font=("Consolas", 9), bg="white",
+                                        borderwidth=1, relief="solid")
+        box.pack(fill="x", padx=16)
+        if p and os.path.isfile(p):
+            present, details = c2pa_local(_read(p))
+            if present:
+                box.insert("end", f"Signed C2PA manifest FOUND in {os.path.basename(p)}:\n")
+                for d in details:
+                    box.insert("end", f"  - {d}\n")
+            else:
+                box.insert("end", f"No C2PA manifest in {os.path.basename(p)} "
+                           "(local scan).\n")
+            if _c2patool_path():
+                _, detail = detect_c2pa_external(p)
+                box.insert("end", f"\nVerified with bundled c2patool -> {detail}\n")
+        else:
+            box.insert("end", "Add a file first, then reopen this window.\n")
+        box.configure(state="disabled")
+        ttk.Label(win, text="Most music (incl. AI tracks from Suno / Udio) carries NO "
+                  "Content Credentials —\n'none detected' is the normal, correct "
+                  "answer.", style="Muted.TLabel").pack(anchor="w", padx=16, pady=(8, 0))
+        ttk.Button(win, text="Open online verifier (optional second opinion)",
+                   command=lambda: webbrowser.open(DETECTOR_VERIFY_URL)).pack(
+                       anchor="w", padx=16, pady=6)
+        ttk.Label(win, text="Layer 3 — SynthID / acoustic fingerprint",
+                  style="Head.TLabel").pack(anchor="w", padx=16, pady=(10, 4))
+        ttk.Label(win, text="No public, self-serve detector exists for AI-audio "
+                  "watermarks. They live in the\nwaveform, not the file, so nothing "
+                  "here can read or remove them.",
+                  style="Muted.TLabel").pack(anchor="w", padx=16)
+        ttk.Button(win, text="How SynthID works (info only)",
+                   command=lambda: webbrowser.open(DETECTOR_SYNTHID_INFO)).pack(
+                       anchor="w", padx=16, pady=(6, 12))
+
+    # ---------- action bar (aligned grid) ----------
+    actions = ttk.Labelframe(root, text="  Actions  ", padding=10)
+    actions.pack(fill="x", padx=16, pady=(0, 14))
+    buttons = [
+        ("Inspect", do_inspect, "TButton"),
+        ("Strip junk + save", do_clean, "Accent.TButton"),
+        ("Imprint tags + save", do_tag, "Green.TButton"),
+        ("Convert…", open_convert, "TButton"),
+        ("Waveform / Snip…", open_waveform, "TButton"),
+        ("Normalize", do_normalize, "TButton"),
+        ("Set cover…", do_cover, "TButton"),
+        ("Detectors…", do_detectors, "TButton"),
+        ("Batch folder…", do_batch, "TButton"),
+        ("Get ffmpeg", do_get_ffmpeg, "TButton"),
+    ]
+    cols = 5
+    for i, (label, cmd, st) in enumerate(buttons):
+        r, c = divmod(i, cols)
+        ttk.Button(actions, text=label, command=cmd, style=st).grid(
+            row=r, column=c, sticky="ew", padx=4, pady=4)
+    for c in range(cols):
+        actions.columnconfigure(c, weight=1, uniform="act")
+
+    # ---------- init ----------
     defaults = _load_default_tags()
     if defaults:
         fill_form(defaults)
-
     refresh_files()
     if state["files"]:
+        files_list.selection_set(0)
         do_inspect()
 
     root.mainloop()
     return 0
+
 
 
 _SUBCOMMANDS = {"inspect", "clean", "tag", "gui", "convert", "trim",

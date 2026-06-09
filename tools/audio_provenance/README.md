@@ -24,17 +24,16 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 After installing, double-click the **AI SoundStripper** desktop icon:
 
-- **Inspect** — shows the readable tags (artist/title/etc.) *and* which of the
-  three provenance layers are present (works on any format).
-- **Strip junk + save** — removes Layer-1 container metadata losslessly.
-- **Imprint tags + save** — writes honest provenance into a saved copy: Artist,
-  Title, Album, Year, Genre, Comment, and a **Creation type** field
-  (AI-generated / AI-assisted / Human-made / …). Audio is copied verbatim.
-- **Detectors…** — verifies the C2PA manifest in-app with the bundled
-  `c2patool` (offline, no website needed).
-- **Convert… / Normalize / Set cover… / Batch folder…** — any-format audio
-  editing and whole-folder processing (the app offers a one-time `ffmpeg`
-  download the first time you use these).
+- Add one or many files (**Add… / Remove / Clear**); actions apply to the
+  highlighted rows, or all of them if none are highlighted.
+- **Inspect** · **Strip junk + save** · **Imprint tags + save** (with a
+  **Clear fields** button) — work on MP3/WAV/FLAC with no dependencies.
+- **Convert…** opens a window to pick output **format + quality** and convert
+  the selected files.
+- **Waveform / Snip…** opens a window that draws the track's waveform — drag
+  across it to select a section, then **Export snippet** as MP3/WAV/etc.
+- **Normalize**, **Set cover…**, **Detectors…**, **Batch folder…**, and
+  **Get ffmpeg** round out the toolbar.
 
 ### The `Setup.exe` installer
 
