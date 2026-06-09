@@ -824,27 +824,56 @@ def ffmpeg_strip(path: str, out: str) -> None:
         raise ValueError(f"ffmpeg strip failed: {(r.stderr or '').strip().splitlines()[-1:]}")
 
 
-# Sensible per-target encoder defaults for the convert feature.
-_CONVERT_ARGS = {
-    ".mp3": ["-c:a", "libmp3lame", "-q:a", "2"],
-    ".m4a": ["-c:a", "aac", "-b:a", "256k"],
-    ".aac": ["-c:a", "aac", "-b:a", "256k"],
-    ".ogg": ["-c:a", "libvorbis", "-q:a", "6"],
-    ".opus": ["-c:a", "libopus", "-b:a", "160k"],
-    ".flac": ["-c:a", "flac"],
-    ".wav": ["-c:a", "pcm_s16le"],
-    ".aiff": ["-c:a", "pcm_s16be"],
+# Convert targets and how each quality tier maps to encoder settings.
+# Quality tiers (friendly names users pick from a dropdown):
+QUALITY_TIERS = ["HD / Max", "High", "Standard", "Small"]
+CONVERT_TARGETS = ["mp3", "m4a", "aac", "ogg", "opus", "flac", "wav", "aiff"]
+
+# Per-format, per-tier ffmpeg args. Lossy tiers = bitrate; lossless = bit depth.
+_CONVERT_QUALITY = {
+    ".mp3":  {"HD / Max": ["-c:a", "libmp3lame", "-b:a", "320k"],
+              "High":     ["-c:a", "libmp3lame", "-b:a", "256k"],
+              "Standard": ["-c:a", "libmp3lame", "-b:a", "192k"],
+              "Small":    ["-c:a", "libmp3lame", "-b:a", "128k"]},
+    ".m4a":  {"HD / Max": ["-c:a", "aac", "-b:a", "320k"],
+              "High":     ["-c:a", "aac", "-b:a", "256k"],
+              "Standard": ["-c:a", "aac", "-b:a", "192k"],
+              "Small":    ["-c:a", "aac", "-b:a", "128k"]},
+    ".ogg":  {"HD / Max": ["-c:a", "libvorbis", "-q:a", "9"],
+              "High":     ["-c:a", "libvorbis", "-q:a", "7"],
+              "Standard": ["-c:a", "libvorbis", "-q:a", "5"],
+              "Small":    ["-c:a", "libvorbis", "-q:a", "3"]},
+    ".opus": {"HD / Max": ["-c:a", "libopus", "-b:a", "256k"],
+              "High":     ["-c:a", "libopus", "-b:a", "160k"],
+              "Standard": ["-c:a", "libopus", "-b:a", "128k"],
+              "Small":    ["-c:a", "libopus", "-b:a", "96k"]},
+    ".flac": {"HD / Max": ["-c:a", "flac", "-sample_fmt", "s32", "-compression_level", "8"],
+              "High":     ["-c:a", "flac", "-compression_level", "8"],
+              "Standard": ["-c:a", "flac", "-compression_level", "5"],
+              "Small":    ["-c:a", "flac", "-compression_level", "12"]},
+    ".wav":  {"HD / Max": ["-c:a", "pcm_s24le"], "High": ["-c:a", "pcm_s24le"],
+              "Standard": ["-c:a", "pcm_s16le"], "Small": ["-c:a", "pcm_s16le"]},
+    ".aiff": {"HD / Max": ["-c:a", "pcm_s24be"], "High": ["-c:a", "pcm_s24be"],
+              "Standard": ["-c:a", "pcm_s16be"], "Small": ["-c:a", "pcm_s16be"]},
 }
+_CONVERT_QUALITY[".aac"] = _CONVERT_QUALITY[".m4a"]
 
 
-def convert_audio(path: str, target_ext: str, out: str | None = None) -> str:
+def convert_audio(path: str, target_ext: str, out: str | None = None,
+                  quality: str = "High") -> str:
     target_ext = target_ext if target_ext.startswith(".") else "." + target_ext
-    if target_ext not in _CONVERT_ARGS:
+    table = _CONVERT_QUALITY.get(target_ext)
+    if not table:
         raise ValueError(f"convert target '{target_ext}' not supported. "
-                         f"Choose from: {', '.join(sorted(_CONVERT_ARGS))}")
+                         f"Choose from: {', '.join(CONVERT_TARGETS)}")
+    args = table.get(quality) or table["High"]
     if out is None:
-        out = os.path.splitext(path)[0] + target_ext
-    r = _run_ffmpeg(["-i", path, *_CONVERT_ARGS[target_ext], out])
+        root = os.path.splitext(path)[0]
+        # avoid overwriting the source when ext is unchanged
+        out = root + target_ext
+        if os.path.abspath(out) == os.path.abspath(path):
+            out = root + ".converted" + target_ext
+    r = _run_ffmpeg(["-i", path, *args, out])
     if r.returncode != 0:
         raise ValueError(f"convert failed: {(r.stderr or '').strip().splitlines()[-1:]}")
     return out
@@ -1108,7 +1137,7 @@ def cmd_edit(op: str, path: str, out: str | None, **kw) -> int:
         return 2
     try:
         if op == "convert":
-            res = convert_audio(path, kw["to"], out)
+            res = convert_audio(path, kw["to"], out, kw.get("quality", "High"))
         elif op == "trim":
             res = trim_audio(path, kw.get("start"), kw.get("end"), out)
         elif op == "normalize":
@@ -1133,28 +1162,40 @@ def cmd_gui(initial: str | None = None) -> int:
     """Click-to-run window: inspect, strip, and imprint provenance tags."""
     try:
         import tkinter as tk
-        from tkinter import filedialog, scrolledtext, ttk, simpledialog, messagebox
+        from tkinter import filedialog, scrolledtext, ttk, messagebox
     except Exception as exc:  # noqa: BLE001
         print(f"error: GUI needs tkinter, which isn't available ({exc}).\n"
               "Use the CLI instead:  python provenance.py clean FILE", file=sys.stderr)
         return 2
 
-    state = {"path": initial}
+    init_files = [initial] if initial and os.path.isfile(initial) else []
+    state = {"files": list(init_files), "path": initial}
 
     root = tk.Tk()
     root.title("AI SoundStripper")
-    root.geometry("760x720")
+    root.geometry("800x840")
 
     tk.Label(root, text="AI SoundStripper",
-             font=("Segoe UI", 16, "bold")).pack(pady=(12, 0))
+             font=("Segoe UI", 16, "bold")).pack(pady=(10, 0))
     tk.Label(root,
-             text="Inspect provenance layers • strip Layer-1 junk metadata • "
-                  "imprint honest tags.\nMetadata tool — NOT a watermark remover "
+             text="Inspect • strip junk metadata • imprint tags • convert / edit "
+                  "any format.\nMetadata tool — NOT a watermark remover "
                   "(see notes below).",
              fg="#555", justify="center").pack()
 
-    path_var = tk.StringVar(value=initial or "No file selected")
-    tk.Label(root, textvariable=path_var, fg="#0a4", wraplength=720).pack(pady=(8, 4))
+    # --- file list: add one or many -------------------------------------- #
+    files_frame = tk.LabelFrame(root, text="Files — add one or many (actions apply "
+                                "to selected rows, or all if none selected)",
+                                padx=8, pady=6)
+    files_frame.pack(fill="x", padx=12, pady=(6, 2))
+    files_list = tk.Listbox(files_frame, height=4, selectmode="extended",
+                            font=("Consolas", 9))
+    files_list.pack(side="left", fill="x", expand=True)
+    fbtns = tk.Frame(files_frame)
+    fbtns.pack(side="left", padx=(6, 0))
+    tk.Button(fbtns, text="Add…", width=9, command=lambda: pick()).pack(pady=1)
+    tk.Button(fbtns, text="Remove", width=9, command=lambda: remove_sel()).pack(pady=1)
+    tk.Button(fbtns, text="Clear", width=9, command=lambda: clear_files()).pack(pady=1)
 
     # --- tag form (the "imprint" feature) --------------------------------- #
     form = tk.LabelFrame(root, text="Imprint provenance tags "
@@ -1191,6 +1232,36 @@ def cmd_gui(initial: str | None = None) -> int:
     def collect_tags():
         return {key: field_vars[key].get() for key in TAG_FIELDS}
 
+    # ---- file list management ------------------------------------------ #
+    def refresh_files():
+        files_list.delete(0, "end")
+        for f in state["files"]:
+            files_list.insert("end", os.path.basename(f))
+        state["path"] = state["files"][0] if state["files"] else None
+
+    def sel_files():
+        """Selected rows, or all files if nothing is highlighted."""
+        idxs = files_list.curselection()
+        if idxs:
+            return [state["files"][i] for i in idxs]
+        return list(state["files"])
+
+    def remove_sel():
+        for i in sorted(files_list.curselection(), reverse=True):
+            del state["files"][i]
+        refresh_files()
+
+    def clear_files():
+        state["files"].clear()
+        refresh_files()
+
+    def _ensure_ff_for(files, native_set):
+        """Prompt to install ffmpeg if any file needs it; True if we can proceed."""
+        if any(os.path.splitext(f)[1].lower() not in native_set for f in files) \
+                and not have_ffmpeg():
+            return ensure_ff()
+        return True
+
     def show_report(title, info, path):
         write(f"=== {title} : {info['format']} ===")
         write("Tags (artist / title / provenance):")
@@ -1214,72 +1285,79 @@ def cmd_gui(initial: str | None = None) -> int:
         write("")
 
     def pick():
-        f = filedialog.askopenfilename(
-            title="Choose an audio file",
+        fs = filedialog.askopenfilenames(
+            title="Choose audio file(s) — Ctrl/Shift-click for many",
             filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg "
                         "*.opus *.aiff *.wma"), ("All files", "*.*")])
-        if f:
-            state["path"] = f
-            path_var.set(f)
+        if not fs:
+            return
+        for f in fs:
+            if f not in state["files"]:
+                state["files"].append(f)
+        refresh_files()
+        if len(state["files"]) == 1:
             do_inspect()
+        else:
+            write(f"{len(state['files'])} files in the list. Highlight some (or "
+                  "none = all), then pick an action.\n")
 
     def do_inspect():
-        p = state["path"]
-        if not p or not os.path.isfile(p):
-            write("Pick a file first.\n")
+        fs = sel_files()
+        if not fs:
+            write("Add a file first.\n")
             return
+        p = fs[0]
         ext = os.path.splitext(p)[1].lower()
-        if ext not in _INSPECTORS and not have_ffmpeg():
-            if not ensure_ff():
-                write(f"'{ext}' needs ffmpeg to read; skipped.\n")
-                return
+        if ext not in _INSPECTORS and not have_ffmpeg() and not ensure_ff():
+            write(f"'{ext}' needs ffmpeg to read; skipped.\n")
+            return
         log.delete("1.0", "end")
         info = inspect_any(p)  # native parser, or ffmpeg for other formats
         fill_form(info.get("tags", {}))
+        if len(fs) > 1:
+            write(f"(Inspecting the first of {len(fs)} selected; "
+                  "Strip/Imprint/Convert apply to all selected.)\n")
         show_report(os.path.basename(p), info, p)
 
     def do_clean():
-        p = state["path"]
-        if not p or not os.path.isfile(p):
-            write("Pick a file first.\n")
+        fs = sel_files()
+        if not fs:
+            write("Add a file first.\n")
             return
-        try:
-            res = process_clean(p, None)
-        except ValueError as exc:
-            write(f"Cannot strip: {exc}\n")
-            return
-        if res.before["layers"]["2_c2pa"]:
-            write("NOTE: signed C2PA manifest detected; this tool does not "
-                  "strip it (see EU AI Act Art. 50).")
-        write(f"Saved: {res.out}")
-        write(f"  {res.n_in} -> {res.n_out} bytes "
-              f"({res.removed} bytes of metadata removed)")
-        write("  Audio stream copied verbatim — no re-encode, same format.\n")
-        show_report("output (verified)", res.after, res.out)
-        write("Reminder: Layer-3 acoustic fingerprint is unchanged by design.\n")
+        _ensure_ff_for(fs, set(_CLEANERS))
+        ok = 0
+        for p in fs:
+            try:
+                res = process_clean(p, None)
+            except Exception as exc:  # noqa: BLE001
+                write(f"  SKIP {os.path.basename(p)}: {exc}")
+                continue
+            write(f"  stripped {os.path.basename(p)} -> {os.path.basename(res.out)} "
+                  f"({res.removed} bytes removed)")
+            ok += 1
+        write(f"Strip done: {ok}/{len(fs)} file(s). Audio copied verbatim.\n")
 
     def do_tag():
-        p = state["path"]
-        if not p or not os.path.isfile(p):
-            write("Pick a file first.\n")
+        fs = sel_files()
+        if not fs:
+            write("Add a file first.\n")
             return
         tags = collect_tags()
         if not any(v.strip() for v in tags.values()):
             write("Fill at least one tag field first (e.g. Artist / Title).\n")
             return
-        ext = os.path.splitext(p)[1].lower()
-        if ext not in _TAG_WRITERS and not have_ffmpeg() and not ensure_ff():
-            write(f"'{ext}' needs ffmpeg to tag; skipped.\n")
-            return
-        try:
-            out_path, n_in, n_out, written = process_tag(p, tags, None)
-        except ValueError as exc:
-            write(f"Cannot tag: {exc}\n")
-            return
-        write(f"Imprinted tags -> {out_path}")
-        write(f"  {n_in} -> {n_out} bytes; audio copied verbatim.\n")
+        _ensure_ff_for(fs, set(_TAG_WRITERS))
+        ok = 0
+        for p in fs:
+            try:
+                out_path, _ni, _no, _w = process_tag(p, tags, None)
+            except Exception as exc:  # noqa: BLE001
+                write(f"  SKIP {os.path.basename(p)}: {exc}")
+                continue
+            write(f"  tagged {os.path.basename(p)} -> {os.path.basename(out_path)}")
+            ok += 1
         _save_default_tags(tags)  # remember as preset
-        show_report("tagged (verified)", inspect_any(out_path), out_path)
+        write(f"Imprint done: {ok}/{len(fs)} file(s). Audio copied verbatim.\n")
 
     # ---- audio editing (ffmpeg) ---------------------------------------- #
     def ensure_ff():
@@ -1315,57 +1393,66 @@ def cmd_gui(initial: str | None = None) -> int:
         write("ffmpeg installed — any-format and editing features are now enabled.\n")
         return True
 
-    def _need_file():
-        p = state["path"]
-        if not p or not os.path.isfile(p):
-            write("Pick a file first.\n")
+    def _edit_files():
+        fs = sel_files()
+        if not fs:
+            write("Add a file first.\n")
             return None
         if not ensure_ff():
             return None
-        return p
+        return fs
 
     def do_convert():
-        p = _need_file()
-        if not p:
+        fs = _edit_files()
+        if not fs:
             return
-        fmt = simpledialog.askstring("Convert", "Target format "
-                                     "(mp3 / wav / flac / m4a / ogg / opus / aiff):",
-                                     parent=root)
-        if not fmt:
-            return
-        try:
-            out = convert_audio(p, fmt.strip().lower())
-        except ValueError as exc:
-            write(f"Convert failed: {exc}\n")
-            return
-        write(f"Converted -> {out}  (re-encoded: this changes the audio stream)\n")
+        fmt, qual = fmt_var.get(), qual_var.get()
+        ok = 0
+        for p in fs:
+            try:
+                out = convert_audio(p, fmt, None, qual)
+            except Exception as exc:  # noqa: BLE001
+                write(f"  SKIP {os.path.basename(p)}: {exc}")
+                continue
+            write(f"  {os.path.basename(p)} -> {os.path.basename(out)}")
+            ok += 1
+        write(f"Converted {ok}/{len(fs)} file(s) to {fmt.upper()} ({qual}). "
+              "Re-encoded — changes the audio stream.\n")
 
     def do_normalize():
-        p = _need_file()
-        if not p:
+        fs = _edit_files()
+        if not fs:
             return
-        try:
-            out = normalize_audio(p)
-        except ValueError as exc:
-            write(f"Normalize failed: {exc}\n")
-            return
-        write(f"Normalized to -14 LUFS -> {out}  (re-encoded)\n")
+        ok = 0
+        for p in fs:
+            try:
+                out = normalize_audio(p)
+            except Exception as exc:  # noqa: BLE001
+                write(f"  SKIP {os.path.basename(p)}: {exc}")
+                continue
+            write(f"  {os.path.basename(p)} -> {os.path.basename(out)}")
+            ok += 1
+        write(f"Normalized {ok}/{len(fs)} file(s) to -14 LUFS. Re-encoded.\n")
 
     def do_cover():
-        p = _need_file()
-        if not p:
+        fs = _edit_files()
+        if not fs:
             return
-        img = filedialog.askopenfilename(title="Choose a cover image",
+        img = filedialog.askopenfilename(title="Choose a cover image (applied to all)",
                                          filetypes=[("Images", "*.jpg *.jpeg *.png"),
                                                     ("All files", "*.*")])
         if not img:
             return
-        try:
-            out = set_cover(p, img)
-        except ValueError as exc:
-            write(f"Set cover failed: {exc}\n")
-            return
-        write(f"Embedded cover -> {out}  (audio copied verbatim)\n")
+        ok = 0
+        for p in fs:
+            try:
+                out = set_cover(p, img)
+            except Exception as exc:  # noqa: BLE001
+                write(f"  SKIP {os.path.basename(p)}: {exc}")
+                continue
+            write(f"  cover -> {os.path.basename(out)}")
+            ok += 1
+        write(f"Embedded cover into {ok}/{len(fs)} file(s). Audio copied verbatim.\n")
 
     def do_batch():
         folder = filedialog.askdirectory(title="Choose a folder to process")
@@ -1409,7 +1496,8 @@ def cmd_gui(initial: str | None = None) -> int:
         box = scrolledtext.ScrolledText(win, height=8, wrap="word",
                                         font=("Consolas", 9))
         box.pack(fill="x", padx=12)
-        p = state["path"]
+        _fs = sel_files()
+        p = _fs[0] if _fs else None
         if p and os.path.isfile(p):
             present, details = c2pa_local(_read(p))
             if present:
@@ -1457,31 +1545,42 @@ def cmd_gui(initial: str | None = None) -> int:
                   command=lambda: webbrowser.open(DETECTOR_SYNTHID_INFO),
                   width=36).pack(anchor="w", padx=12, pady=(6, 12))
 
-    bar = tk.Frame(root)
-    bar.pack(pady=(0, 2))
-    tk.Button(bar, text="1. Upload…", command=pick, width=11).pack(side="left", padx=4)
-    tk.Button(bar, text="2. Inspect", command=do_inspect, width=11).pack(side="left", padx=4)
-    tk.Button(bar, text="Strip junk + save", command=do_clean,
-              width=16, bg="#1565c0", fg="white").pack(side="left", padx=4)
-    tk.Button(bar, text="Imprint tags + save", command=do_tag,
-              width=18, bg="#2e7d32", fg="white").pack(side="left", padx=4)
-    tk.Button(bar, text="Detectors…", command=do_detectors,
-              width=11).pack(side="left", padx=4)
-
-    # Second row: ffmpeg-powered editing + batch (works on any format).
-    # Buttons stay enabled; the first use offers a one-time ffmpeg download.
-    bar2 = tk.Frame(root)
-    bar2.pack(pady=(0, 8))
-    tk.Button(bar2, text="Convert…", command=do_convert, width=10).pack(side="left", padx=4)
-    tk.Button(bar2, text="Normalize", command=do_normalize, width=10).pack(side="left", padx=4)
-    tk.Button(bar2, text="Set cover…", command=do_cover, width=10).pack(side="left", padx=4)
-    tk.Button(bar2, text="Batch folder…", command=do_batch, width=13).pack(side="left", padx=4)
-
     def do_get_ffmpeg():
         if have_ffmpeg():
             write(f"ffmpeg already installed: {ffmpeg_path()}\n")
-        elif ensure_ff():
-            pass
+        else:
+            ensure_ff()
+
+    # Row 1: inspect / strip / tag / detectors (all act on selected files)
+    bar = tk.Frame(root)
+    bar.pack(pady=(2, 2))
+    tk.Button(bar, text="Inspect", command=do_inspect, width=10).pack(side="left", padx=4)
+    tk.Button(bar, text="Strip junk + save", command=do_clean,
+              width=15, bg="#1565c0", fg="white").pack(side="left", padx=4)
+    tk.Button(bar, text="Imprint tags + save", command=do_tag,
+              width=17, bg="#2e7d32", fg="white").pack(side="left", padx=4)
+    tk.Button(bar, text="Detectors…", command=do_detectors, width=10).pack(side="left", padx=4)
+
+    # Row 2: the converter — format + quality dropdowns, then Convert
+    conv = tk.Frame(root)
+    conv.pack(pady=(0, 2))
+    tk.Label(conv, text="Convert to:").pack(side="left", padx=(4, 3))
+    fmt_var = tk.StringVar(value="mp3")
+    ttk.Combobox(conv, textvariable=fmt_var, values=CONVERT_TARGETS, width=7,
+                 state="readonly").pack(side="left", padx=2)
+    tk.Label(conv, text="Quality:").pack(side="left", padx=(10, 3))
+    qual_var = tk.StringVar(value="High")
+    ttk.Combobox(conv, textvariable=qual_var, values=QUALITY_TIERS, width=11,
+                 state="readonly").pack(side="left", padx=2)
+    tk.Button(conv, text="Convert selected", command=do_convert,
+              width=16, bg="#6a1b9a", fg="white").pack(side="left", padx=10)
+
+    # Row 3: other ffmpeg edits + batch folder
+    bar2 = tk.Frame(root)
+    bar2.pack(pady=(0, 8))
+    tk.Button(bar2, text="Normalize", command=do_normalize, width=10).pack(side="left", padx=4)
+    tk.Button(bar2, text="Set cover…", command=do_cover, width=10).pack(side="left", padx=4)
+    tk.Button(bar2, text="Batch folder…", command=do_batch, width=13).pack(side="left", padx=4)
     tk.Button(bar2, text="Get ffmpeg", command=do_get_ffmpeg, width=10).pack(side="left", padx=4)
 
     # Prefill the form from a saved preset (overwritten by a file's own tags).
@@ -1489,7 +1588,8 @@ def cmd_gui(initial: str | None = None) -> int:
     if defaults:
         fill_form(defaults)
 
-    if initial and os.path.isfile(initial):
+    refresh_files()
+    if state["files"]:
         do_inspect()
 
     root.mainloop()
@@ -1539,7 +1639,9 @@ def main(argv: list[str] | None = None) -> int:
 
     pcv = sub.add_parser("convert", help="convert to another format (ffmpeg; re-encodes)")
     pcv.add_argument("file")
-    pcv.add_argument("--to", required=True, help="target ext: mp3/wav/flac/m4a/ogg/opus/aiff")
+    pcv.add_argument("--to", required=True, help="target: mp3/m4a/aac/ogg/opus/flac/wav/aiff")
+    pcv.add_argument("--quality", default="High", choices=QUALITY_TIERS,
+                     help="HD / Max, High, Standard, or Small")
     pcv.add_argument("-o", "--out", default=None)
     ptr = sub.add_parser("trim", help="cut a section (ffmpeg; lossless stream copy)")
     ptr.add_argument("file")
@@ -1584,7 +1686,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "clean":
         return cmd_clean(args.file, args.out)
     if args.cmd == "convert":
-        return cmd_edit("convert", args.file, args.out, to=args.to)
+        return cmd_edit("convert", args.file, args.out, to=args.to, quality=args.quality)
     if args.cmd == "trim":
         return cmd_edit("trim", args.file, args.out, start=args.start, end=args.end)
     if args.cmd == "normalize":

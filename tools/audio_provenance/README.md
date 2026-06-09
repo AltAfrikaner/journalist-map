@@ -78,7 +78,7 @@ python3 provenance.py tag mytrack.mp3 --artist "DuneSurfer" --title "Dans Ritme"
 # Any format + audio editing (needs ffmpeg; bundled in the installer):
 python3 provenance.py inspect track.m4a            # works on m4a/ogg/opus/aiff/wma/...
 python3 provenance.py tag     track.ogg --artist X # universal tagging (stream copy)
-python3 provenance.py convert track.wav --to mp3   # re-encode to another format
+python3 provenance.py convert track.wav --to mp3 --quality "HD / Max"  # 320 kbps
 python3 provenance.py trim    track.mp3 --start 0:30 --end 1:45   # lossless cut
 python3 provenance.py normalize track.flac         # loudness to -14 LUFS
 python3 provenance.py cover   track.mp3 --image art.jpg          # embed cover art
@@ -117,6 +117,13 @@ or run `provenance.py install-ffmpeg`). After that it just works:
   toolbar (*Convert… / Normalize / Set cover… / Batch folder…*) or via the CLI
   subcommands above. Convert and normalize re-encode by nature (stated in the
   output); trim and cover are lossless.
+- **Multi-file in the GUI**: add many files with **Add…**, then every action
+  (Strip / Imprint / Convert / Normalize / Set cover) applies to the highlighted
+  rows — or to all of them if none are highlighted.
+- **Converter panel**: pick the output **format** (mp3/m4a/aac/ogg/opus/flac/
+  wav/aiff) and a **Quality** tier from dropdowns — *HD / Max*, *High*,
+  *Standard*, *Small* (lossy → bitrate, e.g. HD mp3 = 320 kbps; lossless → bit
+  depth, e.g. HD wav/flac = 24-bit) — then **Convert selected**.
 - **Batch / folder mode**: point `clean`/`tag` (or the GUI *Batch folder…*
   button) at a directory to process every supported file at once. The GUI also
   remembers your last tag values as a preset (`~/.aisoundstripper_tags.json`).
