@@ -935,6 +935,58 @@ def extract_cover(path: str, out: str | None = None) -> str:
     return out
 
 
+def waveform_peaks(path: str, columns: int = 760):
+    """Decode any format to mono PCM (via ffmpeg) and return (peaks, duration).
+
+    peaks is a list of (min, max) int16 pairs, one per display column; duration
+    is in seconds. Used to draw a waveform for visual snipping.
+    """
+    import array
+    exe = ffmpeg_path()
+    if not exe:
+        raise ValueError("waveform needs ffmpeg")
+    rate = 8000
+    r = subprocess.run([exe, "-nostdin", "-v", "quiet", "-i", path,
+                        "-ac", "1", "-ar", str(rate), "-f", "s16le", "-"],
+                       capture_output=True, timeout=120, creationflags=_NO_WINDOW)
+    samples = array.array("h")
+    raw = r.stdout or b""
+    samples.frombytes(raw[: len(raw) // 2 * 2])
+    n = len(samples)
+    if n == 0:
+        raise ValueError("could not decode audio for the waveform")
+    duration = n / rate
+    columns = max(1, min(columns, n))
+    per = max(1, n // columns)
+    peaks = []
+    for i in range(0, n, per):
+        chunk = samples[i:i + per]
+        if chunk:
+            peaks.append((min(chunk), max(chunk)))
+    return peaks, duration
+
+
+def snip_audio(path: str, start: float, end: float, target_ext: str | None = None,
+               quality: str = "High", out: str | None = None) -> str:
+    """Save the [start, end] second section, encoded to target_ext (default: same)."""
+    if end <= start:
+        raise ValueError("empty selection — drag to choose a section first")
+    ext = (target_ext or os.path.splitext(path)[1]).lower()
+    if not ext.startswith("."):
+        ext = "." + ext
+    enc = (_CONVERT_QUALITY.get(ext) or {}).get(quality) \
+        or (_CONVERT_QUALITY.get(ext) or {}).get("High") or ["-c", "copy"]
+    if out is None:
+        out = f"{os.path.splitext(path)[0]}.snip{ext}"
+        if os.path.abspath(out) == os.path.abspath(path):
+            out = f"{os.path.splitext(path)[0]}.snip.out{ext}"
+    r = _run_ffmpeg(["-ss", f"{start:.3f}", "-i", path, "-t", f"{end - start:.3f}",
+                     *enc, out])
+    if r.returncode != 0:
+        raise ValueError(f"snip failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+    return out
+
+
 def _format_tags(tags: dict) -> list[str]:
     """Human-readable lines for the tags found in a file (values, not just IDs)."""
     if not tags:
@@ -1169,11 +1221,13 @@ def cmd_gui(initial: str | None = None) -> int:
         return 2
 
     init_files = [initial] if initial and os.path.isfile(initial) else []
-    state = {"files": list(init_files), "path": initial}
+    state = {"files": list(init_files), "path": initial,
+             "wave": {"peaks": [], "duration": 0.0, "sel": (None, None), "path": None}}
+    WAVE_W, WAVE_H = 756, 120
 
     root = tk.Tk()
     root.title("AI SoundStripper")
-    root.geometry("800x840")
+    root.geometry("820x900")
 
     tk.Label(root, text="AI SoundStripper",
              font=("Segoe UI", 16, "bold")).pack(pady=(10, 0))
@@ -1216,7 +1270,28 @@ def cmd_gui(initial: str | None = None) -> int:
             tk.Entry(form, textvariable=var, width=29).grid(
                 row=r, column=c * 2 + 1, sticky="w", pady=3)
 
-    log = scrolledtext.ScrolledText(root, height=14, wrap="word",
+    # --- waveform + snip --------------------------------------------------- #
+    wave_frame = tk.LabelFrame(root, text="Snip a section — drag across the "
+                               "waveform, then Save snippet (uses the Convert "
+                               "format/quality above)", padx=8, pady=4)
+    wave_frame.pack(fill="x", padx=12, pady=(2, 4))
+    wave_canvas = tk.Canvas(wave_frame, width=WAVE_W, height=WAVE_H, bg="white",
+                            highlightthickness=1, highlightbackground="#ccc",
+                            cursor="tcross")
+    wave_canvas.pack()
+    wrow = tk.Frame(wave_frame)
+    wrow.pack(fill="x", pady=(4, 0))
+    tk.Button(wrow, text="Show waveform", width=14,
+              command=lambda: load_waveform()).pack(side="left", padx=2)
+    sel_var = tk.StringVar(value="selection: (drag across the waveform)")
+    tk.Label(wrow, textvariable=sel_var, fg="#555").pack(side="left", padx=8)
+    tk.Button(wrow, text="Save snippet", width=13, bg="#00695c", fg="white",
+              command=lambda: do_snip()).pack(side="right", padx=2)
+    wave_canvas.bind("<ButtonPress-1>", lambda e: on_wave_press(e))
+    wave_canvas.bind("<B1-Motion>", lambda e: on_wave_drag(e))
+    wave_canvas.bind("<ButtonRelease-1>", lambda e: on_wave_drag(e))
+
+    log = scrolledtext.ScrolledText(root, height=9, wrap="word",
                                     font=("Consolas", 9))
     log.pack(fill="both", expand=True, padx=12, pady=6)
 
@@ -1318,6 +1393,11 @@ def cmd_gui(initial: str | None = None) -> int:
             write(f"(Inspecting the first of {len(fs)} selected; "
                   "Strip/Imprint/Convert apply to all selected.)\n")
         show_report(os.path.basename(p), info, p)
+        if have_ffmpeg():  # auto-draw the waveform for snipping
+            try:
+                _compute_wave(p)
+            except Exception:  # noqa: BLE001
+                pass
 
     def do_clean():
         fs = sel_files()
@@ -1453,6 +1533,96 @@ def cmd_gui(initial: str | None = None) -> int:
             write(f"  cover -> {os.path.basename(out)}")
             ok += 1
         write(f"Embedded cover into {ok}/{len(fs)} file(s). Audio copied verbatim.\n")
+
+    # ---- waveform + visual snip ---------------------------------------- #
+    def _wave_time(x):
+        dur = state["wave"]["duration"]
+        return max(0.0, min(1.0, x / WAVE_W)) * dur
+
+    def update_sel_label():
+        s, e = state["wave"]["sel"]
+        if s is None or e is None:
+            sel_var.set("selection: (drag across the waveform)")
+        else:
+            t1, t2 = _wave_time(min(s, e)), _wave_time(max(s, e))
+            sel_var.set(f"selection:  {t1:.2f}s  →  {t2:.2f}s   ({t2 - t1:.2f}s)")
+
+    def draw_waveform():
+        c = wave_canvas
+        c.delete("all")
+        mid = WAVE_H // 2
+        peaks = state["wave"]["peaks"]
+        if not peaks:
+            c.create_text(WAVE_W // 2, mid, fill="#999",
+                          text="Load a file, then click 'Show waveform'  (needs ffmpeg)")
+            return
+        s, e = state["wave"]["sel"]
+        if s is not None and e is not None:
+            c.create_rectangle(min(s, e), 0, max(s, e), WAVE_H, outline="",
+                               fill="#ffe0b2")
+        c.create_line(0, mid, WAVE_W, mid, fill="#e0e0e0")
+        n = len(peaks)
+        for i, (mn, mx) in enumerate(peaks):
+            x = int(i / n * WAVE_W)
+            y1 = mid - int(mx / 32768 * (mid - 2))
+            y2 = mid - int(mn / 32768 * (mid - 2))
+            c.create_line(x, y1, x, y2, fill="#1565c0")
+
+    def _compute_wave(p):
+        peaks, dur = waveform_peaks(p, WAVE_W)
+        state["wave"] = {"peaks": peaks, "duration": dur, "sel": (None, None), "path": p}
+        draw_waveform()
+        update_sel_label()
+
+    def load_waveform():
+        fs = sel_files()
+        if not fs:
+            write("Add a file first.\n")
+            return
+        if not ensure_ff():
+            return
+        try:
+            _compute_wave(fs[0])
+        except Exception as exc:  # noqa: BLE001
+            write(f"Waveform failed: {exc}\n")
+            return
+        write(f"Waveform: {os.path.basename(fs[0])} "
+              f"({state['wave']['duration']:.1f}s). Drag across it to select.\n")
+
+    def on_wave_press(ev):
+        if not state["wave"]["peaks"]:
+            return
+        x = max(0, min(WAVE_W, ev.x))
+        state["wave"]["sel"] = (x, x)
+        draw_waveform()
+        update_sel_label()
+
+    def on_wave_drag(ev):
+        if not state["wave"]["peaks"] or state["wave"]["sel"][0] is None:
+            return
+        x = max(0, min(WAVE_W, ev.x))
+        state["wave"]["sel"] = (state["wave"]["sel"][0], x)
+        draw_waveform()
+        update_sel_label()
+
+    def do_snip():
+        w = state["wave"]
+        if not w["peaks"]:
+            write("Click 'Show waveform' first.\n")
+            return
+        s, e = w["sel"]
+        if s is None or e is None or abs(e - s) < 2:
+            write("Drag across the waveform to select a section first.\n")
+            return
+        t1, t2 = _wave_time(min(s, e)), _wave_time(max(s, e))
+        fmt, qual = fmt_var.get(), qual_var.get()
+        try:
+            out = snip_audio(w["path"], t1, t2, fmt, qual)
+        except Exception as exc:  # noqa: BLE001
+            write(f"Snip failed: {exc}\n")
+            return
+        write(f"Saved snippet  [{t1:.2f}s → {t2:.2f}s]  ->  "
+              f"{os.path.basename(out)}  ({fmt} {qual})\n")
 
     def do_batch():
         folder = filedialog.askdirectory(title="Choose a folder to process")
@@ -1597,7 +1767,7 @@ def cmd_gui(initial: str | None = None) -> int:
 
 
 _SUBCOMMANDS = {"inspect", "clean", "tag", "gui", "convert", "trim",
-                "normalize", "cover", "extract-cover", "install-ffmpeg"}
+                "normalize", "snip", "cover", "extract-cover", "install-ffmpeg"}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1651,6 +1821,13 @@ def main(argv: list[str] | None = None) -> int:
     pnm = sub.add_parser("normalize", help="loudness-normalize to -14 LUFS (ffmpeg; re-encodes)")
     pnm.add_argument("file")
     pnm.add_argument("-o", "--out", default=None)
+    psn = sub.add_parser("snip", help="save a section [start,end] seconds (ffmpeg)")
+    psn.add_argument("file")
+    psn.add_argument("--start", type=float, required=True, help="start time in seconds")
+    psn.add_argument("--end", type=float, required=True, help="end time in seconds")
+    psn.add_argument("--to", default=None, help="output format (default: same as input)")
+    psn.add_argument("--quality", default="High", choices=QUALITY_TIERS)
+    psn.add_argument("-o", "--out", default=None)
     pco = sub.add_parser("cover", help="embed a cover image (ffmpeg; lossless)")
     pco.add_argument("file")
     pco.add_argument("--image", required=True, help="path to JPG/PNG cover")
@@ -1691,6 +1868,19 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_edit("trim", args.file, args.out, start=args.start, end=args.end)
     if args.cmd == "normalize":
         return cmd_edit("normalize", args.file, args.out)
+    if args.cmd == "snip":
+        if not ffmpeg_path():
+            print("error: snip needs ffmpeg. Run:  provenance.py install-ffmpeg",
+                  file=sys.stderr)
+            return 2
+        try:
+            out = snip_audio(args.file, args.start, args.end, args.to,
+                             args.quality, args.out)
+        except ValueError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        print(f"Wrote {out}  (section {args.start:.2f}s -> {args.end:.2f}s)")
+        return 0
     if args.cmd == "cover":
         return cmd_edit("cover", args.file, args.out, image=args.image)
     if args.cmd == "extract-cover":

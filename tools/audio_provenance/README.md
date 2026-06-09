@@ -81,6 +81,7 @@ python3 provenance.py tag     track.ogg --artist X # universal tagging (stream c
 python3 provenance.py convert track.wav --to mp3 --quality "HD / Max"  # 320 kbps
 python3 provenance.py trim    track.mp3 --start 0:30 --end 1:45   # lossless cut
 python3 provenance.py normalize track.flac         # loudness to -14 LUFS
+python3 provenance.py snip track.mp3 --start 30 --end 45 --to mp3   # save a section
 python3 provenance.py cover   track.mp3 --image art.jpg          # embed cover art
 python3 provenance.py clean   ./album_folder -r    # batch: strip a whole folder
 ```
@@ -117,6 +118,10 @@ or run `provenance.py install-ffmpeg`). After that it just works:
   toolbar (*Convert… / Normalize / Set cover… / Batch folder…*) or via the CLI
   subcommands above. Convert and normalize re-encode by nature (stated in the
   output); trim and cover are lossless.
+- **Waveform snipping**: once a file is loaded the GUI draws its **waveform** —
+  drag across it to select a section (shows start → end → length), then
+  **Save snippet** writes just that part, in whatever format/quality the Convert
+  dropdowns are set to. CLI: `snip FILE --start 30 --end 45 --to mp3`.
 - **Multi-file in the GUI**: add many files with **Add…**, then every action
   (Strip / Imprint / Convert / Normalize / Set cover) applies to the highlighted
   rows — or to all of them if none are highlighted.
