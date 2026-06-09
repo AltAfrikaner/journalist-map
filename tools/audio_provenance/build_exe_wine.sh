@@ -41,9 +41,9 @@ if [ ! -f "$WINPY" ]; then
 fi
 wine "$WINPY" --version
 
-echo "[3/5] Installing PyInstaller into the Windows Python ..."
+echo "[3/5] Installing PyInstaller + tkinterdnd2 into the Windows Python ..."
 wine "$WINPY" -m ensurepip --upgrade >/dev/null 2>&1 || true
-wine "$WINPY" -m pip install --no-warn-script-location --quiet pyinstaller
+wine "$WINPY" -m pip install --no-warn-script-location --quiet pyinstaller tkinterdnd2
 
 echo "[3b/5] Fetching c2patool.exe to ship beside the app (offline C2PA) ..."
 mkdir -p msi/vendor
@@ -63,6 +63,7 @@ ICON_WIN="$(wine winepath -w "$PWD/msi/aisoundstripper.ico" 2>/dev/null | tr -d 
 SCRIPT_WIN="$(wine winepath -w "$PWD/provenance.py" 2>/dev/null | tr -d '\r')"
 wine "$WINPY" -m PyInstaller --onefile --windowed \
     --icon "$ICON_WIN" --name AISoundStripper \
+    --collect-all tkinterdnd2 \
     --distpath msi/dist --workpath /tmp/wpyi-build --specpath /tmp/wpyi-spec \
     "$SCRIPT_WIN"
 file msi/dist/AISoundStripper.exe

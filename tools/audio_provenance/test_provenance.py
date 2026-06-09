@@ -148,7 +148,25 @@ def _run_ffmpeg_formats():
         _sh.copy(wav, os.path.join(d, "b.wav"))
         rc = P.cmd_batch(d, "clean", {}, recursive=False)
         assert rc == 0 and os.path.exists(os.path.join(d, "a.clean.wav"))
-        print("PASS ffmpeg: convert + tag (M4A/OGG) + strip + batch")
+
+        # cover art: m4a in place, and WAV -> lossless FLAC copy (was the 0-byte bug)
+        import subprocess
+        import shutil as _sh2
+        img = os.path.join(d, "c.jpg")
+        subprocess.run([P.ffmpeg_path(), "-nostdin", "-y", "-f", "lavfi",
+                        "-i", "color=c=blue:s=120x120:d=1", "-frames:v", "1", img],
+                       capture_output=True, check=True)
+        cm = P.set_cover(m4a, img, os.path.join(d, "cov.m4a"))
+        cf = P.set_cover(wav, img, os.path.join(d, "cov.flac"), to_ext=".flac")
+        assert os.path.getsize(cm) > 0 and os.path.getsize(cf) > 0, "cover output is empty!"
+        ffprobe = _sh2.which("ffprobe")
+        if ffprobe:
+            for f in (cm, cf):
+                r = subprocess.run([ffprobe, "-v", "error", "-select_streams", "v",
+                                    "-show_entries", "stream=codec_name", "-of",
+                                    "csv=p=0", f], capture_output=True, text=True)
+                assert r.stdout.strip(), f"no embedded cover in {f}"
+        print("PASS ffmpeg: convert + tag (M4A/OGG) + strip + batch + cover")
 
 
 def main():

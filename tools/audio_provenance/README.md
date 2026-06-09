@@ -24,16 +24,21 @@ output in the **same format** as the input (`song.mp3` -> `song.clean.mp3`):
 
 After installing, double-click the **AI SoundStripper** desktop icon:
 
-- Add one or many files (**Add… / Remove / Clear**); actions apply to the
-  highlighted rows, or all of them if none are highlighted.
+- Add one or many files (**Add… / Remove / Clear**), or **drag-and-drop** files
+  straight onto the list. Actions apply to the highlighted rows, or all of them
+  if none are highlighted. The **Output** box has its own **Clear** button.
 - **Inspect** · **Strip junk + save** · **Imprint tags + save** (with a
   **Clear fields** button) — work on MP3/WAV/FLAC with no dependencies.
 - **Convert…** opens a window to pick output **format + quality** and convert
   the selected files.
-- **Waveform / Snip…** opens a window that draws the track's waveform — drag
-  across it to select a section, then **Export snippet** as MP3/WAV/etc.
-- **Normalize**, **Set cover…**, **Detectors…**, **Batch folder…**, and
-  **Get ffmpeg** round out the toolbar.
+- **Waveform / Snip…** opens a window that draws the track's waveform — **Play
+  selection / Play whole track / Stop** to hear it, drag across it to select a
+  section, then **Export snippet** as MP3/WAV/etc.
+- **Set cover…** embeds a JPG/PNG into MP3/FLAC/M4A in place; for containers
+  that can't hold art (WAV/AIFF) it writes a lossless **FLAC copy** with the
+  cover instead.
+- **Normalize**, **Detectors…**, **Batch folder…**, and **Get ffmpeg** round
+  out the toolbar.
 
 ### The `Setup.exe` installer
 

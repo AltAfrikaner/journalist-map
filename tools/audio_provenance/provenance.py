@@ -909,20 +909,41 @@ def normalize_audio(path: str, out: str | None = None) -> str:
     return out
 
 
-def set_cover(path: str, image: str, out: str | None = None) -> str:
+# Containers that can reliably embed a cover image.
+COVER_CONTAINERS = {".mp3", ".flac", ".m4a", ".mp4", ".m4b"}
+
+
+def set_cover(path: str, image: str, out: str | None = None,
+              to_ext: str | None = None) -> str:
+    """Embed a cover image. If the source container can't hold art (e.g. WAV),
+    pass to_ext='.flac' to write a lossless cover-bearing copy instead."""
+    src_ext = os.path.splitext(path)[1].lower()
+    ext = (to_ext or src_ext).lower()
+    if not ext.startswith("."):
+        ext = "." + ext
+    if ext not in COVER_CONTAINERS:
+        raise ValueError(f"{ext} cannot embed cover art (use mp3/flac/m4a)")
     if out is None:
-        root, e = os.path.splitext(path)
-        out = f"{root}.cover{e}"
-    ext = os.path.splitext(path)[1].lower()
-    args = ["-i", path, "-i", image, "-map", "0:a", "-map", "1:v", "-c", "copy",
-            "-disposition:v", "attached_pic"]
+        root = os.path.splitext(path)[0]
+        out = f"{root}.cover{ext}"
+        if os.path.abspath(out) == os.path.abspath(path):
+            out = f"{root}.cover.out{ext}"
+    aenc = ["-c:a", "copy"] if ext == src_ext else _CONVERT_QUALITY[ext]["High"]
+    args = ["-i", path, "-i", image, "-map", "0:a", "-map", "1:0", *aenc,
+            "-c:v", "copy", "-disposition:v:0", "attached_pic"]
     if ext == ".mp3":
-        args += ["-id3v2_version", "3", "-metadata:s:v", "title=Album cover",
-                 "-metadata:s:v", "comment=Cover (front)"]
+        args += ["-id3v2_version", "3", "-metadata:s:v:0", "title=Album cover",
+                 "-metadata:s:v:0", "comment=Cover (front)"]
     args.append(out)
     r = _run_ffmpeg(args)
-    if r.returncode != 0:
-        raise ValueError(f"set cover failed: {(r.stderr or '').strip().splitlines()[-1:]}")
+    if r.returncode != 0 or not os.path.exists(out) or os.path.getsize(out) == 0:
+        if os.path.exists(out) and os.path.getsize(out) == 0:
+            try:
+                os.remove(out)  # don't leave a 0-byte file behind
+            except OSError:
+                pass
+        tail = ((r.stderr or "").strip().splitlines() or ["unknown error"])[-1]
+        raise ValueError(f"cover embed failed: {tail}")
     return out
 
 
@@ -1223,9 +1244,15 @@ def cmd_gui(initial: str | None = None) -> int:
     init_files = [initial] if initial and os.path.isfile(initial) else []
     state = {"files": list(init_files)}
 
-    root = tk.Tk()
+    try:  # optional native drag-and-drop of files
+        from tkinterdnd2 import DND_FILES, TkinterDnD
+        root = TkinterDnD.Tk()
+        _dnd = True
+    except Exception:  # noqa: BLE001
+        root = tk.Tk()
+        _dnd = False
     root.title("AI SoundStripper")
-    root.geometry("860x780")
+    root.geometry("860x800")
     root.minsize(780, 660)
 
     # ---------- modern flat theme ----------
@@ -1265,7 +1292,9 @@ def cmd_gui(initial: str | None = None) -> int:
               "remover.", style="Muted.TLabel").pack()
 
     # ---------- file list ----------
-    ff = ttk.Labelframe(root, text="  Files — add one or many  ", padding=10)
+    ff_text = ("  Files — add one or many (or drag files here)  " if _dnd
+               else "  Files — add one or many  ")
+    ff = ttk.Labelframe(root, text=ff_text, padding=10)
     ff.pack(fill="x", padx=16, pady=(10, 6))
     lbf = ttk.Frame(ff)
     lbf.pack(side="left", fill="both", expand=True)
@@ -1281,6 +1310,17 @@ def cmd_gui(initial: str | None = None) -> int:
     ttk.Button(fb, text="Add…", width=10, command=lambda: pick()).pack(pady=2)
     ttk.Button(fb, text="Remove", width=10, command=lambda: remove_sel()).pack(pady=2)
     ttk.Button(fb, text="Clear", width=10, command=lambda: clear_files()).pack(pady=2)
+    if _dnd:
+        def _on_drop(event):
+            for f in root.tk.splitlist(event.data):
+                if os.path.isfile(f) and f not in state["files"]:
+                    state["files"].append(f)
+            refresh_files()
+            if len(state["files"]) == 1:
+                files_list.selection_set(0)
+                do_inspect()
+        files_list.drop_target_register(DND_FILES)
+        files_list.dnd_bind("<<Drop>>", _on_drop)
 
     # ---------- tag form ----------
     tf = ttk.Labelframe(root, text="  Imprint provenance tags (saved as a copy; "
@@ -1303,9 +1343,14 @@ def cmd_gui(initial: str | None = None) -> int:
         row=4, column=3, sticky="e", pady=(8, 0))
 
     # ---------- log ----------
+    log_head = ttk.Frame(root)
+    log_head.pack(fill="x", padx=16, pady=(2, 0))
+    ttk.Label(log_head, text="Output", style="Muted.TLabel").pack(side="left")
+    ttk.Button(log_head, text="Clear fields",
+               command=lambda: log.delete("1.0", "end")).pack(side="right")
     log = scrolledtext.ScrolledText(root, height=8, wrap="word", font=("Consolas", 9),
                                     borderwidth=1, relief="solid", bg="white")
-    log.pack(fill="both", expand=True, padx=16, pady=6)
+    log.pack(fill="both", expand=True, padx=16, pady=(2, 6))
 
     def write(msg):
         log.insert("end", msg + "\n")
@@ -1515,8 +1560,13 @@ def cmd_gui(initial: str | None = None) -> int:
             return
         ok = 0
         for p in fs:
+            ext = os.path.splitext(p)[1].lower()
             try:
-                out = set_cover(p, img)
+                if ext in COVER_CONTAINERS:
+                    out = set_cover(p, img)
+                else:  # WAV/AIFF/etc. can't hold art — save a lossless FLAC copy
+                    out = set_cover(p, img, to_ext=".flac")
+                    write(f"  ({ext} can't embed a cover — wrote a FLAC copy with art)")
             except Exception as exc:  # noqa: BLE001
                 write(f"  SKIP {os.path.basename(p)}: {exc}")
                 continue
@@ -1679,6 +1729,56 @@ def cmd_gui(initial: str | None = None) -> int:
         canvas.bind("<B1-Motion>", drag)
         canvas.bind("<ButtonRelease-1>", drag)
         redraw()
+
+        # ----- playback (hear the track / selection before cutting) -----
+        def _play(wav):
+            try:
+                import winsound
+                winsound.PlaySound(wav, winsound.SND_FILENAME | winsound.SND_ASYNC)
+            except Exception:  # noqa: BLE001  (non-Windows)
+                try:
+                    os.startfile(wav)  # type: ignore[attr-defined]
+                except Exception:  # noqa: BLE001
+                    messagebox.showinfo("Playback", "Audio preview needs Windows.")
+
+        def _stop():
+            try:
+                import winsound
+                winsound.PlaySound(None, winsound.SND_PURGE)
+            except Exception:  # noqa: BLE001
+                pass
+
+        def play_all():
+            tmp = os.path.join(_user_data_dir(), "_preview_all.wav")
+            try:
+                r = _run_ffmpeg(["-i", p, "-ac", "2", "-c:a", "pcm_s16le", tmp])
+                if r.returncode != 0:
+                    raise ValueError("decode failed")
+            except Exception as exc:  # noqa: BLE001
+                messagebox.showerror("Playback", str(exc))
+                return
+            _play(tmp)
+
+        def play_sel():
+            if sel["a"] is None or sel["b"] is None or abs(sel["b"] - sel["a"]) < 2:
+                messagebox.showinfo("Playback", "Drag to select a section first.")
+                return
+            a, b = t_of(min(sel["a"], sel["b"])), t_of(max(sel["a"], sel["b"]))
+            tmp = os.path.join(_user_data_dir(), "_preview_sel.wav")
+            try:
+                snip_audio(p, a, b, "wav", "High", tmp)
+            except Exception as exc:  # noqa: BLE001
+                messagebox.showerror("Playback", str(exc))
+                return
+            _play(tmp)
+
+        play_row = ttk.Frame(win)
+        play_row.pack(fill="x", padx=20, pady=(8, 0))
+        ttk.Button(play_row, text="Play selection", command=play_sel).pack(side="left")
+        ttk.Button(play_row, text="Play whole track", command=play_all).pack(
+            side="left", padx=6)
+        ttk.Button(play_row, text="Stop", command=_stop).pack(side="left")
+        win.protocol("WM_DELETE_WINDOW", lambda: (_stop(), win.destroy()))
 
         ctrl = ttk.Frame(win)
         ctrl.pack(fill="x", padx=20, pady=14)

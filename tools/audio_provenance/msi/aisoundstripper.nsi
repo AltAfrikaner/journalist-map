@@ -16,7 +16,7 @@ Unicode true
 !define APPNAME    "AI SoundStripper"
 !define APPEXE     "AISoundStripper.exe"
 !define COMPANY    "AI SoundStripper"
-!define VERSION    "1.0.0"
+!define VERSION    "2.0.0"
 !define ARP        "Software\Microsoft\Windows\CurrentVersion\Uninstall\AISoundStripper"
 
 Name "${APPNAME}"
