@@ -58,6 +58,7 @@ import shutil
 import struct
 import subprocess
 import sys
+import time
 
 SUPPORTED_STRIP = {".mp3", ".wav", ".flac"}
 SUPPORTED_INSPECT = SUPPORTED_STRIP | {".m4a", ".mp4", ".aac", ".ogg", ".oga", ".opus", ".flac"}
@@ -1244,13 +1245,7 @@ def cmd_gui(initial: str | None = None) -> int:
     init_files = [initial] if initial and os.path.isfile(initial) else []
     state = {"files": list(init_files)}
 
-    try:  # optional native drag-and-drop of files
-        from tkinterdnd2 import DND_FILES, TkinterDnD
-        root = TkinterDnD.Tk()
-        _dnd = True
-    except Exception:  # noqa: BLE001
-        root = tk.Tk()
-        _dnd = False
+    root = tk.Tk()
     root.title("AI SoundStripper")
     root.geometry("860x800")
     root.minsize(780, 660)
@@ -1292,9 +1287,8 @@ def cmd_gui(initial: str | None = None) -> int:
               "remover.", style="Muted.TLabel").pack()
 
     # ---------- file list ----------
-    ff_text = ("  Files — add one or many (or drag files here)  " if _dnd
-               else "  Files — add one or many  ")
-    ff = ttk.Labelframe(root, text=ff_text, padding=10)
+    ff = ttk.Labelframe(root, text="  Files — add one or many (or drag files onto "
+                        "this window)  ", padding=10)
     ff.pack(fill="x", padx=16, pady=(10, 6))
     lbf = ttk.Frame(ff)
     lbf.pack(side="left", fill="both", expand=True)
@@ -1310,17 +1304,6 @@ def cmd_gui(initial: str | None = None) -> int:
     ttk.Button(fb, text="Add…", width=10, command=lambda: pick()).pack(pady=2)
     ttk.Button(fb, text="Remove", width=10, command=lambda: remove_sel()).pack(pady=2)
     ttk.Button(fb, text="Clear", width=10, command=lambda: clear_files()).pack(pady=2)
-    if _dnd:
-        def _on_drop(event):
-            for f in root.tk.splitlist(event.data):
-                if os.path.isfile(f) and f not in state["files"]:
-                    state["files"].append(f)
-            refresh_files()
-            if len(state["files"]) == 1:
-                files_list.selection_set(0)
-                do_inspect()
-        files_list.drop_target_register(DND_FILES)
-        files_list.dnd_bind("<<Drop>>", _on_drop)
 
     # ---------- tag form ----------
     tf = ttk.Labelframe(root, text="  Imprint provenance tags (saved as a copy; "
@@ -1389,16 +1372,19 @@ def cmd_gui(initial: str | None = None) -> int:
         state["files"].clear()
         refresh_files()
 
-    def pick():
-        fs = filedialog.askopenfilenames(
-            title="Choose audio file(s) — Ctrl/Shift-click for many",
-            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg "
-                        "*.opus *.aiff *.wma"), ("All files", "*.*")])
-        if not fs:
-            return
-        for f in fs:
-            if f not in state["files"]:
+    def add_paths(paths):
+        added = False
+        for f in paths:
+            if isinstance(f, bytes):
+                try:
+                    f = f.decode("utf-8")
+                except Exception:  # noqa: BLE001
+                    f = f.decode("mbcs", "replace")
+            if os.path.isfile(f) and f not in state["files"]:
                 state["files"].append(f)
+                added = True
+        if not added:
+            return
         refresh_files()
         if len(state["files"]) == 1:
             files_list.selection_set(0)
@@ -1406,6 +1392,25 @@ def cmd_gui(initial: str | None = None) -> int:
         else:
             write(f"{len(state['files'])} files in the list. Highlight some "
                   "(or none = all), then pick an action.\n")
+
+    def pick():
+        fs = filedialog.askopenfilenames(
+            title="Choose audio file(s) — Ctrl/Shift-click for many",
+            filetypes=[("Audio", "*.mp3 *.wav *.flac *.m4a *.mp4 *.aac *.ogg "
+                        "*.opus *.aiff *.wma"), ("All files", "*.*")])
+        if fs:
+            add_paths(fs)
+
+    def enable_dnd():
+        """Native Windows file drag-and-drop via windnd (pure ctypes)."""
+        try:
+            import windnd
+            windnd.hook_dropfiles(
+                root, func=lambda files: root.after(0, lambda: add_paths(files)),
+                force_unicode=True)
+            return True
+        except Exception:  # noqa: BLE001
+            return False
 
     def ensure_ff():
         if have_ffmpeg():
@@ -1681,6 +1686,8 @@ def cmd_gui(initial: str | None = None) -> int:
                            highlightbackground="#cbd5e1", cursor="tcross")
         canvas.pack(padx=20)
         sel = {"a": None, "b": None}
+        pstate = {"playing": False, "head": None, "after": None, "t0": 0.0,
+                  "x0": 0, "x1": 0, "dur": 1.0}
         sel_lbl = ttk.Label(win, text="selection: (drag across the waveform)",
                             style="Muted.TLabel")
         sel_lbl.pack(pady=6)
@@ -1704,6 +1711,9 @@ def cmd_gui(initial: str | None = None) -> int:
             for key in ("a", "b"):
                 if sel[key] is not None:
                     canvas.create_line(sel[key], 0, sel[key], H, fill="#d97706", width=2)
+            if pstate["head"] is not None:  # moving playback position
+                hx = pstate["head"]
+                canvas.create_line(hx, 0, hx, H, fill="#dc2626", width=2)
 
         def upd():
             if sel["a"] is None or sel["b"] is None:
@@ -1730,16 +1740,42 @@ def cmd_gui(initial: str | None = None) -> int:
         canvas.bind("<ButtonRelease-1>", drag)
         redraw()
 
-        # ----- playback (hear the track / selection before cutting) -----
+        # ----- playback with a moving playhead -----
         def _play(wav):
             try:
                 import winsound
                 winsound.PlaySound(wav, winsound.SND_FILENAME | winsound.SND_ASYNC)
+                return True
             except Exception:  # noqa: BLE001  (non-Windows)
                 try:
                     os.startfile(wav)  # type: ignore[attr-defined]
+                    return True
                 except Exception:  # noqa: BLE001
                     messagebox.showinfo("Playback", "Audio preview needs Windows.")
+                    return False
+
+        def _head_tick():
+            if not pstate["playing"]:
+                return
+            frac = (time.monotonic() - pstate["t0"]) / pstate["dur"]
+            if frac >= 1.0:
+                pstate["playing"] = False
+                pstate["head"] = None
+                redraw()
+                return
+            pstate["head"] = pstate["x0"] + frac * (pstate["x1"] - pstate["x0"])
+            redraw()
+            pstate["after"] = win.after(40, _head_tick)
+
+        def _start_head(x0, x1, seconds):
+            if pstate["after"]:
+                try:
+                    win.after_cancel(pstate["after"])
+                except Exception:  # noqa: BLE001
+                    pass
+            pstate.update(playing=True, t0=time.monotonic(), x0=x0, x1=x1,
+                          dur=max(0.05, seconds), head=x0)
+            _head_tick()
 
         def _stop():
             try:
@@ -1747,6 +1783,15 @@ def cmd_gui(initial: str | None = None) -> int:
                 winsound.PlaySound(None, winsound.SND_PURGE)
             except Exception:  # noqa: BLE001
                 pass
+            pstate["playing"] = False
+            pstate["head"] = None
+            if pstate["after"]:
+                try:
+                    win.after_cancel(pstate["after"])
+                except Exception:  # noqa: BLE001
+                    pass
+                pstate["after"] = None
+            redraw()
 
         def play_all():
             tmp = os.path.join(_user_data_dir(), "_preview_all.wav")
@@ -1757,7 +1802,8 @@ def cmd_gui(initial: str | None = None) -> int:
             except Exception as exc:  # noqa: BLE001
                 messagebox.showerror("Playback", str(exc))
                 return
-            _play(tmp)
+            if _play(tmp):
+                _start_head(0, W, dur)
 
         def play_sel():
             if sel["a"] is None or sel["b"] is None or abs(sel["b"] - sel["a"]) < 2:
@@ -1770,7 +1816,8 @@ def cmd_gui(initial: str | None = None) -> int:
             except Exception as exc:  # noqa: BLE001
                 messagebox.showerror("Playback", str(exc))
                 return
-            _play(tmp)
+            if _play(tmp):
+                _start_head(min(sel["a"], sel["b"]), max(sel["a"], sel["b"]), b - a)
 
         play_row = ttk.Frame(win)
         play_row.pack(fill="x", padx=20, pady=(8, 0))
@@ -1778,6 +1825,8 @@ def cmd_gui(initial: str | None = None) -> int:
         ttk.Button(play_row, text="Play whole track", command=play_all).pack(
             side="left", padx=6)
         ttk.Button(play_row, text="Stop", command=_stop).pack(side="left")
+        ttk.Label(play_row, text="(red line shows playback position)",
+                  style="Muted.TLabel").pack(side="left", padx=10)
         win.protocol("WM_DELETE_WINDOW", lambda: (_stop(), win.destroy()))
 
         ctrl = ttk.Frame(win)
@@ -1884,6 +1933,8 @@ def cmd_gui(initial: str | None = None) -> int:
     if defaults:
         fill_form(defaults)
     refresh_files()
+    root.update_idletasks()  # ensure the window has an HWND for drop hooking
+    enable_dnd()
     if state["files"]:
         files_list.selection_set(0)
         do_inspect()
