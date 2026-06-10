@@ -19,7 +19,7 @@ UninstPage instfiles
 
 Section "Install"
   SetOutPath "$INSTDIR"
-  File "dist/ClipMusic.exe"
+  File "ClipMusic.exe"
   WriteUninstaller "$INSTDIR\uninstall.exe"
 
   CreateDirectory "$SMPROGRAMS\ClipMusic"

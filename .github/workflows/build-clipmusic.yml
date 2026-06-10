@@ -48,8 +48,10 @@ jobs:
 
       - name: Build installer
         working-directory: tools/clipmusic
-        shell: cmd
-        run: '"C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi'
+        run: |
+          Copy-Item dist/ClipMusic.exe ClipMusic.exe -Force
+          Get-ChildItem
+          & "C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi
 
       - name: Show installer
         working-directory: tools/clipmusic
