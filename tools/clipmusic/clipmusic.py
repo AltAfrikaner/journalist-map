@@ -33,7 +33,8 @@ try:
         QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
         QPushButton, QFileDialog, QComboBox, QListWidget, QListWidgetItem,
         QStackedWidget, QProgressBar, QMessageBox, QLineEdit, QPlainTextEdit,
-        QScrollArea, QFrame, QSizePolicy, QGridLayout, QToolButton)
+        QScrollArea, QFrame, QSizePolicy, QGridLayout, QToolButton, QCheckBox,
+        QSlider)
 except ImportError as exc:  # noqa: BLE001
     print(f"\n  Missing dependency: {exc}\n  pip install PyQt5 numpy\n")
     sys.exit(1)
@@ -234,6 +235,27 @@ VISUALISERS = {
     "None": "",
 }
 
+# ── one-click looks applied to the background/footage (ffmpeg vf) ───────────
+EFFECTS = {
+    "None": "",
+    "Black & White": "hue=s=0",
+    "Vintage": "curves=preset=vintage",
+    "Sepia": "colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131",
+    "Vignette": "vignette=PI/5",
+    "Blur": "gblur=sigma=8",
+    "Sharpen": "unsharp=5:5:1.2:5:5:0.0",
+    "Chromatic": "rgbashift=rh=6:bh=-6",
+    "Film Grain": "noise=alls=16:allf=t",
+    "Warm": "colortemperature=temperature=8500",
+    "Cool": "colortemperature=temperature=4500",
+    "Invert": "negate",
+    "Glow": "gblur=sigma=4,eq=brightness=0.04:saturation=1.25",
+}
+
+# crossfade styles used between multiple background clips (slideshow)
+TRANSITIONS = ["fade", "fadeblack", "fadewhite", "dissolve", "wipeleft",
+               "slideright", "circleopen", "smoothleft", "radial"]
+
 
 def _font_arg():
     for p in (r"C:\Windows\Fonts\arialbd.ttf", r"C:\Windows\Fonts\arial.ttf",
@@ -262,6 +284,18 @@ class RenderSpec:
     lyrics: list = field(default_factory=list)  # [(start, end, text)]
     audio_only: bool = False
     out_ext: str = "mp4"
+    backgrounds: list = field(default_factory=list)  # multi-clip slideshow
+    effect: str = "None"
+    brightness: float = 0.0   # -0.5..0.5
+    contrast: float = 1.0     # 0..2
+    saturation: float = 1.0   # 0..3
+    fade_in: float = 0.0
+    fade_out: float = 0.0
+    ken_burns: bool = False
+    transition: str = "fade"
+    title: str = ""
+    title_pos: str = "center"
+    title_size: int = 72
 
 
 def build_render_cmd(spec: RenderSpec, out: str) -> list:
@@ -272,47 +306,127 @@ def build_render_cmd(spec: RenderSpec, out: str) -> list:
             return ["-i", spec.audio, "-c:a", "libmp3lame", "-b:a", "320k", "-y", out]
         return ["-i", spec.audio, "-c:a", "pcm_s16le", "-y", out]
 
-    inputs = []
-    # background input is always input 0, audio is always the last input
-    if spec.background and is_video(spec.background):
-        inputs += ["-stream_loop", "-1", "-i", spec.background]
-    elif spec.background:
-        inputs += ["-loop", "1", "-framerate", str(FPS), "-i", spec.background]
-    else:
-        inputs += ["-f", "lavfi", "-i", f"color=c=0x0a0a0f:s={W}x{H}:r={FPS}"]
-    inputs += ["-i", spec.audio]
-    bg_index = 0
-    audio_index = inputs.count("-i") - 1
+    dur = probe_duration(spec.audio) or 10.0
+    bgs = list(spec.backgrounds) if spec.backgrounds else (
+        [spec.background] if spec.background else [])
+    bgs = bgs[:8]
+    inputs, filt = [], []
 
-    filt = [f"[{bg_index}:v]scale={W}:{H}:force_original_aspect_ratio=increase,"
-            f"crop={W}:{H},setsar=1,format=rgba[bg]"]
+    def scale_crop():
+        return (f"scale={W}:{H}:force_original_aspect_ratio=increase,"
+                f"crop={W}:{H},setsar=1")
+
+    # ── background layer → [bg] ──
+    if not bgs:
+        inputs += ["-f", "lavfi", "-i", f"color=c=0x0a0a0f:s={W}x{H}:r={FPS}"]
+        n_bg = 1
+        filt.append("[0:v]format=rgba[bg]")
+    elif len(bgs) == 1:
+        p = bgs[0]
+        if is_video(p):
+            inputs += ["-stream_loop", "-1", "-t", f"{dur:.3f}", "-i", p]
+        else:
+            inputs += ["-loop", "1", "-framerate", str(FPS), "-t", f"{dur:.3f}", "-i", p]
+        n_bg = 1
+        if not is_video(p) and spec.ken_burns:
+            big_w, big_h = int(W * 1.5), int(H * 1.5)
+            filt.append(
+                f"[0:v]scale={big_w}:{big_h}:force_original_aspect_ratio=increase,"
+                f"crop={big_w}:{big_h},zoompan=z='min(zoom+0.0006,1.3)':"
+                f"d={max(1, int(dur * FPS))}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+                f"s={W}x{H}:fps={FPS},setsar=1,format=rgba[bg]")
+        else:
+            filt.append(f"[0:v]{scale_crop()},format=rgba[bg]")
+    else:
+        n = len(bgs)
+        xf = 0.8
+        seg = (dur + (n - 1) * xf) / n
+        for i, p in enumerate(bgs):
+            if is_video(p):
+                inputs += ["-stream_loop", "-1", "-t", f"{seg:.3f}", "-i", p]
+            else:
+                inputs += ["-loop", "1", "-framerate", str(FPS), "-t", f"{seg:.3f}", "-i", p]
+            filt.append(f"[{i}:v]{scale_crop()},fps={FPS},format=yuv420p,"
+                        f"setpts=PTS-STARTPTS[s{i}]")
+        n_bg = n
+        trans = spec.transition if spec.transition in TRANSITIONS else "fade"
+        prev = "s0"
+        for k in range(1, n):
+            lab = "bg" if k == n - 1 else f"x{k}"
+            off = k * (seg - xf)
+            filt.append(f"[{prev}][s{k}]xfade=transition={trans}:duration={xf}:"
+                        f"offset={off:.3f}[{lab}]")
+            prev = lab
+
+    inputs += ["-i", spec.audio]
+    a_idx = n_bg  # audio is the input right after the background inputs
+
+    # ── effect + colour grade ──
+    post = []
+    if EFFECTS.get(spec.effect):
+        post.append(EFFECTS[spec.effect])
+    if (abs(spec.brightness) > 1e-3 or abs(spec.contrast - 1) > 1e-3
+            or abs(spec.saturation - 1) > 1e-3):
+        post.append(f"eq=brightness={spec.brightness:.3f}:contrast={spec.contrast:.3f}:"
+                    f"saturation={spec.saturation:.3f}")
     last = "bg"
+    if post:
+        filt.append(f"[bg]{','.join(post)}[bgp]")
+        last = "bgp"
+
+    # ── audio-reactive visualiser overlay ──
     vis = VISUALISERS.get(spec.visualiser, "")
     if vis:
-        vchain = vis.format(W=W, H=H, FPS=FPS)
-        filt.append(f"[{audio_index}:a]{vchain},format=rgba,colorchannelmixer=aa=0.6[viz]")
+        filt.append(f"[{a_idx}:a]{vis.format(W=W, H=H, FPS=FPS)},format=rgba,"
+                    f"colorchannelmixer=aa=0.6[viz]")
         filt.append(f"[{last}][viz]overlay=0:0:format=auto[comp]")
         last = "comp"
-    # lyrics
+
+    # ── title + timed lyrics (drawtext) ──
     font = _font_arg()
-    for i, (s0, e0, txt) in enumerate(spec.lyrics):
+    ff = f"fontfile='{font}':" if font else ""
+    draws = []
+    if spec.title.strip():
+        ypos = {"top": "h*0.10", "center": "(h-text_h)/2",
+                "bottom": "h-(h*0.20)"}.get(spec.title_pos, "(h-text_h)/2")
+        draws.append(f"drawtext={ff}text='{_esc_drawtext(spec.title)}':fontcolor=white:"
+                     f"fontsize={spec.title_size}:box=1:boxcolor=0x000000B0:boxborderw=20:"
+                     f"x=(w-text_w)/2:y={ypos}:enable='between(t,0,{min(5.0, dur):.2f})'")
+    for s0, e0, txt in spec.lyrics:
         if not txt.strip():
             continue
-        ff = f"fontfile='{font}':" if font else ""
-        dt = (f"drawtext={ff}text='{_esc_drawtext(txt)}':"
-              f"fontcolor=white:fontsize={max(24, H // 22)}:box=1:boxcolor=0x000000A0:"
-              f"boxborderw=14:x=(w-text_w)/2:y=h-(h/6):"
-              f"enable='between(t,{s0:.2f},{e0:.2f})'")
-        filt.append(f"[{last}]{dt}[ly{i}]")
-        last = f"ly{i}"
-    filt.append(f"[{last}]format=yuv420p[outv]")
+        draws.append(f"drawtext={ff}text='{_esc_drawtext(txt)}':fontcolor=white:"
+                     f"fontsize={max(24, H // 22)}:box=1:boxcolor=0x000000A0:boxborderw=14:"
+                     f"x=(w-text_w)/2:y=h-(h/6):enable='between(t,{s0:.2f},{e0:.2f})'")
+    for i, dt in enumerate(draws):
+        filt.append(f"[{last}]{dt}[d{i}]")
+        last = f"d{i}"
 
-    cmd = [*inputs, "-filter_complex", ";".join(filt),
-           "-map", "[outv]", "-map", f"{audio_index}:a",
-           "-c:v", spec.vcodec, "-crf", str(spec.crf), "-preset", "veryfast",
-           "-c:a", spec.acodec, "-b:a", "256k", "-r", str(FPS), "-shortest",
-           "-movflags", "+faststart", "-y", out]
-    return cmd
+    # ── video fade + output format ──
+    tail = []
+    if spec.fade_in > 0:
+        tail.append(f"fade=t=in:st=0:d={spec.fade_in:.2f}")
+    if spec.fade_out > 0:
+        tail.append(f"fade=t=out:st={max(0.0, dur - spec.fade_out):.2f}:d={spec.fade_out:.2f}")
+    tail.append("format=yuv420p")
+    filt.append(f"[{last}]{','.join(tail)}[outv]")
+
+    # ── audio fade ──
+    amap = f"{a_idx}:a"
+    af = []
+    if spec.fade_in > 0:
+        af.append(f"afade=t=in:d={spec.fade_in:.2f}")
+    if spec.fade_out > 0:
+        af.append(f"afade=t=out:st={max(0.0, dur - spec.fade_out):.2f}:d={spec.fade_out:.2f}")
+    if af:
+        filt.append(f"[{a_idx}:a]{','.join(af)}[outa]")
+        amap = "[outa]"
+
+    return [*inputs, "-filter_complex", ";".join(filt),
+            "-map", "[outv]", "-map", amap,
+            "-c:v", spec.vcodec, "-crf", str(spec.crf), "-preset", "veryfast",
+            "-c:a", spec.acodec, "-b:a", "256k", "-r", str(FPS), "-t", f"{dur:.3f}",
+            "-movflags", "+faststart", "-y", out]
 
 
 class RenderWorker(QThread):
@@ -616,6 +730,7 @@ class ClipMusic(QMainWindow):
         ])
         self.audio_path = None
         self.bg_path = None
+        self.bg_paths = []
         self.last_render = None
         self.worker = None
         self.setAcceptDrops(True)
@@ -706,9 +821,14 @@ class ClipMusic(QMainWindow):
         imp = QPushButton("＋ Import media")
         imp.clicked.connect(self._import_media)
         v.addWidget(imp)
-        bg = QPushButton("Set background image/video")
+        bg = QPushButton("Add background / clip")
         bg.clicked.connect(self._set_background)
         v.addWidget(bg)
+        clr = QPushButton("Clear backgrounds")
+        clr.clicked.connect(self._clear_backgrounds)
+        v.addWidget(clr)
+        v.addWidget(QLabel("Add 2+ images/clips for a crossfaded slideshow.",
+                           objectName="dim"))
         stem = QPushButton("✦ AI Stem Split (Demucs)")
         stem.setObjectName("purple")
         stem.clicked.connect(self._stem_split)
@@ -735,30 +855,87 @@ class ClipMusic(QMainWindow):
         v.addWidget(self.preview, 1)
         return f
 
+    def _slider(self, layout, label, lo, hi, val, fmt):
+        head = QHBoxLayout()
+        head.addWidget(QLabel(label, objectName="dim"))
+        head.addStretch()
+        vlbl = QLabel(fmt(val))
+        vlbl.setStyleSheet(f"color:{ACCENT};")
+        head.addWidget(vlbl)
+        layout.addLayout(head)
+        s = QSlider(Qt.Horizontal)
+        s.setRange(lo, hi)
+        s.setValue(val)
+        s.valueChanged.connect(lambda v: vlbl.setText(fmt(v)))
+        layout.addWidget(s)
+        return s
+
     def _props_panel(self):
         f = QFrame()
         f.setObjectName("panel")
-        f.setFixedWidth(240)
-        v = QVBoxLayout(f)
+        f.setFixedWidth(258)
+        outer = QVBoxLayout(f)
+        outer.setContentsMargins(0, 0, 0, 0)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        content = QWidget()
+        v = QVBoxLayout(content)
         v.setContentsMargins(10, 10, 10, 10)
+        v.setSpacing(6)
+
         v.addWidget(QLabel("Visualiser", objectName="h1"))
         self.vis_combo = QComboBox()
         self.vis_combo.addItems(list(VISUALISERS.keys()))
         self.vis_combo.setCurrentText("Bars (CQT)")
+        self.vis_combo.currentTextChanged.connect(lambda _: self._refresh_timeline())
         v.addWidget(self.vis_combo)
-        v.addSpacing(8)
-        v.addWidget(QLabel("Lyrics / text  (one line per cue:  start  end  text)",
-                           objectName="dim"))
+
+        v.addWidget(QLabel("Effect (look)", objectName="h1"))
+        self.fx_combo = QComboBox()
+        self.fx_combo.addItems(list(EFFECTS.keys()))
+        v.addWidget(self.fx_combo)
+        self.kb_check = QCheckBox("Ken Burns zoom (still images)")
+        v.addWidget(self.kb_check)
+
+        v.addWidget(QLabel("Adjust colours", objectName="h1"))
+        self.bri = self._slider(v, "Brightness", -50, 50, 0, lambda x: f"{x/100:+.2f}")
+        self.con = self._slider(v, "Contrast", 0, 200, 100, lambda x: f"{x/100:.2f}")
+        self.sat = self._slider(v, "Saturation", 0, 300, 100, lambda x: f"{x/100:.2f}")
+
+        v.addWidget(QLabel("Fade", objectName="h1"))
+        self.fin = self._slider(v, "Fade in", 0, 50, 0, lambda x: f"{x/10:.1f}s")
+        self.fout = self._slider(v, "Fade out", 0, 50, 0, lambda x: f"{x/10:.1f}s")
+
+        v.addWidget(QLabel("Transition (slideshow)", objectName="h1"))
+        self.trans_combo = QComboBox()
+        self.trans_combo.addItems(TRANSITIONS)
+        v.addWidget(self.trans_combo)
+
+        v.addWidget(QLabel("Title", objectName="h1"))
+        self.title_edit = QLineEdit()
+        self.title_edit.setPlaceholderText("Big title (shown first 5s)")
+        v.addWidget(self.title_edit)
+        trow = QHBoxLayout()
+        self.titlepos = QComboBox()
+        self.titlepos.addItems(["Top", "Center", "Bottom"])
+        self.titlepos.setCurrentText("Center")
+        trow.addWidget(self.titlepos)
+        v.addLayout(trow)
+        self.tsize = self._slider(v, "Title size", 24, 140, 72, lambda x: f"{x}px")
+
+        v.addWidget(QLabel("Lyrics / text", objectName="h1"))
+        v.addWidget(QLabel("one line per cue:  start  end  text", objectName="dim"))
         self.lyrics_edit = QPlainTextEdit()
         self.lyrics_edit.setPlaceholderText("0  4  My first lyric line\n4  8  Second line\n8  14  Chorus")
-        v.addWidget(self.lyrics_edit, 1)
-        info = QLabel("Beats / BPM appear on the timeline after import.")
-        info.setObjectName("dim")
-        info.setWordWrap(True)
-        v.addWidget(info)
+        self.lyrics_edit.setMinimumHeight(90)
+        v.addWidget(self.lyrics_edit)
+
         self.bpm_lbl = QLabel("BPM: —")
         self.bpm_lbl.setStyleSheet(f"color:{AMBER};")
         v.addWidget(self.bpm_lbl)
+        v.addStretch()
+        scroll.setWidget(content)
+        outer.addWidget(scroll)
         return f
 
     # ---- media / import ----
@@ -801,8 +978,7 @@ class ClipMusic(QMainWindow):
         if ext in (".mp3", ".wav", ".flac", ".m4a", ".ogg", ".aac"):
             self._load_audio(path)
         elif ext in (".mp4", ".mov", ".mkv", ".avi", ".webm", ".jpg", ".jpeg", ".png"):
-            if not self.bg_path:
-                self._apply_background(path)
+            self._apply_background(path)
 
     def _load_audio(self, path):
         self.audio_path = path
@@ -821,20 +997,34 @@ class ClipMusic(QMainWindow):
     def _set_background(self):
         if not self._ensure_ffmpeg():
             return
-        f, _ = QFileDialog.getOpenFileName(
-            self, "Background", "", "Image/Video (*.jpg *.jpeg *.png *.mp4 *.mov *.mkv)")
-        if f:
+        fs, _ = QFileDialog.getOpenFileNames(
+            self, "Add background(s) / clip(s)", "",
+            "Image/Video (*.jpg *.jpeg *.png *.mp4 *.mov *.mkv *.webm)")
+        for f in fs:
             self._add_media_item(f)
             self._apply_background(f)
 
     def _apply_background(self, path):
-        self.bg_path = path
+        if path not in self.bg_paths:
+            self.bg_paths.append(path)
+        self.bg_path = self.bg_paths[0]
         vtrack = next(t for t in self.project.tracks if t.kind == "video")
-        d = self.project.duration or probe_duration(path) or 10
-        vtrack.clips = [Clip(path, 0, d, os.path.basename(path), "#3b82f6",
-                             "video" if is_video(path) else "image")]
+        n = len(self.bg_paths)
+        total = self.project.duration or probe_duration(path) or 10
+        seg = total / n
+        vtrack.clips = [Clip(p, i * seg, seg, os.path.basename(p), "#3b82f6",
+                             "video" if is_video(p) else "image")
+                        for i, p in enumerate(self.bg_paths)]
         self._refresh_timeline()
         self._update_preview()
+
+    def _clear_backgrounds(self):
+        self.bg_paths = []
+        self.bg_path = None
+        vtrack = next(t for t in self.project.tracks if t.kind == "video")
+        vtrack.clips = []
+        self._refresh_timeline()
+        self.preview.setText("Backgrounds cleared. Add images/clips for the video layer.")
 
     def _stem_split(self):
         if not self.audio_path:
@@ -1146,10 +1336,21 @@ class ClipMusic(QMainWindow):
             out = f"{base}_{i}.{ext}"
             i += 1
         spec = RenderSpec(
-            audio=self.audio_path, background=self.bg_path,
+            audio=self.audio_path, background=None,
+            backgrounds=list(self.bg_paths),
             visualiser=self.vis_combo.currentText(),
             width=W or 1920, height=H or 1080, fps=FPS or 30,
-            lyrics=self._parse_lyrics(), audio_only=audio_only, out_ext=ext)
+            lyrics=self._parse_lyrics(), audio_only=audio_only, out_ext=ext,
+            effect=self.fx_combo.currentText(),
+            brightness=self.bri.value() / 100.0,
+            contrast=self.con.value() / 100.0,
+            saturation=self.sat.value() / 100.0,
+            fade_in=self.fin.value() / 10.0, fade_out=self.fout.value() / 10.0,
+            ken_burns=self.kb_check.isChecked(),
+            transition=self.trans_combo.currentText(),
+            title=self.title_edit.text(),
+            title_pos=self.titlepos.currentText().lower(),
+            title_size=self.tsize.value())
         self._cur_preset = (name, W, H, FPS, ext, audio_only)
         self._set_state("rendering")
         self.render_bar.setValue(0)

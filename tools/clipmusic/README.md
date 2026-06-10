@@ -19,6 +19,15 @@ which cross‑builds to a Windows `.exe`.
 - **Real export** — renders an actual music‑video **MP4** with ffmpeg:
   background image/video + an **audio‑reactive visualiser** (Spectrum, CQT bars,
   Frequencies, Waveform) + **timed lyric overlays**. Also audio‑only MP3/WAV.
+- **Clipchamp‑style edit features** (all baked into the render):
+  - **Effects / looks**: B&W, Vintage, Sepia, Vignette, Blur, Sharpen, Chromatic,
+    Film Grain, Warm, Cool, Invert, Glow.
+  - **Adjust colours**: brightness / contrast / saturation sliders.
+  - **Fade** in / out (video + audio).
+  - **Ken Burns** slow‑zoom for still images.
+  - **Slideshow**: add 2+ images/clips → crossfaded sequence with selectable
+    **transitions** (fade, dissolve, wipe, slide, circle, radial…).
+  - **Title** card (position + size) on top of timed lyrics.
 - **Export & Share center** (full spec) — three render states (rendering →
   "Your video is ready." with thumbnail + size/duration/resolution/path →
   share enabled), a **"Download your video"** panel with *Save to your computer*
