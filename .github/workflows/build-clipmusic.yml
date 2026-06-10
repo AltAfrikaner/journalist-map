@@ -36,6 +36,7 @@ jobs:
           pyinstaller --onefile --windowed --noconfirm
           --name ClipMusic
           --collect-submodules PyQt5
+          --hidden-import PyQt5.QtMultimedia
           clipmusic.py
 
       - name: Show output

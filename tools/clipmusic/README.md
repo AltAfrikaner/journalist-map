@@ -19,6 +19,15 @@ which cross‑builds to a Windows `.exe`.
 - **Real export** — renders an actual music‑video **MP4** with ffmpeg:
   background image/video + an **audio‑reactive visualiser** (Spectrum, CQT bars,
   Frequencies, Waveform) + **timed lyric overlays**. Also audio‑only MP3/WAV.
+- **Preview transport** — Play / Stop with a moving playhead; plays the master
+  song (QtMultimedia) and scrubs by clicking the timeline. Falls back to a
+  silent moving playhead if QtMultimedia isn't present.
+- **Editable timeline** — click to select a clip; **drag to move**, drag an edge
+  to **trim**, and **Split / Duplicate / Delete** the selection.
+- **Beat tools** — **Analyze Beat** (librosa if installed, else a steady‑BPM
+  grid) or **Set BPM** manually; beat markers draw on the timeline.
+- **⚡ Cut to Beat** — auto‑arranges your clips to switch every 1 / 2 / 4 / 8
+  beats (segment count capped to stay light); then fine‑tune by hand.
 - **Clipchamp‑style edit features** (all baked into the render):
   - **Effects / looks**: B&W, Vintage, Sepia, Vignette, Blur, Sharpen, Chromatic,
     Film Grain, Warm, Cool, Invert, Glow.

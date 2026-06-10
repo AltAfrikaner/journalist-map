@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import os
 import sys
+import json
+import time
 import shutil
 import struct
 import subprocess
@@ -26,7 +28,7 @@ from dataclasses import dataclass, field
 
 try:
     import numpy as np
-    from PyQt5.QtCore import Qt, QThread, pyqtSignal, QRectF, QTimer
+    from PyQt5.QtCore import Qt, QThread, pyqtSignal, QRectF, QTimer, QUrl
     from PyQt5.QtGui import (QColor, QPainter, QPen, QBrush, QFont, QLinearGradient,
                              QPixmap, QPalette)
     from PyQt5.QtWidgets import (
@@ -34,10 +36,16 @@ try:
         QPushButton, QFileDialog, QComboBox, QListWidget, QListWidgetItem,
         QStackedWidget, QProgressBar, QMessageBox, QLineEdit, QPlainTextEdit,
         QScrollArea, QFrame, QSizePolicy, QGridLayout, QToolButton, QCheckBox,
-        QSlider)
+        QSlider, QInputDialog)
 except ImportError as exc:  # noqa: BLE001
     print(f"\n  Missing dependency: {exc}\n  pip install PyQt5 numpy\n")
     sys.exit(1)
+
+try:  # audio playback for the preview transport (part of PyQt5, optional)
+    from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+    _HAS_MEDIA = True
+except Exception:  # noqa: BLE001
+    _HAS_MEDIA = False
 
 
 APP_NAME = "ClipMusic"
@@ -297,6 +305,7 @@ class RenderSpec:
     title_pos: str = "center"
     title_size: int = 72
     hwaccel: str = "off"   # off | nvenc | qsv | amf | videotoolbox | auto
+    seg_durations: list = field(default_factory=list)  # per-clip slideshow lengths
 
 
 def _venc_args(hw: str, crf: int) -> list:
@@ -353,22 +362,30 @@ def build_render_cmd(spec: RenderSpec, out: str) -> list:
             filt.append(f"[0:v]{scale_crop()},format=rgba[bg]")
     else:
         n = len(bgs)
-        xf = 0.8
-        seg = (dur + (n - 1) * xf) / n
+        if spec.seg_durations and len(spec.seg_durations) == n:
+            segdurs = [max(0.3, float(d)) for d in spec.seg_durations]
+            total = sum(segdurs)
+            if total < dur:                      # pad the last clip to fill the song
+                segdurs[-1] += dur - total
+        else:
+            segdurs = [dur / n] * n
+        xf = max(0.05, min(0.6, min(segdurs) / 3))
         for i, p in enumerate(bgs):
+            t_in = segdurs[i] + xf
             if is_video(p):
-                inputs += ["-stream_loop", "-1", "-t", f"{seg:.3f}", "-i", p]
+                inputs += ["-stream_loop", "-1", "-t", f"{t_in:.3f}", "-i", p]
             else:
-                inputs += ["-loop", "1", "-framerate", str(FPS), "-t", f"{seg:.3f}", "-i", p]
+                inputs += ["-loop", "1", "-framerate", str(FPS), "-t", f"{t_in:.3f}", "-i", p]
             filt.append(f"[{i}:v]{scale_crop()},fps={FPS},format=yuv420p,"
                         f"setpts=PTS-STARTPTS[s{i}]")
         n_bg = n
         trans = spec.transition if spec.transition in TRANSITIONS else "fade"
-        prev = "s0"
+        prev, cum = "s0", 0.0
         for k in range(1, n):
+            cum += segdurs[k - 1]
+            off = max(0.05, cum - k * xf)
             lab = "bg" if k == n - 1 else f"x{k}"
-            off = k * (seg - xf)
-            filt.append(f"[{prev}][s{k}]xfade=transition={trans}:duration={xf}:"
+            filt.append(f"[{prev}][s{k}]xfade=transition={trans}:duration={xf:.3f}:"
                         f"offset={off:.3f}[{lab}]")
             prev = lab
 
@@ -593,10 +610,13 @@ class Project:
 # ═══════════════════════════════════════════════════════════════════════════
 class TimelineWidget(QWidget):
     playhead_moved = pyqtSignal(float)
+    clip_selected = pyqtSignal(int, int)
+    clips_changed = pyqtSignal()
 
     HEADER_W = 140
     RULER_H = 22
     ROW_H = 40
+    EDITABLE = ("video",)
 
     def __init__(self, project: Project):
         super().__init__()
@@ -604,8 +624,23 @@ class TimelineWidget(QWidget):
         self.zoom = 60.0  # px/sec
         self.playhead = 0.0
         self.wave_cache = {}  # source -> peaks
+        self.selected = None  # (track_idx, clip_idx)
+        self._drag = None
         self.setMinimumHeight(180)
         self.setMouseTracking(True)
+
+    def _row_at(self, y):
+        if y < self.RULER_H:
+            return -1
+        r = (y - self.RULER_H) // self.ROW_H
+        return r if 0 <= r < len(self.project.tracks) else -1
+
+    def _clip_at(self, ti, ex):
+        for ci, c in enumerate(self.project.tracks[ti].clips):
+            x0, x1 = self._x(c.start), self._x(c.start + c.duration)
+            if x0 - 2 <= ex <= x1 + 2:
+                return ci, x0, x1
+        return None
 
     def set_zoom(self, z):
         self.zoom = max(10.0, min(400.0, z))
@@ -623,16 +658,50 @@ class TimelineWidget(QWidget):
         return max(0.0, (x - self.HEADER_W) / self.zoom)
 
     def mousePressEvent(self, ev):
-        if ev.x() > self.HEADER_W:
-            self.playhead = min(self.project.duration, self._t(ev.x()))
+        ex, ey = ev.x(), ev.y()
+        ti = self._row_at(ey)
+        if ti >= 0 and ex > self.HEADER_W:
+            hit = self._clip_at(ti, ex)
+            if hit:
+                ci, x0, x1 = hit
+                self.selected = (ti, ci)
+                self.clip_selected.emit(ti, ci)
+                if self.project.tracks[ti].kind in self.EDITABLE:
+                    c = self.project.tracks[ti].clips[ci]
+                    mode = "trim_l" if ex - x0 < 7 else ("trim_r" if x1 - ex < 7 else "move")
+                    self._drag = (ti, ci, mode, ex, c.start, c.duration)
+                self.update()
+                return
+        if ex > self.HEADER_W:
+            self.playhead = min(self.project.duration, self._t(ex))
             self.playhead_moved.emit(self.playhead)
             self.update()
 
     def mouseMoveEvent(self, ev):
-        if ev.buttons() & Qt.LeftButton and ev.x() > self.HEADER_W:
+        if self._drag and (ev.buttons() & Qt.LeftButton):
+            ti, ci, mode, grabx, s0, d0 = self._drag
+            c = self.project.tracks[ti].clips[ci]
+            dx = (ev.x() - grabx) / self.zoom
+            if mode == "move":
+                c.start = max(0.0, s0 + dx)
+            elif mode == "trim_l":
+                ns = max(0.0, s0 + dx)
+                nd = d0 - (ns - s0)
+                if nd >= 0.1:
+                    c.start, c.duration = ns, nd
+            elif mode == "trim_r":
+                c.duration = max(0.1, d0 + dx)
+            self.update()
+            return
+        if (ev.buttons() & Qt.LeftButton) and ev.x() > self.HEADER_W:
             self.playhead = min(self.project.duration, self._t(ev.x()))
             self.playhead_moved.emit(self.playhead)
             self.update()
+
+    def mouseReleaseEvent(self, _ev):
+        if self._drag:
+            self._drag = None
+            self.clips_changed.emit()
 
     def paintEvent(self, _ev):
         qp = QPainter(self)
@@ -663,7 +732,7 @@ class TimelineWidget(QWidget):
 
         # tracks
         y = self.RULER_H
-        for tr in self.project.tracks:
+        for ti, tr in enumerate(self.project.tracks):
             qp.fillRect(0, y, self.HEADER_W, self.ROW_H, QColor(PANEL))
             qp.fillRect(0, y, 4, self.ROW_H, QColor(tr.color))
             qp.setPen(QPen(QColor(TEXT)))
@@ -671,12 +740,14 @@ class TimelineWidget(QWidget):
             qp.drawText(12, y + self.ROW_H // 2 + 4, tr.name)
             qp.setPen(QPen(QColor(BORDER)))
             qp.drawLine(0, y + self.ROW_H, W, y + self.ROW_H)
-            for clip in tr.clips:
+            for ci, clip in enumerate(tr.clips):
                 cx, cw = int(self._x(clip.start)), int(clip.duration * self.zoom)
                 rect = QRectF(cx, y + 4, max(cw, 6), self.ROW_H - 8)
                 col = QColor(clip.color)
-                qp.setBrush(QBrush(QColor(col.red(), col.green(), col.blue(), 60)))
-                qp.setPen(QPen(col, 1))
+                sel = self.selected == (ti, ci)
+                qp.setBrush(QBrush(QColor(col.red(), col.green(), col.blue(),
+                                          110 if sel else 60)))
+                qp.setPen(QPen(QColor("#ffffff") if sel else col, 2 if sel else 1))
                 qp.drawRoundedRect(rect, 4, 4)
                 if tr.kind == "audio":
                     self._draw_wave(qp, clip, rect)
@@ -777,8 +848,18 @@ class ClipMusic(QMainWindow):
         self.scratch_dir = os.path.join(tempfile.gettempdir(), "clipmusic_scratch")
         os.makedirs(self.scratch_dir, exist_ok=True)
         self.worker = None
+        self.player = QMediaPlayer() if _HAS_MEDIA else None
+        if self.player:
+            self.player.positionChanged.connect(self._on_play_pos)
+            self.player.stateChanged.connect(self._on_play_state)
+        self._media_loaded = None
+        self._pv_t = -1
+        self.play_timer = QTimer(self)
+        self.play_timer.timeout.connect(self._tick)
         self.setAcceptDrops(True)
         self._build()
+        self.timeline.clips_changed.connect(self._on_clips_changed)
+        self.timeline.clip_selected.connect(self._on_clip_selected)
         self._refresh_timeline()
 
     # ---- layout ----
@@ -828,12 +909,22 @@ class ClipMusic(QMainWindow):
         tlv = QVBoxLayout(tl_wrap)
         tlv.setContentsMargins(8, 4, 8, 8)
         bar2 = QHBoxLayout()
-        for txt in ("Split", "Duplicate", "Delete"):
+        for txt, fn in (("Split", self._split_clip), ("Duplicate", self._dup_clip),
+                        ("Delete", self._del_clip)):
             b = QPushButton(txt)
+            b.clicked.connect(fn)
             bar2.addWidget(b)
-        bs = QPushButton("⚡ Beat Sync")
-        bs.setStyleSheet(f"color:{AMBER};")
-        bar2.addWidget(bs)
+        bar2.addWidget(QLabel(" ", objectName="dim"))
+        ab = QPushButton("Analyze Beat")
+        ab.clicked.connect(self._analyze_beat)
+        sb = QPushButton("Set BPM")
+        sb.clicked.connect(self._set_bpm)
+        ctb = QPushButton("⚡ Cut to Beat")
+        ctb.setStyleSheet(f"color:{AMBER}; font-weight:700;")
+        ctb.clicked.connect(self._cut_to_beat)
+        bar2.addWidget(ab)
+        bar2.addWidget(sb)
+        bar2.addWidget(ctb)
         bar2.addStretch()
         zo = QPushButton("–")
         zo.clicked.connect(lambda: self.timeline.set_zoom(self.timeline.zoom - 15))
@@ -897,6 +988,19 @@ class ClipMusic(QMainWindow):
         self.preview.setMinimumHeight(280)
         self.preview.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         v.addWidget(self.preview, 1)
+        tp = QHBoxLayout()
+        tp.addStretch()
+        self.play_btn = QPushButton("▶  Play")
+        self.play_btn.setObjectName("accent")
+        self.play_btn.clicked.connect(self._toggle_play)
+        stop_btn = QPushButton("⏹  Stop")
+        stop_btn.clicked.connect(self._stop_play)
+        tp.addWidget(self.play_btn)
+        tp.addWidget(stop_btn)
+        tp.addStretch()
+        if not _HAS_MEDIA:
+            tp.addWidget(QLabel("(silent playhead — QtMultimedia not available)", objectName="dim"))
+        v.addLayout(tp)
         return f
 
     def _slider(self, layout, label, lo, hi, val, fmt):
@@ -1154,6 +1258,8 @@ class ClipMusic(QMainWindow):
     def _on_playhead(self, t):
         self._update_time()
         self._update_preview()
+        if self.player and self.player.state() == QMediaPlayer.PlayingState:
+            self.player.setPosition(int(t * 1000))
 
     def _update_time(self):
         def f(s):
@@ -1185,6 +1291,204 @@ class ClipMusic(QMainWindow):
                 except ValueError:
                     pass
         return out
+
+    # ── timeline clips: source of truth for the rendered video layer ──
+    def _video_track(self):
+        return next(t for t in self.project.tracks if t.kind == "video")
+
+    def _video_segments(self):
+        clips = sorted(self._video_track().clips, key=lambda c: c.start)
+        return [(c.source, c.duration) for c in clips]
+
+    def _selected_clip(self):
+        sel = self.timeline.selected
+        if not sel:
+            return None
+        ti, ci = sel
+        if ti < len(self.project.tracks) and ci < len(self.project.tracks[ti].clips):
+            return self.project.tracks[ti], ci
+        return None
+
+    def _on_clip_selected(self, ti, ci):
+        try:
+            c = self.project.tracks[ti].clips[ci]
+            self.statusBar().showMessage(f"Selected: {c.label}  ·  {c.duration:.2f}s", 4000)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _on_clips_changed(self):
+        vt = self._video_track()
+        if vt.clips:
+            self.bg_paths = [c.source for c in sorted(vt.clips, key=lambda c: c.start)]
+            self.bg_path = self.bg_paths[0]
+        self._update_preview()
+
+    def _split_clip(self):
+        s = self._selected_clip()
+        if not s or s[0].kind not in self.timeline.EDITABLE:
+            QMessageBox.information(self, "Split", "Select a video/image clip first.")
+            return
+        tr, ci = s
+        c = tr.clips[ci]
+        p = self.timeline.playhead
+        if not (c.start + 0.1 < p < c.start + c.duration - 0.1):
+            QMessageBox.information(self, "Split", "Move the playhead inside the selected clip.")
+            return
+        left = p - c.start
+        right = (c.start + c.duration) - p
+        c.duration = left
+        tr.clips.insert(ci + 1, Clip(c.source, p, right, c.label, c.color, c.kind))
+        self.timeline.update()
+        self._on_clips_changed()
+
+    def _dup_clip(self):
+        s = self._selected_clip()
+        if not s:
+            return
+        tr, ci = s
+        c = tr.clips[ci]
+        tr.clips.insert(ci + 1, Clip(c.source, c.start + c.duration, c.duration,
+                                     c.label, c.color, c.kind))
+        self.timeline.update()
+        self._on_clips_changed()
+
+    def _del_clip(self):
+        s = self._selected_clip()
+        if not s:
+            return
+        tr, ci = s
+        del tr.clips[ci]
+        self.timeline.selected = None
+        self.timeline.update()
+        self._on_clips_changed()
+
+    # ── beat tools ──
+    def _analyze_beat(self):
+        if not self.audio_path:
+            QMessageBox.information(self, "Analyze Beat", "Import a song first.")
+            return
+        try:
+            import librosa  # noqa: F401
+            have = True
+        except Exception:  # noqa: BLE001
+            have = False
+        bpm, beats = detect_beats(self._resolve_audio())
+        self.project.bpm, self.project.beats = bpm, beats
+        self.bpm_lbl.setText(f"BPM: {bpm:g}  ·  {len(beats)} beats")
+        self._refresh_timeline()
+        if have:
+            QMessageBox.information(self, "Analyze Beat", f"Detected {bpm:g} BPM, {len(beats)} beats.")
+        else:
+            QMessageBox.information(self, "Analyze Beat",
+                f"librosa isn't installed — used a steady {bpm:g} BPM grid.\n"
+                "Install librosa for true detection, or use Set BPM.")
+
+    def _set_bpm(self):
+        bpm, ok = QInputDialog.getDouble(self, "Set BPM", "Beats per minute:",
+                                         self.project.bpm or 120.0, 40, 300, 1)
+        if not ok:
+            return
+        dur = self.project.duration or 60.0
+        step = 60.0 / bpm
+        self.project.bpm = bpm
+        self.project.beats = [i * step for i in range(int(dur / step) + 1)]
+        self.bpm_lbl.setText(f"BPM: {bpm:g}  ·  {len(self.project.beats)} beats (manual)")
+        self._refresh_timeline()
+
+    def _cut_to_beat(self):
+        if not self.project.beats:
+            QMessageBox.information(self, "Cut to Beat", "Run Analyze Beat or Set BPM first.")
+            return
+        if not self.bg_paths:
+            QMessageBox.information(self, "Cut to Beat", "Add at least one video/image clip first.")
+            return
+        item, ok = QInputDialog.getItem(self, "Cut to Beat", "Change clip every:",
+                                        ["Every beat", "Every 2 beats", "Every 4 beats",
+                                         "Every 8 beats"], 2, False)
+        if not ok:
+            return
+        n = {"Every beat": 1, "Every 2 beats": 2, "Every 4 beats": 4, "Every 8 beats": 8}[item]
+        beats = [b for b in self.project.beats if b < self.project.duration]
+
+        def cuts_for(step):
+            c = beats[::step]
+            return ([0.0] + c) if (not c or c[0] > 0.01) else c
+        cuts = cuts_for(n)
+        while len(cuts) > 24 and n < 64:   # keep it light: cap the segment count
+            n *= 2
+            cuts = cuts_for(n)
+        cuts = cuts[:24]
+        bounds = cuts + [self.project.duration]
+        srcs = list(self.bg_paths)
+        clips = []
+        for i in range(len(bounds) - 1):
+            d = max(0.2, bounds[i + 1] - bounds[i])
+            p = srcs[i % len(srcs)]
+            clips.append(Clip(p, bounds[i], d, os.path.basename(p), "#3b82f6",
+                              "video" if is_video(p) else "image"))
+        self._video_track().clips = clips
+        self._refresh_timeline()
+        QMessageBox.information(self, "Cut to Beat",
+            f"Arranged {len(clips)} clips, switching every {n}-beat at {self.project.bpm:g} BPM. "
+            "Drag/trim clips on the timeline to fine-tune, then Export.")
+
+    # ── preview transport ──
+    def _toggle_play(self):
+        if not self.audio_path:
+            QMessageBox.information(self, "Play", "Import a song first.")
+            return
+        if self.player:
+            master = self._resolve_audio()
+            if self._media_loaded != master:
+                self.player.setMedia(QMediaContent(QUrl.fromLocalFile(master)))
+                self._media_loaded = master
+            if self.player.state() == QMediaPlayer.PlayingState:
+                self.player.pause()
+            else:
+                self.player.setPosition(int(self.timeline.playhead * 1000))
+                self.player.play()
+        else:
+            if self.play_timer.isActive():
+                self.play_timer.stop()
+                self.play_btn.setText("▶  Play")
+            else:
+                self._t_last = time.time()
+                self.play_timer.start(50)
+                self.play_btn.setText("⏸  Pause")
+
+    def _stop_play(self):
+        if self.player:
+            self.player.stop()
+        self.play_timer.stop()
+        self.play_btn.setText("▶  Play")
+        self.timeline.playhead = 0.0
+        self._update_time()
+        self.timeline.update()
+        self._update_preview()
+
+    def _on_play_pos(self, ms):
+        t = ms / 1000.0
+        self.timeline.playhead = min(self.project.duration, t)
+        self.timeline.update()
+        self._update_time()
+        if int(t * 2) != self._pv_t:
+            self._pv_t = int(t * 2)
+            self._update_preview()
+
+    def _on_play_state(self, *_):
+        playing = self.player and self.player.state() == QMediaPlayer.PlayingState
+        self.play_btn.setText("⏸  Pause" if playing else "▶  Play")
+
+    def _tick(self):
+        now = time.time()
+        self.timeline.playhead = min(self.project.duration,
+                                     self.timeline.playhead + (now - self._t_last))
+        self._t_last = now
+        self.timeline.update()
+        self._update_time()
+        if self.timeline.playhead >= self.project.duration:
+            self.play_timer.stop()
+            self.play_btn.setText("▶  Play")
 
     # ═══ EXPORT & SHARE CENTER ═══
     def _default_export_dir(self):
@@ -1434,9 +1738,11 @@ class ClipMusic(QMainWindow):
         while os.path.exists(out):
             out = f"{base}_{i}.{ext}"
             i += 1
+        segs = self._video_segments()
         spec = RenderSpec(
             audio=self._resolve_audio(), background=None,
-            backgrounds=list(self.bg_paths),
+            backgrounds=[s[0] for s in segs],
+            seg_durations=[s[1] for s in segs],
             visualiser=self.vis_combo.currentText(),
             width=W or 1920, height=H or 1080, fps=FPS or 30,
             lyrics=self._parse_lyrics(), audio_only=audio_only, out_ext=ext,
