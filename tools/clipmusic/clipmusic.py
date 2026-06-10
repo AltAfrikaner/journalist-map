@@ -322,6 +322,16 @@ class RenderWorker(QThread):
     def __init__(self, spec: RenderSpec, out: str):
         super().__init__()
         self.spec, self.out = spec, out
+        self._proc = None
+        self._cancelled = False
+
+    def cancel(self):
+        self._cancelled = True
+        try:
+            if self._proc:
+                self._proc.terminate()
+        except Exception:  # noqa: BLE001
+            pass
 
     def run(self):
         import re
@@ -329,23 +339,68 @@ class RenderWorker(QThread):
         cmd = [ffmpeg_path(), "-hide_banner", "-nostdin",
                *build_render_cmd(self.spec, self.out), "-progress", "pipe:1", "-nostats"]
         try:
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 text=True, creationflags=_NO_WINDOW)
+            self._proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE, text=True,
+                                          creationflags=_NO_WINDOW)
         except Exception as exc:  # noqa: BLE001
             self.done.emit(False, str(exc))
             return
+        p = self._proc
         for line in p.stdout:
             m = re.match(r"out_time_ms=(\d+)", line.strip())
             if m:
                 self.progress.emit(min(1.0, (int(m.group(1)) / 1e6) / dur))
         err = p.stderr.read() if p.stderr else ""
         p.wait()
-        if p.returncode == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
+        if self._cancelled:
+            try:
+                if os.path.exists(self.out):
+                    os.remove(self.out)
+            except OSError:
+                pass
+            self.done.emit(False, "Cancelled.")
+        elif p.returncode == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
             self.progress.emit(1.0)
             self.done.emit(True, self.out)
         else:
             tail = (err.strip().splitlines() or ["render failed"])[-1]
             self.done.emit(False, tail)
+
+
+class StemWorker(QThread):
+    """Run Demucs stem separation if it is installed (optional AI feature)."""
+    done = pyqtSignal(bool, str, list)  # ok, message, [stem files]
+
+    def __init__(self, audio: str):
+        super().__init__()
+        self.audio = audio
+
+    def run(self):
+        exe = shutil.which("demucs")
+        cmd = [exe] if exe else [sys.executable, "-m", "demucs"]
+        outdir = os.path.join(_user_dir(), "stems")
+        os.makedirs(outdir, exist_ok=True)
+        try:
+            r = subprocess.run([*cmd, "--two-stems=vocals", "-o", outdir, self.audio],
+                               capture_output=True, text=True, creationflags=_NO_WINDOW)
+        except FileNotFoundError:
+            self.done.emit(False, "Demucs is not installed (pip install demucs torch).", [])
+            return
+        if r.returncode != 0:
+            tail = (r.stderr.strip().splitlines() or ["demucs failed"])[-1]
+            self.done.emit(False, tail, [])
+            return
+        stem = os.path.splitext(os.path.basename(self.audio))[0]
+        found = []
+        for root, _d, files in os.walk(outdir):
+            if stem in root:
+                for f in files:
+                    if f.endswith(".wav"):
+                        found.append(os.path.join(root, f))
+        if found:
+            self.done.emit(True, "Stems created.", found)
+        else:
+            self.done.emit(False, "No stems produced.", [])
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -519,13 +574,31 @@ EXPORT_PRESETS = [
     ("Audio only — WAV", 0, 0, 0, "wav", True),
 ]
 
+# "Save to your computer" is always first; online destinations are V1 helpers
+# (render locally, then open the platform — never auto-upload).
 DESTINATIONS = [
-    ("Save to your computer", "computer", None, GREEN),
-    ("Upload to YouTube", "youtube", "https://www.youtube.com/upload", "#ff0000"),
-    ("Send to TikTok", "tiktok", "https://www.tiktok.com/upload", "#00f2ea"),
-    ("Save to Google Drive", "gdrive", "https://drive.google.com", "#4285F4"),
-    ("Save to Dropbox", "dropbox", "https://www.dropbox.com/home", "#0061FF"),
-    ("Share to LinkedIn", "linkedin", "https://www.linkedin.com/feed", "#0A66C2"),
+    {"id": "computer", "name": "Save to your computer", "color": GREEN, "net": False,
+     "url": None, "subtext": "Save the rendered MP4 to a folder on your machine."},
+    {"id": "gdrive", "name": "Save to Google Drive", "color": "#4285F4", "net": True,
+     "url": "https://drive.google.com", "subtext": "Upload your exported video to your Drive account.",
+     "msg": "Your video is ready. Google Drive will open in your browser. "
+            "Drag the exported file into Drive."},
+    {"id": "youtube", "name": "Upload to YouTube", "color": "#ff0000", "net": True,
+     "url": "https://www.youtube.com/upload", "subtext": "Export your music video and upload it to your channel.",
+     "msg": "Your video is ready. YouTube Studio will open in your browser. "
+            "Upload the exported file from the folder shown."},
+    {"id": "tiktok", "name": "Send to TikTok", "color": "#00f2ea", "net": True,
+     "url": "https://www.tiktok.com/upload", "subtext": "Export a vertical version for TikTok.",
+     "msg": "Your vertical video is ready. TikTok will open in your browser. "
+            "Upload the exported file manually."},
+    {"id": "dropbox", "name": "Save to Dropbox", "color": "#0061FF", "net": True,
+     "url": "https://www.dropbox.com/home", "subtext": "Upload your exported music video to Dropbox.",
+     "msg": "Your video is ready. Dropbox will open in your browser. "
+            "Upload the exported file manually."},
+    {"id": "linkedin", "name": "Share to LinkedIn", "color": "#0A66C2", "net": True,
+     "url": "https://www.linkedin.com/feed/", "subtext": "Open LinkedIn and use your exported video.",
+     "msg": "Your video is ready. LinkedIn will open in your browser. "
+            "Add the exported file to your post."},
 ]
 
 
@@ -636,6 +709,10 @@ class ClipMusic(QMainWindow):
         bg = QPushButton("Set background image/video")
         bg.clicked.connect(self._set_background)
         v.addWidget(bg)
+        stem = QPushButton("✦ AI Stem Split (Demucs)")
+        stem.setObjectName("purple")
+        stem.clicked.connect(self._stem_split)
+        v.addWidget(stem)
         return f
 
     def _preview_panel(self):
@@ -759,6 +836,41 @@ class ClipMusic(QMainWindow):
         self._refresh_timeline()
         self._update_preview()
 
+    def _stem_split(self):
+        if not self.audio_path:
+            QMessageBox.information(self, "AI Stem Split", "Import a music track first.")
+            return
+        if not shutil.which("demucs"):
+            QMessageBox.information(
+                self, "AI Stem Split",
+                "Demucs (local AI stem separation) isn't installed.\n\n"
+                "Install it once:\n    pip install demucs torch torchaudio\n\n"
+                "Then re-run. Stems are separated 100% locally — nothing is uploaded.")
+            return
+        self.statusBar().showMessage("Separating stems with Demucs (local, may take a while)…")
+        self._stem_worker = StemWorker(self.audio_path)
+        self._stem_worker.done.connect(self._stems_done)
+        self._stem_worker.start()
+
+    def _stems_done(self, ok, msg, files):
+        if not ok:
+            self.statusBar().showMessage("Stem split: " + msg, 6000)
+            QMessageBox.information(self, "AI Stem Split", msg)
+            return
+        colors = {"vocals": PURPLE, "no_vocals": "#06b6d4", "drums": "#f97316",
+                  "bass": GREEN, "other": "#64748b"}
+        for fpath in files:
+            nm = os.path.splitext(os.path.basename(fpath))[0]
+            col = colors.get(nm, PURPLE)
+            d = probe_duration(fpath)
+            self.timeline.wave_cache[fpath] = waveform_peaks(fpath, 1200)[0]
+            self.project.tracks.append(Track(
+                f"Stem: {nm}", "audio", col,
+                clips=[Clip(fpath, 0, d, os.path.basename(fpath), col, "audio")]))
+            self._add_media_item(fpath)
+        self._refresh_timeline()
+        self.statusBar().showMessage(f"Added {len(files)} stems as tracks.", 6000)
+
     # ---- drag & drop ----
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls():
@@ -816,7 +928,31 @@ class ClipMusic(QMainWindow):
                     pass
         return out
 
-    # ═══ EXPORT VIEW ═══
+    # ═══ EXPORT & SHARE CENTER ═══
+    def _default_export_dir(self):
+        for base in (os.path.join(os.path.expanduser("~"), "Videos"),
+                     os.path.expanduser("~")):
+            if os.path.isdir(base):
+                try:
+                    d = os.path.join(base, "ClipMusic")
+                    os.makedirs(d, exist_ok=True)
+                    return d
+                except OSError:
+                    pass
+        d = os.path.join(_user_dir(), "exports")
+        os.makedirs(d, exist_ok=True)
+        return d
+
+    @staticmethod
+    def _is_online():
+        import socket
+        try:
+            socket.setdefaulttimeout(1.5)
+            socket.create_connection(("1.1.1.1", 53)).close()
+            return True
+        except Exception:  # noqa: BLE001
+            return False
+
     def _export_view(self):
         w = QWidget()
         root = QVBoxLayout(w)
@@ -836,21 +972,78 @@ class ClipMusic(QMainWindow):
         root.addWidget(head)
 
         body = QHBoxLayout()
-        body.setContentsMargins(16, 16, 16, 16)
-        body.setSpacing(16)
+        body.setContentsMargins(16, 14, 16, 14)
+        body.setSpacing(14)
 
-        # center: presets + render
+        # ── LEFT: preview thumbnail + project details + result ──
+        left = QVBoxLayout()
+        self.exp_thumb = QLabel("Preview")
+        self.exp_thumb.setAlignment(Qt.AlignCenter)
+        self.exp_thumb.setFixedHeight(150)
+        self.exp_thumb.setStyleSheet(
+            f"background:#0f0f1a; border:1px solid {BORDER}; border-radius:6px; color:{DIM};")
+        left.addWidget(self.exp_thumb)
+        left.addWidget(QLabel("Project details", objectName="dim"))
+        self.exp_info = QLabel()
+        self.exp_info.setObjectName("dim")
+        self.exp_info.setWordWrap(True)
+        left.addWidget(self.exp_info)
+        # success block (hidden until complete)
+        self.success_box = QFrame()
+        self.success_box.setStyleSheet(
+            f"background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.3); border-radius:6px;")
+        sbl = QVBoxLayout(self.success_box)
+        self.success_lbl = QLabel("✓ Your video is ready.")
+        self.success_lbl.setStyleSheet(f"color:{GREEN}; font-weight:700;")
+        sbl.addWidget(self.success_lbl)
+        self.path_lbl = QLabel()
+        self.path_lbl.setObjectName("dim")
+        self.path_lbl.setWordWrap(True)
+        sbl.addWidget(self.path_lbl)
+        srow = QHBoxLayout()
+        of = QPushButton("Open folder")
+        of.clicked.connect(lambda: self._open_folder())
+        cp = QPushButton("Copy path")
+        cp.clicked.connect(lambda: self._copy_text(self.last_render or ""))
+        srow.addWidget(of)
+        srow.addWidget(cp)
+        sbl.addLayout(srow)
+        ea = QPushButton("Export another version")
+        ea.clicked.connect(self._export_again)
+        sbl.addWidget(ea)
+        self.success_box.hide()
+        left.addWidget(self.success_box)
+        self.offline_lbl = QLabel("Online sharing is unavailable while offline. Your video "
+                                  "can still be saved to your computer.")
+        self.offline_lbl.setStyleSheet(f"color:{AMBER};")
+        self.offline_lbl.setWordWrap(True)
+        self.offline_lbl.hide()
+        left.addWidget(self.offline_lbl)
+        left.addStretch()
+        lwrap = QFrame()
+        lwrap.setObjectName("panel")
+        lwrap.setFixedWidth(290)
+        lwrap.setLayout(left)
+        body.addWidget(lwrap)
+
+        # ── CENTER: format presets + render ──
         center = QVBoxLayout()
         center.addWidget(QLabel("FORMAT PRESET", objectName="dim"))
         self.preset_list = QListWidget()
         for name, *_ in EXPORT_PRESETS:
             QListWidgetItem(name, self.preset_list)
         self.preset_list.setCurrentRow(0)
+        self.preset_list.currentRowChanged.connect(lambda _: self._update_export_info())
         center.addWidget(self.preset_list, 1)
         self.render_btn = QPushButton("⬇  Render & Export")
         self.render_btn.setObjectName("accent")
         self.render_btn.clicked.connect(self._do_render)
         center.addWidget(self.render_btn)
+        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn.setStyleSheet(f"color:{RED}; border-color:{RED};")
+        self.cancel_btn.clicked.connect(self._cancel_render)
+        self.cancel_btn.hide()
+        center.addWidget(self.cancel_btn)
         self.render_bar = QProgressBar()
         self.render_bar.setValue(0)
         center.addWidget(self.render_bar)
@@ -861,20 +1054,24 @@ class ClipMusic(QMainWindow):
         cwrap.setLayout(center)
         body.addWidget(cwrap, 1)
 
-        # right: destinations
+        # ── RIGHT: download / share destinations ──
         right = QVBoxLayout()
-        right.addWidget(QLabel("Download / share your video", objectName="h1"))
+        right.addWidget(QLabel("Download your video", objectName="h1"))
         self.dest_btns = []
-        for name, did, url, color in DESTINATIONS:
-            b = QPushButton(name)
-            b.setEnabled(did == "computer")
-            b.clicked.connect(lambda _=False, d=did, u=url: self._share(d, u))
-            b.setStyleSheet(f"text-align:left; border-left:3px solid {color};")
+        for dest in DESTINATIONS:
+            b = QPushButton(dest["name"])
+            b.setEnabled(False)
+            b.clicked.connect(lambda _=False, d=dest: self._share(d))
+            b.setStyleSheet(f"text-align:left; border-left:3px solid {dest['color']};")
+            b.setToolTip(dest["subtext"])
             right.addWidget(b)
-            self.dest_btns.append((did, b))
+            self.dest_btns.append((dest, b))
+        self.share_hint = QLabel("Finish rendering before sharing.")
+        self.share_hint.setObjectName("dim")
+        right.addWidget(self.share_hint)
         right.addStretch()
-        priv = QLabel("Only the final MP4 you choose is shared. Source clips, stems and "
-                      "project data never leave your machine. No upload starts without you.")
+        priv = QLabel("Only the final MP4 you choose is shared. Source clips, stems, project "
+                      "files and AI data never leave your machine. No upload starts without you.")
         priv.setObjectName("dim")
         priv.setWordWrap(True)
         right.addWidget(priv)
@@ -893,59 +1090,165 @@ class ClipMusic(QMainWindow):
                                     "Import an audio track first (that's the music).")
             return
         self.stack.setCurrentIndex(1)
+        self._update_export_info()
+        self._refresh_offline()
+
+    def _update_export_info(self):
+        row = max(0, self.preset_list.currentRow())
+        name, W, H, FPS, ext, audio_only = EXPORT_PRESETS[row]
+        dur = self.project.duration
+        res = "audio only" if audio_only else f"{W}×{H} @ {FPS}fps"
+        # rough size estimate (8 Mbps video + 256 kbps audio, or audio bitrate)
+        bps = (256_000 if audio_only else 8_000_000 + 256_000)
+        est = dur * bps / 8 / 1e6
+        self.exp_info.setText(
+            f"Name:  {os.path.basename(self.audio_path) if self.audio_path else '—'}\n"
+            f"Duration:  {int(dur // 60)}:{int(dur % 60):02d}\n"
+            f"Output:  {res}\n"
+            f"Est. size:  ~{est:.0f} MB")
+
+    def _refresh_offline(self):
+        online = self._is_online()
+        self.offline_lbl.setVisible(not online)
+        complete = bool(self.last_render)
+        for dest, b in self.dest_btns:
+            enabled = complete and (not dest["net"] or online)
+            b.setEnabled(enabled)
+
+    def _set_state(self, state):
+        rendering = state == "rendering"
+        complete = state == "complete"
+        self.render_btn.setVisible(not rendering)
+        self.render_btn.setEnabled(not rendering)
+        self.cancel_btn.setVisible(rendering)
+        self.preset_list.setEnabled(not rendering)
+        self.success_box.setVisible(complete)
+        self.share_hint.setVisible(not complete)
+        if complete:
+            self._refresh_offline()
+        else:
+            for _d, b in self.dest_btns:
+                b.setEnabled(False)
 
     def _do_render(self):
         if not self._ensure_ffmpeg() or not self.audio_path:
             return
         row = self.preset_list.currentRow()
         name, W, H, FPS, ext, audio_only = EXPORT_PRESETS[row]
-        default = os.path.splitext(os.path.basename(self.audio_path))[0] + f"_clipmusic.{ext}"
-        out, _ = QFileDialog.getSaveFileName(self, "Save music video", default,
-                                             f"{ext.upper()} (*.{ext})")
-        if not out:
-            return
+        # render to the default export folder FIRST (Clipchamp-style)
+        stem = os.path.splitext(os.path.basename(self.audio_path))[0]
+        out = os.path.join(self._default_export_dir(),
+                           f"{stem}_clipmusic_{W}x{H}.{ext}" if not audio_only
+                           else f"{stem}_clipmusic.{ext}")
+        base = os.path.splitext(out)[0]
+        i = 2
+        while os.path.exists(out):
+            out = f"{base}_{i}.{ext}"
+            i += 1
         spec = RenderSpec(
             audio=self.audio_path, background=self.bg_path,
             visualiser=self.vis_combo.currentText(),
             width=W or 1920, height=H or 1080, fps=FPS or 30,
             lyrics=self._parse_lyrics(), audio_only=audio_only, out_ext=ext)
-        self.render_btn.setEnabled(False)
-        self.render_status.setText(f"Rendering “{name}” locally with ffmpeg…")
+        self._cur_preset = (name, W, H, FPS, ext, audio_only)
+        self._set_state("rendering")
+        self.render_bar.setValue(0)
+        self.render_status.setText("Rendering your music video…")
         self.worker = RenderWorker(spec, out)
         self.worker.progress.connect(lambda fr: self.render_bar.setValue(int(fr * 100)))
         self.worker.done.connect(self._render_done)
         self.worker.start()
 
+    def _cancel_render(self):
+        if self.worker:
+            self.worker.cancel()
+        self.render_status.setText("Cancelling…")
+
     def _render_done(self, ok, msg):
-        self.render_btn.setEnabled(True)
         if ok:
             self.last_render = msg
             self.render_bar.setValue(100)
-            self.render_status.setText(f"✓ Your video is ready:\n{msg}")
-            for did, b in self.dest_btns:
-                b.setEnabled(True)
+            self._set_state("complete")
+            self.path_lbl.setText(msg)
+            sz = os.path.getsize(msg) / 1e6
+            name, W, H, FPS, ext, audio_only = self._cur_preset
+            res = "audio only" if audio_only else f"{W}×{H}"
+            self.render_status.setText("Your video is ready.")
+            self.exp_info.setText(
+                f"Name:  {os.path.basename(msg)}\n"
+                f"Duration:  {int(self.project.duration // 60)}:{int(self.project.duration % 60):02d}\n"
+                f"Resolution:  {res}\nSize:  {sz:.1f} MB\nSaved:  {os.path.dirname(msg)}")
+            self._set_thumb(msg)
         else:
-            self.render_status.setText(f"✗ Render failed: {msg}")
-            QMessageBox.critical(self, "Render failed", msg)
+            self._set_state("idle")
+            if msg != "Cancelled.":
+                self.render_status.setText(f"✗ Render failed: {msg}")
+                QMessageBox.critical(self, "Render failed", msg)
+            else:
+                self.render_status.setText("Render cancelled.")
 
-    def _share(self, did, url):
-        if did == "computer":
-            if self.last_render and os.path.isdir(os.path.dirname(self.last_render)):
-                folder = os.path.dirname(self.last_render)
-                try:
-                    if sys.platform.startswith("win"):
-                        os.startfile(folder)  # type: ignore[attr-defined]
-                    else:
-                        webbrowser.open("file://" + folder)
-                except Exception:  # noqa: BLE001
-                    pass
+    def _set_thumb(self, video):
+        ext = os.path.splitext(video)[1].lower()
+        if ext in (".mp3", ".wav"):
+            self.exp_thumb.setText("♪  audio file")
             return
-        # online: open the platform; the user uploads the rendered file manually (V1)
-        QMessageBox.information(
-            self, "Open " + did.title(),
-            f"Your video is saved at:\n{self.last_render}\n\n{did.title()} will open in your "
-            "browser. Upload the file from that folder. (Nothing is sent automatically.)")
-        webbrowser.open(url)
+        tmp = os.path.join(_user_dir(), "_exp_thumb.jpg")
+        if extract_frame(video, min(1.0, self.project.duration / 2), tmp, 480):
+            pm = QPixmap(tmp)
+            if not pm.isNull():
+                self.exp_thumb.setPixmap(pm.scaled(self.exp_thumb.width(),
+                                                   self.exp_thumb.height(),
+                                                   Qt.KeepAspectRatio, Qt.SmoothTransformation))
+
+    def _open_folder(self):
+        if not self.last_render:
+            return
+        folder = os.path.dirname(self.last_render)
+        try:
+            if sys.platform.startswith("win"):
+                os.startfile(folder)  # type: ignore[attr-defined]
+            elif sys.platform == "darwin":
+                subprocess.Popen(["open", folder])
+            else:
+                webbrowser.open("file://" + folder)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _copy_text(self, text):
+        QApplication.clipboard().setText(text)
+        self.statusBar().showMessage("Copied to clipboard.", 2500) if self.statusBar() else None
+
+    def _export_again(self):
+        self._set_state("idle")
+        self.render_status.setText("Pick a preset, then Render & Export.")
+
+    def _share(self, dest):
+        if not self.last_render:
+            return
+        if dest["id"] == "computer":
+            # let the user save a copy wherever they like, then open the folder
+            target, _ = QFileDialog.getSaveFileName(
+                self, "Save a copy", os.path.basename(self.last_render),
+                f"*{os.path.splitext(self.last_render)[1]}")
+            if target:
+                try:
+                    if os.path.abspath(target) != os.path.abspath(self.last_render):
+                        shutil.copyfile(self.last_render, target)
+                    self.last_render = target
+                    self.path_lbl.setText(target)
+                except Exception as exc:  # noqa: BLE001
+                    QMessageBox.warning(self, "Save", str(exc))
+            self._open_folder()
+            return
+        # online destination: open the platform + the local folder (V1 helper)
+        if dest["id"] == "linkedin":
+            caption = ("🎵 New music video, made with ClipMusic.\n"
+                       "#musicvideo #music #newrelease #indiemusic")
+            self._copy_text(caption)
+        QMessageBox.information(self, dest["name"], dest.get("msg", "") +
+                                f"\n\nFile:\n{self.last_render}")
+        self._open_folder()
+        webbrowser.open(dest["url"])
 
 
 def main():

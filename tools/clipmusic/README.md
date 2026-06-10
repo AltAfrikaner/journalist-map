@@ -19,10 +19,17 @@ which cross‑builds to a Windows `.exe`.
 - **Real export** — renders an actual music‑video **MP4** with ffmpeg:
   background image/video + an **audio‑reactive visualiser** (Spectrum, CQT bars,
   Frequencies, Waveform) + **timed lyric overlays**. Also audio‑only MP3/WAV.
-- **Export & Share center** — presets (1080p / 4K / TikTok‑vertical / Square /
-  LinkedIn / audio‑only), local‑first render with progress, and platform
-  destinations (YouTube/TikTok/Drive/Dropbox/LinkedIn) that open in the browser
-  after the file is saved. Nothing uploads without you.
+- **Export & Share center** (full spec) — three render states (rendering →
+  "Your video is ready." with thumbnail + size/duration/resolution/path →
+  share enabled), a **"Download your video"** panel with *Save to your computer*
+  first, then Google Drive / YouTube / TikTok / Dropbox / LinkedIn. Renders to a
+  local folder first; online destinations are **V1 helpers** (open the platform
+  + the export folder, never auto‑upload), are **disabled while offline**, and
+  LinkedIn copies a ready‑made caption. Presets: 1080p / 4K / TikTok‑vertical /
+  Square / LinkedIn / audio‑only. Cancel, Open folder, Copy path, Export again.
+- **AI Stem Split (Demucs)** — optional, local: if Demucs is installed it splits
+  the track into vocals / instrumental and adds them as new timeline tracks
+  (otherwise it tells you the one‑line install). Nothing is uploaded.
 
 Lyrics format in the properties box — one cue per line: `start  end  text`
 (e.g. `0  4  My first line`).
