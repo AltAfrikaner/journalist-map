@@ -42,11 +42,24 @@ jobs:
         working-directory: tools/clipmusic
         run: dir dist
 
-      - name: Upload artifact
+      - name: Install NSIS
+        run: choco install nsis -y --no-progress
+
+      - name: Build installer
+        working-directory: tools/clipmusic
+        run: makensis installer.nsi
+
+      - name: Show installer
+        working-directory: tools/clipmusic
+        run: dir *.exe
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ClipMusic-windows-exe
-          path: tools/clipmusic/dist/ClipMusic.exe
+          name: ClipMusic-windows
+          path: |
+            tools/clipmusic/dist/ClipMusic.exe
+            tools/clipmusic/ClipMusic-Setup.exe
           if-no-files-found: error
 
       - name: Publish to a downloadable release
@@ -56,8 +69,14 @@ jobs:
           name: ClipMusic latest build
           body: |
             Standalone ClipMusic music-video editor for Windows.
+
+            - **ClipMusic-Setup.exe** — installer (Start Menu + Desktop shortcut, uninstaller).
+            - **ClipMusic.exe** — portable single file, no install.
+
             FFmpeg is fetched automatically on first run (keeps the download small).
-            Built from tools/clipmusic/clipmusic.py.
-          files: tools/clipmusic/dist/ClipMusic.exe
+            Hardware acceleration is optional and OFF by default (auto-falls back to CPU).
+          files: |
+            tools/clipmusic/ClipMusic-Setup.exe
+            tools/clipmusic/dist/ClipMusic.exe
           prerelease: true
           make_latest: false

@@ -36,6 +36,12 @@ which cross‑builds to a Windows `.exe`.
   + the export folder, never auto‑upload), are **disabled while offline**, and
   LinkedIn copies a ready‑made caption. Presets: 1080p / 4K / TikTok‑vertical /
   Square / LinkedIn / audio‑only. Cancel, Open folder, Copy path, Export again.
+- **Digests everything you drop** — multiple songs are concatenated into one
+  master track; multiple images/clips become a crossfaded slideshow.
+- **Light & robust** — single‑pass ffmpeg, no heavy ML by default. **Hardware
+  acceleration is optional and OFF by default** (CPU/libx264, most compatible);
+  pick NVENC/QSV/AMF/Auto and it **auto‑falls back to CPU** if the GPU encoder
+  isn't available. Set a **scratch folder** for temp/intermediate files.
 - **AI Stem Split (Demucs)** — optional, local: if Demucs is installed it splits
   the track into vocals / instrumental and adds them as new timeline tracks
   (otherwise it tells you the one‑line install). Nothing is uploaded.
@@ -50,6 +56,16 @@ pip install PyQt5 numpy          # librosa optional, for real beat detection
 python clipmusic.py
 ```
 FFmpeg is auto‑downloaded on first use (or put `ffmpeg` on PATH).
+
+## Install on Windows (no Python needed)
+
+Download from the **clipmusic-latest** release:
+- **ClipMusic-Setup.exe** — installer (Start Menu + Desktop shortcut, uninstaller).
+- **ClipMusic.exe** — portable single file.
+
+These are built automatically by the GitHub Actions workflow
+(`.github/workflows/build-clipmusic.yml`) on `windows-latest` with PyInstaller +
+NSIS, and published as release assets.
 
 ## Build the Windows .exe
 

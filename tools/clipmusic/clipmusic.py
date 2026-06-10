@@ -296,6 +296,20 @@ class RenderSpec:
     title: str = ""
     title_pos: str = "center"
     title_size: int = 72
+    hwaccel: str = "off"   # off | nvenc | qsv | amf | videotoolbox | auto
+
+
+def _venc_args(hw: str, crf: int) -> list:
+    """Video-encoder args. CPU (libx264) is the safe default; HW is opt-in."""
+    if hw == "nvenc":
+        return ["-c:v", "h264_nvenc", "-preset", "p4", "-rc", "vbr", "-cq", str(crf), "-b:v", "0"]
+    if hw == "qsv":
+        return ["-c:v", "h264_qsv", "-global_quality", str(crf)]
+    if hw == "amf":
+        return ["-c:v", "h264_amf", "-rc", "cqp", "-qp_i", str(crf), "-qp_p", str(crf)]
+    if hw == "videotoolbox":
+        return ["-c:v", "h264_videotoolbox", "-q:v", "60"]
+    return ["-c:v", "libx264", "-crf", str(crf), "-preset", "veryfast"]
 
 
 def build_render_cmd(spec: RenderSpec, out: str) -> list:
@@ -424,18 +438,19 @@ def build_render_cmd(spec: RenderSpec, out: str) -> list:
 
     return [*inputs, "-filter_complex", ";".join(filt),
             "-map", "[outv]", "-map", amap,
-            "-c:v", spec.vcodec, "-crf", str(spec.crf), "-preset", "veryfast",
+            *_venc_args(spec.hwaccel, spec.crf),
             "-c:a", spec.acodec, "-b:a", "256k", "-r", str(FPS), "-t", f"{dur:.3f}",
-            "-movflags", "+faststart", "-y", out]
+            "-max_muxing_queue_size", "1024", "-movflags", "+faststart", "-y", out]
 
 
 class RenderWorker(QThread):
     progress = pyqtSignal(float)   # 0..1
     done = pyqtSignal(bool, str)   # ok, message/path
 
-    def __init__(self, spec: RenderSpec, out: str):
+    def __init__(self, spec: RenderSpec, out: str, scratch: str = None):
         super().__init__()
         self.spec, self.out = spec, out
+        self.scratch = scratch
         self._proc = None
         self._cancelled = False
 
@@ -448,22 +463,51 @@ class RenderWorker(QThread):
             pass
 
     def run(self):
+        hw = self.spec.hwaccel
+        # try the chosen encoder, then always fall back to CPU so a missing GPU
+        # encoder never leaves the user without a video
+        if hw == "auto":
+            order = ["nvenc", "off"]
+        elif hw == "off":
+            order = ["off"]
+        else:
+            order = [hw, "off"]
+        last = "render failed"
+        for attempt in order:
+            if self._cancelled:
+                self.done.emit(False, "Cancelled.")
+                return
+            self.spec.hwaccel = attempt
+            ok, msg = self._run_once()
+            if ok:
+                self.progress.emit(1.0)
+                self.done.emit(True, msg)
+                return
+            if self._cancelled:
+                self.done.emit(False, "Cancelled.")
+                return
+            last = msg
+        self.done.emit(False, last)
+
+    def _run_once(self):
         import re
         dur = probe_duration(self.spec.audio) or 1.0
+        env = dict(os.environ)
+        if self.scratch and os.path.isdir(self.scratch):
+            env["TMPDIR"] = env["TEMP"] = env["TMP"] = self.scratch
         cmd = [ffmpeg_path(), "-hide_banner", "-nostdin",
                *build_render_cmd(self.spec, self.out), "-progress", "pipe:1", "-nostats"]
         try:
             self._proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE, text=True,
-                                          creationflags=_NO_WINDOW)
+                                          creationflags=_NO_WINDOW, env=env)
         except Exception as exc:  # noqa: BLE001
-            self.done.emit(False, str(exc))
-            return
+            return False, str(exc)
         p = self._proc
         for line in p.stdout:
             m = re.match(r"out_time_ms=(\d+)", line.strip())
             if m:
-                self.progress.emit(min(1.0, (int(m.group(1)) / 1e6) / dur))
+                self.progress.emit(min(0.99, (int(m.group(1)) / 1e6) / dur))
         err = p.stderr.read() if p.stderr else ""
         p.wait()
         if self._cancelled:
@@ -472,13 +516,10 @@ class RenderWorker(QThread):
                     os.remove(self.out)
             except OSError:
                 pass
-            self.done.emit(False, "Cancelled.")
-        elif p.returncode == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
-            self.progress.emit(1.0)
-            self.done.emit(True, self.out)
-        else:
-            tail = (err.strip().splitlines() or ["render failed"])[-1]
-            self.done.emit(False, tail)
+            return False, "Cancelled."
+        if p.returncode == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
+            return True, self.out
+        return False, (err.strip().splitlines() or ["render failed"])[-1]
 
 
 class StemWorker(QThread):
@@ -729,9 +770,12 @@ class ClipMusic(QMainWindow):
             Track("Lyrics", "text", GREEN),
         ])
         self.audio_path = None
+        self.audio_paths = []
         self.bg_path = None
         self.bg_paths = []
         self.last_render = None
+        self.scratch_dir = os.path.join(tempfile.gettempdir(), "clipmusic_scratch")
+        os.makedirs(self.scratch_dir, exist_ok=True)
         self.worker = None
         self.setAcceptDrops(True)
         self._build()
@@ -981,18 +1025,42 @@ class ClipMusic(QMainWindow):
             self._apply_background(path)
 
     def _load_audio(self, path):
-        self.audio_path = path
-        dur = probe_duration(path)
-        self.project.duration = max(self.project.duration, dur)
+        if path not in self.audio_paths:
+            self.audio_paths.append(path)
+        self.audio_path = self.audio_paths[0]
         atrack = next(t for t in self.project.tracks if t.kind == "audio")
-        atrack.clips = [Clip(path, 0, dur, os.path.basename(path), ACCENT, "audio")]
-        peaks, _ = waveform_peaks(path, 1200)
-        self.timeline.wave_cache[path] = peaks
-        bpm, beats = detect_beats(path)
+        clips, t = [], 0.0
+        for p in self.audio_paths:
+            d = probe_duration(p)
+            clips.append(Clip(p, t, d, os.path.basename(p), ACCENT, "audio"))
+            if p not in self.timeline.wave_cache:
+                self.timeline.wave_cache[p] = waveform_peaks(p, 1000)[0]
+            t += d
+        atrack.clips = clips
+        self.project.duration = max(self.project.duration, t)
+        # re-flow backgrounds across the new total duration
+        if self.bg_paths:
+            self._apply_background(self.bg_paths[-1])
+        bpm, beats = detect_beats(self.audio_paths[0])
         self.project.bpm, self.project.beats = bpm, beats
-        self.bpm_lbl.setText(f"BPM: {bpm:g}   ·   {len(beats)} beats")
+        self.bpm_lbl.setText(f"BPM: {bpm:g}   ·   {len(beats)} beats  ·  {len(self.audio_paths)} track(s)")
         self._refresh_timeline()
         self._update_time()
+
+    def _resolve_audio(self):
+        """Return one audio path; concatenate multiple songs into the scratch dir."""
+        if len(self.audio_paths) <= 1:
+            return self.audio_path
+        out = os.path.join(self.scratch_dir, "master_audio.wav")
+        inputs = []
+        for p in self.audio_paths:
+            inputs += ["-i", p]
+        n = len(self.audio_paths)
+        fc = "".join(f"[{i}:a]" for i in range(n)) + f"concat=n={n}:v=0:a=1[a]"
+        subprocess.run([ffmpeg_path(), "-hide_banner", "-nostdin", *inputs,
+                        "-filter_complex", fc, "-map", "[a]", "-y", out],
+                       capture_output=True, creationflags=_NO_WINDOW)
+        return out if os.path.exists(out) else self.audio_path
 
     def _set_background(self):
         if not self._ensure_ffmpeg():
@@ -1094,7 +1162,7 @@ class ClipMusic(QMainWindow):
 
     def _update_preview(self):
         if self.bg_path and ffmpeg_path():
-            tmp = os.path.join(_user_dir(), "_preview.jpg")
+            tmp = os.path.join(self.scratch_dir, "_preview.jpg")
             if extract_frame(self.bg_path, self.timeline.playhead, tmp, 720):
                 pm = QPixmap(tmp)
                 if not pm.isNull():
@@ -1225,6 +1293,25 @@ class ClipMusic(QMainWindow):
         self.preset_list.setCurrentRow(0)
         self.preset_list.currentRowChanged.connect(lambda _: self._update_export_info())
         center.addWidget(self.preset_list, 1)
+        center.addWidget(QLabel("ENCODER", objectName="dim"))
+        self.enc_combo = QComboBox()
+        self.enc_combo.addItems([
+            "CPU — most compatible (default)", "NVIDIA GPU (NVENC)",
+            "Intel GPU (QSV)", "AMD GPU (AMF)", "Auto-detect (GPU → CPU)"])
+        self.enc_combo.setToolTip("Hardware acceleration is optional. If a GPU "
+                                  "encoder isn't available, ClipMusic falls back to CPU automatically.")
+        center.addWidget(self.enc_combo)
+        scr = QHBoxLayout()
+        scr.addWidget(QLabel("Scratch:", objectName="dim"))
+        self.scratch_lbl = QLabel(self.scratch_dir)
+        self.scratch_lbl.setObjectName("dim")
+        self.scratch_lbl.setToolTip(self.scratch_dir)
+        scr.addWidget(self.scratch_lbl, 1)
+        sb = QPushButton("Change")
+        sb.clicked.connect(self._choose_scratch)
+        scr.addWidget(sb)
+        center.addLayout(scr)
+
         self.render_btn = QPushButton("⬇  Render & Export")
         self.render_btn.setObjectName("accent")
         self.render_btn.clicked.connect(self._do_render)
@@ -1273,6 +1360,18 @@ class ClipMusic(QMainWindow):
 
         root.addLayout(body, 1)
         return w
+
+    def _hwaccel_value(self):
+        return {0: "off", 1: "nvenc", 2: "qsv", 3: "amf", 4: "auto"}.get(
+            self.enc_combo.currentIndex(), "off")
+
+    def _choose_scratch(self):
+        d = QFileDialog.getExistingDirectory(self, "Choose scratch folder", self.scratch_dir)
+        if d:
+            self.scratch_dir = d
+            os.makedirs(d, exist_ok=True)
+            self.scratch_lbl.setText(d)
+            self.scratch_lbl.setToolTip(d)
 
     def _goto_export(self):
         if not self.audio_path:
@@ -1336,7 +1435,7 @@ class ClipMusic(QMainWindow):
             out = f"{base}_{i}.{ext}"
             i += 1
         spec = RenderSpec(
-            audio=self.audio_path, background=None,
+            audio=self._resolve_audio(), background=None,
             backgrounds=list(self.bg_paths),
             visualiser=self.vis_combo.currentText(),
             width=W or 1920, height=H or 1080, fps=FPS or 30,
@@ -1350,12 +1449,13 @@ class ClipMusic(QMainWindow):
             transition=self.trans_combo.currentText(),
             title=self.title_edit.text(),
             title_pos=self.titlepos.currentText().lower(),
-            title_size=self.tsize.value())
+            title_size=self.tsize.value(),
+            hwaccel=self._hwaccel_value())
         self._cur_preset = (name, W, H, FPS, ext, audio_only)
         self._set_state("rendering")
         self.render_bar.setValue(0)
         self.render_status.setText("Rendering your music video…")
-        self.worker = RenderWorker(spec, out)
+        self.worker = RenderWorker(spec, out, self.scratch_dir)
         self.worker.progress.connect(lambda fr: self.render_bar.setValue(int(fr * 100)))
         self.worker.done.connect(self._render_done)
         self.worker.start()
@@ -1393,7 +1493,7 @@ class ClipMusic(QMainWindow):
         if ext in (".mp3", ".wav"):
             self.exp_thumb.setText("♪  audio file")
             return
-        tmp = os.path.join(_user_dir(), "_exp_thumb.jpg")
+        tmp = os.path.join(self.scratch_dir, "_exp_thumb.jpg")
         if extract_frame(video, min(1.0, self.project.duration / 2), tmp, 480):
             pm = QPixmap(tmp)
             if not pm.isNull():
