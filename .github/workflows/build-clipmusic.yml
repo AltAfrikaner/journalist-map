@@ -1,0 +1,63 @@
+name: Build ClipMusic (Windows EXE)
+
+on:
+  push:
+    branches: ["claude/ai-music-watermark-removal-t8OGf"]
+    paths:
+      - "tools/clipmusic/**"
+      - ".github/workflows/build-clipmusic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyQt5 numpy pyinstaller
+
+      - name: Sanity compile
+        working-directory: tools/clipmusic
+        run: python -m py_compile clipmusic.py
+
+      - name: Build EXE
+        working-directory: tools/clipmusic
+        run: >
+          pyinstaller --onefile --windowed --noconfirm
+          --name ClipMusic
+          --collect-submodules PyQt5
+          clipmusic.py
+
+      - name: Show output
+        working-directory: tools/clipmusic
+        run: dir dist
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClipMusic-windows-exe
+          path: tools/clipmusic/dist/ClipMusic.exe
+          if-no-files-found: error
+
+      - name: Publish to a downloadable release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: clipmusic-latest
+          name: ClipMusic latest build
+          body: |
+            Standalone ClipMusic music-video editor for Windows.
+            FFmpeg is fetched automatically on first run (keeps the download small).
+            Built from tools/clipmusic/clipmusic.py.
+          files: tools/clipmusic/dist/ClipMusic.exe
+          prerelease: true
+          make_latest: false
