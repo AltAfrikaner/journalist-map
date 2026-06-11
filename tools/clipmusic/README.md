@@ -47,10 +47,15 @@ which cross‑builds to a Windows `.exe`.
   Square / LinkedIn / audio‑only. Cancel, Open folder, Copy path, Export again.
 - **Digests everything you drop** — multiple songs are concatenated into one
   master track; multiple images/clips become a crossfaded slideshow.
-- **Light & robust** — single‑pass ffmpeg, no heavy ML by default. **Hardware
-  acceleration is optional and OFF by default** (CPU/libx264, most compatible);
-  pick NVENC/QSV/AMF/Auto and it **auto‑falls back to CPU** if the GPU encoder
-  isn't available. Set a **scratch folder** for temp/intermediate files.
+- **Light & robust** — **Hardware acceleration is optional and OFF by default**
+  (CPU/libx264, most compatible); pick NVENC/QSV/AMF/Auto and it **auto‑falls
+  back to CPU** if the GPU encoder isn't available.
+- **Low‑memory export** — toggle (or automatic past ~10 clips) renders clips one
+  at a time to the **scratch folder**, concatenates them, then does one light
+  final pass — so peak RAM stays low on long projects. Hard cuts in this mode.
+- **Settings, remembered** — ⚙ Settings (and the export panel) let you set the
+  **scratch/temp folder** (point it at a fast drive with space) and the
+  low‑memory toggle; saved to `config.json` and restored next launch.
 - **AI Stem Split (Demucs)** — optional, local: if Demucs is installed it splits
   the track into vocals / instrumental and adds them as new timeline tracks
   (otherwise it tells you the one‑line install). Nothing is uploaded.

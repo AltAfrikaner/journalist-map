@@ -24,7 +24,7 @@ import struct
 import subprocess
 import tempfile
 import webbrowser
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 try:
     import numpy as np
@@ -306,6 +306,7 @@ class RenderSpec:
     title_size: int = 72
     hwaccel: str = "off"   # off | nvenc | qsv | amf | videotoolbox | auto
     seg_durations: list = field(default_factory=list)  # per-clip slideshow lengths
+    low_memory: bool = False   # render clips to scratch then concat (low peak RAM)
 
 
 def _venc_args(hw: str, crf: int) -> list:
@@ -506,35 +507,125 @@ class RenderWorker(QThread):
             last = msg
         self.done.emit(False, last)
 
-    def _run_once(self):
-        import re
-        dur = probe_duration(self.spec.audio) or 1.0
+    def _env(self):
         env = dict(os.environ)
         if self.scratch and os.path.isdir(self.scratch):
             env["TMPDIR"] = env["TEMP"] = env["TMP"] = self.scratch
-        cmd = [ffmpeg_path(), "-hide_banner", "-nostdin",
-               *build_render_cmd(self.spec, self.out), "-progress", "pipe:1", "-nostats"]
+        return env
+
+    @staticmethod
+    def _rm(p):
         try:
-            self._proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE, text=True,
-                                          creationflags=_NO_WINDOW, env=env)
-        except Exception as exc:  # noqa: BLE001
-            return False, str(exc)
+            if p and os.path.exists(p):
+                os.remove(p)
+        except OSError:
+            pass
+
+    def _ff_progress(self, cmd, dur, base, span):
+        import re
+        self._proc = subprocess.Popen(
+            [ffmpeg_path(), "-hide_banner", "-nostdin", *cmd, "-progress", "pipe:1", "-nostats"],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            creationflags=_NO_WINDOW, env=self._env())
         p = self._proc
         for line in p.stdout:
             m = re.match(r"out_time_ms=(\d+)", line.strip())
             if m:
-                self.progress.emit(min(0.99, (int(m.group(1)) / 1e6) / dur))
+                self.progress.emit(min(base + span,
+                                       base + span * ((int(m.group(1)) / 1e6) / dur)))
         err = p.stderr.read() if p.stderr else ""
         p.wait()
+        return p.returncode, err
+
+    def _ff_simple(self, cmd):
+        self._proc = subprocess.Popen(
+            [ffmpeg_path(), "-hide_banner", "-nostdin", *cmd],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            creationflags=_NO_WINDOW, env=self._env())
+        _o, err = self._proc.communicate()
+        return self._proc.returncode, err
+
+    def _run_once(self):
+        bgs = self.spec.backgrounds
+        # segment-then-concat keeps peak RAM low for many clips
+        if (not self.spec.audio_only) and len(bgs) > 1 and (self.spec.low_memory or len(bgs) > 10):
+            return self._run_segmented()
+        return self._run_single()
+
+    def _run_single(self):
+        dur = probe_duration(self.spec.audio) or 1.0
+        rc, err = self._ff_progress(build_render_cmd(self.spec, self.out), dur, 0.0, 0.99)
         if self._cancelled:
-            try:
-                if os.path.exists(self.out):
-                    os.remove(self.out)
-            except OSError:
-                pass
+            self._rm(self.out)
             return False, "Cancelled."
-        if p.returncode == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
+        if rc == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
+            return True, self.out
+        return False, (err.strip().splitlines() or ["render failed"])[-1]
+
+    def _seg_vf(self, p, W, H, FPS, d, ken):
+        if (not is_video(p)) and ken:
+            bw, bh = int(W * 1.5), int(H * 1.5)
+            return (f"scale={bw}:{bh}:force_original_aspect_ratio=increase,crop={bw}:{bh},"
+                    f"zoompan=z='min(zoom+0.0006,1.3)':d={max(1, int(d * FPS))}:"
+                    f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={W}x{H}:fps={FPS},setsar=1,format=yuv420p")
+        return (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
+                f"setsar=1,fps={FPS},format=yuv420p")
+
+    def _run_segmented(self):
+        s = self.spec
+        W, H, FPS = s.width, s.height, s.fps
+        dur = probe_duration(s.audio) or 10.0
+        bgs = list(s.backgrounds)
+        n = len(bgs)
+        if s.seg_durations and len(s.seg_durations) == n:
+            segdurs = [max(0.3, float(d)) for d in s.seg_durations]
+            tot = sum(segdurs)
+            if tot < dur:
+                segdurs[-1] += dur - tot
+        else:
+            segdurs = [dur / n] * n
+        scratch = self.scratch if (self.scratch and os.path.isdir(self.scratch)) else tempfile.gettempdir()
+        segdir = os.path.join(scratch, "_cm_segs")
+        os.makedirs(segdir, exist_ok=True)
+        seg_files = []
+        for i, (p, d) in enumerate(zip(bgs, segdurs)):
+            if self._cancelled:
+                return False, "Cancelled."
+            seg_out = os.path.join(segdir, f"seg{i:03d}.mp4")
+            inp = (["-stream_loop", "-1", "-t", f"{d:.3f}", "-i", p] if is_video(p)
+                   else ["-loop", "1", "-framerate", str(FPS), "-t", f"{d:.3f}", "-i", p])
+            cmd = [*inp, "-vf", self._seg_vf(p, W, H, FPS, d, s.ken_burns),
+                   "-an", "-r", str(FPS), "-t", f"{d:.3f}", "-c:v", "libx264",
+                   "-crf", "20", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-y", seg_out]
+            rc, err = self._ff_simple(cmd)
+            if rc != 0 or not os.path.exists(seg_out):
+                return False, "segment render failed: " + (err.strip().splitlines() or [""])[-1]
+            seg_files.append(seg_out)
+            self.progress.emit(0.5 * (i + 1) / n)
+        listf = os.path.join(segdir, "list.txt")
+        with open(listf, "w", encoding="utf-8") as f:
+            for sf in seg_files:
+                f.write("file '%s'\n" % sf.replace("\\", "/").replace("'", "'\\''"))
+        bgmp4 = os.path.join(segdir, "bg.mp4")
+        rc, err = self._ff_simple(["-f", "concat", "-safe", "0", "-i", listf, "-c", "copy", "-y", bgmp4])
+        if rc != 0 or not os.path.exists(bgmp4):
+            rc, err = self._ff_simple(["-f", "concat", "-safe", "0", "-i", listf,
+                                       "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
+                                       "-pix_fmt", "yuv420p", "-y", bgmp4])
+            if rc != 0:
+                return False, "concat failed: " + (err.strip().splitlines() or [""])[-1]
+        self.progress.emit(0.55)
+        spec2 = replace(s, backgrounds=[bgmp4], seg_durations=[], ken_burns=False, low_memory=False)
+        rc, err = self._ff_progress(build_render_cmd(spec2, self.out),
+                                    probe_duration(s.audio) or 1.0, 0.55, 0.44)
+        for sf in seg_files:
+            self._rm(sf)
+        self._rm(listf)
+        self._rm(bgmp4)
+        if self._cancelled:
+            self._rm(self.out)
+            return False, "Cancelled."
+        if rc == 0 and os.path.exists(self.out) and os.path.getsize(self.out) > 0:
             return True, self.out
         return False, (err.strip().splitlines() or ["render failed"])[-1]
 
@@ -845,8 +936,16 @@ class ClipMusic(QMainWindow):
         self.bg_path = None
         self.bg_paths = []
         self.last_render = None
-        self.scratch_dir = os.path.join(tempfile.gettempdir(), "clipmusic_scratch")
-        os.makedirs(self.scratch_dir, exist_ok=True)
+        cfg = self._load_config()
+        self.scratch_dir = cfg.get("scratch_dir") or os.path.join(
+            tempfile.gettempdir(), "clipmusic_scratch")
+        try:
+            os.makedirs(self.scratch_dir, exist_ok=True)
+        except OSError:
+            self.scratch_dir = os.path.join(tempfile.gettempdir(), "clipmusic_scratch")
+            os.makedirs(self.scratch_dir, exist_ok=True)
+        self.low_memory = bool(cfg.get("low_memory", False))
+        self._enc_idx = int(cfg.get("encoder_index", 0))
         self.worker = None
         self.player = QMediaPlayer() if _HAS_MEDIA else None
         if self.player:
@@ -881,6 +980,9 @@ class ClipMusic(QMainWindow):
         lay.addWidget(logo)
         lay.addWidget(QLabel("Music-video editor — local & offline", objectName="dim"))
         lay.addStretch()
+        st = QPushButton("⚙  Settings")
+        st.clicked.connect(self._open_settings)
+        lay.addWidget(st)
         exp = QPushButton("Export  ▸")
         exp.setObjectName("accent")
         exp.clicked.connect(self._goto_export)
@@ -1490,6 +1592,77 @@ class ClipMusic(QMainWindow):
             self.play_timer.stop()
             self.play_btn.setText("▶  Play")
 
+    # ═══ SETTINGS / CONFIG ═══
+    def _config_path(self):
+        return os.path.join(_user_dir(), "config.json")
+
+    def _load_config(self):
+        try:
+            with open(self._config_path(), encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:  # noqa: BLE001
+            return {}
+
+    def _save_config(self):
+        try:
+            with open(self._config_path(), "w", encoding="utf-8") as f:
+                json.dump({"scratch_dir": self.scratch_dir,
+                           "low_memory": self.low_memory,
+                           "encoder_index": getattr(self, "_enc_idx", 0)}, f)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _open_settings(self):
+        from PyQt5.QtWidgets import QDialog
+        d = QDialog(self)
+        d.setWindowTitle("ClipMusic Settings")
+        d.setMinimumWidth(460)
+        lay = QVBoxLayout(d)
+        lay.addWidget(QLabel("Scratch / temp folder", objectName="h1"))
+        lay.addWidget(QLabel("Where ClipMusic writes intermediate files during export. "
+                             "Point this at a fast drive with free space to avoid running "
+                             "out of memory on big projects.", objectName="dim"))
+        row = QHBoxLayout()
+        path_lbl = QLineEdit(self.scratch_dir)
+        path_lbl.setReadOnly(True)
+        row.addWidget(path_lbl, 1)
+        browse = QPushButton("Browse…")
+        row.addWidget(browse)
+        lay.addLayout(row)
+
+        def pick():
+            p = QFileDialog.getExistingDirectory(d, "Choose scratch folder", self.scratch_dir)
+            if p:
+                path_lbl.setText(p)
+        browse.clicked.connect(pick)
+
+        lm = QCheckBox("Low-memory export (render clips one at a time, then join)")
+        lm.setChecked(self.low_memory)
+        lay.addWidget(lm)
+        lay.addWidget(QLabel("Recommended for long songs / many clips on low-RAM PCs. "
+                             "Uses hard cuts between clips.", objectName="dim"))
+        lay.addSpacing(8)
+        brow = QHBoxLayout()
+        brow.addStretch()
+        cancel = QPushButton("Cancel")
+        cancel.clicked.connect(d.reject)
+        ok = QPushButton("Save")
+        ok.setObjectName("accent")
+        ok.clicked.connect(d.accept)
+        brow.addWidget(cancel)
+        brow.addWidget(ok)
+        lay.addLayout(brow)
+        if d.exec_():
+            self.scratch_dir = path_lbl.text() or self.scratch_dir
+            os.makedirs(self.scratch_dir, exist_ok=True)
+            self.low_memory = lm.isChecked()
+            self._save_config()
+            if hasattr(self, "scratch_lbl"):
+                self.scratch_lbl.setText(self.scratch_dir)
+                self.scratch_lbl.setToolTip(self.scratch_dir)
+            if hasattr(self, "lowmem_check"):
+                self.lowmem_check.setChecked(self.low_memory)
+
     # ═══ EXPORT & SHARE CENTER ═══
     def _default_export_dir(self):
         for base in (os.path.join(os.path.expanduser("~"), "Videos"),
@@ -1604,7 +1777,13 @@ class ClipMusic(QMainWindow):
             "Intel GPU (QSV)", "AMD GPU (AMF)", "Auto-detect (GPU → CPU)"])
         self.enc_combo.setToolTip("Hardware acceleration is optional. If a GPU "
                                   "encoder isn't available, ClipMusic falls back to CPU automatically.")
+        self.enc_combo.setCurrentIndex(getattr(self, "_enc_idx", 0))
+        self.enc_combo.currentIndexChanged.connect(self._on_enc_changed)
         center.addWidget(self.enc_combo)
+        self.lowmem_check = QCheckBox("Low-memory export (clip-by-clip, for long projects)")
+        self.lowmem_check.setChecked(self.low_memory)
+        self.lowmem_check.toggled.connect(self._on_lowmem_changed)
+        center.addWidget(self.lowmem_check)
         scr = QHBoxLayout()
         scr.addWidget(QLabel("Scratch:", objectName="dim"))
         self.scratch_lbl = QLabel(self.scratch_dir)
@@ -1669,6 +1848,14 @@ class ClipMusic(QMainWindow):
         return {0: "off", 1: "nvenc", 2: "qsv", 3: "amf", 4: "auto"}.get(
             self.enc_combo.currentIndex(), "off")
 
+    def _on_enc_changed(self, idx):
+        self._enc_idx = idx
+        self._save_config()
+
+    def _on_lowmem_changed(self, on):
+        self.low_memory = bool(on)
+        self._save_config()
+
     def _choose_scratch(self):
         d = QFileDialog.getExistingDirectory(self, "Choose scratch folder", self.scratch_dir)
         if d:
@@ -1676,6 +1863,7 @@ class ClipMusic(QMainWindow):
             os.makedirs(d, exist_ok=True)
             self.scratch_lbl.setText(d)
             self.scratch_lbl.setToolTip(d)
+            self._save_config()
 
     def _goto_export(self):
         if not self.audio_path:
@@ -1756,7 +1944,8 @@ class ClipMusic(QMainWindow):
             title=self.title_edit.text(),
             title_pos=self.titlepos.currentText().lower(),
             title_size=self.tsize.value(),
-            hwaccel=self._hwaccel_value())
+            hwaccel=self._hwaccel_value(),
+            low_memory=self.lowmem_check.isChecked())
         self._cur_preset = (name, W, H, FPS, ext, audio_only)
         self._set_state("rendering")
         self.render_bar.setValue(0)
