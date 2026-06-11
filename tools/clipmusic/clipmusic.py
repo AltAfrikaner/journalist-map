@@ -18,6 +18,7 @@ from __future__ import annotations
 import os
 import sys
 import json
+import math
 import time
 import shutil
 import struct
@@ -307,6 +308,7 @@ class RenderSpec:
     hwaccel: str = "off"   # off | nvenc | qsv | amf | videotoolbox | auto
     seg_durations: list = field(default_factory=list)  # per-clip slideshow lengths
     low_memory: bool = False   # render clips to scratch then concat (low peak RAM)
+    fit_mode: str = "fill"     # fill (crop) | fit (pad) | stretch
 
 
 def _venc_args(hw: str, crf: int) -> list:
@@ -337,8 +339,7 @@ def build_render_cmd(spec: RenderSpec, out: str) -> list:
     inputs, filt = [], []
 
     def scale_crop():
-        return (f"scale={W}:{H}:force_original_aspect_ratio=increase,"
-                f"crop={W}:{H},setsar=1")
+        return _scale_filter(spec.fit_mode, W, H)
 
     # ── background layer → [bg] ──
     if not bgs:
@@ -568,8 +569,7 @@ class RenderWorker(QThread):
             return (f"scale={bw}:{bh}:force_original_aspect_ratio=increase,crop={bw}:{bh},"
                     f"zoompan=z='min(zoom+0.0006,1.3)':d={max(1, int(d * FPS))}:"
                     f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={W}x{H}:fps={FPS},setsar=1,format=yuv420p")
-        return (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
-                f"setsar=1,fps={FPS},format=yuv420p")
+        return f"{_scale_filter(self.spec.fit_mode, W, H)},fps={FPS},format=yuv420p"
 
     def _run_segmented(self):
         s = self.spec
@@ -703,6 +703,7 @@ class TimelineWidget(QWidget):
     playhead_moved = pyqtSignal(float)
     clip_selected = pyqtSignal(int, int)
     clips_changed = pyqtSignal()
+    media_dropped = pyqtSignal(str, float)  # path, drop time
 
     HEADER_W = 140
     RULER_H = 22
@@ -719,6 +720,7 @@ class TimelineWidget(QWidget):
         self._drag = None
         self.setMinimumHeight(180)
         self.setMouseTracking(True)
+        self.setAcceptDrops(True)
 
     def _row_at(self, y):
         if y < self.RULER_H:
@@ -793,6 +795,21 @@ class TimelineWidget(QWidget):
         if self._drag:
             self._drag = None
             self.clips_changed.emit()
+
+    def dragEnterEvent(self, e):
+        if e.mimeData().hasText():
+            e.acceptProposedAction()
+
+    def dragMoveEvent(self, e):
+        if e.mimeData().hasText():
+            e.acceptProposedAction()
+
+    def dropEvent(self, e):
+        path = e.mimeData().text()
+        t = self._t(e.pos().x()) if e.pos().x() > self.HEADER_W else 0.0
+        if path:
+            self.media_dropped.emit(path, max(0.0, t))
+        e.acceptProposedAction()
 
     def paintEvent(self, _ev):
         qp = QPainter(self)
@@ -878,18 +895,143 @@ class TimelineWidget(QWidget):
                         int(x), int(mid - pk[0] / 32768 * amp))
 
 
+class MediaList(QListWidget):
+    """Media library list whose items can be dragged onto the timeline."""
+    def __init__(self):
+        super().__init__()
+        self.setDragEnabled(True)
+
+    def mimeData(self, items):
+        from PyQt5.QtCore import QMimeData
+        m = QMimeData()
+        if items:
+            m.setText(items[0].data(Qt.UserRole) or items[0].text())
+        return m
+
+
+class VisualizerPreview(QWidget):
+    """Animated, beat-reactive preview shown when the project is audio-only."""
+    def __init__(self):
+        super().__init__()
+        self.aw, self.ah = 16, 9
+        self.phase = 0.0
+        self.level = 0.25
+        self.playing = False
+        self.bars = 44
+        self.setMinimumHeight(280)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self._anim)
+        self.timer.start(33)
+
+    def set_aspect(self, aw, ah):
+        self.aw, self.ah = aw, ah
+        self.update()
+
+    def set_playing(self, p):
+        self.playing = bool(p)
+
+    def pulse(self):
+        self.level = 1.0
+
+    def _anim(self):
+        self.phase += 0.045
+        self.level = max(0.18, self.level * 0.90)
+        if self.isVisible():
+            self.update()
+
+    def _canvas(self, W, H):
+        availw, availh = W - 20, H - 20
+        if availw / max(1, availh) > self.aw / self.ah:
+            ch = availh
+            cw = ch * self.aw / self.ah
+        else:
+            cw = availw
+            ch = cw * self.ah / self.aw
+        return int(cw), int(ch)
+
+    def _rand(self, i):
+        x = math.sin((i + 1) * 12.9898 + int(self.phase * 3) * 0.7) * 43758.5453
+        return abs(x - math.floor(x))
+
+    def paintEvent(self, _ev):
+        qp = QPainter(self)
+        qp.setRenderHint(QPainter.Antialiasing)
+        W, H = self.width(), self.height()
+        qp.fillRect(0, 0, W, H, QColor("#08080f"))
+        cw, ch = self._canvas(W, H)
+        ox, oy = (W - cw) // 2, (H - ch) // 2
+        qp.fillRect(ox, oy, cw, ch, QColor("#0b0b16"))
+        cx, cy = ox + cw / 2, oy + ch / 2
+        # rotating tunnel rings
+        rad = min(cw, ch) * 0.5
+        step = rad / 6
+        for i in range(6):
+            r = ((i * step + self.phase * 26) % rad) * (0.7 + 0.5 * self.level)
+            a = int(150 * (1 - r / max(rad, 1)))
+            qp.setPen(QPen(QColor(0, 212, 255, max(0, a)), 2))
+            qp.setBrush(Qt.NoBrush)
+            qp.drawEllipse(QRectF(cx - r, cy - r, 2 * r, 2 * r))
+        # mirrored equaliser bars
+        n = self.bars
+        bw = cw / n
+        for i in range(n):
+            v = (0.45 + 0.55 * math.sin(self.phase * 2 + i * 0.5)) * self.level
+            v = max(0.04, v * (0.5 + 0.6 * self._rand(i)))
+            bh = v * ch * 0.46
+            x = ox + i * bw
+            grad = QLinearGradient(0, cy - bh, 0, cy + bh)
+            grad.setColorAt(0.0, QColor(168, 85, 247, 230))
+            grad.setColorAt(1.0, QColor(0, 212, 255, 230))
+            qp.fillRect(QRectF(x + 1, cy - bh, max(1, bw - 2), bh * 2), QBrush(grad))
+        qp.setPen(QColor("#8888a0"))
+        qp.setFont(QFont("Segoe UI", 8))
+        qp.drawText(ox + 8, oy + 16,
+                    f"{self.aw}:{self.ah}  visualiser  " + ("● on the beat" if self.playing
+                                                            else "▶ Play to sync to beats"))
+        qp.end()
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # main window
 # ═══════════════════════════════════════════════════════════════════════════
-EXPORT_PRESETS = [
-    ("1080p MP4 (YouTube)", 1920, 1080, 30, "mp4", False),
-    ("4K MP4", 3840, 2160, 30, "mp4", False),
-    ("TikTok / Reels (Vertical)", 1080, 1920, 30, "mp4", False),
-    ("Square (1:1)", 1080, 1080, 30, "mp4", False),
-    ("LinkedIn Landscape", 1920, 1080, 30, "mp4", False),
-    ("Audio only — MP3", 0, 0, 0, "mp3", True),
-    ("Audio only — WAV", 0, 0, 0, "wav", True),
+# aspect ratios offered at the top (Clipchamp-style canvas)
+ASPECTS = [
+    ("16:9  Landscape", 16, 9),
+    ("9:16  Vertical", 9, 16),
+    ("1:1  Square", 1, 1),
+    ("4:5  Portrait", 4, 5),
+    ("21:9  Widescreen", 21, 9),
+    ("4:3  Classic", 4, 3),
 ]
+
+# export presets are now quality tiers (short side); aspect comes from the top
+EXPORT_PRESETS = [
+    ("1080p MP4", 1080, "mp4", False),
+    ("4K MP4", 2160, "mp4", False),
+    ("720p MP4", 720, "mp4", False),
+    ("Audio only — MP3", 0, "mp3", True),
+    ("Audio only — WAV", 0, "wav", True),
+]
+
+
+def aspect_dims(aw, ah, short):
+    """Pixel WxH for an aspect ratio with the given short side."""
+    if aw >= ah:
+        h, w = short, round(short * aw / ah)
+    else:
+        w, h = short, round(short * ah / aw)
+    return w - (w % 2), h - (h % 2)
+
+
+def _scale_filter(fit, W, H):
+    if fit == "stretch":
+        return f"scale={W}:{H},setsar=1"
+    if fit == "fit":
+        return (f"scale={W}:{H}:force_original_aspect_ratio=decrease,"
+                f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1")
+    return (f"scale={W}:{H}:force_original_aspect_ratio=increase,"
+            f"crop={W}:{H},setsar=1")
 
 # "Save to your computer" is always first; online destinations are V1 helpers
 # (render locally, then open the platform — never auto-upload).
@@ -946,6 +1088,7 @@ class ClipMusic(QMainWindow):
             os.makedirs(self.scratch_dir, exist_ok=True)
         self.low_memory = bool(cfg.get("low_memory", False))
         self._enc_idx = int(cfg.get("encoder_index", 0))
+        self.aspect = (16, 9)
         self.worker = None
         self.player = QMediaPlayer() if _HAS_MEDIA else None
         if self.player:
@@ -959,6 +1102,8 @@ class ClipMusic(QMainWindow):
         self._build()
         self.timeline.clips_changed.connect(self._on_clips_changed)
         self.timeline.clip_selected.connect(self._on_clip_selected)
+        self.timeline.media_dropped.connect(self._add_to_timeline)
+        self._last_ph = 0.0
         self._refresh_timeline()
 
     # ---- layout ----
@@ -980,6 +1125,12 @@ class ClipMusic(QMainWindow):
         lay.addWidget(logo)
         lay.addWidget(QLabel("Music-video editor — local & offline", objectName="dim"))
         lay.addStretch()
+        lay.addWidget(QLabel("Ratio", objectName="dim"))
+        self.aspect_combo = QComboBox()
+        self.aspect_combo.addItems([a[0] for a in ASPECTS])
+        self.aspect_combo.setFixedWidth(150)
+        self.aspect_combo.currentIndexChanged.connect(self._on_aspect_changed)
+        lay.addWidget(self.aspect_combo)
         st = QPushButton("⚙  Settings")
         st.clicked.connect(self._open_settings)
         lay.addWidget(st)
@@ -1053,19 +1204,20 @@ class ClipMusic(QMainWindow):
         v = QVBoxLayout(f)
         v.setContentsMargins(8, 8, 8, 8)
         v.addWidget(QLabel("Media library", objectName="h1"))
-        self.media_list = QListWidget()
+        self.media_list = MediaList()
+        self.media_list.itemDoubleClicked.connect(self._add_selected_to_timeline)
         v.addWidget(self.media_list, 1)
+        v.addWidget(QLabel("Drag an item onto a track below, or double-click it.",
+                           objectName="dim"))
         imp = QPushButton("＋ Import media")
         imp.clicked.connect(self._import_media)
         v.addWidget(imp)
-        bg = QPushButton("Add background / clip")
-        bg.clicked.connect(self._set_background)
-        v.addWidget(bg)
-        clr = QPushButton("Clear backgrounds")
+        add = QPushButton("Add selected to timeline ▸")
+        add.clicked.connect(self._add_selected_to_timeline)
+        v.addWidget(add)
+        clr = QPushButton("Clear timeline visuals")
         clr.clicked.connect(self._clear_backgrounds)
         v.addWidget(clr)
-        v.addWidget(QLabel("Add 2+ images/clips for a crossfaded slideshow.",
-                           objectName="dim"))
         stem = QPushButton("✦ AI Stem Split (Demucs)")
         stem.setObjectName("purple")
         stem.clicked.connect(self._stem_split)
@@ -1083,13 +1235,17 @@ class ClipMusic(QMainWindow):
         self.time_lbl.setStyleSheet(f"color:{ACCENT}; font-family:Consolas;")
         top.addWidget(self.time_lbl)
         v.addLayout(top)
-        self.preview = QLabel("Import audio + a background, pick a visualiser, then Export.")
+        self.preview_stack = QStackedWidget()
+        self.preview = QLabel("Drag a song or clip onto the tracks below to start.")
         self.preview.setAlignment(Qt.AlignCenter)
         self.preview.setStyleSheet(
             f"background:#0f0f1a; border:1px solid {BORDER}; border-radius:8px; color:{DIM};")
         self.preview.setMinimumHeight(280)
         self.preview.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        v.addWidget(self.preview, 1)
+        self.viz_preview = VisualizerPreview()
+        self.preview_stack.addWidget(self.preview)       # 0: image / placeholder
+        self.preview_stack.addWidget(self.viz_preview)   # 1: animated visualiser
+        v.addWidget(self.preview_stack, 1)
         tp = QHBoxLayout()
         tp.addStretch()
         self.play_btn = QPushButton("▶  Play")
@@ -1146,6 +1302,12 @@ class ClipMusic(QMainWindow):
         v.addWidget(self.fx_combo)
         self.kb_check = QCheckBox("Ken Burns zoom (still images)")
         v.addWidget(self.kb_check)
+        v.addWidget(QLabel("Fit to ratio", objectName="dim"))
+        self.fit_combo = QComboBox()
+        self.fit_combo.addItem("Fill (crop to ratio)", "fill")
+        self.fit_combo.addItem("Fit (letterbox)", "fit")
+        self.fit_combo.addItem("Stretch to ratio", "stretch")
+        v.addWidget(self.fit_combo)
 
         v.addWidget(QLabel("Adjust colours", objectName="h1"))
         self.bri = self._slider(v, "Brightness", -50, 50, 0, lambda x: f"{x/100:+.2f}")
@@ -1220,15 +1382,38 @@ class ClipMusic(QMainWindow):
             self, "Import media", "",
             "Media (*.mp3 *.wav *.flac *.m4a *.ogg *.aac *.mp4 *.mov *.mkv *.jpg *.jpeg *.png)")
         for f in fs:
-            self._add_media_item(f)
-            self._route_media(f)
+            self._add_media_item(f)   # library only — user drags it onto a track
 
-    def _route_media(self, path):
+    def _add_selected_to_timeline(self, item=None):
+        it = item if hasattr(item, "data") else self.media_list.currentItem()
+        if not it:
+            return
+        path = it.data(Qt.UserRole)
+        if path:
+            self._add_to_timeline(path, self.timeline.playhead)
+
+    def _add_to_timeline(self, path, at_time=0.0):
+        if not self._ensure_ffmpeg():
+            return
         ext = os.path.splitext(path)[1].lower()
         if ext in (".mp3", ".wav", ".flac", ".m4a", ".ogg", ".aac"):
             self._load_audio(path)
-        elif ext in (".mp4", ".mov", ".mkv", ".avi", ".webm", ".jpg", ".jpeg", ".png"):
-            self._apply_background(path)
+        else:
+            self._add_visual_clip(path, at_time)
+
+    def _add_visual_clip(self, path, at_time=0.0):
+        vt = self._video_track()
+        d = probe_duration(path) if is_video(path) else 5.0
+        if not d or d <= 0:
+            d = 5.0
+        vt.clips.append(Clip(path, max(0.0, at_time), d, os.path.basename(path),
+                             "#3b82f6", "video" if is_video(path) else "image"))
+        self.bg_paths = [c.source for c in sorted(vt.clips, key=lambda c: c.start)]
+        self.bg_path = self.bg_paths[0] if self.bg_paths else None
+        if not self.project.duration:
+            self.project.duration = d
+        self._refresh_timeline()
+        self._update_preview()
 
     def _load_audio(self, path):
         if path not in self.audio_paths:
@@ -1244,14 +1429,12 @@ class ClipMusic(QMainWindow):
             t += d
         atrack.clips = clips
         self.project.duration = max(self.project.duration, t)
-        # re-flow backgrounds across the new total duration
-        if self.bg_paths:
-            self._apply_background(self.bg_paths[-1])
         bpm, beats = detect_beats(self.audio_paths[0])
         self.project.bpm, self.project.beats = bpm, beats
         self.bpm_lbl.setText(f"BPM: {bpm:g}   ·   {len(beats)} beats  ·  {len(self.audio_paths)} track(s)")
         self._refresh_timeline()
         self._update_time()
+        self._update_preview()
 
     def _resolve_audio(self):
         """Return one audio path; concatenate multiple songs into the scratch dir."""
@@ -1267,30 +1450,6 @@ class ClipMusic(QMainWindow):
                         "-filter_complex", fc, "-map", "[a]", "-y", out],
                        capture_output=True, creationflags=_NO_WINDOW)
         return out if os.path.exists(out) else self.audio_path
-
-    def _set_background(self):
-        if not self._ensure_ffmpeg():
-            return
-        fs, _ = QFileDialog.getOpenFileNames(
-            self, "Add background(s) / clip(s)", "",
-            "Image/Video (*.jpg *.jpeg *.png *.mp4 *.mov *.mkv *.webm)")
-        for f in fs:
-            self._add_media_item(f)
-            self._apply_background(f)
-
-    def _apply_background(self, path):
-        if path not in self.bg_paths:
-            self.bg_paths.append(path)
-        self.bg_path = self.bg_paths[0]
-        vtrack = next(t for t in self.project.tracks if t.kind == "video")
-        n = len(self.bg_paths)
-        total = self.project.duration or probe_duration(path) or 10
-        seg = total / n
-        vtrack.clips = [Clip(p, i * seg, seg, os.path.basename(p), "#3b82f6",
-                             "video" if is_video(p) else "image")
-                        for i, p in enumerate(self.bg_paths)]
-        self._refresh_timeline()
-        self._update_preview()
 
     def _clear_backgrounds(self):
         self.bg_paths = []
@@ -1341,11 +1500,11 @@ class ClipMusic(QMainWindow):
             e.acceptProposedAction()
 
     def dropEvent(self, e):
+        # dropping files onto the window adds them to the library only
         for url in e.mimeData().urls():
             p = url.toLocalFile()
             if p and os.path.isfile(p):
                 self._add_media_item(p)
-                self._route_media(p)
 
     # ---- playhead / preview ----
     def _refresh_timeline(self):
@@ -1369,6 +1528,7 @@ class ClipMusic(QMainWindow):
         self.time_lbl.setText(f"{f(self.timeline.playhead)} / {f(self.project.duration)}")
 
     def _update_preview(self):
+        # background present -> show a real frame; audio-only -> animated visualiser
         if self.bg_path and ffmpeg_path():
             tmp = os.path.join(self.scratch_dir, "_preview.jpg")
             if extract_frame(self.bg_path, self.timeline.playhead, tmp, 720):
@@ -1377,10 +1537,15 @@ class ClipMusic(QMainWindow):
                     self.preview.setPixmap(pm.scaled(
                         self.preview.width(), self.preview.height(),
                         Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                    self.preview_stack.setCurrentIndex(0)
                     return
         if self.audio_path:
-            self.preview.setText("♪  Audio loaded — the visualiser renders on Export.\n"
-                                 "Add a background image/video for a preview frame.")
+            self.viz_preview.set_aspect(*self.aspect)
+            self.preview_stack.setCurrentIndex(1)
+            return
+        self.preview.setText("Drag a song or clip onto the tracks below to start.")
+        self.preview.setPixmap(QPixmap())
+        self.preview_stack.setCurrentIndex(0)
 
     # ---- lyrics parse ----
     def _parse_lyrics(self):
@@ -1546,30 +1711,44 @@ class ClipMusic(QMainWindow):
                 self._media_loaded = master
             if self.player.state() == QMediaPlayer.PlayingState:
                 self.player.pause()
+                self.viz_preview.set_playing(False)
             else:
                 self.player.setPosition(int(self.timeline.playhead * 1000))
                 self.player.play()
+                self.viz_preview.set_playing(True)
         else:
             if self.play_timer.isActive():
                 self.play_timer.stop()
                 self.play_btn.setText("▶  Play")
+                self.viz_preview.set_playing(False)
             else:
                 self._t_last = time.time()
                 self.play_timer.start(50)
                 self.play_btn.setText("⏸  Pause")
+                self.viz_preview.set_playing(True)
 
     def _stop_play(self):
         if self.player:
             self.player.stop()
         self.play_timer.stop()
         self.play_btn.setText("▶  Play")
+        self.viz_preview.set_playing(False)
         self.timeline.playhead = 0.0
+        self._last_ph = 0.0
         self._update_time()
         self.timeline.update()
         self._update_preview()
 
+    def _beat_check(self, prev, cur):
+        for b in self.project.beats:
+            if prev < b <= cur:
+                self.viz_preview.pulse()
+                return
+
     def _on_play_pos(self, ms):
         t = ms / 1000.0
+        self._beat_check(self._last_ph, t)
+        self._last_ph = t
         self.timeline.playhead = min(self.project.duration, t)
         self.timeline.update()
         self._update_time()
@@ -1580,17 +1759,20 @@ class ClipMusic(QMainWindow):
     def _on_play_state(self, *_):
         playing = self.player and self.player.state() == QMediaPlayer.PlayingState
         self.play_btn.setText("⏸  Pause" if playing else "▶  Play")
+        self.viz_preview.set_playing(bool(playing))
 
     def _tick(self):
         now = time.time()
-        self.timeline.playhead = min(self.project.duration,
-                                     self.timeline.playhead + (now - self._t_last))
+        cur = min(self.project.duration, self.timeline.playhead + (now - self._t_last))
+        self._beat_check(self.timeline.playhead, cur)
+        self.timeline.playhead = cur
         self._t_last = now
         self.timeline.update()
         self._update_time()
         if self.timeline.playhead >= self.project.duration:
             self.play_timer.stop()
             self.play_btn.setText("▶  Play")
+            self.viz_preview.set_playing(False)
 
     # ═══ SETTINGS / CONFIG ═══
     def _config_path(self):
@@ -1874,9 +2056,20 @@ class ClipMusic(QMainWindow):
         self._update_export_info()
         self._refresh_offline()
 
+    def _on_aspect_changed(self, idx):
+        self.aspect = (ASPECTS[idx][1], ASPECTS[idx][2])
+        if hasattr(self, "preview_stack"):
+            self.viz_preview.set_aspect(*self.aspect)
+        self._update_preview()
+
     def _update_export_info(self):
         row = max(0, self.preset_list.currentRow())
-        name, W, H, FPS, ext, audio_only = EXPORT_PRESETS[row]
+        name, short, ext, audio_only = EXPORT_PRESETS[row]
+        if audio_only:
+            W = H = FPS = 0
+        else:
+            W, H = aspect_dims(*self.aspect, short)
+            FPS = 30
         dur = self.project.duration
         res = "audio only" if audio_only else f"{W}×{H} @ {FPS}fps"
         # rough size estimate (8 Mbps video + 256 kbps audio, or audio bitrate)
@@ -1915,7 +2108,12 @@ class ClipMusic(QMainWindow):
         if not self._ensure_ffmpeg() or not self.audio_path:
             return
         row = self.preset_list.currentRow()
-        name, W, H, FPS, ext, audio_only = EXPORT_PRESETS[row]
+        name, short, ext, audio_only = EXPORT_PRESETS[row]
+        if audio_only:
+            W = H = FPS = 0
+        else:
+            W, H = aspect_dims(*self.aspect, short)
+            FPS = 30
         # render to the default export folder FIRST (Clipchamp-style)
         stem = os.path.splitext(os.path.basename(self.audio_path))[0]
         out = os.path.join(self._default_export_dir(),
@@ -1945,7 +2143,8 @@ class ClipMusic(QMainWindow):
             title_pos=self.titlepos.currentText().lower(),
             title_size=self.tsize.value(),
             hwaccel=self._hwaccel_value(),
-            low_memory=self.lowmem_check.isChecked())
+            low_memory=self.lowmem_check.isChecked(),
+            fit_mode=self.fit_combo.currentData())
         self._cur_preset = (name, W, H, FPS, ext, audio_only)
         self._set_state("rendering")
         self.render_bar.setValue(0)

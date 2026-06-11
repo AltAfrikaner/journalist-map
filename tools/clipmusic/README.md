@@ -19,6 +19,15 @@ which cross‑builds to a Windows `.exe`.
 - **Real export** — renders an actual music‑video **MP4** with ffmpeg:
   background image/video + an **audio‑reactive visualiser** (Spectrum, CQT bars,
   Frequencies, Waveform) + **timed lyric overlays**. Also audio‑only MP3/WAV.
+- **Library‑first import** — imported songs/clips/images land in the **Media
+  library**; you **drag** them onto a timeline track (or double‑click) to use
+  them. Nothing is auto‑added to the edit.
+- **Aspect‑ratio canvas** — pick 16:9 / 9:16 / 1:1 / 4:5 / 21:9 / 4:3 at the top
+  (Clipchamp‑style). Clips fit the chosen ratio with a per‑project **Fill (crop)
+  / Fit (letterbox) / Stretch** control; export resolution follows the ratio.
+- **Live audio visualiser preview** — with a song and no background, the preview
+  shows an animated tunnel + equaliser that **pulses on the beat** when you hit
+  Play. Add a background image/video and the preview shows that instead.
 - **Preview transport** — Play / Stop with a moving playhead; plays the master
   song (QtMultimedia) and scrubs by clicking the timeline. Falls back to a
   silent moving playhead if QtMultimedia isn't present.
