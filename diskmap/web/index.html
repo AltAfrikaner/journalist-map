@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiskMap — local disk space analyzer</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c2230; --line:#2a3140;
+    --txt:#e6edf3; --dim:#8b949e; --accent:#3fb950; --accent2:#58a6ff; --warn:#d29922;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt)}
+  header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+  header h1{font-size:16px;margin:0;font-weight:600;letter-spacing:.3px}
+  header h1 span{color:var(--accent)}
+  .grow{flex:1}
+  input,select,button{font:inherit;color:var(--txt);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:7px 10px}
+  input{min-width:320px}
+  button{cursor:pointer;background:var(--accent);color:#03260c;border:none;font-weight:600}
+  button.ghost{background:var(--panel2);color:var(--txt);border:1px solid var(--line);font-weight:500}
+  button:disabled{opacity:.5;cursor:default}
+  label.chk{display:flex;align-items:center;gap:6px;color:var(--dim);font-size:13px;user-select:none}
+  .stats{display:flex;gap:18px;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line);color:var(--dim);font-size:13px;flex-wrap:wrap}
+  .stats b{color:var(--txt)}
+  .tabs{display:flex;gap:4px;padding:8px 16px 0}
+  .tabs button{background:transparent;color:var(--dim);border:none;border-bottom:2px solid transparent;border-radius:0;padding:8px 12px;font-weight:600}
+  .tabs button.active{color:var(--txt);border-bottom-color:var(--accent)}
+  main{padding:0 16px 24px}
+  .view{display:none}
+  .view.active{display:block}
+  #crumb{padding:8px 0;color:var(--dim);font-size:13px}
+  #crumb a{color:var(--accent2);cursor:pointer;text-decoration:none}
+  #crumb a:hover{text-decoration:underline}
+  canvas{width:100%;height:560px;display:block;border:1px solid var(--line);border-radius:8px;background:#0b0e13}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-weight:600;position:sticky;top:0;background:var(--bg)}
+  td.size{text-align:right;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.path{color:var(--dim);word-break:break-all}
+  tr:hover td{background:var(--panel)}
+  .bar{height:6px;border-radius:3px;background:var(--accent2);opacity:.5}
+  .dupgroup{margin:10px 0;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--panel)}
+  .dupgroup .head{color:var(--warn);font-weight:600;margin-bottom:6px}
+  .empty{color:var(--dim);padding:40px;text-align:center}
+  #status{color:var(--dim);font-size:13px}
+  .tip{cursor:pointer}
+  .tip:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <h1>Disk<span>Map</span></h1>
+  <input id="path" placeholder="C:\ or a folder path…" list="roots" spellcheck="false">
+  <datalist id="roots"></datalist>
+  <label class="chk"><input type="checkbox" id="dedup"> find duplicates</label>
+  <button id="scan">Scan</button>
+  <div class="grow"></div>
+  <span id="status">local only · 127.0.0.1</span>
+</header>
+
+<div class="stats" id="stats" hidden>
+  <span>Total: <b id="s-total">–</b></span>
+  <span>Files: <b id="s-files">–</b></span>
+  <span>Folders: <b id="s-dirs">–</b></span>
+  <span>Skipped: <b id="s-skip">–</b></span>
+  <span>Time: <b id="s-time">–</b></span>
+</div>
+
+<div class="tabs">
+  <button data-tab="map" class="active">Treemap</button>
+  <button data-tab="largest">Largest files</button>
+  <button data-tab="types">File types</button>
+  <button data-tab="dups">Duplicates</button>
+</div>
+
+<main>
+  <section id="view-map" class="view active">
+    <div id="crumb"></div>
+    <canvas id="treemap"></canvas>
+  </section>
+  <section id="view-largest" class="view"><div id="largest"></div></section>
+  <section id="view-types" class="view"><div id="types"></div></section>
+  <section id="view-dups" class="view"><div id="dups"></div></section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
