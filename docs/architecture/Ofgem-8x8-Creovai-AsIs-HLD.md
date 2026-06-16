@@ -152,6 +152,18 @@ These constraints are the rationale for any future To-Be work:
 
 - Notation: **ArchiMate 3.x**, authored as **PlantUML** (`!include <archimate/Archimate>`)
   so the views are text-based and version-controlled.
+- **Layers & palette:** the model is restricted to the three core ArchiMate layers,
+  using the standard palette colours:
+
+  | Layer | Colour | Elements in this model |
+  |-------|--------|------------------------|
+  | **Business** | Yellow | Delivery & Schemes, IT Service Desk (actors); Telephony & Contact Centre Service; Inbound/Outbound Calling (functions) |
+  | **Application** | Blue | 8x8 Contact Centre Platform; 8x8 Desktop App, Web client, Teams integration; Call Handling, Call Recording; Telephony Data; Creovai, Conversation Intelligence, Agent Guidance, Dashboards/API Outputs |
+  | **Technology** | Green | Microsoft Entra ID (SSO); Entra Security Groups |
+
+  No Motivation, Strategy, Implementation or Physical elements are used — the single
+  guiding principle (8x8 = system of record) is shown as a neutral annotation rather
+  than as a Motivation-layer element.
 - Diagrams render with PlantUML + Graphviz. To regenerate the PNGs:
 
   ```bash

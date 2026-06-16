@@ -8,10 +8,10 @@
 
 title As-Is HLD - Ofgem 8x8 Telephony Solution with Creovai (Layered Overview)
 
-' ---------------------------------------------------------------------
-' MOTIVATION / PRINCIPLE
-' ---------------------------------------------------------------------
-Motivation_Principle(p1, "8x8 is the single system of record\nfor telephony, recordings & metadata")
+' Layers used (standard ArchiMate palette):
+'   Business    = yellow
+'   Application = blue
+'   Technology  = green
 
 ' ---------------------------------------------------------------------
 ' BUSINESS LAYER
@@ -84,7 +84,9 @@ Rel_Serving(entra, eightByEight, "SSO")
 Rel_Serving(entra, teams, "SSO")
 Rel_Assignment(secGroups, entra, "")
 
-' Principle realisation
-Rel_Realization(eightByEight, p1, "")
+note bottom of callData
+  Principle: 8x8 is the single system of record
+  for telephony, recordings & metadata.
+end note
 
 @enduml
