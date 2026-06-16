@@ -23,10 +23,10 @@
 
 ## How it links (the only flows that matter)
 
-- **Entra ID → 8x8 and Teams (SSO).** Azure governs **access only**.
-- **8x8 → Teams (telephony in Teams).** 8x8 is integrated with Teams; telephony surfaced inside Teams for enabled users.
-- **8x8 → Users (telephony).** Calls, voicemail, recordings for the c.208 8x8 users.
-- **8x8 ⟷ Creovai (HTTPS / JSON, in / out).** A **single** integration path.
+- **Users → 8x8 (telephony).** Users initiate calls; 8x8 processes them.
+- **Entra ID → 8x8 (SSO)** and **Entra ID → Teams (SSO).** Two **independent** SSO arrows — both systems authenticate directly against Entra (not chained via Teams). Azure governs **access only**.
+- **8x8 → Teams (Teams integration, user-scoped).** 8x8 is integrated into Teams; telephony surfaced inside Teams for enabled users only.
+- **8x8 ⟷ Creovai (API / HTTPS JSON).** A **single** integration path — **no Azure involvement**.
 
 ## Correctness (key points)
 

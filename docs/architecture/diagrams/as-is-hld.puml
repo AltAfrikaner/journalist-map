@@ -24,10 +24,14 @@ Application_Component(eightByEight, "8x8\n<<System of Record>>\ntelephony / reco
 Application_Component(creovai, "Creovai\nconversation intelligence,\nagent guidance, dashboards")
 
 ' --- Relationships ---
-Rel_Serving(eightByEight, users, "telephony")
-Rel_Serving(eightByEight, teams, "telephony in Teams\n(integration, enabled users)")
+' Users initiate calls -> 8x8 processes them
+Rel_Serving(users, eightByEight, "telephony")
+' 8x8 integrated into Teams (scoped to enabled users)
+Rel_Serving(eightByEight, teams, "Teams integration\n(user-scoped)")
+' SSO direct to BOTH systems independently (not chained via Teams)
 Rel_Serving(entra, eightByEight, "SSO")
 Rel_Serving(entra, teams, "SSO")
-Rel_Flow(eightByEight, creovai, "HTTPS / JSON (in / out)")
+' Single integration path - no Azure involvement
+Rel_Flow(eightByEight, creovai, "API / HTTPS JSON")
 
 @enduml
