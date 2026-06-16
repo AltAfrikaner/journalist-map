@@ -1,28 +1,33 @@
 @startuml as-is-hld
 ' =====================================================================
-' Ofgem - 8x8 Telephony Solution with Creovai
-' As-Is HLD - simplified to 5 boxes (Business / Application / Technology)
+' Ofgem - 8x8 Telephony Solution with Creovai - AS-IS (HLD)
+' Simple 5-box view. Layers: Business (yellow) / Application (blue) /
+' Technology (green). Standard ArchiMate palette.
+'
+' Correctness (per review):
+'   - Microsoft Entra ID governs access to 8x8 and Teams ONLY.
+'   - Creovai integrates ONLY with 8x8 (not Azure) - one path in/out.
 ' =====================================================================
 !include <archimate/Archimate>
 
-title As-Is HLD - 8x8 Telephony Solution with Creovai
+title 8x8 Telephony Solution with Creovai - AS-IS (HLD)
 
 ' --- Technology (green) ---
-Technology_SystemSoftware(entra, "Microsoft Entra ID\n(SSO + Security Groups)")
+Technology_SystemSoftware(entra, "Microsoft Entra ID\n(SSO)")
 
 ' --- Business (yellow) ---
-Business_Actor(users, "Users\n(Delivery & Schemes / IT Service Desk)")
+Business_Actor(users, "Users\n(c.208)")
 
 ' --- Application (blue) ---
 Application_Component(teams, "Microsoft Teams")
-Application_Component(eightByEight, "8x8\n<<System of Record>>")
-Application_Component(creovai, "Creovai\n(Analytics: insight,\nagent guidance, dashboards)")
+Application_Component(eightByEight, "8x8\n<<System of Record>>\ntelephony / recordings / metadata")
+Application_Component(creovai, "Creovai\nconversation intelligence,\nagent guidance, dashboards")
 
 ' --- Relationships ---
-Rel_Serving(entra, eightByEight, "SSO")
-Rel_Serving(entra, teams, "SSO")
 Rel_Serving(eightByEight, users, "telephony")
 Rel_Serving(teams, eightByEight, "integration")
-Rel_Flow(eightByEight, creovai, "HTTPS / JSON")
+Rel_Serving(entra, eightByEight, "SSO")
+Rel_Serving(entra, teams, "SSO")
+Rel_Flow(eightByEight, creovai, "HTTPS / JSON (in / out)")
 
 @enduml
