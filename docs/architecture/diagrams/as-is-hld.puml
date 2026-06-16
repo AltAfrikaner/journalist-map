@@ -24,8 +24,8 @@ Application_Component(eightByEight, "8x8\n<<System of Record>>\ntelephony / reco
 Application_Component(creovai, "Creovai\nconversation intelligence,\nagent guidance, dashboards")
 
 ' --- Relationships ---
-' Users initiate calls -> 8x8 processes them
-Rel_Serving(users, eightByEight, "telephony")
+' Serving points provider -> consumer: 8x8 provides telephony to Users
+Rel_Serving(eightByEight, users, "telephony")
 ' 8x8 integrated into Teams (scoped to enabled users)
 Rel_Serving(eightByEight, teams, "Teams integration\n(user-scoped)")
 ' SSO direct to BOTH systems independently (not chained via Teams)

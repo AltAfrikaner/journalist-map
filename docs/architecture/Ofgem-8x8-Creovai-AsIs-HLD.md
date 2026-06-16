@@ -23,10 +23,13 @@
 
 ## How it links (the only flows that matter)
 
-- **Users → 8x8 (telephony).** Users initiate calls; 8x8 processes them.
-- **Entra ID → 8x8 (SSO)** and **Entra ID → Teams (SSO).** Two **independent** SSO arrows — both systems authenticate directly against Entra (not chained via Teams). Azure governs **access only**.
-- **8x8 → Teams (Teams integration, user-scoped).** 8x8 is integrated into Teams; telephony surfaced inside Teams for enabled users only.
-- **8x8 ⟷ Creovai (API / HTTPS JSON).** A **single** integration path — **no Azure involvement**.
+> ArchiMate **Serving** relationships point **provider → consumer** (open arrowhead at the
+> consumer). **Flow** is a dashed line for data exchange.
+
+- **8x8 → Users (Serving, telephony).** 8x8 provides telephony to the c.208 users (provider → consumer).
+- **Entra ID → 8x8 (Serving, SSO)** and **Entra ID → Teams (Serving, SSO).** Two **independent** SSO arrows — both systems authenticate directly against Entra (not chained via Teams). Azure governs **access only**.
+- **8x8 → Teams (Serving, Teams integration, user-scoped).** 8x8 is integrated into Teams; telephony surfaced inside Teams for enabled users only.
+- **8x8 ⟷ Creovai (Flow, API / HTTPS JSON).** A **single** integration path — **no Azure involvement**.
 
 ## Correctness (key points)
 
