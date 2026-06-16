@@ -1,0 +1,40 @@
+@startuml as-is-dataflow
+' =====================================================================
+' Ofgem - 8x8 Telephony Solution with Creovai
+' As-Is - Data Flow / Integration view
+' Single-chain: 8x8 -> Creovai -> Outputs. No branching via Azure.
+' =====================================================================
+!include <archimate/Archimate>
+
+title As-Is Data Flow - 8x8 (source of truth) -> Creovai -> Outputs
+
+Technology_SystemSoftware(entra, "Microsoft Entra ID\n(Identity / SSO)")
+Application_Component(teams, "Microsoft Teams")
+Application_Component(eightByEight, "8x8 Platform\n<<System of Record>>")
+Application_DataObject(callData, "Telephony Data\n(calls, recordings, metadata)")
+Application_Component(creovai, "Creovai\n(Analytics Engine)")
+Application_DataObject(dashboards, "Dashboards")
+Application_DataObject(apiOut, "JSON / API Outputs")
+
+' Identity authenticates access to 8x8 and Teams ONLY
+Rel_Flow(entra, eightByEight, "auth (SSO)")
+Rel_Flow(entra, teams, "auth (SSO)")
+Rel_Flow(teams, eightByEight, "telephony integration\n(enabled users only)")
+
+' 8x8 owns the data
+Rel_Access(eightByEight, callData, "W")
+
+' Single controlled integration path (real-time + batch)
+Rel_Flow(eightByEight, creovai, "HTTPS / JSON\n(real-time + batch)")
+
+' Creovai derives outputs - these do NOT feed back into Azure
+Rel_Realization(creovai, dashboards, "")
+Rel_Realization(creovai, apiOut, "")
+
+note bottom of creovai
+  Creovai connects ONLY to 8x8 (not Azure).
+  Outputs are derived from processed 8x8 data
+  and do not feed back into Azure / Entra ID.
+end note
+
+@enduml
