@@ -1,0 +1,28 @@
+@startuml as-is-hld
+' =====================================================================
+' Ofgem - 8x8 Telephony Solution with Creovai
+' As-Is HLD - simplified to 5 boxes (Business / Application / Technology)
+' =====================================================================
+!include <archimate/Archimate>
+
+title As-Is HLD - 8x8 Telephony Solution with Creovai
+
+' --- Technology (green) ---
+Technology_SystemSoftware(entra, "Microsoft Entra ID\n(SSO + Security Groups)")
+
+' --- Business (yellow) ---
+Business_Actor(users, "Users\n(Delivery & Schemes / IT Service Desk)")
+
+' --- Application (blue) ---
+Application_Component(teams, "Microsoft Teams")
+Application_Component(eightByEight, "8x8\n<<System of Record>>")
+Application_Component(creovai, "Creovai\n(Analytics: insight,\nagent guidance, dashboards)")
+
+' --- Relationships ---
+Rel_Serving(entra, eightByEight, "SSO")
+Rel_Serving(entra, teams, "SSO")
+Rel_Serving(eightByEight, users, "telephony")
+Rel_Serving(teams, eightByEight, "integration")
+Rel_Flow(eightByEight, creovai, "HTTPS / JSON")
+
+@enduml

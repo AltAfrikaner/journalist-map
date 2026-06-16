@@ -45,6 +45,24 @@ The architecture is deliberately a **single, controlled integration chain**:
 
 ## 4. ArchiMate views
 
+### 4.0 HLD (5-box summary)
+
+The high-level design, reduced to five boxes across the three ArchiMate layers
+(Business = yellow, Application = blue, Technology = green):
+
+![As-Is HLD](diagrams/as-is-hld.png)
+
+- **Microsoft Entra ID** (technology) provides **SSO** to 8x8 and Teams **only**.
+- **Microsoft Teams** (application) integrates into 8x8.
+- **8x8** (application) is the **system of record** and serves telephony to **Users**.
+- **Creovai** (application) consumes data from 8x8 via a **single HTTPS/JSON path**.
+
+> Source: [`diagrams/as-is-hld.puml`](diagrams/as-is-hld.puml)
+
+---
+
+The views below provide additional detail and are optional for the HLD summary.
+
 ### 4.1 Layered overview
 
 The full layered view shows the business service, the access channels, the 8x8 core
