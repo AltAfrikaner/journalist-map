@@ -15,8 +15,8 @@
 
 | Box | Layer | Notes |
 |-----|-------|-------|
-| **Users (c.208)** | Business | Delivery & Schemes / IT Service Desk. |
-| **Microsoft Teams** | Application | Telephony, presence, click-to-dial *within* Teams (enabled users). |
+| **8x8 Users (c.208)** | Business | Certain users only (Delivery & Schemes / IT Service Desk). |
+| **Microsoft Teams** | Application | Used org-wide internally; 8x8 telephony surfaced *within* Teams for enabled users. |
 | **8x8** | Application | **System of record** — telephony, recordings, metadata. |
 | **Creovai** | Application | Downstream analytics: conversation intelligence, agent guidance, dashboards. |
 | **Microsoft Entra ID** | Technology | SSO authentication. |
@@ -24,8 +24,8 @@
 ## How it links (the only flows that matter)
 
 - **Entra ID → 8x8 and Teams (SSO).** Azure governs **access only**.
-- **Teams → 8x8 (integration).** Telephony surfaced inside Teams.
-- **8x8 → Users (telephony).** Calls, voicemail, recordings.
+- **8x8 → Teams (telephony in Teams).** 8x8 is integrated with Teams; telephony surfaced inside Teams for enabled users.
+- **8x8 → Users (telephony).** Calls, voicemail, recordings for the c.208 8x8 users.
 - **8x8 ⟷ Creovai (HTTPS / JSON, in / out).** A **single** integration path.
 
 ## Correctness (key points)

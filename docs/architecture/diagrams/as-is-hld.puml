@@ -16,16 +16,16 @@ title 8x8 Telephony Solution with Creovai - AS-IS (HLD)
 Technology_SystemSoftware(entra, "Microsoft Entra ID\n(SSO)")
 
 ' --- Business (yellow) ---
-Business_Actor(users, "Users\n(c.208)")
+Business_Actor(users, "8x8 Users\n(c.208 - certain users only)")
 
 ' --- Application (blue) ---
-Application_Component(teams, "Microsoft Teams")
+Application_Component(teams, "Microsoft Teams\n(org-wide, internal)")
 Application_Component(eightByEight, "8x8\n<<System of Record>>\ntelephony / recordings / metadata")
 Application_Component(creovai, "Creovai\nconversation intelligence,\nagent guidance, dashboards")
 
 ' --- Relationships ---
 Rel_Serving(eightByEight, users, "telephony")
-Rel_Serving(teams, eightByEight, "integration")
+Rel_Serving(eightByEight, teams, "telephony in Teams\n(integration, enabled users)")
 Rel_Serving(entra, eightByEight, "SSO")
 Rel_Serving(entra, teams, "SSO")
 Rel_Flow(eightByEight, creovai, "HTTPS / JSON (in / out)")
