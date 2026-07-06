@@ -11,10 +11,20 @@
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
   const $$ = (sel, ctx) => Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
 
+  /* ---- scroll progress bar ------------------------------------------------- */
+  const progressBar = $('.scroll-progress');
+  function onScrollProgress() {
+    if (!progressBar) return;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? window.scrollY / h : 0;
+    progressBar.style.transform = 'scaleX(' + Math.min(pct, 1) + ')';
+  }
+
   /* ---- header: dark glass on scroll --------------------------------------- */
   const header = $('.site-header');
   function onScrollHeader() {
     if (header) header.classList.toggle('scrolled', window.scrollY > 24);
+    onScrollProgress();
   }
   window.addEventListener('scroll', onScrollHeader, { passive: true });
   onScrollHeader();
@@ -282,7 +292,7 @@
         '&body=' + encodeURIComponent(body);
 
       const note = $('#form-status');
-      if (note) note.textContent = 'Your email app should open now. If not, write directly to witkoffie@outlook.com.';
+      if (note) note.textContent = 'Your email app should open now with the message pre-filled.';
     });
 
     // clear error state while typing

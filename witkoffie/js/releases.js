@@ -16,12 +16,12 @@
 
 window.WK_RELEASES = [
   {
-    title: 'First Pour',
-    releaseDate: 'Coming soon',
+    title: 'Warm Asem',
+    releaseDate: '2026',
     coverImage: './assets/images/release-placeholder.jpg',
-    description: 'The opening statement — warm bass, Afrikaans texture and a groove built for modern speakers.',
+    description: 'The first official WitKoffie release — warm breath, Afrikaans texture, deep bass and a groove built for modern speakers.',
     previewAudio: './assets/audio/full-preview.mp3',
-    spotifyUrl: '#',
+    spotifyUrl: 'https://open.spotify.com/album/0Dbfg4zUArZwjRBXHvDnNX',
     appleMusicUrl: '#',
     youtubeMusicUrl: '#',
     youtubeUrl: '#',
