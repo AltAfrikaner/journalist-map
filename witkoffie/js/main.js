@@ -137,7 +137,6 @@
   const PLATFORMS = [
     { key: 'spotifyUrl', label: 'Spotify', icon: './assets/icons/spotify.svg' },
     { key: 'appleMusicUrl', label: 'Apple Music', icon: './assets/icons/apple-music.svg' },
-    { key: 'youtubeMusicUrl', label: 'YT Music', icon: './assets/icons/youtube-music.svg' },
     { key: 'youtubeUrl', label: 'YouTube', icon: './assets/icons/youtube.svg' },
     { key: 'distrokidUrl', label: 'DistroKid', icon: './assets/icons/distrokid.svg' }
   ];

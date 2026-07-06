@@ -1,30 +1,18 @@
 /* ==========================================================================
    WitKoffie — Releases data
    EDIT THIS FILE to add or update songs. No other code changes needed.
-
-   For each release:
-   - title         : song title
-   - releaseDate   : e.g. "12 September 2026" or "Coming soon"
-   - coverImage    : path to cover art (square works best)
-   - description   : one or two short premium sentences
-   - previewAudio  : short MP3 snippet (NOT the full song)
-   - platform URLs : ""  -> button is hidden
-                     "#" -> disabled "Coming soon" button
-                     real link -> working button
-   - featured      : true on ONE release to pin it as the featured latest release
    ========================================================================== */
 
 window.WK_RELEASES = [
   {
     title: 'Warm Asem',
     releaseDate: '2026',
-    coverImage: './assets/images/release-placeholder.jpg',
+    coverImage: './assets/images/warm-asem-cover.jpg',
     description: 'The first official WitKoffie release — warm breath, Afrikaans texture, deep bass and a groove built for modern speakers.',
-    previewAudio: './assets/audio/full-preview.mp3',
+    previewAudio: './assets/audio/warm-asem-preview.mp3',
     spotifyUrl: 'https://open.spotify.com/album/0Dbfg4zUArZwjRBXHvDnNX',
-    appleMusicUrl: '#',
-    youtubeMusicUrl: '#',
-    youtubeUrl: '#',
+    appleMusicUrl: 'https://music.apple.com/us/album/warm-asem/6776889709?i=6776889710',
+    youtubeUrl: 'https://www.youtube.com/watch?v=_Av1F3RDteM&list=OLAK5uy_nx60Mm1mXUo3aCAJtBQuOETtSnzBfxdzA',
     distrokidUrl: '',
     featured: true
   },
@@ -36,7 +24,6 @@ window.WK_RELEASES = [
     previewAudio: './assets/audio/hook-preview.mp3',
     spotifyUrl: '#',
     appleMusicUrl: '#',
-    youtubeMusicUrl: '#',
     youtubeUrl: '#',
     distrokidUrl: ''
   },
@@ -48,7 +35,6 @@ window.WK_RELEASES = [
     previewAudio: './assets/audio/rhythm-preview.mp3',
     spotifyUrl: '#',
     appleMusicUrl: '#',
-    youtubeMusicUrl: '#',
     youtubeUrl: '#',
     distrokidUrl: ''
   }
