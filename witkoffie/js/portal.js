@@ -42,8 +42,8 @@
   container.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 50);
-  camera.position.set(0, 0, 7.6);
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 50);
+  camera.position.set(0, 0, 8.2);
 
   const portal = new THREE.Group();
   scene.add(portal);
@@ -267,8 +267,8 @@
     if (reducedMotion) return;
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = (e.clientY / window.innerHeight) * 2 - 1;
-    targetRY = nx * 0.35;
-    targetRX = ny * 0.3;
+    targetRY = nx * 0.18;
+    targetRX = ny * 0.15;
   }, { passive: true });
 
   window.addEventListener('scroll', () => {
