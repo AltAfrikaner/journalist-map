@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WitKoffie Music | Releases</title>
+  <meta name="description" content="Listen to WitKoffie releases — Afrikaans electronic music built for movement, memory and modern speakers. Previews and streaming links.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WitKoffie Music | Releases">
+  <meta property="og:description" content="Music built for movement, memory and modern speakers. WitKoffie releases and previews.">
+  <meta property="og:image" content="./assets/images/og-image.jpg">
+
+  <link rel="icon" type="image/png" href="./assets/images/favicon.png">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ======================= HEADER ======================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html">
+        <img src="./assets/images/witkoffie-mark.png" alt="WitKoffie circular coffee-vinyl mark">
+        WitKoffie
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="site-nav" class="main-nav" aria-label="Main navigation">
+        <a class="nav-link" href="./index.html">Home</a>
+        <a class="nav-link" href="./music.html" aria-current="page">Music</a>
+        <a class="nav-link" href="./contact.html">Contact</a>
+        <div class="nav-socials">
+          <a class="icon-link" href="https://www.instagram.com/witkoffie/" target="_blank" rel="noopener" aria-label="WitKoffie on Instagram">
+            <img src="./assets/icons/instagram.svg" alt="" aria-hidden="true">
+          </a>
+          <a class="icon-link" href="https://www.facebook.com/WitKoffie" target="_blank" rel="noopener" aria-label="WitKoffie on Facebook">
+            <img src="./assets/icons/facebook.svg" alt="" aria-hidden="true">
+          </a>
+        </div>
+        <a class="btn btn-primary btn-small" href="./contact.html">Book</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ======================= PAGE HERO ======================= -->
+    <section class="page-hero" aria-labelledby="releases-heading">
+      <div class="container">
+        <span class="section-kicker reveal">The catalogue</span>
+        <h1 id="releases-heading" class="reveal">The Releases</h1>
+        <p class="section-lead reveal">Music built for movement, memory and modern speakers.</p>
+      </div>
+    </section>
+
+    <!-- ======================= FEATURED LATEST RELEASE ======================= -->
+    <section aria-labelledby="latest-heading" style="padding-top: 0;">
+      <div class="container">
+        <span class="section-kicker reveal">Latest</span>
+        <h2 id="latest-heading" class="section-title reveal">Featured Release</h2>
+
+        <!-- Populated from js/releases.js (the release marked featured: true) -->
+        <div id="featured-release" class="featured-wrap">
+          <div class="cover-frame tilt reveal">
+            <img data-slot="cover" src="./assets/images/release-placeholder.jpg" alt="Featured release cover art">
+          </div>
+          <div class="featured-panel reveal">
+            <span class="release-date" data-slot="date">Coming soon</span>
+            <h3 data-slot="title">Track Title</h3>
+            <p class="desc" data-slot="desc">A short premium description of the track.</p>
+            <div data-slot="player"></div>
+            <div data-slot="links"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= ALL RELEASES ======================= -->
+    <section aria-labelledby="all-releases-heading" style="background: var(--color-espresso); border-block: 1px solid var(--color-line);">
+      <div class="container">
+        <span class="section-kicker reveal">All releases</span>
+        <h2 id="all-releases-heading" class="section-title reveal">Every Pour</h2>
+        <p class="section-lead reveal">Short previews only — follow the platform links for the full tracks. Edit these cards in <code>js/releases.js</code>.</p>
+
+        <!-- Cards are rendered from js/releases.js -->
+        <div id="releases-grid" class="releases-grid"></div>
+      </div>
+    </section>
+
+    <!-- ======================= CTA ======================= -->
+    <section class="cta-final" aria-labelledby="music-cta-heading">
+      <div class="container">
+        <h2 id="music-cta-heading" class="reveal">Want to book or collaborate?</h2>
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary" href="./contact.html">Contact WitKoffie</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-wave" aria-hidden="true"></div>
+
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="./assets/images/witkoffie-mark.png" alt="">
+          <div>
+            <h2>WitKoffie</h2>
+            <p>Afrikaans electronic sound. Built for movement.</p>
+          </div>
+        </div>
+
+        <nav class="footer-col" aria-label="Footer navigation">
+          <h3>Explore</h3>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./music.html">Music</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-col">
+          <h3>Follow</h3>
+          <ul>
+            <li><a href="https://www.instagram.com/witkoffie/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.facebook.com/WitKoffie" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="mailto:witkoffie@outlook.com">witkoffie@outlook.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Fan-facing platforms first; DistroKid stays last and small -->
+      <div class="footer-platforms" aria-label="Music platforms">
+        <a class="icon-link" href="#" aria-label="WitKoffie on Spotify (coming soon)"><img src="./assets/icons/spotify.svg" alt="" aria-hidden="true"></a>
+        <a class="icon-link" href="#" aria-label="WitKoffie on Apple Music (coming soon)"><img src="./assets/icons/apple-music.svg" alt="" aria-hidden="true"></a>
+        <a class="icon-link" href="#" aria-label="WitKoffie on YouTube Music (coming soon)"><img src="./assets/icons/youtube-music.svg" alt="" aria-hidden="true"></a>
+        <a class="icon-link" href="#" aria-label="WitKoffie on YouTube (coming soon)"><img src="./assets/icons/youtube.svg" alt="" aria-hidden="true"></a>
+        <a class="icon-link" href="#" aria-label="WitKoffie on SoundCloud (coming soon)"><img src="./assets/icons/soundcloud.svg" alt="" aria-hidden="true"></a>
+        <a class="icon-link" href="#" aria-label="WitKoffie on DistroKid (coming soon)"><img src="./assets/icons/distrokid.svg" alt="" aria-hidden="true"></a>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="footer-year">2026</span> WitKoffie. All rights reserved.</span>
+        <span>Afrikaans electronic sound. Rebuilt for the future.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/audio.js"></script>
+  <script src="./js/releases.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
