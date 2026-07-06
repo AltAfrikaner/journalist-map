@@ -426,7 +426,7 @@ body.sound-on #enter-sound { display: none; }
   width: 100%;
 }
 #sound-portal { position: absolute; inset: 0; }
-#sound-portal canvas { width: 100% !important; height: 100% !important; display: block; }
+#sound-portal canvas { width: 100% !important; height: 100% !important; display: block; cursor: crosshair; }
 
 /* CSS fallback portal (shown if WebGL is unavailable) */
 .portal-fallback {
