@@ -200,7 +200,7 @@
       const desc = featuredMount.querySelector('[data-slot="desc"]');
       const player = featuredMount.querySelector('[data-slot="player"]');
       const links = featuredMount.querySelector('[data-slot="links"]');
-      if (art) { art.src = featured.coverImage; art.alt = featured.title + ' cover art'; }
+      if (art) { art.src = featured.coverImage; art.alt = featured.title + ' cover art'; art.onerror = function() { this.onerror = null; this.src = './assets/images/release-placeholder.jpg'; }; }
       if (title) title.textContent = featured.title;
       if (date) date.textContent = featured.releaseDate;
       if (desc) desc.textContent = featured.description;
@@ -219,6 +219,7 @@
         img.src = r.coverImage;
         img.alt = r.title + ' cover art';
         img.loading = 'lazy';
+        img.onerror = function() { this.onerror = null; this.src = './assets/images/release-placeholder.jpg'; };
         cover.appendChild(img);
         card.appendChild(cover);
 
