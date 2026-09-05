@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real411: The Foreign-Funded South African Gateway to Meta, Google and TikTok | Netwerk Leaks | Alt Afrikaner</title>
+<meta name="description" content="Real411 is the official South African public-reporting platform for online misinformation. Run by a foreign-funded civil society trust, it has a formal escalation route into Meta, Google and TikTok. This investigation maps who runs it, who funds it and how a complaint travels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B2A4A;--red:#8B0000;--gold:#C5A258;--cream:#F5F0E8;
+  --dark:#0D1520;--mid:#243552;--light-gold:#E8D5A3;
+  --text-light:#B8C4D4;--text-muted:#7A8FA8;--white:#FFFFFF;--border:#2A3F5F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--dark);color:var(--cream);font-family:'Source Sans 3',sans-serif;font-weight:400;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.35;}
+nav{position:sticky;top:0;background:rgba(13,21,32,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:500;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:.02em;text-decoration:none;}
+.nav-logo span{color:var(--text-muted);font-weight:300;font-size:.9rem;margin-left:.5rem;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--gold)}
+.hero{background:linear-gradient(180deg,#0D1520 0%,#0F1A28 100%);padding:5rem 2rem 4rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:radial-gradient(ellipse at top right,rgba(197,162,88,.05) 0%,transparent 65%);pointer-events:none;}
+.container{max-width:1000px;margin:0 auto;padding:0 1.5rem;}
+.tag-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .7rem;border-radius:2px;}
+.tag-red{background:rgba(139,0,0,.25);color:#E87070;border:1px solid rgba(139,0,0,.4)}
+.tag-gold{background:rgba(197,162,88,.15);color:var(--gold);border:1px solid rgba(197,162,88,.3)}
+.tag-blue{background:rgba(27,42,74,.5);color:var(--text-light);border:1px solid var(--border)}
+.tag-green{background:rgba(26,74,46,.4);color:#7EC89A;border:1px solid rgba(46,125,79,.4)}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:900;line-height:1.15;color:var(--white);margin-bottom:1.5rem;max-width:820px;}
+h1 em{color:var(--gold);font-style:normal;}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--white);margin-bottom:1.25rem;}
+h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:var(--light-gold);margin-bottom:.75rem;}
+.hero-sub{font-size:1.1rem;color:var(--text-light);max-width:760px;line-height:1.75;margin-bottom:2rem;}
+.verdict-bar{background:rgba(27,42,74,.5);border-left:3px solid var(--gold);padding:1rem 1.25rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--light-gold);letter-spacing:.02em;line-height:1.65;max-width:820px;}
+section{padding:4rem 2rem;border-bottom:1px solid var(--border);}
+section:last-of-type{border-bottom:none}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;}
+p{color:var(--text-light);margin-bottom:1.25rem;max-width:720px;font-size:1rem;}
+p strong{color:var(--cream)}
+/* ========================================
+   EXPLAINER INTRO STYLES
+   ======================================== */
+.intro-section{background:rgba(27,42,74,.2);padding:3.5rem 2rem;border-bottom:1px solid var(--border);}
+.intro-lead{font-size:1.2rem;color:var(--cream);max-width:760px;line-height:1.8;margin-bottom:1.5rem;}
+.intro-lead strong{color:var(--gold);}
+.plain-box{background:rgba(13,21,32,.6);border:1px solid var(--border);border-radius:4px;padding:1.5rem 2rem;margin:1.5rem 0;max-width:760px;}
+.plain-box h3{color:var(--gold);margin-bottom:1rem;}
+.plain-box p{font-size:.97rem;margin-bottom:.75rem;max-width:none;}
+.plain-box p:last-child{margin-bottom:0}
+/* CONCEPT DIAGRAM */
+.concept-diagram{display:flex;gap:0;align-items:stretch;margin:2rem 0;max-width:900px;flex-wrap:wrap;}
+.concept-step{flex:1;min-width:160px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
+.concept-step:not(:last-child)::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:14px solid var(--border);z-index:2;}
+.concept-box{background:rgba(27,42,74,.4);border:1px solid var(--border);border-radius:4px;padding:1.25rem 1rem;flex:1;width:100%;margin-right:14px;}
+.concept-step:last-child .concept-box{margin-right:0;}
+.concept-icon{font-size:1.8rem;margin-bottom:.65rem;display:block;}
+.concept-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem;}
+.concept-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:600;color:var(--cream);margin-bottom:.4rem;}
+.concept-desc{font-size:.82rem;color:var(--text-muted);line-height:1.5;}
+/* KEY FACTS GRID */
+.key-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;margin:2rem 0;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.key-fact{background:rgba(27,42,74,.25);padding:1.25rem 1.5rem;border-right:1px solid var(--border);}
+.key-fact:last-child{border-right:none}
+.key-fact-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--gold);display:block;line-height:1;}
+.key-fact-label{font-size:.82rem;color:var(--text-muted);margin-top:.3rem;line-height:1.4;}
+/* FLOW CHART */
+.flowchart{max-width:700px;margin:2rem 0;}
+.flow-row{display:flex;align-items:flex-start;gap:0;margin-bottom:0;}
+.flow-node{flex:1;background:rgba(27,42,74,.3);border:1px solid var(--border);border-radius:3px;padding:.85rem 1rem;position:relative;}
+.flow-node.highlight{background:rgba(197,162,88,.08);border-color:rgba(197,162,88,.3);}
+.flow-node.outcome-good{background:rgba(26,74,46,.15);border-color:rgba(46,125,79,.3);}
+.flow-node.outcome-warn{background:rgba(180,90,20,.12);border-color:rgba(180,90,20,.3);}
+.flow-node-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
+.flow-node-title{font-size:.92rem;color:var(--cream);font-weight:600;margin-bottom:.2rem;}
+.flow-node-desc{font-size:.8rem;color:var(--text-muted);line-height:1.4;}
+.flow-arrow{display:flex;align-items:center;justify-content:center;padding:.3rem 0;color:var(--border);}
+.flow-arrow svg{width:20px;height:20px;}
+.flow-split{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem;}
+.outcomes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.5rem;margin-top:.75rem;}
+.outcome-chip{background:rgba(13,21,32,.5);border:1px solid var(--border);border-radius:3px;padding:.6rem .85rem;font-size:.8rem;color:var(--text-light);}
+.outcome-chip strong{display:block;color:var(--cream);font-size:.82rem;margin-bottom:.2rem;}
+.outcome-chip.platform{border-color:rgba(197,162,88,.3);background:rgba(197,162,88,.06);}
+.outcome-chip.authority{border-color:rgba(139,0,0,.3);background:rgba(139,0,0,.06);}
+.outcome-chip.none-chip{border-color:rgba(42,63,95,.6);}
+/* FUNDING DIAGRAM */
+.funding-visual{max-width:800px;margin:2rem 0;}
+.funder-row{display:flex;align-items:center;gap:0;margin-bottom:.5rem;}
+.funder-name{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cream);min-width:200px;padding:.5rem .75rem;background:rgba(27,42,74,.3);border:1px solid var(--border);border-right:none;border-radius:3px 0 0 3px;}
+.funder-bar-wrap{flex:1;height:36px;background:rgba(13,21,32,.4);border:1px solid var(--border);border-right:none;position:relative;overflow:hidden;}
+.funder-bar{height:100%;display:flex;align-items:center;padding:0 .75rem;transition:width 1s ease;}
+.funder-bar.luminate{background:rgba(197,162,88,.25);}
+.funder-bar.osf{background:rgba(139,0,0,.2);}
+.funder-bar.fes{background:rgba(27,42,74,.5);}
+.funder-bar.eu{background:rgba(27,42,74,.35);}
+.funder-bar-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cream);white-space:nowrap;}
+.funder-amount{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);min-width:120px;padding:.5rem .75rem;background:rgba(27,42,74,.2);border:1px solid var(--border);border-radius:0 3px 3px 0;text-align:right;}
+.funding-target{display:flex;align-items:center;justify-content:center;padding:1rem;margin-top:.5rem;background:rgba(197,162,88,.08);border:1px solid rgba(197,162,88,.3);border-radius:3px;}
+.funding-target span{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gold);letter-spacing:.06em;}
+/* NETWORK DIAGRAM */
+.network-diagram{max-width:800px;margin:2rem 0;}
+.net-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+.net-members{display:flex;gap:.5rem;flex-wrap:wrap;}
+.net-node{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.4rem .85rem;border-radius:3px;border:1px solid var(--border);}
+.net-node.mma{background:rgba(197,162,88,.12);border-color:rgba(197,162,88,.35);color:var(--gold);}
+.net-node.ac{background:rgba(27,42,74,.4);border-color:var(--border);color:var(--text-light);}
+.net-node.sanef{background:rgba(27,42,74,.4);border-color:var(--border);color:var(--text-light);}
+.net-node.platform{background:rgba(139,0,0,.12);border-color:rgba(139,0,0,.3);color:#E87070;}
+.net-node.iec{background:rgba(26,74,46,.2);border-color:rgba(46,125,79,.35);color:#7EC89A;}
+.net-connector{color:var(--border);font-size:1.2rem;flex-shrink:0;}
+.net-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);}
+.piie-center{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--cream);background:rgba(27,42,74,.5);border:1px solid var(--border);border-radius:3px;padding:.5rem 1.25rem;}
+/* DATA TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:1.5rem 0;}
+.data-table th{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);background:rgba(27,42,74,.3);}
+.data-table td{padding:.65rem 1rem;border-bottom:1px solid rgba(42,63,95,.5);color:var(--text-light);vertical-align:top;}
+.data-table tr:hover td{background:rgba(27,42,74,.2)}
+.data-table td:first-child{color:var(--cream);font-weight:600;white-space:nowrap;min-width:170px;}
+.sv{color:#7EC89A}.sp{color:#E8A060}.su{color:var(--text-muted)}
+/* QUOTE BOX */
+.quote-box{background:rgba(197,162,88,.06);border:1px solid rgba(197,162,88,.25);border-left:4px solid var(--gold);padding:1.25rem 1.5rem;margin:1.5rem 0 2rem;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--light-gold);line-height:1.65;}
+.quote-box cite{display:block;margin-top:.6rem;font-size:.7rem;color:var(--text-muted);font-style:normal;}
+/* XLINK */
+.xlink-box{background:rgba(27,42,74,.35);border:1px solid var(--border);border-left:3px solid var(--gold);padding:1rem 1.25rem;margin:1.5rem 0;display:flex;align-items:flex-start;gap:1rem;}
+.xlink-icon{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;white-space:nowrap;padding-top:.15rem;}
+.xlink-content{flex:1;}
+.xlink-content strong{color:var(--cream);display:block;margin-bottom:.25rem;font-size:.92rem;}
+.xlink-content span{color:var(--text-muted);font-size:.85rem;display:block;margin-bottom:.5rem;}
+.xlink-content a{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold);text-decoration:none;border:1px solid rgba(197,162,88,.4);padding:.2rem .6rem;letter-spacing:.04em;}
+.xlink-content a:hover{background:rgba(197,162,88,.1)}
+/* FINDING BLOCK */
+.finding-block{background:rgba(197,162,88,.05);border:1px solid rgba(197,162,88,.2);border-radius:3px;padding:1.5rem;margin:2rem 0;}
+.finding-block h3{color:var(--gold);margin-bottom:.75rem;}
+.finding-block p{margin-bottom:0;}
+/* CONTRA BOX */
+.contra-box{background:rgba(139,0,0,.08);border:1px solid rgba(139,0,0,.3);border-radius:3px;padding:1.25rem 1.5rem;margin:1.5rem 0;}
+.contra-box h3{color:#E87070;margin-bottom:.75rem;}
+.contra-box p{margin-bottom:.6rem;font-size:.92rem;}
+.contra-box p:last-child{margin-bottom:0}
+/* IEC BOX */
+.iec-box{background:rgba(27,42,74,.3);border:1px solid var(--border);border-radius:3px;padding:1.25rem 1.5rem;margin:1.5rem 0;}
+.iec-box h3{color:var(--text-light);margin-bottom:.6rem;}
+.iec-box p{font-size:.9rem;margin-bottom:.6rem;max-width:none;}
+.iec-box p:last-child{margin-bottom:0}
+/* MONEY TABLE */
+.money-wrap{border:1px solid var(--border);border-radius:3px;overflow:hidden;margin:1.5rem 0;}
+.money-head{display:flex;gap:1rem;padding:.5rem .75rem;background:rgba(27,42,74,.4);}
+.money-head span{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);}
+.money-row{display:flex;gap:1rem;padding:.75rem;border-bottom:1px solid rgba(42,63,95,.4);align-items:flex-start;}
+.money-row:last-child{border-bottom:none}
+.money-year{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold);min-width:55px;}
+.money-org{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-muted);min-width:150px;}
+.money-amount{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--cream);font-weight:500;min-width:95px;}
+.money-desc{font-size:.85rem;color:var(--text-light);}
+.total-row{display:flex;gap:1rem;padding:.75rem;background:rgba(197,162,88,.07);border-top:1px solid rgba(197,162,88,.25);}
+.total-row .money-amount{color:var(--gold)}
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0;}
+.card{background:rgba(27,42,74,.25);border:1px solid var(--border);border-radius:3px;padding:1.25rem;}
+.card-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--cream);margin-bottom:.3rem;}
+.card-sub{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.75rem;}
+.card p{font-size:.88rem;margin:0;color:var(--text-light);max-width:none;}
+/* GAP LIST */
+.gap-list{list-style:none;margin:1rem 0;}
+.gap-list li{display:flex;gap:1rem;padding:.85rem 0;border-bottom:1px solid rgba(42,63,95,.4);color:var(--text-light);font-size:.92rem;align-items:flex-start;}
+.gap-list li:last-child{border-bottom:none}
+.gap-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);min-width:1.5rem;padding-top:.15rem;}
+/* SOURCE LIST */
+.source-list{list-style:none;margin:1rem 0;}
+.source-list li{padding:.5rem 0;border-bottom:1px solid rgba(42,63,95,.3);font-size:.88rem;color:var(--text-muted);}
+.source-list li:last-child{border-bottom:none}
+.source-list a{color:var(--gold);text-decoration:none;}
+.source-list a:hover{text-decoration:underline}
+.vs{color:var(--cream)}.vp{color:var(--text-muted);font-size:.78rem;margin-left:.25rem}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.visible{opacity:1;transform:none}
+/* FOOTER */
+footer{background:rgba(9,15,24,.8);border-top:1px solid var(--border);padding:3rem 2rem;}
+.footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:3rem;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;}
+.footer-brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;}
+.footer-tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;}
+.footer-hub{display:flex;flex-direction:column;gap:.75rem;}
+.footer-hub-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);}
+.footer-hub a{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);text-decoration:none;border:1px solid var(--gold);padding:.4rem 1rem;letter-spacing:.06em;transition:all .2s;}
+.footer-hub a:hover{background:var(--gold);color:var(--dark)}
+.footer-social{display:flex;gap:1rem;flex-wrap:wrap;}
+.social-link{color:var(--text-muted);text-decoration:none;font-size:.85rem;transition:color .2s;}
+.social-link:hover{color:var(--gold)}
+.footer-sources{font-size:.78rem;color:var(--text-muted);line-height:1.65;max-width:800px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid var(--border);}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .concept-diagram{flex-direction:column;}
+  .concept-step:not(:last-child)::after{display:none}
+  .funder-name{min-width:120px;font-size:.68rem;}
+  .funder-amount{min-width:90px;}
+  .net-row{flex-direction:column;align-items:flex-start;}
+  .footer-inner{flex-direction:column;gap:2rem}
+  .data-table{font-size:.78rem}
+  .data-table td:first-child{white-space:normal;min-width:auto}
+  .money-org{min-width:100px;}
+  .xlink-box{flex-direction:column;gap:.5rem}
+  .flow-split{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://altafrikaner.github.io/journalist-map/index.html" class="nav-logo">
+    Alt Afrikaner <span>/ Netwerk Leaks</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#starthere">Start Here</a></li>
+    <li><a href="#journey">How It Works</a></li>
+    <li><a href="#whorunsit">Who Runs It</a></li>
+    <li><a href="#funding">Funding</a></li>
+    <li><a href="#network">The Network</a></li>
+    <li><a href="#questions">Open Questions</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="tag-row">
+      <span class="tag tag-red">Investigation</span>
+      <span class="tag tag-gold">Platform Escalation Architecture</span>
+      <span class="tag tag-blue">Johannesburg / Berlin / San Francisco / Washington</span>
+      <span class="tag tag-green">Verified — Primary Sources</span>
+    </div>
+    <h1>Real411: The <em>Foreign-Funded</em> South African Gateway to Meta, Google and TikTok</h1>
+    <p class="hero-sub">A Johannesburg-based civil society trust manages South Africa's official public-complaints portal for online misinformation. Through a formal cooperation agreement, its reviewed complaints reach Meta, Google and TikTok as prioritised escalations. Its operator has received at least $825,000 in identified foreign philanthropic funding since 2019. By 2026, it co-leads a formal election-information coalition with Africa Check and the South African National Editors Forum.</p>
+    <div class="verdict-bar">
+      DOCUMENTED FINDING: A privately operated, foreign-funded civil-society complaints system holds an official role in South Africa's electoral-information architecture and a prioritised escalation route into major technology platforms whose own policies determine the ultimate moderation outcome. The funding connections are documented. What remains unestablished is whether these escalation pathways produce viewpoint-asymmetric outcomes.
+    </div>
+  </div>
+</div>
+
+<!-- START HERE — PLAIN LANGUAGE INTRO -->
+<section id="starthere" class="intro-section">
+  <div class="container">
+    <div class="section-label reveal">Start Here</div>
+    <h2 class="reveal" style="margin-bottom:1.5rem">What Is Real411? What Does It Do?</h2>
+
+    <p class="intro-lead reveal">
+      <strong>Real411 is a website where any South African can report an online post they believe is false, harmful or spreading lies.</strong> It was built by a Johannesburg non-profit organisation called Media Monitoring Africa (MMA) and launched in 2019 together with the Electoral Commission of South Africa (IEC) -- the independent body that runs the country's elections.
+    </p>
+
+    <p class="reveal" style="max-width:760px">When you submit a complaint, a small panel of volunteer experts reviews it. If they find it crosses a legal or ethical threshold, the complaint can travel through a formal system all the way to Facebook, Google or TikTok. The platform then decides what to do: remove the post, add a warning label, delist it from search results -- or take no action at all.</p>
+
+    <p class="reveal" style="max-width:760px">That mechanism -- private organisation, official status, formal tech-platform access -- is what this investigation examines. It is not about whether Real411 has done something wrong. It is about mapping what it is, how it is funded, who controls it and what questions the available evidence does and does not yet answer.</p>
+
+    <!-- CONCEPT DIAGRAM -->
+    <div class="section-label reveal" style="margin-top:2.5rem">The Basic Idea</div>
+    <h3 class="reveal">How Real411 Works in Four Steps</h3>
+
+    <div class="concept-diagram reveal">
+      <div class="concept-step">
+        <div class="concept-box">
+          <span class="concept-icon">&#128247;</span>
+          <div class="concept-num">Step 1</div>
+          <div class="concept-title">You See a Post</div>
+          <div class="concept-desc">You come across something online that looks false, misleading or harmful. It could be on Facebook, TikTok, X (formerly Twitter), WhatsApp or any other platform.</div>
+        </div>
+      </div>
+      <div class="concept-step">
+        <div class="concept-box">
+          <span class="concept-icon">&#128203;</span>
+          <div class="concept-num">Step 2</div>
+          <div class="concept-title">You Report It</div>
+          <div class="concept-desc">You submit a complaint on Real411's website. You describe what you saw and why you think it is harmful. Anyone in South Africa can do this for free.</div>
+        </div>
+      </div>
+      <div class="concept-step">
+        <div class="concept-box">
+          <span class="concept-icon">&#128269;</span>
+          <div class="concept-num">Step 3</div>
+          <div class="concept-title">Experts Review It</div>
+          <div class="concept-desc">Three volunteers from a pool of 30-plus reviewers -- lawyers, journalists, digital specialists -- assess your complaint. They were trained at the University of the Witwatersrand.</div>
+        </div>
+      </div>
+      <div class="concept-step">
+        <div class="concept-box">
+          <span class="concept-icon">&#9878;</span>
+          <div class="concept-num">Step 4</div>
+          <div class="concept-title">A Decision Is Made</div>
+          <div class="concept-desc">The result ranges from no action at all to an urgent referral to Facebook, Google, TikTok, the Human Rights Commission or the police -- depending on what the reviewers found.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY FACTS -->
+    <div class="section-label reveal" style="margin-top:2.5rem">At a Glance</div>
+    <div class="key-facts reveal">
+      <div class="key-fact">
+        <span class="key-fact-num">2019</span>
+        <div class="key-fact-label">Year Real411 launched. First public election disinformation platform of its kind.</div>
+      </div>
+      <div class="key-fact">
+        <span class="key-fact-num">30+</span>
+        <div class="key-fact-label">Volunteer reviewers in the pool. Any three can claim and assess each complaint.</div>
+      </div>
+      <div class="key-fact">
+        <span class="key-fact-num">$825k+</span>
+        <div class="key-fact-label">Identified foreign philanthropic funding received by MMA since 2019.</div>
+      </div>
+      <div class="key-fact">
+        <span class="key-fact-num">3</span>
+        <div class="key-fact-label">Technology companies with formal escalation agreements: Meta, Google, TikTok.</div>
+      </div>
+    </div>
+
+    <!-- WHY THIS MATTERS BOX -->
+    <div class="plain-box reveal" style="margin-top:1.5rem">
+      <h3>Why Does This Investigation Exist?</h3>
+      <p>Real411 is not run by the government. It is run by a private trust. That trust has received substantial foreign funding. And through a formal agreement, it has a privileged escalation route into the world's largest social media platforms -- one that an ordinary member of the public reporting the same post does not have.</p>
+      <p>None of that is secret. All of it is documented in public records, official press releases and tax filings. This page puts it all in one place and asks the questions the documents do not yet answer: who reviews what, what gets referred, and do any particular kinds of content or viewpoints end up referred more than others?</p>
+      <p>Those questions are open. This page documents what is established and names what is not.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW A COMPLAINT TRAVELS -->
+<section id="journey">
+  <div class="container">
+    <div class="section-label reveal">Step by Step</div>
+    <h2 class="reveal">The Journey of a Complaint</h2>
+    <p class="reveal">The flowchart below shows what happens after you submit a complaint to Real411. Each stage is drawn from official IEC and MMA documents.</p>
+
+    <div class="flowchart reveal">
+
+      <div class="flow-node highlight">
+        <div class="flow-node-label">Stage 1 &mdash; Anyone</div>
+        <div class="flow-node-title">Public submits a complaint on real411.org.za</div>
+        <div class="flow-node-desc">Free, open to any South African. Covers four types: disinformation, hate speech, incitement to violence, harassment of journalists.</div>
+      </div>
+
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+
+      <div class="flow-node">
+        <div class="flow-node-label">Stage 2 &mdash; Volunteer Reviewers</div>
+        <div class="flow-node-title">Three experts from the 30-plus pool assess the complaint independently</div>
+        <div class="flow-node-desc">Volunteers with legal, digital and media expertise. Trained at the Mandela Institute of Law, University of the Witwatersrand. Their identities are not publicly listed. They have no binding legal powers over any party.</div>
+      </div>
+
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+
+      <div class="flow-node">
+        <div class="flow-node-label">Stage 3 &mdash; MMA Secretariat</div>
+        <div class="flow-node-title">Media Monitoring Africa reviews the assessment and determines next steps</div>
+        <div class="flow-node-desc">The outcome and any referral decision is made here. All outcomes are published in a public archive. The complainant can track progress and appeal decisions.</div>
+      </div>
+
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+
+      <div class="flow-node">
+        <div class="flow-node-label">Stage 4 &mdash; Possible Paths</div>
+        <div class="flow-node-title">What can happen next</div>
+        <div class="flow-node-desc">The outcome depends entirely on what the reviewers found. Here are all the documented possibilities:</div>
+
+        <div class="outcomes-grid" style="margin-top:.85rem">
+          <div class="outcome-chip none-chip">
+            <strong>No action taken</strong>
+            Content does not meet any threshold. Complaint closed.
+          </div>
+          <div class="outcome-chip none-chip">
+            <strong>Counter-narrative</strong>
+            Real411 publishes factual information. No platform or authority involved.
+          </div>
+          <div class="outcome-chip none-chip">
+            <strong>Press Ombud</strong>
+            Referred to South Africa's media self-regulation body.
+          </div>
+          <div class="outcome-chip platform">
+            <strong>Platform notified</strong>
+            IEC tells the platform (Meta / Google / TikTok). Platform reviews under its own rules and may: remove the post, add a warning label, delist from search, or take no action.
+          </div>
+          <div class="outcome-chip authority">
+            <strong>SAHRC referred</strong>
+            Referred to the South African Human Rights Commission -- a constitutional body that can alert police and issue public statements.
+          </div>
+          <div class="outcome-chip authority">
+            <strong>SAPS / courts</strong>
+            Incitement or criminal content may be referred to the South African Police Service or legal proceedings initiated.
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+
+      <div class="flow-node highlight" style="background:rgba(197,162,88,.08);border-color:rgba(197,162,88,.3)">
+        <div class="flow-node-label">Stage 5 &mdash; Public Record</div>
+        <div class="flow-node-title">All outcomes published. Right of appeal available.</div>
+        <div class="flow-node-desc">Every complaint decision is publicly accessible. Appeals are overseen by Justice Zak Yacoob, a former acting Deputy Chief Justice of South Africa's Constitutional Court. The Real411 Digital Complaints Committee has no legally binding authority over any platform, authority or person at any stage.</div>
+      </div>
+
+    </div>
+
+    <div class="finding-block reveal" style="margin-top:2rem">
+      <h3>The Critical Difference: Prioritised Access</h3>
+      <p>When an ordinary member of the public reports a post directly on Facebook or TikTok, they enter a general queue with millions of other reports. When a Real411-assessed complaint is forwarded by the IEC to those same platforms, the platforms have formally committed to give it priority attention -- to "acknowledge and swiftly process the notification." The platforms still decide the outcome under their own rules. But they decide it from a queue no ordinary citizen can access. That priority status was created by a formal cooperation agreement between MMA, the IEC, and the technology companies.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO RUNS IT -->
+<section id="whorunsit">
+  <div class="container">
+    <div class="section-label reveal">The Organisation</div>
+    <h2 class="reveal">Who Runs Real411?</h2>
+
+    <p class="reveal">Real411 is owned and operated by <strong>Media Monitoring Africa (MMA)</strong>, which rebranded as <strong>Moxii Africa</strong> in 2026. MMA was founded in 1993 to monitor how South African broadcasters covered the country's first democratic elections. It has grown since then into a broad media-accountability organisation running more than 40 programmes. Real411 is its most publicly visible product.</p>
+
+    <table class="data-table reveal">
+      <tr><th>Detail</th><th>What We Know</th><th>Confirmed?</th></tr>
+      <tr><td>Full name</td><td>Media Monitoring Africa Trust, trading as Moxii Africa from 2026</td><td class="sv">Yes</td></tr>
+      <tr><td>What type of organisation</td><td>Non-benefit trust, registered with the Master of the High Court in Johannesburg. Not a company registered with CIPC (the South African companies regulator). Trust records require a formal access request to the Master's Office.</td><td class="sv">Yes</td></tr>
+      <tr><td>Director</td><td>William Bird -- holds a BA and Honours degree from the University of the Witwatersrand; is an Ashoka Fellow and Linc Fellow</td><td class="sv">Yes</td></tr>
+      <tr><td>Address</td><td>Suite No. 2, Art Centre, 22 6th Street, Parkhurst, Johannesburg, 2193</td><td class="sv">Yes -- from MMA's own United Nations submission</td></tr>
+      <tr><td>Launched Real411</td><td>2019, jointly with the IEC. Relaunched 2020 for COVID-19 monitoring. Now operates year-round.</td><td class="sv">Yes</td></tr>
+      <tr><td>Reviewer pool</td><td>30-plus voluntary reviewers. Any three may claim each complaint. Identities not publicly listed.</td><td class="sv">Yes</td></tr>
+      <tr><td>Reviewer training</td><td>One-day masterclass delivered by the Mandela Institute of Law, University of the Witwatersrand</td><td class="sv">Yes</td></tr>
+      <tr><td>Appeals overseer</td><td>Justice Zak Yacoob -- former acting Deputy Chief Justice, anti-apartheid movement figure</td><td class="sv">Yes</td></tr>
+      <tr><td>Does it have binding legal powers?</td><td>No. The Digital Complaints Committee has no legally binding authority over any platform, authority, publication or person.</td><td class="sv">Yes -- Real411's own documentation</td></tr>
+      <tr><td>Are outcomes public?</td><td>Yes. All complaint decisions are published in a searchable public archive on real411.org</td><td class="sv">Yes</td></tr>
+    </table>
+
+    <!-- IEC clarification -->
+    <div class="iec-box reveal">
+      <h3>Important: What the IEC Is and What It Is Not</h3>
+      <p>The IEC -- Electoral Commission of South Africa -- is a <strong>Chapter 9 constitutional institution</strong>. Chapter 9 of South Africa's Constitution establishes a set of independent bodies designed to support democracy. The IEC is one of them. It is constitutionally required to be independent and impartial. It is accountable to Parliament, not to the ruling party or any other political organisation.</p>
+      <p>In plain language: the IEC is <strong>not</strong> an ANC government body. It is a state body specifically designed to operate independently of whichever party is in government. Whether that independence works as intended in practice is a separate and legitimate question. It remains a factual error to describe the IEC as an ANC enforcement arm.</p>
+    </div>
+
+    <!-- Values framing -->
+    <h3 class="reveal" style="margin-top:2rem">Values-Based, Not Neutral</h3>
+    <p class="reveal">In November 2020, MMA Director William Bird was asked directly whether Real411 was biased. His answer is worth reading in full:</p>
+    <div class="quote-box reveal">
+      "Are we biased? Yes, we are. We do not seek to hide it, we own it and are clear about it on the Real411 site. We don't believe in a fabled objectivity, but we do believe in human rights, in fairness, balance, accuracy and the SA Constitution."
+      <cite>William Bird, MMA Director. Daily Maverick, 15 November 2020. Verified.</cite>
+    </div>
+    <p class="reveal">He is not claiming to favour a political party. He is saying Real411 applies values -- human rights, the Constitution -- rather than claiming a neutral "we have no view" stance. That is a legitimate philosophical position. The question it raises for an investigator is different: <strong>when assessments are made through a normative lens rather than a purely procedural one, how do we know viewpoint-neutral outcomes are actually being produced?</strong> The complaint distribution data in the public archive is the place to test this. That analysis has not been published.</p>
+
+    <!-- Contradiction box -->
+    <div class="contra-box reveal" style="margin-top:2rem">
+      <h3>A Documented Contradiction in the 2026 Framework</h3>
+      <p>Moxii Africa's own 2026 Local Government Elections page contains two statements that do not agree with each other. The page first says Moxii Africa and the IEC "have signed a Framework of Cooperation, committing to protect the integrity of the LGE 2026." The same page then says "The Framework of Cooperation is still under negotiation and will be linked here soon."</p>
+      <p>If it is signed, the full document should be accessible under South Africa's Promotion of Access to Information Act (PAIA). If it is still being negotiated, the operative rules for 2026 have not been finalised. This investigation has filed two PAIA requests with the IEC specifically targeting this document. No public copy has been published as of September 2026.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDING -->
+<section id="funding">
+  <div class="container">
+    <div class="section-label reveal">Follow the Money</div>
+    <h2 class="reveal">Who Privately Funds Real411?</h2>
+
+    <!-- DIRECT ANSWER BOX -->
+    <div class="plain-box reveal" style="border-left:4px solid var(--gold);margin-bottom:2rem">
+      <h3 style="color:var(--gold);margin-bottom:1rem">The short answer</h3>
+      <p>Real411 is not government-funded. It is operated by a private non-profit trust, Media Monitoring Africa (MMA) -- now Moxii Africa -- that is funded primarily by two major American private philanthropic networks and a German state-funded political foundation.</p>
+      <p>The two biggest identified private funders are:</p>
+      <p><strong>1. The Omidyar Group / Luminate</strong> -- Pierre Omidyar, the French-American billionaire who founded eBay, channels his philanthropy through a network of organisations. One of them is Luminate. Luminate gave MMA at least $465,000 between 2020 and 2022. The Omidyar Network Fund gave MMA $160,000 in 2019. That is a minimum of $625,000 from the Omidyar network in four years. This hub has a full investigation dedicated to the Omidyar network and its South African reach. <a href="omidyar.html" style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.82rem">See the Omidyar investigation</a></p>
+      <p><strong>2. Open Society Foundations (OSF)</strong> -- founded by investor George Soros. OSF gave MMA $200,000 in 2023 alone. OSF also funds Africa Check, the other fact-checking organisation that sits inside the same PIIE coalition as Real411. <a href="osf.html" style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.82rem">See the OSF investigation</a></p>
+      <p><strong>3. Friedrich Ebert Stiftung (FES)</strong> -- this one is different. FES is not a private funder. It is a German political foundation funded overwhelmingly by the German federal and state governments. It has also historically supported the ANC. Its SA grant quantum to MMA is not publicly disclosed.</p>
+      <p style="margin-bottom:0"><strong>No public ownership record exists</strong> for the trust itself. MMA is a non-benefit trust registered with the Master of the High Court in Johannesburg -- not with South Africa's companies regulator (CIPC). Trustee names and the trust deed are not on any public website. Obtaining them requires a formal access request to the Master's Office.</p>
+    </div>
+
+    <p class="reveal">The grant records below come from primary sources -- mainly US Internal Revenue Service Form 990-PF tax filings, which are publicly available legal documents that foundations are required to file every year listing their grants. These are not allegations. They are public record.</p>
+
+    <p class="reveal">Documenting these funding relationships does <strong>not</strong> mean the funders directed individual Real411 complaint decisions. It means the organisation operating Real411 has received substantial financial support from private and state-funded foreign bodies, some of which also fund other organisations operating in the same information-integrity space.</p>
+
+    <!-- Funding visual -->
+    <div class="section-label reveal" style="margin-top:2rem">Identified Grants to MMA</div>
+    <div class="funding-visual reveal">
+      <div class="funder-row">
+        <div class="funder-name">Omidyar Network Fund</div>
+        <div class="funder-bar-wrap"><div class="funder-bar luminate" style="width:78%"><span class="funder-bar-label">2019 -- general operating support</span></div></div>
+        <div class="funder-amount">$160,000</div>
+      </div>
+      <div class="funder-row">
+        <div class="funder-name">Luminate (Omidyar)</div>
+        <div class="funder-bar-wrap"><div class="funder-bar luminate" style="width:82%"><span class="funder-bar-label">2020 -- ethical journalism</span></div></div>
+        <div class="funder-amount">$165,000</div>
+      </div>
+      <div class="funder-row">
+        <div class="funder-name">Luminate (Omidyar)</div>
+        <div class="funder-bar-wrap"><div class="funder-bar luminate" style="width:75%"><span class="funder-bar-label">2021 -- ethical journalism</span></div></div>
+        <div class="funder-amount">$150,000</div>
+      </div>
+      <div class="funder-row">
+        <div class="funder-name">Luminate (Omidyar)</div>
+        <div class="funder-bar-wrap"><div class="funder-bar luminate" style="width:75%"><span class="funder-bar-label">2022 -- media monitoring, litigation</span></div></div>
+        <div class="funder-amount">$150,000</div>
+      </div>
+      <div class="funder-row">
+        <div class="funder-name">Open Society Foundations</div>
+        <div class="funder-bar-wrap"><div class="funder-bar osf" style="width:100%"><span class="funder-bar-label">2023 -- general support</span></div></div>
+        <div class="funder-amount">$200,000</div>
+      </div>
+      <div class="funder-row">
+        <div class="funder-name">Friedrich Ebert Stiftung</div>
+        <div class="funder-bar-wrap"><div class="funder-bar fes" style="width:40%"><span class="funder-bar-label">Ongoing -- amount not disclosed</span></div></div>
+        <div class="funder-amount">Unknown</div>
+      </div>
+      <div class="funder-row">
+        <div class="funder-name">European Commission</div>
+        <div class="funder-bar-wrap"><div class="funder-bar eu" style="width:35%"><span class="funder-bar-label">Ongoing -- amount not disclosed</span></div></div>
+        <div class="funder-amount">Unknown</div>
+      </div>
+      <div class="funding-target">
+        <span>Total identified foreign funding to MMA: at least $825,000 (2019-2023). Additional years and FES / EU Commission amounts outstanding.</span>
+      </div>
+    </div>
+
+    <div class="xlink-box reveal">
+      <div class="xlink-icon">Investigation</div>
+      <div class="xlink-content">
+        <strong>The Private Parallel: Mapping the Omidyar / Luminate Network and Its South African Reach</strong>
+        <span>Pierre Omidyar founded eBay and is now one of the world's major political philanthropists. His funding network operates through multiple organisations -- Omidyar Network, Luminate, and others. Luminate gave MMA at least $465,000 over three years. The Omidyar Network Fund gave MMA $160,000 in 2019. This investigation hub has a dedicated page mapping the full 16-organisation Omidyar structure, its confirmed South African grantees (which include MMA/Real411), its documented overlaps with USAID funding channels, and its connections to media and governance infrastructure across Africa. Real411 is not the only South African node in this network.</span>
+        <a href="omidyar.html">View the full Omidyar / Luminate investigation on this hub</a>
+      </div>
+    </div>
+
+    <div class="xlink-box reveal">
+      <div class="xlink-icon">Investigation</div>
+      <div class="xlink-content">
+        <strong>Open Society Foundations (OSF): South African Grantee Network</strong>
+        <span>The Open Society Foundations, founded by George Soros, confirmed funding to MMA and is also a confirmed funder of Africa Check. The dedicated OSF investigation on this hub maps the full grantee network inside South Africa's media and civil society landscape.</span>
+        <a href="osf.html">View OSF Investigation</a>
+      </div>
+    </div>
+
+    <!-- FES section -->
+    <h3 class="reveal" style="margin-top:2rem">The Friedrich Ebert Stiftung: A German Political Foundation with Historic ANC Ties</h3>
+    <p class="reveal">The Friedrich Ebert Stiftung (FES) is a German political foundation funded primarily by the German federal and state governments, with an annual budget of approximately 200 million euros. FES's own documentation records its relationship with South Africa in plain terms: "The Friedrich-Ebert-Stiftung shares a long common history with the African National Congress and the Congress of South African Trade Unions. From the 1980s, FES supported the ANC in exile." The international development information platform Devex records that FES "works in close cooperation with the ANC."</p>
+    <p class="reveal">In plain language: German government money flows through a foundation that has explicitly supported the ANC since the 1980s and that continues to work alongside ANC-aligned civil society organisations -- to fund the trust that operates Real411. Every one of those facts is from FES's own or publicly verifiable documentation. The SA office during 2021 to 2025 was directed by Sebastian Sperling, who left for the FES Argentina office in October 2025. His replacement had not been publicly identified at the time of publication.</p>
+  </div>
+</section>
+
+<!-- THE NETWORK -->
+<section id="network">
+  <div class="container">
+    <div class="section-label reveal">The 2026 Information Architecture</div>
+    <h2 class="reveal">PIIE: Where the Pieces Come Together</h2>
+
+    <p class="reveal">For the 2026 Local Government Elections, the Partnership on Information Integrity in Elections (PIIE) brings together the organisations that previously operated independently into a single coordinated coalition. This is new and is worth understanding clearly.</p>
+
+    <p class="reveal">Before 2026, MMA / Real411 and Africa Check operated in parallel -- both involved in electoral information integrity, but through different mechanisms and different platform relationships. In 2024, the Atlantic Council's Digital Forensic Research Lab (DFRLab) documented them as separate activities. By 2026, they share a formal forum under PIIE leadership.</p>
+
+    <!-- Network diagram -->
+    <div class="network-diagram reveal">
+      <div class="net-label" style="margin-bottom:.75rem">PIIE MEMBER ORGANISATIONS</div>
+      <div class="net-row">
+        <div class="net-members">
+          <div class="net-node mma">Moxii Africa (formerly MMA / Real411)</div>
+          <div class="net-connector">+</div>
+          <div class="net-node ac">Africa Check</div>
+          <div class="net-connector">+</div>
+          <div class="net-node sanef">SANEF</div>
+        </div>
+        <div class="net-connector" style="font-size:1.4rem;color:var(--border);">&#8594;</div>
+        <div class="piie-center">PIIE</div>
+      </div>
+      <div style="height:1px;background:var(--border);margin:1.25rem 0"></div>
+      <div class="net-label" style="margin-bottom:.75rem">PIIE FORMAL COOPERATION AGREEMENTS WITH</div>
+      <div class="net-row" style="flex-wrap:wrap;gap:.5rem">
+        <div class="net-node iec">IEC (Electoral Commission)</div>
+        <div class="net-node platform">Meta (Facebook / Instagram)</div>
+        <div class="net-node platform">Google</div>
+        <div class="net-node platform">TikTok</div>
+      </div>
+      <div style="height:1px;background:var(--border);margin:1.25rem 0"></div>
+      <div class="net-label" style="margin-bottom:.75rem">WHAT PIIE HAS DONE (2026)</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <div class="net-node ac" style="font-size:.72rem">Trained 600 journalists nationwide with IEC and SANEF</div>
+        <div class="net-node ac" style="font-size:.72rem">Coordinates both Real411 (MMA) and Africa Check election-information hubs</div>
+        <div class="net-node ac" style="font-size:.72rem">Operates under a Framework of Cooperation with the four platforms above</div>
+      </div>
+    </div>
+
+    <div class="xlink-box reveal">
+      <div class="xlink-icon">Investigation</div>
+      <div class="xlink-content">
+        <strong>Africa Check: The Fact-Checking Architecture</strong>
+        <span>Africa Check -- housed at the University of the Witwatersrand and funded by OSF, Luminate and the Gates Foundation -- holds accreditation from the International Fact-Checking Network (IFCN) and a direct Meta Third-Party Fact-Checking partnership. Its founding director, Peter Cunliffe-Jones, subsequently co-wrote the IFCN Code of Principles adopted by Meta. The Africa Check investigation maps that full pipeline.</span>
+        <a href="africacheck.html">View Africa Check Investigation</a>
+      </div>
+    </div>
+
+    <div class="xlink-box reveal">
+      <div class="xlink-icon">Investigation</div>
+      <div class="xlink-content">
+        <strong>IFCN: The Code of Principles and the Meta Content-Moderation Pipeline</strong>
+        <span>The International Fact-Checking Network (IFCN), administered by the Poynter Institute for Media Studies in Florida, accredits fact-checkers and its standards form the formal basis for Meta's Third-Party Fact-Checking Programme. The IFCN investigation maps the full chain from accreditation to platform moderation.</span>
+        <a href="ifcn.html">View IFCN Investigation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFEGUARDS AND OPEN QUESTIONS -->
+<section id="questions">
+  <div class="container">
+    <div class="section-label reveal">What We Know and What We Do Not</div>
+    <h2 class="reveal">Real Safeguards. Real Questions.</h2>
+
+    <p class="reveal">Real411 has accountability mechanisms that are documented and real. Listing them matters because the strongest version of this investigation acknowledges what is in place before identifying what those mechanisms cannot answer.</p>
+
+    <div class="card-grid reveal">
+      <div class="card">
+        <div class="card-title">No Binding Powers</div>
+        <div class="card-sub">Confirmed safeguard</div>
+        <p>Real411's own documentation states the Digital Complaints Committee has no legally binding authority. It refers and recommends. It cannot force any platform, authority or person to act.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Public Archive</div>
+        <div class="card-sub">Confirmed safeguard</div>
+        <p>Every complaint outcome is published and searchable. This makes it possible, in principle, to audit individual decisions for patterns of viewpoint bias -- if someone does the analysis.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Right of Appeal</div>
+        <div class="card-sub">Confirmed safeguard</div>
+        <p>Complainants and subjects can challenge decisions and request re-reviews. Appeals are overseen by Justice Zak Yacoob or equivalent senior legal figures.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Freedom of Expression Criteria</div>
+        <div class="card-sub">Confirmed safeguard</div>
+        <p>Real411's assessment explicitly considers satire, journalism and public interest as grounds that may justify content staying up, even if the content initially looks like a breach.</p>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:1.5rem">Those safeguards are real. Here is what they do not resolve:</p>
+
+    <ul class="gap-list reveal">
+      <li>
+        <div class="gap-num">01</div>
+        <div><strong>The full text of the 2026 Framework.</strong> The cooperation agreement between MMA, the IEC, Meta, Google and TikTok has not been published. Moxii Africa's own page simultaneously says it is signed and that it is still under negotiation. Two PAIA requests have been filed. Without the document, the legal character of the "prioritised escalation" cannot be assessed.</div>
+      </li>
+      <li>
+        <div class="gap-num">02</div>
+        <div><strong>Platform escalation outcomes.</strong> What proportion of Real411's platform referrals resulted in content removal versus warning versus delisting versus no action? That data has not been published. Without it, the real-world effect on what South Africans can read online cannot be measured.</div>
+      </li>
+      <li>
+        <div class="gap-num">03</div>
+        <div><strong>Complaint distribution by political target.</strong> If the public archive were coded by the political affiliation or viewpoint of the subject of each complaint -- across all parties, movements and actors -- viewpoint asymmetry in referrals could be tested empirically. That analysis has not been published. It would either confirm or refute the suppression hypothesis more reliably than any inference from funding relationships.</div>
+      </li>
+      <li>
+        <div class="gap-num">04</div>
+        <div><strong>Reviewer identities and conflict-of-interest declarations.</strong> The 30-plus volunteers are not publicly identified. Their institutional affiliations and any declarations of interest are unknown. This matters because the "any three claim the complaint" model provides no documented safeguard against all active reviewers sharing a common institutional background.</div>
+      </li>
+      <li>
+        <div class="gap-num">05</div>
+        <div><strong>Trusted-flagger submission statistics.</strong> MMA's 2024 election report confirmed Meta created a trusted-flagger-equivalent profile for MMA and the IEC -- a faster, prioritised reporting channel. The number of submissions made through that channel and the proportion that resulted in platform action has not been published.</div>
+      </li>
+      <li>
+        <div class="gap-num">06</div>
+        <div><strong>The MMA trust deed.</strong> Because MMA is a trust and not a company, its governance records sit at the Master of the High Court rather than at the CIPC (Companies and Intellectual Property Commission). Trustee identities and governance structures require a formal records access request to the Johannesburg Master's Office.</div>
+      </li>
+      <li>
+        <div class="gap-num">07</div>
+        <div><strong>Funding earmarked for Real411 specifically.</strong> All identified grant records describe general operating support or broad media-monitoring purposes. None are itemised as specifically funding Real411 operations. Distinguishing MMA general institutional support from funds directed at the Real411 platform would allow more precise analysis.</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="container">
+    <div class="section-label reveal">Sources</div>
+    <h2 class="reveal">Verification Record</h2>
+    <ul class="source-list reveal">
+      <li><span class="vs">IEC press release: platforms "bolster resources to prioritise referrals." Possible actions include removal, warning and delisting. Bird quote on notification process.</span> <a href="https://www.elections.org.za/content/About-Us/News/Electoral-Commission-partners-with-social-media-giants-to-combat-disinformation-in-2024-National-and-Provincial-Elections/" target="_blank">IEC official press release, 2023</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Real411 DCC has no legally binding powers. Full range of possible outcomes including no action, counter-narrative, ombud, platform referral, SAHRC, SAPS, courts.</span> <a href="https://www.real411.org/about" target="_blank">Real411 About page</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Reviewer pool: 30-plus voluntary, any three claim each complaint. Trained at Wits Mandela Institute of Law.</span> <a href="https://www.dailymaverick.co.za/article/2024-05-05-2024-electionstackling-misinformation-disinformation/" target="_blank">Daily Maverick, 5 May 2024</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Bird: "Are we biased? Yes, we are..." -- full quote in context.</span> <a href="https://dev.dailymaverick.co.za/article/2020-11-15-disinformation-in-a-time-of-covid-19-weekly-trends-in-south-africa-tackling-accusations-of-bias/" target="_blank">Daily Maverick, 15 November 2020</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">SANEF: all findings made available to government; government makes decisions in light of findings.</span> <a href="https://sanef.org.za/sanef-welcomes-the-launch-of-the-real411-platform/" target="_blank">SANEF, April 2020</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">DFRLab: Meta created operations centre; partnered with Africa Check; MMA complaints vetted and shared with IEC Directorate for Electoral Offences.</span> <a href="https://dfrlab.org/2024/07/31/lessons-learned-from-south-africas-2024-elections/" target="_blank">DFRLab, 31 July 2024</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Omidyar Network Fund: $160,000 general operating support to MMA Trust, 2019.</span> <a href="https://omidyar.com/wp-content/uploads/2025/03/2019-ONFI-Fed-990-PF_Website-Version.pdf" target="_blank">Omidyar Network Fund 990-PF tax filing, 2019</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Luminate: $165,000 to MMA, 2020 -- ethical journalism.</span> <a href="https://luminategroup.com/storage/1430/2020-Lum-PF-Fed-990-PF-TR-draft.pdf" target="_blank">Luminate Foundation 990-PF, 2020</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Luminate: $150,000 to MMA, 2021.</span> <a href="https://www.luminategroup.com/storage/1724/2021-Luminate-PF-990.pdf" target="_blank">Luminate Foundation 990-PF, 2021</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Luminate: $150,000 to MMA, 2022 -- media monitoring, policy, strategic litigation.</span> <a href="https://www.luminategroup.com/storage/2104/2022-Luminate-PF-990.pdf" target="_blank">Luminate Foundation 990-PF, 2022</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">OSF: $200,000 general support to MMA Trust, 2023.</span> <a href="https://www.grantbay.org/form-990/137029285" target="_blank">Open Society Institute 990-PF, via Grant Bay database</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">FES: supported ANC in exile from 1980s; works in close cooperation with ANC.</span> <a href="https://socialprotection.org/connect/stakeholders/friedrich-ebert-stiftung-south-africa-office" target="_blank">FES SA profile, socialprotection.org</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">FES budget primarily from German federal and state governments, approximately EUR 200 million annually.</span> <a href="https://www.fes.de/en/stiftung/ueber-die-fes/annual-reports-facts-figures" target="_blank">FES Annual Reports, Facts and Figures</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">PIIE: co-led by Moxii Africa, SANEF, Africa Check. Signed Framework -- also described as under negotiation.</span> <a href="https://moxiiafrica.org/south-african-local-elections" target="_blank">Moxii Africa 2026 LGE page</a><span class="vp">PARTIALLY VERIFIED</span></li>
+      <li><span class="vs">MMA address confirmed: Suite No. 2, Art Centre, 22 6th St, Parkhurst, Johannesburg, 2193.</span> <a href="https://www.ohchr.org/sites/default/files/documents/issues/expression/cfis/election-digital-age/subm-freedom-expression-elections-cso-49-media-monitoring-africa.pdf" target="_blank">MMA submission to OHCHR, 2024</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">IEC Chapter 9 status -- constitutionally independent of government, accountable to Parliament.</span> <a href="https://www.elections.org.za/pw/About-Us/What-We-Do" target="_blank">Electoral Commission of South Africa, About Us</a><span class="vp">VERIFIED</span></li>
+      <li><span class="vs">Africa Check: Wasserman and Madrid-Morales commissioned research on media literacy training needs.</span> <a href="https://africacheck.org/sites/default/files/media/documents/2022-05/An%20assessment%20of%20media%20literacy%20and%20fact-checking%20training%20needs%20in%20South%20African%20schools%20and%20universities.pdf" target="_blank">Africa Check commissioned report, 2022</a><span class="vp">VERIFIED</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Alt Afrikaner</div>
+      <div class="footer-tag">PRECISION OVER VOLUME. DIGNITY HOLDS GROUND.</div>
+    </div>
+    <div class="footer-hub">
+      <div class="footer-hub-label">Investigation Hub</div>
+      <a href="https://altafrikaner.github.io/journalist-map/index.html">Netwerk Leaks</a>
+    </div>
+    <div>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/AltAfrikaner" class="social-link" target="_blank">Facebook</a>
+        <a href="https://substack.com/@altafrikaner" class="social-link" target="_blank">Substack</a>
+        <a href="mailto:AltAfrikaner@outlook.com" class="social-link">Email</a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-sources">
+      This investigation page forms part of the Netwerk Leaks series. All claims are sourced to primary documents, official registries, institutional disclosures, US Internal Revenue Service Form 990-PF tax filings, and verified secondary sources. Patterns and connections are stated as patterns and connections. Funding relationships are documented without implying that funders directed individual operational decisions. Readers are invited to verify all sources independently and draw their own conclusions. Alt Afrikaner publishes independently and accepts no funding from any of the organisations investigated on these pages.
+    </div>
+  </div>
+</footer>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
+},{threshold:0.06});
+reveals.forEach(r=>io.observe(r));
+</script>
+</body>
+</html>
