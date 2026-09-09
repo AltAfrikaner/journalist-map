@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Open Society Funding Network in South Africa | Alt Afrikaner / Netwerk Leaks</title>
+<meta name="description" content="How OSF, Omidyar/Luminate and USAID fund overlapping parts of South Africa's civil-society infrastructure, sometimes independently, sometimes through shared recipients, and in several cases through shared funding programmes. $238M verified. 90+ organisations mapped.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B2A4A;--navy-deep:#111d35;--navy-mid:#243352;
+  --red:#8B0000;--red-bright:#A50000;
+  --gold:#C5A258;--gold-light:#d4b678;
+  --cream:#F4F0E8;--light-grey:#e8e4dc;
+  --text-main:#1a1a1a;--text-sub:#3a3a3a;
+  --osf:#1A4A2E;--osf-light:#2a6a44;
+  --omid:#0a3a5c;--omid-light:#1a5a8c;
+  --usaid:#3a1a00;--usaid-light:#7c3f00;
+  --stk:#3A0066;--cf:#1a4a2e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy-deep);color:var(--cream);font-family:'Source Sans 3',sans-serif;font-size:17px;line-height:1.75;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.35}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(17,29,53,0.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(197,162,88,0.25);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Playfair Display',serif;font-size:0.85rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);text-decoration:none}
+.nav-logo span{font-style:normal;font-size:0.62rem;color:rgba(197,162,88,0.5);margin-left:0.5rem;font-family:'JetBrains Mono',monospace}
+.nav-links{display:flex;gap:1.25rem;list-style:none}
+.nav-links a{font-size:0.72rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:rgba(244,240,232,0.6);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--gold)}
+
+/* HERO */
+.hero{position:relative;background:linear-gradient(160deg,var(--navy-deep) 0%,#0d1a2e 55%,#1a0a0a 100%);padding:6rem 2rem 4rem;overflow:hidden;border-bottom:1px solid rgba(197,162,88,0.18)}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 60% at 80% 20%,rgba(139,0,0,0.09) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 10% 80%,rgba(26,74,46,0.07) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero-kicker{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--red);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem}
+.hero-kicker::before{content:'';width:32px;height:1px;background:var(--red)}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.8vw,3.5rem);font-weight:900;line-height:1.1;color:var(--cream);margin-bottom:0.75rem}
+h1 em{color:var(--gold);font-style:italic}
+.hero-sub{font-size:1.05rem;color:rgba(244,240,232,0.7);max-width:720px;margin-bottom:1rem;line-height:1.65}
+.thesis-box{background:rgba(197,162,88,0.07);border-left:3px solid var(--gold);padding:1rem 1.5rem;margin-bottom:2rem;max-width:760px}
+.thesis-box p{font-size:0.9rem;color:rgba(244,240,232,0.8);line-height:1.65;font-style:italic}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.stat{border-left:2px solid var(--gold);padding:0 1rem}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold);display:block}
+.stat-label{font-size:0.72rem;color:rgba(244,240,232,0.5);letter-spacing:0.08em;text-transform:uppercase;line-height:1.4}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:var(--cream);padding:0.7rem 1.6rem;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:background 0.2s,transform 0.15s}
+.btn-primary:hover{background:var(--red-bright);transform:translateY(-1px)}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--gold);padding:0.7rem 1.6rem;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(197,162,88,0.35);cursor:pointer;transition:all 0.2s}
+.btn-secondary:hover{background:rgba(197,162,88,0.1);border-color:var(--gold)}
+
+section{padding:4.5rem 2rem}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:rgba(197,162,88,0.6);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.6rem}
+.section-label::before{content:'';width:20px;height:1px;background:rgba(197,162,88,0.4)}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:700;color:var(--cream);margin-bottom:1rem}
+h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem}
+h4{font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:0.95rem;color:var(--cream);margin-bottom:0.35rem}
+.divider{height:1px;background:linear-gradient(90deg,rgba(197,162,88,0.3),transparent);margin:2rem 0}
+
+/* THREE FUNDERS */
+.funders-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-top:2rem}
+.funder-card{padding:1.75rem;border:1px solid rgba(255,255,255,0.08);transition:transform 0.2s}
+.funder-card:hover{transform:translateY(-2px)}
+.funder-card.osf{border-top:4px solid var(--osf-light);background:rgba(26,74,46,0.08)}
+.funder-card.omid{border-top:4px solid var(--omid-light);background:rgba(10,58,92,0.08)}
+.funder-card.usaid{border-top:4px solid var(--usaid-light);background:rgba(58,26,0,0.08)}
+.funder-tag{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;margin-bottom:0.75rem;display:inline-block}
+.funder-tag.osf{background:rgba(26,74,46,0.3);color:#55aa77;border:1px solid rgba(26,74,46,0.5)}
+.funder-tag.omid{background:rgba(10,58,92,0.3);color:#55aadd;border:1px solid rgba(10,58,92,0.5)}
+.funder-tag.usaid{background:rgba(100,60,0,0.3);color:#ddaa55;border:1px solid rgba(120,70,0,0.5)}
+.funder-card h3{font-size:1.05rem;margin-bottom:0.5rem}
+.funder-card.osf h3{color:#55aa77}
+.funder-card.omid h3{color:#55aadd}
+.funder-card.usaid h3{color:#ddaa55}
+.funder-card p{font-size:0.875rem;color:rgba(244,240,232,0.65);line-height:1.6}
+.funder-card .funder-key{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:rgba(244,240,232,0.45);margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.07)}
+
+/* WHY COMPARE */
+.why-box{background:rgba(197,162,88,0.06);border:1px solid rgba(197,162,88,0.2);padding:2rem;margin-top:2rem}
+.why-box p{font-size:0.925rem;color:rgba(244,240,232,0.75);line-height:1.7;margin-bottom:0.75rem}
+.why-box p:last-child{margin-bottom:0}
+
+/* ARCHITECTURE DIAGRAM */
+/* arch-diagram replaced by SVG */
+
+/* FINDINGS */
+.findings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;margin-top:2rem}
+.finding-card{background:rgba(255,255,255,0.03);border:1px solid rgba(197,162,88,0.13);border-top:3px solid var(--gold);padding:1.6rem;transition:border-color 0.2s,transform 0.2s}
+.finding-card:hover{border-color:rgba(197,162,88,0.32);transform:translateY(-2px)}
+.finding-card h3{font-size:0.95rem;color:var(--gold);margin-bottom:0.4rem}
+.finding-card p{font-size:0.875rem;color:rgba(244,240,232,0.68);line-height:1.6}
+.finding-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--red);display:block;margin-bottom:0.25rem}
+
+/* OVERLAP MATRIX */
+.matrix-wrap{overflow-x:auto;margin-top:1.5rem}
+.matrix-table{width:100%;border-collapse:collapse;font-size:0.83rem;min-width:600px}
+.matrix-table thead th{background:var(--navy);color:var(--gold);font-family:'Source Sans 3',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem;text-align:center;border-bottom:2px solid rgba(197,162,88,0.3)}
+.matrix-table thead th:first-child{text-align:left}
+.matrix-table tbody tr{border-bottom:1px solid rgba(255,255,255,0.06);transition:background 0.15s}
+.matrix-table tbody tr:hover{background:rgba(197,162,88,0.05)}
+.matrix-table td{padding:0.65rem 0.75rem;text-align:center;vertical-align:middle}
+.matrix-table td:first-child{text-align:left;font-weight:600;color:var(--cream);font-size:0.85rem}
+.matrix-table td small{display:block;font-size:0.72rem;color:rgba(244,240,232,0.45);font-weight:400}
+.dot-direct{color:#55cc88;font-size:1.3rem;line-height:1}
+.dot-pooled{color:#88aadd;font-size:1.3rem;line-height:1}
+.dot-hist{color:#888888;font-size:1.3rem;line-height:1}
+.dot-none{color:rgba(255,255,255,0.2);font-size:1.1rem;line-height:1}
+.matrix-legend{display:flex;gap:2rem;flex-wrap:wrap;margin-top:1rem;font-size:0.8rem;color:rgba(244,240,232,0.55)}
+.matrix-legend span{display:flex;align-items:center;gap:0.4rem}
+
+/* BRIDGE CARDS */
+.bridges-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1.5rem;margin-top:2rem}
+.bridge-card{background:rgba(255,255,255,0.03);border:1px solid rgba(197,162,88,0.15);padding:1.75rem}
+.bridge-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem}
+.bridge-meta{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:rgba(197,162,88,0.55);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
+.bridge-card p{font-size:0.875rem;color:rgba(244,240,232,0.68);line-height:1.6;margin-bottom:0.6rem}
+.bridge-arch{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(197,162,88,0.75);background:rgba(0,0,0,0.25);padding:0.75rem 1rem;margin:0.75rem 0;line-height:1.9}
+.bridge-note{font-size:0.78rem;color:rgba(244,240,232,0.45);font-style:italic;margin-top:0.5rem}
+
+/* CF SECTION */
+.cf-box{background:rgba(26,74,46,0.1);border:1px solid rgba(26,74,46,0.38);border-left:4px solid var(--osf-light);padding:1.75rem;margin-top:1.75rem}
+.cf-box h3{color:#55aa77;font-size:1.1rem;margin-bottom:0.65rem}
+.cf-box p{font-size:0.88rem;color:rgba(244,240,232,0.7);line-height:1.65;margin-bottom:0.65rem}
+.cf-chain{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(85,170,120,0.85);background:rgba(0,0,0,0.2);padding:0.75rem 1rem;margin:0.75rem 0;line-height:1.9}
+
+/* STACKED */
+.stacked-box{background:rgba(58,0,102,0.1);border:1px solid rgba(80,0,150,0.3);border-left:4px solid #7733cc;padding:1.75rem;margin-top:1.75rem}
+.stacked-box h3{color:#aa66ee;margin-bottom:0.65rem}
+.stacked-box p{font-size:0.88rem;color:rgba(244,240,232,0.7);line-height:1.65;margin-bottom:0.5rem}
+.stacked-eg{background:rgba(0,0,0,0.25);padding:1rem;margin:0.75rem 0;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(170,100,240,0.85);line-height:2}
+
+/* SECTOR CHART */
+.sector-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.sector-chart{background:rgba(255,255,255,0.03);border:1px solid rgba(197,162,88,0.12);padding:1.5rem}
+.sector-chart h4{margin-bottom:1rem;font-size:0.9rem;color:var(--gold)}
+.bar-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem}
+.bar-label{font-size:0.78rem;color:rgba(244,240,232,0.65);width:160px;flex-shrink:0;text-align:right}
+.bar-track{flex:1;height:14px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
+.bar-fill.osf-bar{background:linear-gradient(90deg,var(--osf-light),#55aa77)}
+.bar-fill.omid-bar{background:linear-gradient(90deg,var(--omid-light),#55aadd)}
+.bar-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(244,240,232,0.45);width:24px}
+
+/* PIPELINE (now further down) */
+.pipeline{margin-top:2rem}
+.pipeline-step{display:flex;gap:1.25rem;margin-bottom:0.85rem;align-items:flex-start}
+.pipeline-num{flex-shrink:0;width:34px;height:34px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;margin-top:0.15rem}
+.pipeline-content{flex:1;border-bottom:1px solid rgba(197,162,88,0.1);padding-bottom:0.85rem}
+.pipeline-content h4{font-weight:700;color:var(--cream);margin-bottom:0.2rem;font-size:0.92rem}
+.pipeline-content p{font-size:0.83rem;color:rgba(244,240,232,0.58);line-height:1.5}
+.pbadge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.45rem;margin-bottom:0.35rem}
+.pb-critical{background:rgba(139,0,0,0.25);color:#ff6666;border:1px solid rgba(139,0,0,0.4)}
+.pb-high{background:rgba(120,70,0,0.25);color:#ffaa44;border:1px solid rgba(120,70,0,0.4)}
+.pb-caution{background:rgba(80,50,0,0.2);color:#bbaa55;border:1px solid rgba(100,70,0,0.35)}
+.pipeline-note{background:rgba(197,162,88,0.07);border:1px solid rgba(197,162,88,0.2);padding:1rem 1.25rem;margin-top:1.5rem;font-size:0.83rem;color:rgba(244,240,232,0.65);line-height:1.6}
+
+/* TABLE */
+.orgs-section{background:rgba(0,0,0,0.15)}
+.filter-bar{background:rgba(255,255,255,0.03);border:1px solid rgba(197,162,88,0.16);padding:1.25rem;margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center}
+.filter-bar input{flex:1;min-width:200px;background:rgba(255,255,255,0.05);border:1px solid rgba(197,162,88,0.22);color:var(--cream);padding:0.55rem 0.9rem;font-family:'Source Sans 3',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s}
+.filter-bar input:focus{border-color:var(--gold)}
+.filter-bar input::placeholder{color:rgba(244,240,232,0.3)}
+.filter-group{display:flex;gap:0.4rem;flex-wrap:wrap}
+.filter-btn{background:transparent;border:1px solid rgba(197,162,88,0.22);color:rgba(244,240,232,0.55);padding:0.4rem 0.8rem;font-size:0.72rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Source Sans 3',sans-serif}
+.filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--navy-deep);border-color:var(--gold)}
+.filter-count{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:rgba(197,162,88,0.55);margin-left:auto}
+.table-container{overflow-x:auto;margin-top:0.5rem}
+table{width:100%;border-collapse:collapse;font-size:0.83rem}
+thead th{background:var(--navy);color:var(--gold);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.8rem 0.65rem;text-align:left;border-bottom:2px solid rgba(197,162,88,0.3);white-space:nowrap}
+tbody tr{border-bottom:1px solid rgba(197,162,88,0.07);transition:background 0.15s}
+tbody tr:hover{background:rgba(197,162,88,0.055)}
+tbody tr.hidden{display:none}
+tbody td{padding:0.7rem 0.65rem;color:rgba(244,240,232,0.82);vertical-align:top;line-height:1.4}
+td.org-name{font-weight:700;color:var(--cream);font-size:0.88rem;min-width:170px}
+td.org-name a{color:var(--cream);text-decoration:none}
+td.org-name a:hover{color:var(--gold)}
+td.org-sector{color:rgba(197,162,88,0.78);font-size:0.78rem;min-width:110px}
+td.org-amount{font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:rgba(244,240,232,0.58);min-width:130px}
+.sbadge{display:inline-block;padding:0.18rem 0.48rem;font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:600}
+.sv{background:rgba(0,100,50,0.2);color:#55cc88;border:1px solid rgba(0,150,70,0.28)}
+.sp{background:rgba(120,90,0,0.2);color:#ccaa44;border:1px solid rgba(170,130,0,0.28)}
+.sh{background:rgba(30,50,90,0.3);color:#8899cc;border:1px solid rgba(50,80,140,0.32)}
+.sj{background:rgba(0,50,120,0.2);color:#6688cc;border:1px solid rgba(0,70,180,0.28)}
+.tk-osf{background:rgba(26,74,46,0.28);color:#55aa77;border:1px solid rgba(26,74,46,0.48);display:inline-block;padding:0.13rem 0.38rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem}
+.tk-omid{background:rgba(10,58,92,0.28);color:#55aadd;border:1px solid rgba(10,58,92,0.48);display:inline-block;padding:0.13rem 0.38rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem}
+.tk-stk{background:rgba(58,0,102,0.3);color:#aa66ee;border:1px solid rgba(80,0,150,0.45);display:inline-block;padding:0.13rem 0.38rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem}
+.tk-cf{background:rgba(26,74,46,0.18);color:#88cc99;border:1px solid rgba(26,74,46,0.38);display:inline-block;padding:0.13rem 0.38rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem}
+.no-results{text-align:center;padding:2.5rem;color:rgba(244,240,232,0.35);font-family:'JetBrains Mono',monospace;font-size:0.83rem;display:none}
+
+/* METHODOLOGY */
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.1rem;margin-top:1.75rem}
+.method-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);padding:1.35rem}
+.method-card h4{font-weight:700;font-size:0.88rem;color:var(--gold);margin-bottom:0.45rem;letter-spacing:0.03em}
+.method-card p,.method-card ul{font-size:0.83rem;color:rgba(244,240,232,0.6);line-height:1.6}
+.method-card ul{padding-left:1.1rem}
+.method-card ul li{margin-bottom:0.28rem}
+
+/* DOWNLOAD */
+.download-section{background:linear-gradient(135deg,rgba(139,0,0,0.07),rgba(26,74,46,0.07));border:1px solid rgba(197,162,88,0.18);padding:2.75rem 2rem;text-align:center;margin-top:2.5rem}
+.download-section h3{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--cream);margin-bottom:0.65rem}
+.download-section p{color:rgba(244,240,232,0.6);margin-bottom:1.75rem;max-width:520px;margin-left:auto;margin-right:auto;font-size:0.9rem}
+
+/* FOOTER */
+footer{background:rgba(0,0,0,0.4);border-top:1px solid rgba(197,162,88,0.14);padding:2.75rem 2rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:1.75rem}
+.footer-tagline{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:rgba(197,162,88,0.42);letter-spacing:0.15em;text-transform:uppercase}
+.footer-hub-label{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:rgba(197,162,88,0.48);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.65rem;text-align:center}
+.hub-btn{display:inline-block;background:transparent;border:1px solid rgba(197,162,88,0.32);color:var(--gold);padding:0.55rem 1.4rem;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.2s}
+.hub-btn:hover{background:rgba(197,162,88,0.1);border-color:var(--gold)}
+.footer-social{display:flex;gap:1.5rem;align-items:center}
+.social-link{color:rgba(244,240,232,0.38);text-decoration:none;font-size:0.72rem;font-weight:600;text-transform:uppercase;transition:color 0.2s}
+.social-link:hover{color:var(--gold)}
+.footer-disclaimer{font-size:0.73rem;color:rgba(244,240,232,0.28);text-align:center;max-width:720px;line-height:1.6;margin-top:0.75rem}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-stats{gap:1rem}
+  .sector-grid{grid-template-columns:1fr}
+  .bridges-grid{grid-template-columns:1fr}
+  table{font-size:0.76rem}
+  thead th{padding:0.65rem 0.45rem}
+  tbody td{padding:0.6rem 0.45rem}
+  td.org-amount{display:none}
+  .filter-bar{flex-direction:column}
+  .bar-label{width:110px;font-size:0.72rem}
+  .matrix-table{font-size:0.76rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://altafrikaner.github.io/journalist-map/index.html" class="nav-logo">Alt Afrikaner <span>/ Netwerk Leaks</span></a>
+  <ul class="nav-links">
+    <li><a href="#funders">Who Funds</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#findings">Findings</a></li>
+    <li><a href="#overlap">Overlap Matrix</a></li>
+    <li><a href="#bridges">Shared Vehicles</a></li>
+    <li><a href="#database">Database</a></li>
+    <li><a href="#pipeline">Info Ecosystem</a></li>
+    <li><a href="#download">Dossier</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">Netwerk Leaks &nbsp;|&nbsp; Funding Infrastructure Investigation</div>
+    <h1>The Open Society<br>Funding Network<br>in <em>South Africa</em></h1>
+    <p class="hero-sub">How three distinct funding systems, OSF, Omidyar/Luminate and USAID, have funded overlapping parts of South Africa's civil-society infrastructure. Sometimes independently. Sometimes through shared recipients. In several cases through shared or pooled funding programmes.</p>
+    <div class="thesis-box">
+      <p>This investigation does not argue that OSF, Omidyar/Luminate and USAID are one organisation or operate under common control. It documents how a major private foundation, a second private philanthropic network and a U.S. government development agency have funded overlapping parts of South Africa's civil-society infrastructure, and where those funding systems intersect through joint or pooled vehicles.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">$238M</span>
+        <span class="stat-label">OSF Official SA Spend<br>1997–2023</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">1,000+</span>
+        <span class="stat-label">Individuals &amp; Orgs<br>OSF 30-year estimate</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">$29M</span>
+        <span class="stat-label">Constitutionalism Fund<br>OSF + Ford + Atlantic</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">$47M</span>
+        <span class="stat-label">MAVC programme<br>USAID + Omidyar + DFID</span>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#database" class="btn-primary">↓ Searchable Database</a>
+      <a href="#download" class="btn-secondary">⬇ Download Dossier PDF</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHO ARE THE FUNDERS -->
+<section id="funders">
+  <div class="section-inner">
+    <div class="section-label">Context</div>
+    <h2>Three Different Funders. Overlapping Fields.</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:700px;margin-bottom:0.5rem">They have different legal structures, different governance, different stated purposes. The investigative interest is where they converge.</p>
+    <div class="funders-grid reveal">
+      <div class="funder-card osf">
+        <span class="funder-tag osf">Private Philanthropy, USA</span>
+        <h3>Open Society Foundations / OSF-SA</h3>
+        <p>Founded by George Soros. OSF established its South African foundation in 1993, during South Africa’s transition to democracy. Its own 2025 retrospective says it invested <strong>$238,635,789 in South Africa from 1997–2023</strong>, supporting roughly 1,000 organisations and individuals over its 30-year history. OSF's 2021–23 consolidation wound up the national foundation, but OSF says support for South Africa continues through the unified global structure.</p>
+        <div class="funder-key">Focus: institution building, public-interest law, constitutionalism, accountability, independent media, gender and health, criminal justice, advocacy, long-term/core funding.</div>
+      </div>
+      <div class="funder-card omid">
+        <span class="funder-tag omid">Private Philanthropy, USA</span>
+        <h3>Omidyar Network / Luminate</h3>
+        <p>Created by eBay founder Pierre Omidyar and Pam Omidyar. In 2018, the governance/civic engagement portfolio became Luminate, a standalone philanthropic organisation. South Africa is explicitly named as a Luminate priority country alongside Kenya and Nigeria. Omidyar sub-entities include Imaginable Futures (education) and Flourish Ventures (fintech).</p>
+        <div class="funder-key">Focus: digital media, investigative journalism, civic technology, open data, fact-checking, information integrity, citizen mobilisation, concentrates heavily in the information/media infrastructure layer where OSF's portfolio also operates.</div>
+      </div>
+      <div class="funder-card usaid">
+        <span class="funder-tag usaid">U.S. Government Aid, Public</span>
+        <h3>USAID</h3>
+        <p>Unlike the first two, USAID is government, funded by the United States government and subject to congressional oversight. Its South African democracy and governance programmes have historically sought to strengthen civil society, civil-society/government relationships, and accountability. USAID does not appear to mirror Omidyar/Luminate's South African portfolio exactly, its strongest overlap occurs through <strong>implementation</strong> and through the Making All Voices Count (MAVC) joint programme.</p>
+        <div class="funder-key">Focus: governance/accountability projects, health, gender/GBV, violence prevention, civil-society strengthening, technology-for-governance, intersects selectively with the OSF/Omidyar ecosystem.</div>
+      </div>
+    </div>
+
+    <div class="why-box reveal">
+      <p><strong style="color:var(--gold)">Why compare three organisations with different structures?</strong> The key finding is not that these funders secretly coordinate. It is that distinct public and private funders repeatedly appear in the same sectors, programmes and recipient ecosystem, sometimes through direct grants and sometimes through joint or pooled vehicles. When two foundations and a government agency participate in the same funding programme (as documented with MAVC), the distinction between "separate donors funding the same org" and "co-investors in shared infrastructure" becomes material.</p>
+      <p>The evidence proves <strong>co-funding, common vehicles, overlapping recipient institutions and shared fields of activity</strong>. It does not, by itself, prove that donors jointly dictate editorial positions, that one donor controls another, or that receiving money means a particular output was donor-directed. Establishing that would require grant agreements, scopes of work, restricted-vs-core conditions, programme memoranda and board minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDING ARCHITECTURE -->
+<section id="architecture" style="background:rgba(0,0,0,0.18)">
+  <div class="section-inner">
+    <div class="section-label">Funding Architecture</div>
+    <h2>How the Money Moves</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:680px;margin-bottom:1rem">Three tiers: the funding sources, the formal bridges built between them, and the operational organisations that receive money through multiple channels.</p>
+
+
+<style>
+.arch-diagram-v2{margin:2rem 0;overflow:hidden;border-radius:8px;box-shadow:0 8px 48px rgba(0,0,0,0.6)}
+.arch-diagram-v2 svg a{cursor:pointer}
+.arch-diagram-v2 svg a rect{transition:opacity 0.2s}
+.arch-diagram-v2 svg a:hover rect{opacity:2;filter:brightness(1.4)}
+.arch-diagram-v2 svg{display:block;width:100%;height:auto}
+@keyframes flow{to{stroke-dashoffset:-20}}
+.flow-line{animation:flow 2.8s linear infinite}
+</style>
+<div class="arch-diagram-v2 reveal">
+<svg viewBox="0 0 980 710" xmlns="http://www.w3.org/2000/svg" aria-label="OSF, Omidyar and USAID funding architecture diagram">
+<defs>
+  <!-- Background grid -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0L0 0 0 40" fill="none" stroke="rgba(197,162,88,0.05)" stroke-width="0.5"/>
+  </pattern>
+  <!-- Arrow markers -->
+  <marker id="arr-osf"  markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1f6b3a"/></marker>
+  <marker id="arr-omid" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1a5c8c"/></marker>
+  <marker id="arr-usaid"markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8c5500"/></marker>
+  <marker id="arr-cf"   markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6633bb"/></marker>
+  <marker id="arr-samip"markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3366bb"/></marker>
+  <marker id="arr-mavc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#aa6600"/></marker>
+  <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#C5A258"/></marker>
+  <!-- Glows -->
+  <filter id="glow-g"><feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="glow-b"><feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="glow-a"><feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- Background -->
+<rect width="980" height="710" fill="#07101e" rx="8"/>
+<rect width="980" height="710" fill="url(#grid)"/>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     TIER LABELS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<text x="12" y="26" fill="#C5A258" font-size="8.5" font-family="Arial" font-weight="bold" letter-spacing="2" opacity="0.85">TIER 1: FUNDING SOURCES</text>
+<text x="12" y="228" fill="#C5A258" font-size="8.5" font-family="Arial" font-weight="bold" letter-spacing="2" opacity="0.85">TIER 2: JOINT FUNDING VEHICLES</text>
+<text x="12" y="498" fill="#C5A258" font-size="8.5" font-family="Arial" font-weight="bold" letter-spacing="2" opacity="0.85">TIER 3: SOUTH AFRICAN RECIPIENTS</text>
+
+<!-- Tier dividers -->
+<line x1="0" y1="33" x2="980" y2="33" stroke="rgba(197,162,88,0.15)" stroke-width="0.5"/>
+<line x1="0" y1="235" x2="980" y2="235" stroke="rgba(197,162,88,0.15)" stroke-width="0.5"/>
+<line x1="0" y1="506" x2="980" y2="506" stroke="rgba(197,162,88,0.15)" stroke-width="0.5"/>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SOURCE BOXES - TIER 1  (y=38 to y=180)
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- OSF / OSF-SA -->
+<rect x="12" y="38" width="290" height="148" rx="5" fill="#0b1e13" stroke="#1f6b3a" stroke-width="1.5" filter="url(#glow-g)"/>
+<rect x="12" y="38" width="290" height="5" rx="2.5" fill="#1f6b3a"/>
+<text x="22" y="62" fill="#55cc77" font-size="12.5" font-family="Arial" font-weight="bold">OSF / OSF-SA</text>
+<text x="22" y="77" fill="#88cc99" font-size="8.5" font-family="Arial">Open Society Foundations</text>
+<text x="22" y="89" fill="#88cc99" font-size="8.5" font-family="Arial">Private philanthropy (George Soros)</text>
+<line x1="22" y1="96" x2="290" y2="96" stroke="rgba(31,107,58,0.3)" stroke-width="0.5"/>
+<text x="22" y="110" fill="#C5A258" font-size="9" font-family="Arial" font-weight="bold">$238,635,789</text>
+<text x="22" y="122" fill="#aabbaa" font-size="8" font-family="Arial">Invested in SA, 1997-2023</text>
+<text x="22" y="135" fill="#aabbaa" font-size="8" font-family="Arial">73+ verified SA organisations</text>
+<text x="22" y="148" fill="#aabbaa" font-size="8" font-family="Arial">~1,000 individuals and orgs over 30 years</text>
+<text x="22" y="163" fill="#55cc77" font-size="8" font-family="Arial">Focus: institution building, law, media,</text>
+<text x="22" y="174" fill="#55cc77" font-size="8" font-family="Arial">accountability, health, long-term core funding</text>
+<a href="osf.html" target="_blank" aria-label="View OSF Investigation Page">
+  <rect x="152" y="178" width="146" height="14" rx="3" fill="rgba(197,162,88,0.12)" stroke="rgba(197,162,88,0.35)" stroke-width="0.7"/>
+  <text x="225" y="188.5" fill="#C5A258" font-size="7.5" font-family="Arial" text-anchor="middle" font-weight="bold">&#8594; View OSF Investigation</text>
+</a>
+
+<!-- Omidyar / Luminate -->
+<rect x="345" y="38" width="290" height="148" rx="5" fill="#0a1b30" stroke="#1a5c8c" stroke-width="1.5" filter="url(#glow-b)"/>
+<rect x="345" y="38" width="290" height="5" rx="2.5" fill="#1a5c8c"/>
+<text x="355" y="62" fill="#55aadd" font-size="12.5" font-family="Arial" font-weight="bold">Omidyar Group / Luminate</text>
+<text x="355" y="77" fill="#88aacc" font-size="8.5" font-family="Arial">Omidyar Network founded by Pierre and Pam Omidyar</text>
+<text x="355" y="89" fill="#88aacc" font-size="8.5" font-family="Arial">Private philanthropy; Luminate launched 2018</text>
+<line x1="355" y1="96" x2="623" y2="96" stroke="rgba(26,92,140,0.3)" stroke-width="0.5"/>
+<text x="355" y="110" fill="#C5A258" font-size="9" font-family="Arial" font-weight="bold">SA = explicit priority country</text>
+<text x="355" y="122" fill="#aabbcc" font-size="8" font-family="Arial">Sub-entities: Luminate (civic/media)</text>
+<text x="355" y="135" fill="#aabbcc" font-size="8" font-family="Arial">Imaginable Futures (education)</text>
+<text x="355" y="148" fill="#aabbcc" font-size="8" font-family="Arial">Flourish Ventures (fintech)</text>
+<text x="355" y="163" fill="#55aadd" font-size="8" font-family="Arial">Focus: digital media, civic tech, open data,</text>
+<text x="355" y="174" fill="#55aadd" font-size="8" font-family="Arial">fact-checking, information integrity</text>
+<a href="omidyar.html" target="_blank" aria-label="View Omidyar Investigation Page">
+  <rect x="487" y="178" width="146" height="14" rx="3" fill="rgba(85,170,221,0.1)" stroke="rgba(85,170,221,0.35)" stroke-width="0.7"/>
+  <text x="560" y="188.5" fill="#55aadd" font-size="7.5" font-family="Arial" text-anchor="middle" font-weight="bold">&#8594; View Omidyar Investigation</text>
+</a>
+
+<!-- USAID -->
+<rect x="678" y="38" width="290" height="148" rx="5" fill="#1e1000" stroke="#8c5500" stroke-width="1.5" filter="url(#glow-a)"/>
+<rect x="678" y="38" width="290" height="5" rx="2.5" fill="#8c5500"/>
+<text x="688" y="62" fill="#ddaa55" font-size="12.5" font-family="Arial" font-weight="bold">USAID</text>
+<text x="688" y="77" fill="#ccaa77" font-size="8.5" font-family="Arial">U.S. Agency for International Development</text>
+<text x="688" y="89" fill="#ccaa77" font-size="8.5" font-family="Arial">U.S. Government - congressional oversight</text>
+<line x1="688" y1="96" x2="956" y2="96" stroke="rgba(140,85,0,0.3)" stroke-width="0.5"/>
+<text x="688" y="110" fill="#C5A258" font-size="9" font-family="Arial" font-weight="bold">Direct SA nodes: CSVR, Sonke, PMG</text>
+<text x="688" y="122" fill="#ccaa77" font-size="8" font-family="Arial">USAID OIG audited CSVR: AID-674-A-14-00016</text>
+<text x="688" y="135" fill="#ccaa77" font-size="8" font-family="Arial">Sonke: USAID APC programme, multiple grants</text>
+<text x="688" y="148" fill="#ccaa77" font-size="8" font-family="Arial">PMG: OSF study records OSF+USAID+Denmark</text>
+<text x="688" y="163" fill="#ddaa55" font-size="8" font-family="Arial">Focus: governance, health, gender/GBV,</text>
+<text x="688" y="174" fill="#ddaa55" font-size="8" font-family="Arial">violence prevention, capacity building</text>
+<a href="usaid.html" target="_blank" aria-label="View USAID Investigation Page">
+  <rect x="820" y="178" width="146" height="14" rx="3" fill="rgba(221,170,85,0.1)" stroke="rgba(221,170,85,0.35)" stroke-width="0.7"/>
+  <text x="893" y="188.5" fill="#ddaa55" font-size="7.5" font-family="Arial" text-anchor="middle" font-weight="bold">&#8594; View USAID Investigation</text>
+</a>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     CONNECTION LINES  Tier 1 -> Tier 2
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- OSF -> CF (straight, solid green) -->
+<path d="M 112 186 L 112 238" stroke="#1f6b3a" stroke-width="2" marker-end="url(#arr-osf)" fill="none" class="flow-line" stroke-dasharray="6,3"/>
+
+<!-- OSF -> SAMIP (curved to middle, labeled) -->
+<path d="M 180 186 C 180 210 370 210 370 238" stroke="#1f6b3a" stroke-width="1.5" marker-end="url(#arr-osf)" fill="none" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="248" y="210" fill="#55cc77" font-size="7.5" font-family="Arial" text-anchor="middle" opacity="0.9">initiated</text>
+
+<!-- Omidyar -> SAMIP (straight, solid blue) -->
+<path d="M 490 186 L 490 238" stroke="#1a5c8c" stroke-width="2" marker-end="url(#arr-omid)" fill="none" class="flow-line" stroke-dasharray="6,3"/>
+
+<!-- Omidyar -> MAVC (curved right, labeled) -->
+<path d="M 560 186 C 560 210 750 210 750 238" stroke="#1a5c8c" stroke-width="1.5" marker-end="url(#arr-omid)" fill="none" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="665" y="210" fill="#55aadd" font-size="7.5" font-family="Arial" text-anchor="middle" opacity="0.9">contributed</text>
+
+<!-- USAID -> MAVC (straight, solid amber) -->
+<path d="M 823 186 L 823 238" stroke="#8c5500" stroke-width="2" marker-end="url(#arr-usaid)" fill="none" class="flow-line" stroke-dasharray="6,3"/>
+
+<!-- OSF direct grants path (dashed green, left side) -->
+<path d="M 60 186 C 60 490 60 490 60 506" stroke="#1f6b3a" stroke-width="1" stroke-dasharray="3,4" marker-end="url(#arr-osf)" fill="none" opacity="0.35"/>
+<text x="52" y="450" fill="#55cc77" font-size="7" font-family="Arial" text-anchor="middle" opacity="0.6" transform="rotate(-90 52 450)">73+ direct grants</text>
+
+<!-- Omidyar direct grants path (dashed blue) -->
+<path d="M 640 186 C 640 490 640 490 640 506" stroke="#1a5c8c" stroke-width="1" stroke-dasharray="3,4" marker-end="url(#arr-omid)" fill="none" opacity="0.35"/>
+
+<!-- USAID direct grants path (dashed amber, right) -->
+<path d="M 940 186 C 940 490 940 490 940 506" stroke="#8c5500" stroke-width="1" stroke-dasharray="3,4" marker-end="url(#arr-usaid)" fill="none" opacity="0.35"/>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     VEHICLE BOXES - TIER 2  (y=238 to y=390)
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- CF - Constitutionalism Fund -->
+<rect x="12" y="238" width="310" height="220" rx="5" fill="#130a28" stroke="#6633bb" stroke-width="1.5"/>
+<rect x="12" y="238" width="310" height="5" rx="2.5" fill="#6633bb"/>
+<text x="22" y="263" fill="#bb88ff" font-size="11" font-family="Arial" font-weight="bold">Constitutionalism Fund (CF)</text>
+<text x="22" y="276" fill="#9977cc" font-size="8" font-family="Arial">Joint 10-year vehicle, 2015-2025</text>
+<line x1="22" y1="283" x2="308" y2="283" stroke="rgba(102,51,187,0.35)" stroke-width="0.5"/>
+
+<!-- CF funder breakdown boxes -->
+<rect x="22" y="288" width="85" height="28" rx="3" fill="rgba(31,107,58,0.25)" stroke="#1f6b3a" stroke-width="1"/>
+<text x="64" y="300" fill="#55cc77" font-size="8" font-family="Arial" font-weight="bold" text-anchor="middle">OSF</text>
+<text x="64" y="311" fill="#55cc77" font-size="7.5" font-family="Arial" text-anchor="middle">$10M</text>
+
+<rect x="115" y="288" width="85" height="28" rx="3" fill="rgba(100,70,0,0.25)" stroke="#8c6600" stroke-width="1"/>
+<text x="157" y="300" fill="#cc9944" font-size="8" font-family="Arial" font-weight="bold" text-anchor="middle">ATLANTIC</text>
+<text x="157" y="311" fill="#cc9944" font-size="7.5" font-family="Arial" text-anchor="middle">$10M (verified)</text>
+
+<rect x="208" y="288" width="85" height="28" rx="3" fill="rgba(60,20,0,0.35)" stroke="#884400" stroke-width="1"/>
+<text x="250" y="300" fill="#cc8844" font-size="8" font-family="Arial" font-weight="bold" text-anchor="middle">FORD</text>
+<text x="250" y="311" fill="#cc8844" font-size="7.5" font-family="Arial" text-anchor="middle">$9M (reported)</text>
+
+<text x="22" y="335" fill="#C5A258" font-size="9" font-family="Arial" font-weight="bold">Total: $29M joint investment</text>
+<text x="22" y="349" fill="#aa88cc" font-size="8" font-family="Arial">65 named grantees (public)</text>
+<text x="22" y="361" fill="#aa88cc" font-size="8" font-family="Arial">200+ total claimed by CF itself</text>
+<text x="22" y="374" fill="#aa88cc" font-size="8" font-family="Arial">Grants labelled "CF" - not "OSF" - in recipient accounts</text>
+<text x="22" y="387" fill="#aa88cc" font-size="8" font-family="Arial">This is "donor-attribution attenuation" - legally disclosed</text>
+<text x="22" y="399" fill="#bb88ff" font-size="8" font-family="Arial">Admin: OSF-SA (early) then Ford + NVF (later)</text>
+<text x="22" y="411" fill="#bb88ff" font-size="8" font-family="Arial">NVF residual grants active into 2026</text>
+<text x="22" y="425" fill="#aa88cc" font-size="8" font-family="Arial">Grantees: SECTION27, LRC, ProBono.Org, CALS + 60 more</text>
+<text x="22" y="437" fill="#aa88cc" font-size="8" font-family="Arial">See CF partners page: constitutionalismfund.co.za</text>
+
+<!-- CF -> Recipient bar -->
+<path d="M 167 458 L 167 506" stroke="#6633bb" stroke-width="2" marker-end="url(#arr-cf)" fill="none"/>
+
+
+<!-- SAMIP -->
+<rect x="345" y="238" width="290" height="220" rx="5" fill="#0a1520" stroke="#3366bb" stroke-width="1.5"/>
+<rect x="345" y="238" width="290" height="5" rx="2.5" fill="#3366bb"/>
+<text x="355" y="263" fill="#6699ff" font-size="11" font-family="Arial" font-weight="bold">SAMIP</text>
+<text x="355" y="276" fill="#88aacc" font-size="8" font-family="Arial">South Africa Media Innovation Program</text>
+<line x1="355" y1="283" x2="623" y2="283" stroke="rgba(51,102,187,0.35)" stroke-width="0.5"/>
+
+<!-- SAMIP funder boxes -->
+<rect x="355" y="288" width="130" height="28" rx="3" fill="rgba(31,107,58,0.2)" stroke="#1f6b3a" stroke-width="1"/>
+<text x="420" y="300" fill="#55cc77" font-size="8" font-family="Arial" font-weight="bold" text-anchor="middle">OSF-SA</text>
+<text x="420" y="311" fill="#55cc77" font-size="7.5" font-family="Arial" text-anchor="middle">Initiator</text>
+
+<rect x="493" y="288" width="130" height="28" rx="3" fill="rgba(26,92,140,0.2)" stroke="#1a5c8c" stroke-width="1"/>
+<text x="558" y="300" fill="#55aadd" font-size="8" font-family="Arial" font-weight="bold" text-anchor="middle">Omidyar / Luminate</text>
+<text x="558" y="311" fill="#55aadd" font-size="7.5" font-family="Arial" text-anchor="middle">Funder</text>
+
+<text x="355" y="335" fill="#C5A258" font-size="9" font-family="Arial" font-weight="bold">Managed by MDIF (Media Dev Investment Fund)</text>
+<text x="355" y="349" fill="#8899cc" font-size="8" font-family="Arial">Launched 2017. After Luminate spin-off 2018:</text>
+<text x="355" y="361" fill="#8899cc" font-size="8" font-family="Arial">funders listed as OSF-SA and Luminate</text>
+<text x="355" y="374" fill="#8899cc" font-size="8" font-family="Arial">Not a coincidental overlap: deliberately constructed</text>
+<text x="355" y="387" fill="#8899cc" font-size="8" font-family="Arial">as a joint OSF-Omidyar funding mechanism</text>
+<text x="355" y="400" fill="#6699ff" font-size="8" font-family="Arial">Purpose: SA digital and independent media,</text>
+<text x="355" y="412" fill="#6699ff" font-size="8" font-family="Arial">new voices, sustainable business models</text>
+<text x="355" y="425" fill="#8899cc" font-size="8" font-family="Arial">Recipients include: Daily Maverick, community</text>
+<text x="355" y="437" fill="#8899cc" font-size="8" font-family="Arial">news ventures, youth media, digital platforms</text>
+
+<!-- SAMIP -> Recipient bar -->
+<path d="M 490 458 L 490 506" stroke="#3366bb" stroke-width="2" marker-end="url(#arr-samip)" fill="none"/>
+
+
+<!-- MAVC -->
+<rect x="678" y="238" width="290" height="220" rx="5" fill="#1a0e00" stroke="#aa6600" stroke-width="1.5"/>
+<rect x="678" y="238" width="290" height="5" rx="2.5" fill="#aa6600"/>
+<text x="688" y="263" fill="#ffaa44" font-size="11" font-family="Arial" font-weight="bold">Making All Voices Count (MAVC)</text>
+<text x="688" y="276" fill="#ccaa66" font-size="8" font-family="Arial">$47M grand challenge for development</text>
+<line x1="688" y1="283" x2="956" y2="283" stroke="rgba(170,102,0,0.35)" stroke-width="0.5"/>
+
+<!-- MAVC funder row -->
+<rect x="688" y="288" width="62" height="28" rx="3" fill="rgba(140,85,0,0.25)" stroke="#8c5500" stroke-width="1"/>
+<text x="719" y="300" fill="#ddaa55" font-size="7.5" font-family="Arial" font-weight="bold" text-anchor="middle">USAID</text>
+<text x="719" y="311" fill="#ddaa55" font-size="7" font-family="Arial" text-anchor="middle">$10M</text>
+
+<rect x="758" y="288" width="62" height="28" rx="3" fill="rgba(26,92,140,0.2)" stroke="#1a5c8c" stroke-width="1"/>
+<text x="789" y="300" fill="#55aadd" font-size="7.5" font-family="Arial" font-weight="bold" text-anchor="middle">Omidyar</text>
+<text x="789" y="311" fill="#55aadd" font-size="7" font-family="Arial" text-anchor="middle">confirmed</text>
+
+<rect x="828" y="288" width="50" height="28" rx="3" fill="rgba(80,50,0,0.2)" stroke="#664400" stroke-width="1"/>
+<text x="853" y="300" fill="#cc9944" font-size="7.5" font-family="Arial" font-weight="bold" text-anchor="middle">DFID</text>
+<text x="853" y="311" fill="#cc9944" font-size="7" font-family="Arial" text-anchor="middle">+Sida</text>
+
+<rect x="886" y="288" width="72" height="28" rx="3" fill="rgba(31,107,58,0.15)" stroke="#1f6b3a" stroke-width="1" stroke-dasharray="3,2"/>
+<text x="922" y="298" fill="#55cc77" font-size="7.5" font-family="Arial" font-weight="bold" text-anchor="middle">OSF*</text>
+<text x="922" y="308" fill="#55cc77" font-size="6.5" font-family="Arial" text-anchor="middle">programme</text>
+<text x="922" y="317" fill="#55cc77" font-size="6.5" font-family="Arial" text-anchor="middle">docs only</text>
+
+<text x="688" y="335" fill="#C5A258" font-size="9" font-family="Arial" font-weight="bold">$47M across 178 grants, ~2014-2018</text>
+<text x="688" y="349" fill="#ccaa77" font-size="8" font-family="Arial">USAID $10M confirmed (USAID evaluation)</text>
+<text x="688" y="361" fill="#ccaa77" font-size="8" font-family="Arial">OSF: documented in MAVC Strategy Synthesis +</text>
+<text x="688" y="373" fill="#ccaa77" font-size="8" font-family="Arial">Hivos reports 2013/14 (called "key architect")</text>
+<text x="688" y="386" fill="#ccaa77" font-size="8" font-family="Arial">*Current MAVC archive omits OSF - earlier</text>
+<text x="688" y="398" fill="#ccaa77" font-size="8" font-family="Arial">programme documents are the stronger source</text>
+<text x="688" y="411" fill="#ffaa44" font-size="8" font-family="Arial">SA recipients: OpenUp, amandla.mobi</text>
+<text x="688" y="424" fill="#ccaa77" font-size="8" font-family="Arial">Purpose: citizen engagement, open government,</text>
+<text x="688" y="436" fill="#ccaa77" font-size="8" font-family="Arial">accountability, technology-for-governance</text>
+
+<!-- MAVC -> Recipient bar -->
+<path d="M 823 458 L 823 506" stroke="#aa6600" stroke-width="2" marker-end="url(#arr-mavc)" fill="none"/>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     RECIPIENT BAR - TIER 3  (y=506 to y=570)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<rect x="12" y="506" width="956" height="64" rx="5" fill="#0d1a30" stroke="#243352" stroke-width="1.5"/>
+
+<!-- Category segments inside recipient bar -->
+<rect x="20" y="514" width="175" height="48" rx="3" fill="#0f2a1a" stroke="#1f6b3a" stroke-width="1"/>
+<text x="107" y="532" fill="#55cc77" font-size="8.5" font-family="Arial" font-weight="bold" text-anchor="middle">Legal / Constitutional</text>
+<text x="107" y="545" fill="#88cc99" font-size="7.5" font-family="Arial" text-anchor="middle">SECTION27, SERI, LRC, EELC</text>
+<text x="107" y="556" fill="#88cc99" font-size="7.5" font-family="Arial" text-anchor="middle">CALS, ProBono.Org, WLC</text>
+
+<rect x="203" y="514" width="175" height="48" rx="3" fill="#0f2a1a" stroke="#1f6b3a" stroke-width="1"/>
+<text x="290" y="532" fill="#55cc77" font-size="8.5" font-family="Arial" font-weight="bold" text-anchor="middle">Investigative Media</text>
+<text x="290" y="545" fill="#88cc99" font-size="7.5" font-family="Arial" text-anchor="middle">amaBhungane, Daily Maverick</text>
+<text x="290" y="556" fill="#88cc99" font-size="7.5" font-family="Arial" text-anchor="middle">GroundUp, Open Secrets</text>
+
+<rect x="386" y="514" width="175" height="48" rx="3" fill="#0a1a30" stroke="#1a5c8c" stroke-width="1"/>
+<text x="473" y="532" fill="#55aadd" font-size="8.5" font-family="Arial" font-weight="bold" text-anchor="middle">Civic Tech / Data</text>
+<text x="473" y="545" fill="#88aacc" font-size="7.5" font-family="Arial" text-anchor="middle">OpenUp, amandla.mobi</text>
+<text x="473" y="556" fill="#88aacc" font-size="7.5" font-family="Arial" text-anchor="middle">Africa Check, R2K, MMA</text>
+
+<rect x="569" y="514" width="175" height="48" rx="3" fill="#0f1e30" stroke="#3366bb" stroke-width="1"/>
+<text x="656" y="532" fill="#6699ff" font-size="8.5" font-family="Arial" font-weight="bold" text-anchor="middle">Governance / Civil Society</text>
+<text x="656" y="545" fill="#8899cc" font-size="7.5" font-family="Arial" text-anchor="middle">Corruption Watch, PMG</text>
+<text x="656" y="556" fill="#8899cc" font-size="7.5" font-family="Arial" text-anchor="middle">DDP, Equal Education, SJC</text>
+
+<rect x="752" y="514" width="208" height="48" rx="3" fill="#1a0e00" stroke="#8c5500" stroke-width="1"/>
+<text x="856" y="532" fill="#ddaa55" font-size="8.5" font-family="Arial" font-weight="bold" text-anchor="middle">Health / Gender / Rights</text>
+<text x="856" y="545" fill="#ccaa77" font-size="7.5" font-family="Arial" text-anchor="middle">Sonke, CSVR, TAC, HJI</text>
+<text x="856" y="556" fill="#ccaa77" font-size="7.5" font-family="Arial" text-anchor="middle">Triangle Project, SWEAT, TLAC</text>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     LEGEND  (y=585 to y=695)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<rect x="12" y="585" width="956" height="115" rx="5" fill="#06080f" stroke="rgba(197,162,88,0.25)" stroke-width="1"/>
+<text x="22" y="602" fill="#C5A258" font-size="8.5" font-family="Arial" font-weight="bold" letter-spacing="1.5">KEY</text>
+<line x1="22" y1="607" x2="960" y2="607" stroke="rgba(197,162,88,0.15)" stroke-width="0.5"/>
+
+<!-- Legend: Source colours -->
+<rect x="22" y="614" width="12" height="12" rx="2" fill="#1f6b3a"/>
+<text x="40" y="624" fill="#88cc99" font-size="8" font-family="Arial">OSF / Open Society Foundations (private philanthropy, green throughout)</text>
+
+<rect x="22" y="632" width="12" height="12" rx="2" fill="#1a5c8c"/>
+<text x="40" y="642" fill="#88aacc" font-size="8" font-family="Arial">Omidyar Group / Luminate (private philanthropy, blue throughout)</text>
+
+<rect x="22" y="650" width="12" height="12" rx="2" fill="#8c5500"/>
+<text x="40" y="660" fill="#ccaa77" font-size="8" font-family="Arial">USAID (U.S. government, amber throughout)</text>
+
+<rect x="22" y="668" width="12" height="12" rx="2" fill="#6633bb"/>
+<text x="40" y="678" fill="#aa88cc" font-size="8" font-family="Arial">Constitutionalism Fund (CF) - shared vehicle of OSF + Ford + Atlantic, purple</text>
+
+<!-- Legend: Line types -->
+<line x1="340" y1="620" x2="380" y2="620" stroke="#1f6b3a" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="388" y="624" fill="#aaaaaa" font-size="8" font-family="Arial">Animated dashed line = direct programme participation or initiation</text>
+
+<line x1="340" y1="638" x2="380" y2="638" stroke="#1f6b3a" stroke-width="1.5" stroke-dasharray="3,4" opacity="0.5"/>
+<text x="388" y="642" fill="#aaaaaa" font-size="8" font-family="Arial">Faint dashed line = parallel direct grants (73+ OSF orgs, 35+ Omidyar orgs)</text>
+
+<line x1="340" y1="656" x2="380" y2="656" stroke="#6633bb" stroke-width="2"/>
+<text x="388" y="660" fill="#aaaaaa" font-size="8" font-family="Arial">Solid coloured line = vehicle-to-recipient funding flow</text>
+
+<!-- Legend: Qualification notes -->
+<text x="340" y="678" fill="#888888" font-size="7.5" font-family="Arial">* OSF in MAVC: named in MAVC Strategy Synthesis and Hivos annual reports 2013-14. Current MAVC website omits OSF</text>
+<text x="340" y="690" fill="#888888" font-size="7.5" font-family="Arial">  the earlier programme documents are the stronger primary source. The $47M total is the programme budget; amounts per funder vary by year.</text>
+
+<!-- Legend: right column - what stacked means -->
+<rect x="700" y="614" width="12" height="12" rx="2" fill="#3A0066"/>
+<text x="718" y="624" fill="#aa66ee" font-size="8" font-family="Arial">Purple = STACKED: org receives CF AND direct OSF simultaneously</text>
+
+<line x1="700" y1="638" x2="712" y2="638" stroke="#C5A258" stroke-width="1.5" stroke-dasharray="2,2"/>
+<text x="718" y="642" fill="#aaaaaa" font-size="8" font-family="Arial">Dashed gold border = OSF participation documented but disputed</text>
+
+<rect x="700" y="651" width="254" height="24" rx="3" fill="rgba(197,162,88,0.06)" stroke="rgba(197,162,88,0.2)" stroke-width="0.5"/>
+<text x="827" y="663" fill="#C5A258" font-size="7.5" font-family="Arial" text-anchor="middle" font-weight="bold">Full source list: see investigation dossier PDF page 7</text>
+
+</svg>
+</div>
+
+
+    <div class="divider"></div>
+    <p style="font-size:0.875rem;color:rgba(244,240,232,0.6);max-width:720px"><strong style="color:var(--gold)">What "direct" vs "pooled" means:</strong> A direct grant appears in the recipient's accounts under the funder's name. A pooled grant routes through an intermediary vehicle (CF, SAMIP, MAVC), so the recipient's accounts carry the vehicle name rather than the original donor. Both matter for network mapping; they are not equivalent findings.</p>
+  </div>
+</section>
+
+<!-- KEY FINDINGS -->
+<section id="findings">
+  <div class="section-inner">
+    <div class="section-label">Core findings</div>
+    <h2>What the Investigation Found</h2>
+    <div class="findings-grid reveal">
+      <div class="finding-card">
+        <h3>$238M, The Official Total</h3>
+        <p>OSF's 30-year retrospective (March 2025) confirms $238,635,789 invested 1997–2023, excluding the original $15M endowment, supporting roughly 1,000 organisations and individuals. This is the first time OSF has disclosed the full cumulative figure.</p>
+      </div>
+      <div class="finding-card">
+        <h3>Stacked Funding, The Core Discovery</h3>
+        <p>The Constitutionalism Fund is not replacing direct OSF funding. It is an additional funding rail stacked on top. ProBono.Org received CF R2M + OSF R1.3M simultaneously in 2018. amaBhungane had three channels simultaneously in FY2023: OSF-SA R812,942 + CF-AOSI R842,211 + Luminate R2,124,677.</p>
+      </div>
+      <div class="finding-card">
+        <h3>Formal Bridges, SAMIP and MAVC</h3>
+        <p>SAMIP was deliberately built as a joint OSF-SA + Omidyar funding mechanism, managed by MDIF. Making All Voices Count ($47M programme) documented USAID + Omidyar + DFID/Sida, with early programme documents also listing OSF as a contributor alongside the four other donors. These are not coincidental overlaps; they are shared programmes.</p>
+      </div>
+      <div class="finding-card">
+        <h3>OSF Built the Institutional Backbone</h3>
+        <p>OSF's retrospective describes increasing work as a "multi-sectoral connector, convener and commissioner of research", not just a grantmaker. It explicitly describes its original mission as institution-building: establishing autonomous civil-society institutions, legal access infrastructure and independent media simultaneously.</p>
+      </div>
+      <div class="finding-card">
+        <h3>Omidyar/Luminate Overlaps the Media/Civic-Tech Layer</h3>
+        <p>Omidyar/Luminate concentrates almost exactly where OSF's work becomes digital: media innovation, civic technology, digital publishing, fact-checking, information integrity, online mobilisation. Africa Check, OpenUp, amandla.mobi and MMA/Moxii all carry both OSF and Omidyar/Luminate funding.</p>
+      </div>
+      <div class="finding-card">
+        <h3>USAID Intersects Selectively</h3>
+        <p>USAID's strongest direct overlaps are CSVR (cooperative agreement AID-674-A-14-00016), Sonke Gender Justice (APC programme, multiple grants) and PMG (historically: OSF + Royal Danish Embassy + USAID documented simultaneously). Through MAVC, USAID directly co-invested in the tech/accountability space typically associated with Omidyar and OSF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERLAP MATRIX -->
+<section id="overlap" style="background:rgba(0,0,0,0.18)">
+  <div class="section-inner">
+    <div class="section-label">Network Density</div>
+    <h2>Where the Three Funding Systems Overlap</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:680px;margin-bottom:1rem">The matrix shows verified funding relationships across the 15 most documented nodes. This is not a full OSF grantee census, OSF estimates 1,000+ historical recipients.</p>
+    <div class="matrix-wrap reveal">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th style="min-width:180px">Organisation</th>
+            <th>OSF / OSF-SA</th>
+            <th>Omidyar / Luminate</th>
+            <th>USAID</th>
+            <th>CF / Pooled</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>amaBhungane<small>Investigative journalism</small></td><td class="dot-direct" title="Direct">●</td><td class="dot-direct" title="Direct">●</td><td class="dot-none">-</td><td class="dot-direct" title="CF + AOSI">●</td></tr>
+          <tr><td>amandla.mobi<small>Digital mobilisation</small></td><td class="dot-direct" title="Direct 2016–2022">●</td><td class="dot-direct" title="ON 2018; Luminate 2019+">●</td><td class="dot-pooled" title="MAVC 2015/17">◐</td><td class="dot-direct" title="CF via NVF 2024–26">●</td></tr>
+          <tr><td>OpenUp / Code for SA<small>Civic tech / open data</small></td><td class="dot-direct" title="Direct">●</td><td class="dot-direct" title="$1.92M confirmed">●</td><td class="dot-pooled" title="MAVC programme">◐</td><td class="dot-none">-</td></tr>
+          <tr><td>Open Secrets<small>Economic crime / accountability</small></td><td class="dot-direct" title="OSF-HRI R1.4M + OSF-SA R1.5M (2023)">●</td><td class="dot-direct" title="Luminate R3.67M (2023)">●</td><td class="dot-none">-</td><td class="dot-none">-</td></tr>
+          <tr><td>Africa Check<small>Fact-checking</small></td><td class="dot-direct" title="Direct; 12% of income">●</td><td class="dot-direct" title="Luminate 8% of income; $500K joint 2017">●</td><td class="dot-none">-</td><td class="dot-none">-</td></tr>
+          <tr><td>Right2Know<small>Information rights</small></td><td class="dot-direct" title="OSF seeded; OSF-SA 2010–21">●</td><td class="dot-direct" title="Luminate 2019–21">●</td><td class="dot-none">-</td><td class="dot-none">-</td></tr>
+          <tr><td>Media Monitoring Africa / Moxii<small>Media monitoring / Real411</small></td><td class="dot-direct" title="$200K 2023; election study confirmed">●</td><td class="dot-direct" title="Luminate investee; $150K grants documented">●</td><td class="dot-none">n/a*</td><td class="dot-none">-</td></tr>
+          <tr><td>Daily Maverick<small>Journalism</small></td><td class="dot-direct" title="Current: grants >R150k">●</td><td class="dot-pooled" title="SAMIP participation">◐</td><td class="dot-none">-</td><td class="dot-none">-</td></tr>
+          <tr><td>GroundUp<small>Public-interest journalism</small></td><td class="dot-direct" title="R520k, R800k, R900k, R1.4m, R800k across years">●</td><td class="dot-none">-</td><td class="dot-none">-</td><td class="dot-direct" title="CF confirmed">●</td></tr>
+          <tr><td>Corruption Watch<small>Anti-corruption</small></td><td class="dot-direct" title="Annual disclosures list OSF-SA">●</td><td class="dot-none">-</td><td class="dot-none">-</td><td class="dot-direct" title="CF grantee">●</td></tr>
+          <tr><td>Sonke Gender Justice<small>Gender / GBV / SRHR</small></td><td class="dot-direct" title="R1.22M (2023), R1.55M (2022) in audited accounts">●</td><td class="dot-none">-</td><td class="dot-direct" title="APC programme; multiple grants; Khutlo work">●</td><td class="dot-none">-</td></tr>
+          <tr><td>CSVR<small>Violence / reconciliation</small></td><td class="dot-direct" title="OSF-SA listed on donor page">●</td><td class="dot-none">-</td><td class="dot-direct" title="Cooperative agreement AID-674-A-14-00016">●</td><td class="dot-none">-</td></tr>
+          <tr><td>Parliamentary Monitoring Group<small>Parliamentary transparency</small></td><td class="dot-hist" title="OSF study documents OSF as funder">○</td><td class="dot-none">-</td><td class="dot-hist" title="OSF study: OSF + USAID + Danish Embassy">○</td><td class="dot-none">-</td></tr>
+          <tr><td>ProBono.Org<small>Access to justice</small></td><td class="dot-direct" title="R800k (2019), R230k (2020), R569k (2021), R800k (2022), R400k (2023)">●</td><td class="dot-none">-</td><td class="dot-none">-</td><td class="dot-direct" title="CF; 2016 first cohort; STACKED confirmed">●</td></tr>
+          <tr><td>Legal Resources Centre<small>Strategic litigation</small></td><td class="dot-direct" title="Long-running; 2021/22 funder list confirmed">●</td><td class="dot-none">-</td><td class="dot-none">-</td><td class="dot-direct" title="CF grantee">●</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="matrix-legend">
+      <span><span class="dot-direct">●</span> Direct documented funding</span>
+      <span><span class="dot-pooled">◐</span> Pooled / programme funding</span>
+      <span><span class="dot-hist">○</span> Historical / institutional</span>
+      <span><span class="dot-none">-</span> Not verified (does not mean never funded)</span>
+      <span style="color:rgba(244,240,232,0.35)">*No relationship strong enough to label MMA a USAID recipient verified.</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE FUNDERS FORMALLY MEET, BRIDGES -->
+<section id="bridges">
+  <div class="section-inner">
+    <div class="section-label">Shared Vehicles</div>
+    <h2>Where the Funders Formally Meet</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:700px;margin-bottom:0.5rem">The most significant finding is not coincidental overlap. It is where distinct funders deliberately built or participated in joint funding programmes.</p>
+    <div class="bridges-grid reveal">
+      <div class="bridge-card">
+        <div class="bridge-title">SAMIP, South Africa Media Innovation Program</div>
+        <div class="bridge-meta">OSF-SA + Omidyar Network | 2017–present | Managed by MDIF</div>
+        <p>SAMIP was not an NGO that separately happened to win money from two foundations. MDIF's original 2017 announcement is explicit: SAMIP was <strong>initiated by OSF-SA</strong>, funded by <strong>Omidyar Network</strong>, and managed by MDIF. Its purpose: funding and capacity-building for independent South African media, digital media, new voices, underserved communities and sustainable business models.</p>
+        <div class="bridge-arch">OSF-SA ──────────────┐
+                     ├──► SAMIP ──► MDIF manages
+Omidyar Network ────┘         │
+                              ├── Daily Maverick
+                              ├── Digital/community media
+                              ├── Youth media ventures
+                              └── Media innovation projects</div>
+        <p>After Omidyar's governance portfolio became Luminate, SAMIP identified its funders as <strong>OSF-SA and Luminate</strong>. The formal bridge between the two foundations into the South African information ecosystem is documented from the programme's own materials.</p>
+      </div>
+      <div class="bridge-card">
+        <div class="bridge-title">MAVC, Making All Voices Count</div>
+        <div class="bridge-meta">USAID + Omidyar + DFID/Sida | $47M programme | OSF documented in early materials</div>
+        <p>MAVC issued 178 grants and operated in South Africa and other countries. Its current archived "About" page names <strong>DFID + USAID + Sida + Omidyar Network</strong>. But earlier official programme documents, including the MAVC Strategy Synthesis, explicitly add <strong>Open Society Foundations</strong> as a fifth contributor.</p>
+        <div class="bridge-arch">DFID   ─────────────────┐
+USAID  ($10M confirmed) ─┤
+Sida   ──────────────── ─┤──► MAVC ($47M) ──► 178 grants
+Omidyar Network ─────────┤                    incl. SA
+OSF* ─────────────────── ┘     *contemporary programme documents</div>
+        <p>Hivos's 2013 annual report records OSF contributing at least €1.5M; Omidyar €3.5M. Hivos's 2014 report calls OSF a <strong>"key architect"</strong> of MAVC. This means amandla.mobi and OpenUp sit inside a programme where OSF, Omidyar and USAID themselves were all documented funders, not merely "three donors who each separately funded the same NGO."</p>
+        <div class="bridge-note">Note: the current MAVC archive omitting OSF conflicts with the programme's earlier documents. The most plausible explanations include different programme phases, commitments versus final donor accounting, or website simplification. The earlier primary documents are the stronger sources.</div>
+      </div>
+      <div class="bridge-card">
+        <div class="bridge-title">Constitutionalism Fund</div>
+        <div class="bridge-meta">OSF + Ford Foundation + Atlantic Philanthropies | $29M | 2015–2025</div>
+        <p>A formal joint fund, <strong>not</strong> three donors separately funding the same grantees. CF's own homepage confirms: "CF oversees a US$29 million joint investment made in 2015, established by Atlantic Philanthropies, Ford Foundation and Open Society Foundation." OSF-SA initially administered the fund; AOSI was fiscal sponsor. Later, Ford took administration and the New Venture Fund became fiscal sponsor as the "Ford Foundation Dignity and Justice Fund – South Africa Constitutionalism Initiative."</p>
+        <div class="bridge-arch">[2015] OSF + Atlantic + Ford → CF pooled vehicle
+       → OSF-SA administration → AOSI fiscal sponsor
+       
+[Later] Ford takes administration
+        → NVF (New Venture Fund) fiscal sponsor
+        → "Ford Foundation Dignity &amp; Justice Fund –
+           SA Constitutionalism Initiative"
+        
+[2026]  amandla.mobi still lists CF via NVF as funder
+        GroundUp accounts: R1.9M (2023/24) via NVF</div>
+        <p>Its first cohort (2016) was 12 organisations pre-selected from existing Atlantic/OSF trusted grantees. CF's own website says "more than 200 organisations received funding", the 65 named partners are the visible surface only.</p>
+      </div>
+      <div class="bridge-card">
+        <div class="bridge-title">OSF–USAID: Two Directly Documented Nodes</div>
+        <div class="bridge-meta">Direct, not through a shared programme</div>
+        <p><strong>CSVR:</strong> Both OSF-SA and USAID appear on CSVR's own donor page. USAID's OIG audited USAID resources managed by CSVR under cooperative agreement <strong>AID-674-A-14-00016</strong> for its regional torture-victim rehabilitation programme. This is one of the cleaner OSF–USAID overlaps in the database.</p>
+        <p><strong>Sonke Gender Justice:</strong> OSF-SA gave R1.22M (2023) and R1.55M (2022), confirmed in Sonke's audited accounts. USAID's APC programme separately funded Sonke to provide gender and family-planning technical assistance to USAID missions and implementing partners, with further Lesotho work implemented through Pact.</p>
+        <p><strong>PMG:</strong> An OSF study on open data in South Africa records PMG's then-current donors as <strong>Open Society Foundation, Royal Danish Embassy and USAID</strong>, historically documented in a contemporaneous OSF document.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACKED FUNDING -->
+<section id="stacked" style="background:rgba(0,0,0,0.18)">
+  <div class="section-inner">
+    <div class="section-label">Key structural discovery</div>
+    <h2>Stacked Funding</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:700px;margin-bottom:0.5rem">The Constitutionalism Fund is not replacing direct OSF funding. It is an additional funding rail. Multiple organisations receive both direct OSF grants and CF grants simultaneously, confirmed from audited financial statements.</p>
+    <div class="stacked-box reveal">
+      <h3>Documented Simultaneous Funding, from Audited Accounts</h3>
+      <p>These amounts are drawn from recipients' own published audited financial statements, not estimates.</p>
+      <div class="stacked-eg">
+ProBono.Org (2018):      CF R2,000,000  +  OSF-SA R1,303,000   [simultaneous]
+ProBono.Org (2019):      CF R1,500,000  +  OSF R800,000         [simultaneous]
+
+amaBhungane (FY2023):    OSF-SA R812,942  +  CF-AOSI R842,211  +  Luminate R2,124,677
+
+PARI (2025 brochure):    CF listed  +  Ford Foundation listed  +  OSF South Africa listed
+
+Centre for Child Law:    CF R700,000  +  Direct OSF R750,000   [2016 annual report]
+
+Open Secrets (2023):     OSF-HRI R1,417,000  +  OSF-SA R1,524,000  +  Luminate R3,671,463</div>
+      <p style="font-size:0.83rem;color:rgba(244,240,232,0.5);margin-top:0.75rem">Qualification: simultaneous funding does not mean the grants funded the same activity, or that any donor directed the other's output. It demonstrates parallel funding channels through distinct but overlapping funding channels operating concurrently at a single recipient.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTOR COMPARISON -->
+<section id="sectors">
+  <div class="section-inner">
+    <div class="section-label">Where the money goes</div>
+    <h2>What Gets Funded</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:660px;margin-bottom:1.5rem">OSF is broader; Omidyar/Luminate concentrates heavily in the information and media infrastructure layer. This functional distinction is visible in the recipient data, the two portfolios overlap most densely in media, civic tech and information accountability.</p>
+    <div class="sector-grid reveal">
+      <div class="sector-chart">
+        <h4 style="color:#55aa77">OSF South Africa, by sector</h4>
+        <div class="bar-row"><span class="bar-label">Civil society / governance</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:88%"></div></div><span class="bar-num">22</span></div>
+        <div class="bar-row"><span class="bar-label">Legal / human rights</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:80%"></div></div><span class="bar-num">20</span></div>
+        <div class="bar-row"><span class="bar-label">Media / journalism</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:60%"></div></div><span class="bar-num">14</span></div>
+        <div class="bar-row"><span class="bar-label">Research / academia</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:44%"></div></div><span class="bar-num">11</span></div>
+        <div class="bar-row"><span class="bar-label">Health / social</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:28%"></div></div><span class="bar-num">7</span></div>
+        <div class="bar-row"><span class="bar-label">Education</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:20%"></div></div><span class="bar-num">5</span></div>
+        <div class="bar-row"><span class="bar-label">Environment</span><div class="bar-track"><div class="bar-fill osf-bar" style="width:12%"></div></div><span class="bar-num">3</span></div>
+        <p style="font-size:0.75rem;color:rgba(244,240,232,0.35);margin-top:1rem">Based on 73+ verified OSF-funded organisations.</p>
+      </div>
+      <div class="sector-chart">
+        <h4 style="color:#55aadd">Omidyar / Luminate South Africa, by sector</h4>
+        <div class="bar-row"><span class="bar-label">Media / journalism</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:88%"></div></div><span class="bar-num">14</span></div>
+        <div class="bar-row"><span class="bar-label">Civic tech / open data</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:75%"></div></div><span class="bar-num">12</span></div>
+        <div class="bar-row"><span class="bar-label">Education</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:50%"></div></div><span class="bar-num">8</span></div>
+        <div class="bar-row"><span class="bar-label">Information integrity</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:44%"></div></div><span class="bar-num">7</span></div>
+        <div class="bar-row"><span class="bar-label">FinTech / financial inclusion</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:25%"></div></div><span class="bar-num">4</span></div>
+        <div class="bar-row"><span class="bar-label">Civil society / governance</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:19%"></div></div><span class="bar-num">3</span></div>
+        <div class="bar-row"><span class="bar-label">Legal / human rights</span><div class="bar-track"><div class="bar-fill omid-bar" style="width:13%"></div></div><span class="bar-num">2</span></div>
+        <p style="font-size:0.75rem;color:rgba(244,240,232,0.35);margin-top:1rem">Based on 35 verified Omidyar Group-funded organisations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATABASE, OSF ORGS -->
+<section id="database" class="orgs-section">
+  <div class="section-inner">
+    <div class="section-label">Open Society Foundations, Primary</div>
+    <h2>OSF-Funded Organisations in South Africa</h2>
+    <p style="color:rgba(244,240,232,0.65);margin-bottom:1.5rem">Official OSF spend: <strong style="color:var(--gold)">$238,635,789</strong> (1997–2023, excluding $15M endowment) per OSF 30-year retrospective, March 2025. All organisations verified against primary sources.</p>
+
+    <div class="filter-bar">
+      <input type="text" id="osf-search" placeholder="Search organisations, sectors, cities...">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all" data-table="osf">All</button>
+        <button class="filter-btn" data-filter="legal" data-table="osf">Legal</button>
+        <button class="filter-btn" data-filter="media" data-table="osf">Media</button>
+        <button class="filter-btn" data-filter="civil" data-table="osf">Civil Society</button>
+        <button class="filter-btn" data-filter="research" data-table="osf">Research</button>
+        <button class="filter-btn" data-filter="health" data-table="osf">Health</button>
+        <button class="filter-btn" data-filter="environment" data-table="osf">Environment</button>
+        <button class="filter-btn" data-filter="education" data-table="osf">Education</button>
+        <button class="filter-btn" data-filter="stacked" data-table="osf">STACKED</button>
+      </div>
+      <span class="filter-count" id="osf-count"></span>
+    </div>
+    <div class="table-container">
+      <table id="osf-table">
+        <thead><tr><th>#</th><th>Organisation</th><th>Sector</th><th>City</th><th>Track</th><th>Known Amount</th></tr></thead>
+        <tbody id="osf-tbody"></tbody>
+      </table>
+      <div class="no-results" id="osf-no-results">No organisations match.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DATABASE, OMIDYAR ORGS -->
+<section id="omidyar-orgs">
+  <div class="section-inner">
+    <div class="section-label">Omidyar Group, Secondary</div>
+    <h2>Omidyar / Luminate Funded Organisations</h2>
+    <p style="color:rgba(244,240,232,0.65);margin-bottom:0.5rem">Includes Omidyar Network Fund, Luminate, Imaginable Futures (education) and Flourish Ventures (fintech). Amounts verified against Form 990-PF filings where available.</p>
+    <p style="color:rgba(197,162,88,0.6);font-size:0.8rem;font-family:'JetBrains Mono',monospace;margin-bottom:1.5rem">South Africa is explicitly named as a Luminate priority country alongside Kenya and Nigeria.</p>
+
+    <div class="filter-bar">
+      <input type="text" id="omid-search" placeholder="Search organisations...">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all" data-table="omid">All</button>
+        <button class="filter-btn" data-filter="luminate" data-table="omid">Luminate</button>
+        <button class="filter-btn" data-filter="omidyar network" data-table="omid">Omidyar Network</button>
+        <button class="filter-btn" data-filter="imaginable" data-table="omid">Imaginable Futures</button>
+        <button class="filter-btn" data-filter="flourish" data-table="omid">Flourish</button>
+      </div>
+      <span class="filter-count" id="omid-count"></span>
+    </div>
+    <div class="table-container">
+      <table id="omid-table">
+        <thead><tr><th>#</th><th>Organisation</th><th>Sector</th><th>Omidyar Entity</th><th>Confirmed Amount</th><th>Year(s)</th><th>Also OSF?</th></tr></thead>
+        <tbody id="omid-tbody"></tbody>
+      </table>
+      <div class="no-results" id="omid-no-results">No organisations match.</div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO ECOSYSTEM CASE STUDY (Wasserman, now further down, with qualification) -->
+<section id="pipeline" style="background:rgba(0,0,0,0.18)">
+  <div class="section-inner">
+    <div class="section-label">Case study, information ecosystem</div>
+    <h2>The Information Infrastructure Chain</h2>
+    <p style="color:rgba(244,240,232,0.65);max-width:720px;margin-bottom:1.5rem">Within the broader OSF funding network, one specific chain within the information ecosystem is the most densely documented. The following traces how OSF- and Luminate-funded institutions connect from academic framework through fact-checking to content moderation, and where the Afrikaans-language press sits outside this chain.</p>
+
+    <div class="pipeline reveal">
+      <div class="pipeline-step">
+        <div class="pipeline-num">01</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-critical">OSF-Adjacent Academic</span>
+          <h4>Academic Definition, Prof Herman Wasserman (Stellenbosch University)</h4>
+          <p>Leading academic definer of "disinformation" in the African context. OSF + Stellenbosch funding. Academic frameworks adopted internationally, cited in IFCN-affiliated work and referenced by Africa Check.</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">02</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-critical">OSF 12% + Luminate 8% + Gates 13% + AFP Foundation</span>
+          <h4>Africa Check (Wits, Johannesburg)</h4>
+          <p>Founded by Peter Cunliffe-Jones while on AFP payroll; housed at Wits; AFP Foundation provided seed funding. Partners with News24 and Daily Maverick. Cited by CNN, PBS, BBC, Al Jazeera, Wikipedia. Omidyar Network + OSF gave a joint $500,000 grant for automated fact-checking tools in 2017.</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">03</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-high">Code governs Meta content moderation</span>
+          <h4>IFCN (International Fact-Checking Network)</h4>
+          <p>Peter Cunliffe-Jones co-authored the IFCN Code of Principles. Meta historically used IFCN-certified third-party fact-checkers to moderate content internationally, including in South Africa. In January 2025, Meta ended this programme in the <strong>United States</strong> and replaced it with Community Notes; the international transition has been separate and is proceeding on a different timeline.</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">04</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-high">International, outside SA</span>
+          <h4>Meta (Facebook / Instagram)</h4>
+          <p>Partners with IFCN-accredited fact-checkers in markets outside the U.S., including South Africa. Posts flagged by fact-checkers under this system see reduced reach. The specific effect on Afrikaner-related content requires the Real411 complaint dataset, which has not yet been fully analysed.</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">05</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-high">Circular citation, OSF network</span>
+          <h4>Daily Maverick + News24 + Mail &amp; Guardian</h4>
+          <p>OSF + Luminate funded. Africa Check cites them as primary sources. Adri Basson (OSF-SA helped establish amaBhungane, where Basson was a co-founder) serves as News24 Editor-in-Chief. NED paid M&amp;G Adamela Trust $355,200 (2020–21).</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">06</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-high">Structural, not policy</span>
+          <h4>International Citation, Language Silo</h4>
+          <p>Africa Check is cited by CNN, PBS, BBC, Snopes, Al Jazeera and Wikipedia. Our mapping to date has identified substantially fewer documented connections between Afrikaans-language outlets and international wire services, fact-checkers, or media training pipelines, compared with English-language South African media. This structural difference deserves further systematic mapping before definitive conclusions are drawn.</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">07</div>
+        <div class="pipeline-content">
+          <span class="pbadge pb-caution">OSF-funded via MMA, confirmed</span>
+          <h4>Real411 (operated by Media Monitoring Africa / Moxii Africa)</h4>
+          <p>OSF funded ($200,000 in 2023; MMA Director William Bird: "We do indeed receive funding from the Open Society Foundation," Nov 2020). Platform for reporting online content as disinformation. The specific demographic breakdown of complaints has not yet been published by MMA.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline-note">
+      <strong>Editorial qualification:</strong> The chain above traces documented funding relationships and an institutional pathway. It does not prove that Africa Check's editorial decisions are directed by its funders, that Meta's content moderation in South Africa is controlled by OSF, or that Real411 complaints are predominantly about Afrikaner content (the complaint data has not yet been publicly released or independently analysed). Each of those questions requires a different level of evidence.
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="section-inner">
+    <div class="section-label">Research Standard</div>
+    <h2>Methodology</h2>
+    <div class="method-grid reveal">
+      <div class="method-card">
+        <h4>Primary Sources Used</h4>
+        <ul>
+          <li>Omidyar Network Fund Form 990-PF (2017, 2018)</li>
+          <li>Luminate Foundation Form 990-PF (2021)</li>
+          <li>Ford Foundation Form 990-PF (2021)</li>
+          <li>Luminate investee database (Sep 2026)</li>
+          <li>OSF 30-year retrospective (Mar 2025)</li>
+          <li>OSF-SA own grantee directory (osf.org.za)</li>
+          <li>Recipient audited financial statements</li>
+          <li>CF own website (constitutionalismfund.co.za)</li>
+          <li>Cornell University OSF-SA grant archives</li>
+          <li>MAVC strategy documents and programme archive</li>
+          <li>Hivos annual reports 2013, 2014</li>
+          <li>USAID OIG audit records</li>
+        </ul>
+      </div>
+      <div class="method-card">
+        <h4>Verification Codes</h4>
+        <ul>
+          <li><strong>OSF-D:</strong> Direct OSF / OSF-SA / OSISA grant</li>
+          <li><strong>CF-2:</strong> Constitutionalism Fund (second-degree pooled)</li>
+          <li><strong>CF-AOSI:</strong> CF via AOSI fiscal sponsor (early phase)</li>
+          <li><strong>CF-NVF:</strong> CF via New Venture Fund (later phase)</li>
+          <li><strong>STACKED:</strong> CF + direct OSF simultaneously from audited accounts</li>
+          <li><strong>OMD:</strong> Omidyar/Luminate/IF/Flourish direct</li>
+        </ul>
+      </div>
+      <div class="method-card">
+        <h4>Verification Standard</h4>
+        <ul>
+          <li><strong>VERIFIED:</strong> 2+ independent primary sources</li>
+          <li><strong>HISTORICAL:</strong> Confirmed from historical reports or archives</li>
+          <li><strong>PROJECT-LEVEL:</strong> One specific project confirmed; full relationship unclear</li>
+          <li><strong>PARTIALLY VERIFIED:</strong> 1 primary source or strong network indicator</li>
+          <li>Amounts listed as "not disclosed" are genuinely absent from public records</li>
+        </ul>
+      </div>
+      <div class="method-card">
+        <h4>What This Proves, and Doesn't</h4>
+        <ul>
+          <li>Proves: co-funding, common vehicles, overlapping recipients, shared fields</li>
+          <li>Does not prove: donors jointly dictate editorial positions</li>
+          <li>Does not prove: one donor secretly controls another</li>
+          <li>Does not prove: output was donor-directed</li>
+          <li>Those questions require: grant agreements, scopes of work, restricted vs core conditions, programme memoranda, board minutes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download" style="background:rgba(0,0,0,0.15)">
+  <div class="section-inner">
+    <div class="download-section reveal">
+      <h3>Download the Full Investigation Dossier</h3>
+      <p>Complete context notes, funding architecture, stacked-funding documentation, key verified amounts, and full source list. Suitable for research, journalism and public accountability use.</p>
+      <a href="osf-funded-orgs-dossier.pdf" class="btn-primary" download>⬇ Download PDF Dossier</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-tagline">Precision over volume. Dignity holds ground.</div>
+    <div>
+      <div class="footer-hub-label">Investigation Hub</div>
+      <a href="https://altafrikaner.github.io/journalist-map/index.html" class="hub-btn">← Back to All Investigations</a>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/AltAfrikaner" class="social-link" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://substack.com/@altafrikaner" class="social-link" target="_blank" rel="noopener">Substack</a>
+      <a href="mailto:AltAfrikaner@outlook.com" class="social-link">Email</a>
+    </div>
+    <div class="footer-disclaimer">All information is drawn from publicly available primary sources. This page constitutes commentary, criticism and public-interest journalism. Funding relationships are documented from primary-source records. This investigation does not allege common control between OSF, Omidyar/Luminate and USAID. Published under fair use for purposes of commentary and public accountability.</div>
+  </div>
+</footer>
+
+<script>
+// ── DATA - CORRECTED column structure ──────────────────────────────────────
+// [num, org_name, domain, sector, city, track, amount, status]
+const OSF_ORGS=[
+ [1,"Institute for Security Studies (ISS)","issafrica.org","Research / Think Tank","Pretoria / Cape Town","OSF-D","$5.1M / 7 grants","VERIFIED"],
+ [2,"Africa Check","africacheck.org","Media / Fact-Checking","Johannesburg (Wits)","STACKED","OSF 12% income; Luminate 8%","VERIFIED"],
+ [3,"amaBhungane","amabhungane.org","Media","Johannesburg","STACKED","FY2023: OSF-SA R812K + CF-AOSI R842K + Luminate R2.12M","VERIFIED"],
+ [4,"Daily Maverick","dailymaverick.co.za","Media","Cape Town","OSF-D","Current: grants >R150K disclosed","VERIFIED"],
+ [5,"CIVICUS","civicus.org","Civil Society","Johannesburg","OSF-D","$1.8M (OSF); Gates $1.5M; Ford $8.3M","VERIFIED"],
+ [6,"Media Monitoring Africa / Moxii Africa","moxiiafrica.org","Media / Civil Society","Johannesburg","OSF-D","$200,000 (2023)","VERIFIED"],
+ [7,"Real411","real411.org.za","Media / Civil Society","Johannesburg (via MMA)","OSF-D","Via MMA OSF grant","VERIFIED"],
+ [8,"IDASA (dissolved 2012)","N/A","Civil Society","Cape Town","OSF-D","Founding partner; Dakar 1987 Soros-funded","VERIFIED"],
+ [9,"SECTION27","section27.org.za","Legal / Human Rights","Johannesburg","STACKED","Cluster grants 2009+; CF 2016 first cohort","VERIFIED"],
+ [10,"Equal Education","equaleducation.org.za","Education / Civil Society","Cape Town","STACKED","Leadership Transitions Fund; CF 2016 first cohort","VERIFIED"],
+ [11,"Social Justice Coalition (SJC)","sjc.org.za","Civil Society","Cape Town","STACKED","Cluster grant 2009–2013; CF 2016 first cohort","VERIFIED"],
+ [12,"Socio-Economic Rights Institute (SERI)","seri-sa.org","Legal / Research","Johannesburg","STACKED","Cluster grant 2008–2014; CF 2016 first cohort","VERIFIED"],
+ [13,"Democracy Development Program (DDP)","ddp.org.za","Civil Society","Durban / KZN","STACKED","Confirmed partner; CF grantee","VERIFIED"],
+ [14,"Corruption Watch","corruptionwatch.org.za","Civil Society","Johannesburg","STACKED","Annual disclosures list OSF-SA; CF grantee","VERIFIED"],
+ [15,"Open Secrets","opensecrets.org.za","Civil Society / Research","Cape Town","STACKED","OSF-HRI R1.4M + OSF-SA R1.5M + Luminate R3.67M (2023)","VERIFIED"],
+ [16,"University of Cape Town (UCT)","uct.ac.za","Academic","Cape Town","STACKED","$2.6M / 7 grants; CF funded LARC + CLS","VERIFIED"],
+ [17,"Southern Africa Human Rights Defenders Network","sahrdn.net","Civil Society","Johannesburg","OSF-D","$330,000 activist fund (2019)","VERIFIED"],
+ [18,"Southern Africa Litigation Centre (SALC)","southernafricalitigationcentre.org","Legal","Johannesburg","OSF-D","OSISA co-founder","VERIFIED"],
+ [19,"Africa Is a Country","africasacountry.com","Media / Cultural","Online / SA","OSF-D","Named on OSF Africa page","VERIFIED"],
+ [20,"SAMIP","samip.mdif.org","Media","Johannesburg","OSF-D","Multi-year undisclosed; OSF-SA initiated","VERIFIED"],
+ [21,"Health Justice Initiative (HJI)","healthjusticeinitiative.org.za","Health / Civil Society","Cape Town","OSF-D","OSF-linked (founder = former OSF-SA ED)","PARTIALLY VERIFIED"],
+ [22,"Ndifuna Ukwazi","nu.org.za","Civil Society / Legal","Cape Town","STACKED","CF 2016 first cohort; OSF-SA linked","VERIFIED"],
+ [23,"GroundUp","groundup.org.za","Media","Cape Town","CF-NVF","R520K, R800K, R900K, R1.4M, R800K (various years); CF/NVF R1.9M (2023/24)","VERIFIED"],
+ [24,"Treatment Action Campaign (TAC)","tac.org.za","Health / Civil Society","Cape Town","OSF-D","Historical OSF + NED funding","PARTIALLY VERIFIED"],
+ [25,"Sonke Gender Justice","genderjustice.org.za","Civil Society / Health","Cape Town","OSF-D","R1.22M (2023), R1.55M (2022) in audited accounts; USAID APC also","VERIFIED"],
+ [26,"Women's Legal Centre (WLC)","wlce.co.za","Legal","Cape Town","STACKED","CF grantee; Luminate investee","VERIFIED"],
+ [27,"Black Sash","blacksash.org.za","Civil Society","National","STACKED","CF 2016 first cohort; OSF network","VERIFIED"],
+ [28,"Lawyers for Human Rights (LHR)","lhr.org.za","Legal","Johannesburg / Pretoria","STACKED","CF 2016 first cohort; OSISA network","VERIFIED"],
+ [29,"Right2Know Campaign","r2k.org.za","Civil Society","National","OSF-D","OSF-SA 2010–21; OSF Inf. Program 2016–21; Luminate 2019–21","VERIFIED"],
+ [30,"Centre for Applied Legal Studies (CALS)","wits.ac.za/cals","Legal / Academic","Johannesburg (Wits)","STACKED","CF + Ford + OSF-SA all listed separately on donors page","VERIFIED"],
+ [31,"Centre for Environmental Rights (CER)","cer.org.za","Environmental / Legal","Cape Town","OSF-D","Confirmed on own funder page; M&G 200 2018","VERIFIED"],
+ [32,"Freedom of Expression Institute (FXI)","fxi.org.za","Civil Society","Johannesburg","OSF-D","SALC co-signatory alongside OSISA","PARTIALLY VERIFIED"],
+ [33,"Legal Resources Centre (LRC)","lrc.org.za","Legal / Human Rights","Johannesburg / CT","STACKED","R500K (2010)–R1.12M (2013) annually; CF 2016 first cohort","VERIFIED"],
+ [34,"Open Democracy Advice Centre (ODAC)","opendemocracy.org.za","Transparency / Legal","Cape Town","OSF-D","Funders page lists OSF-SA","VERIFIED"],
+ [35,"Inyathelo","inyathelo.org.za","Civil Society / Philanthropy","Cape Town","OSF-D","Supporters page lists OSF-SA","VERIFIED"],
+ [36,"Environmental Justice Fund (EJF)","environmentaljusticefund.org.za","Environment / Grantmaking","South Africa","OSF-D","2023 annual report confirmed","VERIFIED"],
+ [37,"Equal Education Law Centre (EELC)","eelawcentre.org.za","Legal / Education","Cape Town","STACKED","OSF-SA 9–11% of income (own reports); CF separately","VERIFIED"],
+ [38,"Helen Suzman Foundation (HSF)","hsf.org.za","Research / Public Policy","Johannesburg","OSF-D","Justice Symposium Series funded by OSF-SA","PROJECT-LEVEL VERIFIED"],
+ [39,"Market Theatre Foundation","markettheatre.co.za","Arts / Culture","Johannesburg","OSF-D","Annual reports confirmed","VERIFIED"],
+ [40,"WWF South Africa","wwf.org.za","Environment / Conservation","Cape Town","OSF-D","Integrated annual reports 2018 + 2023–24","VERIFIED"],
+ [41,"NURCHA (dissolved)","N/A","Development Finance","South Africa","OSF-D","$5M operating + $50M guarantee (1995–2015)","HISTORICAL VERIFIED"],
+ [42,"Children's Institute (UCT)","ci.uct.ac.za","Research / Child Rights","Cape Town","STACKED","CF R700K + direct OSF R750K (2016, same year)","HISTORICAL VERIFIED"],
+ [43,"Public Service Accountability Monitor (PSAM)","psam.org.za","Governance / Research","Makhanda","OSF-D","OSF publications confirm historic support","HISTORICAL VERIFIED"],
+ [44,"Gender Links","genderlinks.org.za","Gender / Media","Johannesburg","OSF-D","OSF network report grantee","HISTORICAL VERIFIED"],
+ [45,"Centre for Justice and Crime Prevention (CJCP)","cjcp.org.za","Research / Justice","Cape Town","OSF-D","OSF-SA helped establish (2005)","HISTORICAL VERIFIED"],
+ [46,"Hospice Palliative Care Association (HPCA)","hpca.co.za","Health","South Africa","OSF-D","OSI + OSF-SA documented","HISTORICAL VERIFIED"],
+ [47,"Dullah Omar Institute: Women & Democracy","dullahomarinstitute.org.za","Legal / Governance","Bellville / CT","OSF-D","OSF-SA + Ford + Heinrich Böll confirmed","PROJECT-LEVEL VERIFIED"],
+ [48,"South African Institute of International Affairs (SAIIA)","saiia.org.za","Think Tank","Johannesburg","OSF-D","OSF-SA + OSISA + AfriMAP: APRM monitoring project","PROJECT-LEVEL VERIFIED"],
+ [49,"Wikimedia South Africa","wikimedia.org.za","Civic Tech / Knowledge","South Africa","OSF-D","R200,000 (2013) bridge funding","VERIFIED"],
+ [50,"ProBono.Org","probono.org.za","Legal / Access to Justice","Johannesburg / CT","STACKED","R800K (2019) + R230K (2020) + R569K (2021) + R800K (2022) + R400K (2023) direct OSF; CF R2M (2018) + R1.5M (2019) simultaneously","VERIFIED"],
+ [51,"Centre for the Study of Violence and Reconciliation (CSVR)","csvr.org.za","Research / Human Rights","Johannesburg","OSF-D","OSF-SA + USAID (cooperative agreement AID-674-A-14-00016)","VERIFIED"],
+ [52,"Triangle Project","triangle.org.za","Human Rights","Cape Town","OSF-D","Annual report acknowledges OSF-SA","VERIFIED"],
+ [53,"amandla.mobi","amandla.mobi","Civic Engagement","Johannesburg / SA","STACKED","OSF-SA (2016–2022); MAVC (2015/17); Omidyar (2018); Luminate (2019–present); CF via NVF (2024–26)","VERIFIED"],
+ [54,"Black Stripe Foundation NPC","blackstripe.org","Media / Civic Engagement","Johannesburg","OSF-D","OSF confirmed core funder; also Omidyar $683K total","VERIFIED"],
+ [55,"IBP-SA (International Budget Partnership)","internationalbudget.org/south-africa","Governance / Finance","Cape Town","OSF-D","OSF-SA project support; Luminate $500K also","PROJECT-LEVEL VERIFIED"],
+ [56,"Constitutionalism Fund: THE VEHICLE","constitutionalismfund.co.za","Grantmaking","South Africa","CF-2","$29M: OSF $10M (reported) + Atlantic $10M (verified) + Ford $9M (reported)","VERIFIED"],
+ [57,"CAOSA (Community Advice Offices SA)","caosasouthafrica.org.za","Legal / Community","National","OSF-D","Annual report confirmed","VERIFIED"],
+ [58,"Public Affairs Research Institute (PARI)","pari.org.za","Research / Governance","Johannesburg","STACKED","CF + Ford + OSF South Africa all listed (2025 brochure)","VERIFIED"],
+ [59,"Social Auditing Network","N/A","Governance Network","South Africa","OSF-D","OSF 25-yr report: seed funder","VERIFIED"],
+ [60,"ProBono.Org (CF data)","probono.org.za","Legal / Access to Justice","Johannesburg","CF-2","CF 2016 first cohort (also direct OSF above (STACKED proven))","VERIFIED"],
+ [61,"Parliamentary Monitoring Group (PMG)","pmg.org.za","Governance / Civil Society","Cape Town","OSF-D","OSF study: OSF + Royal Danish Embassy + USAID documented simultaneously","PARTIALLY VERIFIED"],
+ [62,"SWEAT (Sex Workers Education and Advocacy Taskforce)","sweat.org.za","Human Rights / Civil Society","Cape Town","OSF-D","Project grant confirmed (OSF own press release + M&G 200 2018)","VERIFIED"],
+ [63,"Tshwaranang Legal Advocacy Centre (TLAC)","tshwaranang.org.za","Legal / Human Rights","Johannesburg","OSF-D","Project grant: sex worker paralegals in Hillbrow (OSF own press release)","VERIFIED"],
+ [64,"SOS Coalition (Save Our SABC)","soscoalition.org.za","Civil Society / Media","National","OSF-D","Confirmed grantee (OSF-SA M&G 200 2018)","VERIFIED"],
+ [65,"Wits Justice Project (WJP)","witsjusticeproject.co.za","Media / Justice","Johannesburg (Wits)","OSF-D","Confirmed grantee (OSF-SA M&G 200 2018)","VERIFIED"],
+ [66,"Centre for Child Law (CCL)","centreforchildlaw.co.za","Legal / Academic","Pretoria (UP)","STACKED","OSF R750K + CF R700K simultaneously (2016 annual report)","VERIFIED"],
+ [67,"African Centre for Migration & Society (ACMS)","acms.org.za","Academic / Research","Johannesburg (Wits)","OSF-D","OSF-SA grantee (M&G 200 2018); Atlantic Philanthropies grant (Cornell Archives)","VERIFIED"],
+ [68,"Sonke Gender Justice (USAID node)","genderjustice.org.za","Civil Society / Health","Cape Town","OSF-D","R1.22M (2023) from OSF in audited accounts; USAID APC programme separate","VERIFIED"],
+ [69,"CSVR (USAID node)","csvr.org.za","Research / Human Rights","Johannesburg","OSF-D","OSF-SA on donor page + USAID coop. agreement AID-674-A-14-00016 (OIG audited)","VERIFIED"],
+ [70,"OpenUp (Code for South Africa)","openup.org.za","Civic Tech","Cape Town","STACKED","OSF-SA direct; Luminate $1.92M; MAVC programme (Black Sash work)","VERIFIED"],
+ [71,"GroundUp (updated amounts)","groundup.org.za","Media","Cape Town","OSF-D","OSF direct: R520K (2016) R800K (2017) R900K (2018/19) R1.4M (2021) R800K (2022); CF/NVF follows","VERIFIED"],
+ [72,"South African History Archive (SAHA)","saha.org.za","Civil Society / Knowledge","Johannesburg (Wits)","OSF-D","Housed at Constitution Hill Trust (OSF-adjacent); Wits from 2022","PARTIALLY VERIFIED"],
+ [73,"Good Governance Learning Network (GGLN)","ggln.org.za","Governance Network","South Africa","OSF-D","Dullah Omar Institute publication confirms OSF-SA partner","PROJECT-LEVEL VERIFIED"],
+];
+
+// [num, org_name, domain, sector, omid_entity, amount, years, also_osf, status]
+const OMID_ORGS=[
+ [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$500K joint 2017 (Omidyar+OSF); ongoing core grants","2012–present","YES","VERIFIED"],
+ [2,"Media Monitoring Africa / Moxii Africa","moxiiafrica.org","Media Monitoring","Luminate","Confirmed investee; $150K grants documented; 2019 election study confirmed","2010s–present","YES","VERIFIED"],
+ [3,"OpenUp (Code for South Africa)","openup.org.za","Civic Tech","Luminate","$1,920,189 total committed (2015–2020 grants)","2015–2024","YES + MAVC","VERIFIED"],
+ [4,"amaBhungane","amabhungane.org","Investigative Journalism","Luminate","$625,000 total ($375K 2020–23; $125K x2 2023–25)","2020–2025","YES + CF","VERIFIED"],
+ [5,"Viewfinder","viewfinder.org.za","Investigative Journalism","Luminate","Confirmed investee; tie-off grant","2018–present","No","VERIFIED"],
+ [6,"SAMIP","samip.mdif.org","Media","Omidyar Network + OSF-SA","Undisclosed; multi-year joint programme","2017–present","YES (joint)","VERIFIED"],
+ [7,"Africa No Filter","africanofilter.org","Media / Narrative","Luminate + Open Society Foundations","Not individually disclosed","2020–present","YES (both)","VERIFIED"],
+ [8,"Livity Africa","livity.co.za","Youth Media / Civic Tech","Luminate (then Omidyar Network)","$720,664 total ($186K 2013; $534K 2015)","2013–2015","No","VERIFIED"],
+ [9,"CODE SA (Campaign on Digital Ethics SA)","N/A","Civic Tech / Digital Rights","Luminate","$320,000","2024","No","VERIFIED"],
+ [10,"Code for Africa (CfA)","codeforafrica.org","Civic Tech / Journalism","Luminate","Multiple grants (Innovate Africa / ANIC)","2012–present","No","VERIFIED"],
+ [11,"amandla.mobi","amandla.mobi","Civic Engagement","Omidyar Network (2018); Luminate (2019–present)","Recurring grants confirmed in recipient disclosure","2018–present","YES + MAVC + CF/NVF","VERIFIED"],
+ [12,"African Leadership Academy NPC (ALA)","africanleadershipacademy.org","Education","Omidyar Network Fund","$1.5M (2011); $1.5M (2017 per 990-PF). NOTE: $53.2M figure conflates ALA with ALU (separate entity)","2011; 2017","No","VERIFIED"],
+ [13,"Black Stripe Foundation NPC","blackstripe.org","Media / Civic Engagement","Omidyar Network + Luminate","$283K (2017 ON 990-PF); $200K (2021 Luminate 990); $200K (2022) = $683K total","2017–2022+","YES","VERIFIED"],
+ [14,"Bluestream Education NPC","N/A","Education","Omidyar Network Fund","$70,000 (2017 per 990-PF)","2017","No","VERIFIED"],
+ [15,"D.G. Murray Trust","dgmt.co.za","Philanthropy / Education","Omidyar Network Fund","$1,050,000 ($700K paid 2018 + $350K payable per 990-PF). DGMT also a major independent SA funder.","2018","No","VERIFIED"],
+ [16,"Grass Root Nation","N/A","Civic Engagement","Omidyar Network Fund","$90,000 (2017 per 990-PF)","2017","No","VERIFIED"],
+ [17,"IkamvaYouth","ikamvayouth.org","Education / Youth","Omidyar Network Fund","$311,000 (2017 per 990-PF)","2017","No","VERIFIED"],
+ [18,"Both Worlds / ZANews","N/A","Media Company","Omidyar Network Fund","$130,000 (2011 per 990-PF)","2011","No","VERIFIED"],
+ [19,"Digital Frontiers Institute NPC","digitalfrontiersinstitute.org","FinTech / Education","Omidyar Network Fund","$764,000 ($550K + $14K + $200K payable per 990-PF 2018). Seed + incubation via Rockefeller Philanthropy Advisors.","2018","No","VERIFIED"],
+ [20,"Open Cities Lab","opencitieslab.org","Civic Tech","Omidyar Network; Luminate","$200K-class grants documented","2019–2024+","No","VERIFIED"],
+ [21,"Open Secrets","opensecrets.org.za","Accountability / Research","Omidyar Network; Luminate","Luminate R3,671,463 income 2022/23 (audited accounts)","2019–2023+","YES","VERIFIED"],
+ [22,"SmartStart Early Learning","smartstart.org.za","Early Childhood Education","Omidyar Network; Imaginable Futures","$1,100,000 ($500K 2019 + $600K 2021 per 990-PF)","2019–2021+","No","VERIFIED"],
+ [23,"Right2Know Campaign","r2k.org.za","Civil Rights / Media","Luminate","Direct support documented 2019–21","2019–2021","YES","VERIFIED"],
+ [24,"University of Johannesburg","uj.ac.za","University / Media Research","Omidyar Network; Luminate","Multiple project grants","2019–2023","No","VERIFIED"],
+ [25,"Wits Foundation","wits.ac.za","University / Civic Tech","Omidyar Network; Luminate","Confirmed receiving entity for Civic Tech Innovation Network grants. Keep distinct from CALS, Africa Check (separate Wits units).","2019–2023+","YES (via separate Wits units)","VERIFIED"],
+ [26,"IBP-SA","internationalbudget.org/south-africa","Governance / Finance","Luminate","$500,000 ($250K 2022 + $250K 2023 per filing)","2022–2023","YES","VERIFIED"],
+ [27,"Futurelect","futurelect.org","Civic Leadership","Luminate","$450,000 total committed (Luminate database)","2020s–2025","No","VERIFIED"],
+ [28,"Project Isizwe","projectisizwe.org","Digital Inclusion","Luminate","Amount not isolated","2020s","No","VERIFIED"],
+ [29,"Rhodes University","ru.ac.za","University / Journalism","Luminate","Amount not isolated","2020s","No","VERIFIED"],
+ [30,"Women's Legal Centre","wlce.co.za","Legal / Human Rights","Luminate","Investee confirmed (Luminate database)","2010s–2020s","YES","VERIFIED"],
+ [31,"SPARK Schools","sparkschools.co.za","Education Company","Imaginable Futures (Omidyar Group)","Series C 2021 (IF = existing SPARK shareholder). CORRECTION: Series C, not B.","2021","No","VERIFIED"],
+ [32,"Innovation Edge","innovationedge.org.za","Early Childhood / Social Innovation","Imaginable Futures (Omidyar Group)","Amount not isolated","2020s","No","VERIFIED"],
+ [33,"Zlto","zlto.co","Youth / Civic Tech NPO","Imaginable Futures (Omidyar Group)","Investment confirmed: Imaginable Futures explicitly states 'we invested in Zlto.' Website: zlto.co","2021+","No","VERIFIED"],
+ [34,"littlefish","littlefish.africa","FinTech Company (for-profit)","Flourish Ventures (Omidyar Group)","2024 seed + 2026 $9.5M Series A. For-profit fintech, not an NPO.","2024–2026","No","VERIFIED"],
+ [35,"OpenUp - MAVC component","openup.org.za","Civic Tech","MAVC (Omidyar + USAID + DFID/Sida + documented OSF)","Black Sash work supported by MAVC; core OSF-SA + Luminate separate","2015–2017","YES","VERIFIED"],
+];
+
+// ── RENDER - FIXED COLUMN MAPPING ─────────────────────────────────────────
+function trackBadge(t){
+  if(t==="STACKED")return`<span class="tk-stk">STACKED</span>`;
+  if(t.includes("CF-NVF"))return`<span class="tk-cf">CF-NVF</span>`;
+  if(t.includes("CF-2"))return`<span class="tk-cf">CF-2</span>`;
+  if(t==="OSF-D")return`<span class="tk-osf">OSF-D</span>`;
+  return`<span class="tk-osf">${t}</span>`;
+}
+function statusBadge(s){
+  if(!s)return'';
+  s=String(s);
+  if(s.includes("HISTORICAL"))return`<span class="sbadge sh">Hist.</span>`;
+  if(s.includes("PROJECT-LEVEL"))return`<span class="sbadge sj">Project</span>`;
+  if(s.includes("PARTIALLY"))return`<span class="sbadge sp">Partial</span>`;
+  if(s.includes("VERIFIED"))return`<span class="sbadge sv">Verified</span>`;
+  return`<span class="sbadge sp">${s}</span>`;
+}
+function omidBadge(e){
+  e=String(e).toLowerCase();
+  if(e.includes("imaginable"))return`<span class="tk-omid" style="background:rgba(10,50,80,0.3)">IF</span>`;
+  if(e.includes("flourish"))return`<span class="tk-omid" style="background:rgba(0,70,60,0.3)">FV</span>`;
+  if(e.includes("network"))return`<span class="tk-omid">ON</span>`;
+  if(e.includes("mavc"))return`<span class="tk-stk">MAVC</span>`;
+  return`<span class="tk-omid">LUM</span>`;
+}
+
+function renderOSF(){
+  // r[0]=num, r[1]=name, r[2]=domain, r[3]=sector, r[4]=city, r[5]=track, r[6]=amount, r[7]=status
+  const tbody=document.getElementById('osf-tbody');
+  tbody.innerHTML=OSF_ORGS.map(r=>{
+    const domain=r[2]==='N/A'?null:r[2];
+    const href=domain?`https://${domain}`:'#';
+    return`<tr data-name="${r[1].toLowerCase()}" data-sector="${r[3].toLowerCase()}" data-track="${r[5].toLowerCase()}">
+      <td style="color:rgba(197,162,88,0.45);font-family:'JetBrains Mono',monospace;font-size:0.7rem">${r[0]}</td>
+      <td class="org-name">${domain?`<a href="${href}" target="_blank" rel="noopener">${r[1]}</a>`:r[1]}<br><small style="font-size:0.7rem;color:rgba(197,162,88,0.48);font-family:'JetBrains Mono',monospace">${r[2]}</small></td>
+      <td class="org-sector">${r[3]}</td>
+      <td style="font-size:0.78rem;color:rgba(244,240,232,0.55)">${r[4]}</td>
+      <td>${trackBadge(r[5])}</td>
+      <td class="org-amount">${r[6]}</td>
+    </tr>`;
+  }).join('');
+  updateCount('osf-table','osf-count');
+}
+
+function renderOmid(){
+  // r[0]=num, r[1]=name, r[2]=domain, r[3]=sector, r[4]=omid_entity, r[5]=amount, r[6]=years, r[7]=also_osf, r[8]=status
+  const tbody=document.getElementById('omid-tbody');
+  tbody.innerHTML=OMID_ORGS.map(r=>{
+    const domain=r[2];
+    const href=(domain&&domain!=='N/A')?`https://${domain}`:'#';
+    return`<tr data-name="${r[1].toLowerCase()}" data-sector="${r[3].toLowerCase()}" data-track="${r[4].toLowerCase()}">
+      <td style="color:rgba(197,162,88,0.45);font-family:'JetBrains Mono',monospace;font-size:0.7rem">${r[0]}</td>
+      <td class="org-name">${(domain&&domain!=='N/A')?`<a href="${href}" target="_blank" rel="noopener">${r[1]}</a>`:r[1]}</td>
+      <td class="org-sector">${r[3]}</td>
+      <td>${omidBadge(r[4])}<br><small style="font-size:0.7rem;color:rgba(244,240,232,0.38)">${r[4]}</small></td>
+      <td class="org-amount">${r[5]}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(244,240,232,0.45)">${r[6]}</td>
+      <td style="font-size:0.8rem;color:${r[7]==='YES'||r[7]==='YES (joint)'||r[7]==='YES (both)'||r[7].startsWith('YES')?'#55cc88':'rgba(244,240,232,0.35)'}">${r[7]}</td>
+    </tr>`;
+  }).join('');
+  updateCount('omid-table','omid-count');
+}
+
+// ── UNIFIED FILTER ─────────────────────────────────────────────────────────
+function filterTable(tableId,searchVal,sectorFilter){
+  const rows=document.querySelectorAll(`#${tableId} tbody tr`);
+  const s=(searchVal||'').toLowerCase();
+  const sec=(sectorFilter||'all').toLowerCase();
+  let vis=0;
+  rows.forEach(row=>{
+    const text=row.textContent.toLowerCase();
+    const sector=(row.dataset.sector||'');
+    const track=(row.dataset.track||'');
+    const matchS=!s||text.includes(s);
+    const matchF=sec==='all'||sector.includes(sec)||track.includes(sec);
+    const show=matchS&&matchF;
+    row.classList.toggle('hidden',!show);
+    if(show)vis++;
+  });
+  const countId=tableId==='osf-table'?'osf-count':'omid-count';
+  const noResId=tableId==='osf-table'?'osf-no-results':'omid-no-results';
+  updateCount(tableId,countId);
+  const nr=document.getElementById(noResId);
+  if(nr)nr.style.display=vis===0?'block':'none';
+}
+
+function updateCount(tableId,countId){
+  const rows=document.querySelectorAll(`#${tableId} tbody tr`);
+  const vis=Array.from(rows).filter(r=>!r.classList.contains('hidden')).length;
+  const el=document.getElementById(countId);
+  if(el)el.textContent=`${vis} organisations`;
+}
+
+// Attach filter buttons
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const tbl=this.dataset.table;
+      const tableId=tbl==='osf'?'osf-table':'omid-table';
+      const searchId=tbl==='osf'?'osf-search':'omid-search';
+      const group=this.closest('.filter-group');
+      group.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      filterTable(tableId,document.getElementById(searchId).value,this.dataset.filter);
+    });
+  });
+  document.getElementById('osf-search').addEventListener('input',function(){
+    const activeBtn=document.querySelector('[data-table="osf"].active');
+    filterTable('osf-table',this.value,activeBtn?activeBtn.dataset.filter:'all');
+  });
+  document.getElementById('omid-search').addEventListener('input',function(){
+    const activeBtn=document.querySelector('[data-table="omid"].active');
+    filterTable('omid-table',this.value,activeBtn?activeBtn.dataset.filter:'all');
+  });
+});
+
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderOSF();
+renderOmid();
+updateCount('osf-table','osf-count');
+updateCount('omid-table','omid-count');
+</script>
+</body>
+</html>
