@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Netwerk Leaks | Alt Afrikaner Investigation Hub</title>
 <meta name="description" content="Netwerk Leaks - 31 active investigations. Every connection sourced.">
+<meta name="theme-color" content="#0D1520">
+<link rel="canonical" href="https://altafrikaner.github.io/journalist-map/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Netwerk Leaks | Alt Afrikaner Investigation Hub">
+<meta property="og:description" content="Explore 31 public-interest investigations and their sources.">
+<meta property="og:url" content="https://altafrikaner.github.io/journalist-map/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -203,8 +209,11 @@ footer{
   .hero h1{font-size:2.4rem;}
 }
 </style>
+<link rel="stylesheet" href="assets/hub-premium.css">
+<script defer src="assets/hub-discovery.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#investigations">Skip to investigations</a>
 
 <header>
   <div class="header-brand">
@@ -212,19 +221,27 @@ footer{
     <div class="brand-sep">/</div>
     <div class="brand-sub">Netwerk Leaks</div>
   </div>
+  <nav class="site-nav" aria-label="Main navigation"><a href="#investigations">Investigations</a><a href="#site-information">About &amp; corrections</a></nav>
   <div class="count-badge">31 Investigations Active</div>
 </header>
 
 <div class="hero">
+  <p class="hero-eyebrow">Independent research · Public-interest journalism</p>
   <h1><em>Netwerk</em> LEAKS</h1>
   <p class="hero-tagline">The Information System Architecture, Mapped</p>
   <p class="hero-intro">Every connection sourced. Every claim verifiable. Every funding chain documented from origin to newsroom. Between 1979 and 2026, a network of foundations, government agencies, media organisations, and personnel bridges constructed an information architecture. South Africa is the source. The US was always the target.</p>
   <div class="hero-stat">Active Investigations <span>&#xb7;</span> 31 Files Open</div>
 </div>
 
-<div class="grid-section">
+<main class="grid-section" id="investigations">
   <div class="grid-label">Investigation Files</div>
-  <div class="card-grid">
+  <div class="hub-toolbar">
+    <label for="hub-search">Explore the investigation archive</label>
+    <div class="hub-search-wrap"><input id="hub-search" type="search" autocomplete="off" placeholder="Search titles, organisations and subjects…" aria-controls="investigation-grid"></div>
+    <output id="hub-result-count" class="hub-count" aria-live="polite">31 investigations</output>
+  </div>
+  <div id="hub-filters" class="hub-filters" role="group" aria-label="Filter by investigation category"></div>
+  <div class="card-grid" id="investigation-grid">
 
     <a class="card" href="osf.html">
       <div class="card-tag t-network">Network</div>
@@ -447,9 +464,10 @@ footer{
 
 
   </div>
-</div>
+  <p class="no-results" id="hub-no-results" hidden>No investigations match your search. Try a different term or category.</p>
+</main>
 
-<footer>
+<footer id="site-information">
   <div class="footer-brand">Alt Afrikaner</div>
   <div class="footer-tag">Precision over volume. Dignity holds ground.</div>
   <div class="footer-social">
