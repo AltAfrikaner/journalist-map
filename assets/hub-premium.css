@@ -1,0 +1,43 @@
+/* Netwerk Leaks — premium hub enhancement, progressive and dependency-free */
+:root{color-scheme:dark;--focus:#f2d995}
+html{scroll-behavior:smooth}
+body{min-width:320px;background:#0b1320}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.skip-link{position:absolute;top:-80px;left:1rem;z-index:2001;background:var(--gold);color:#08111d;padding:.65rem 1rem;font-weight:700}
+.skip-link:focus{top:.5rem}
+header{gap:1rem}
+.site-nav{display:flex;align-items:center;gap:1.15rem}
+.site-nav a{font-family:'JetBrains Mono',monospace;color:var(--text-light);text-decoration:none;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+.site-nav a:hover{color:var(--gold)}
+.hero{padding:6.5rem 2rem 5.25rem;isolation:isolate;background:radial-gradient(ellipse at 50% 0,rgba(34,59,97,.65),transparent 60%),linear-gradient(145deg,#0b1320,#15233a 65%,#0b1320)}
+.hero:before{content:'';position:absolute;inset:0;opacity:.2;background-image:linear-gradient(rgba(197,162,88,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(197,162,88,.2) 1px,transparent 1px);background-size:68px 68px;mask-image:radial-gradient(ellipse at 50% 20%,black,transparent 75%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.hero-eyebrow{font:500 .68rem 'JetBrains Mono',monospace;letter-spacing:.23em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.hero h1{font-size:clamp(3.2rem,8vw,6.5rem);letter-spacing:-.045em}
+.hero-tagline{color:#d6deea;font-size:clamp(1rem,2vw,1.25rem)}
+.hero-intro{max-width:760px}
+.hero-stat{border-color:rgba(197,162,88,.35)}
+.grid-section{max-width:1380px;margin:auto;padding:3.5rem 2rem 6rem}
+.hub-toolbar{max-width:1200px;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hub-toolbar label{font:500 .68rem 'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--gold);text-transform:uppercase}
+.hub-search-wrap{flex:1;max-width:510px;min-width:min(100%,260px)}
+#hub-search{width:100%;background:#132238;border:1px solid #405371;color:#fff;padding:.85rem 1rem;font:400 1rem 'Source Sans 3',sans-serif;border-radius:5px}
+#hub-search::placeholder{color:#aebbd0}
+#hub-search:focus{border-color:var(--gold);outline:2px solid rgba(197,162,88,.45);outline-offset:2px}
+.hub-count{font:500 .7rem 'JetBrains Mono',monospace;color:var(--text-light)}
+.hub-filters{display:flex;flex-wrap:wrap;gap:.5rem;max-width:1200px;margin:0 auto 1.5rem}
+.hub-filter{border:1px solid #405371;background:#132238;color:#d6e0ed;padding:.5rem .8rem;border-radius:3px;cursor:pointer;font:500 .68rem 'JetBrains Mono',monospace}
+.hub-filter:hover,.hub-filter[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#111b2c}
+.card-grid{gap:12px;background:transparent;border:none;overflow:visible}
+.card{border:1px solid #2d405c;border-radius:5px;min-height:225px;box-shadow:0 8px 26px rgba(0,0,0,.14);transition:background .2s,transform .2s,border-color .2s,box-shadow .2s}
+.card:hover,.card:focus-visible{background:#182c47;transform:translateY(-3px);border-color:rgba(197,162,88,.65);box-shadow:0 17px 40px rgba(0,0,0,.3)}
+.card-title{font-size:1.16rem}
+.card-desc{color:#b8c6d7}
+.card-foot{margin-top:auto}
+.card[hidden]{display:none!important}
+.no-results{max-width:1200px;margin:1.5rem auto;padding:1.5rem;border:1px solid var(--border);color:var(--text-light);text-align:center}
+.no-results[hidden]{display:none}
+.hub-nojs{font-size:.75rem;color:var(--text-muted);max-width:1200px;margin:0 auto 1.2rem}
+footer a:focus-visible{outline-color:var(--gold)}
+@media(max-width:720px){header{padding:1rem;flex-wrap:wrap}.site-nav{width:100%;justify-content:center}.hero{padding:4.2rem 1.25rem 3.75rem}.grid-section{padding:2.25rem 1rem 4rem}.card-grid{grid-template-columns:1fr}.card{min-height:auto}.hub-toolbar{align-items:stretch}.hub-search-wrap{max-width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.card-arrow{transition:none!important}.card:hover{transform:none}}
