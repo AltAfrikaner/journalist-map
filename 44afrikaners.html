@@ -828,6 +828,7 @@ img{max-width:100%;display:block}
   .legal-notice .legal-box{padding:20px 22px}
 }
 </style>
+<link rel="stylesheet" href="assets/investigation-premium.css">
 </head>
 <body>
 
@@ -1072,6 +1073,11 @@ img{max-width:100%;display:block}
     <p class="section-lede">Each sphere is an actor. Each thread is a documented institutional, funding or state connection. Drag to rotate. Scroll to zoom. Click any signatory node to open their file. This is the same roster you have just read above  -  now seen from above.</p>
   </div>
 
+  <div class="investigation-toolbar" role="note">
+    <h3>Intelligence board controls</h3>
+    <p>Explore the 3D network or consult the original signatory profiles and institutional map elsewhere on this page. Graph proximity does not establish wrongdoing or direction.</p>
+    <div id="graph-access-status" class="investigation-status" role="status" aria-live="polite">Loading 3D scene. The original investigation remains available without it.</div>
+  </div>
   <div class="map-3d" id="map3dBox">
     <span class="label">Drag · Scroll · Click any sphere</span>
     <div class="map-filters">
@@ -1090,7 +1096,7 @@ img{max-width:100%;display:block}
       <div><span class="ld" style="background:#1a2a6e"></span>State</div>
       <div><span class="ld" style="background:#8B4513"></span>Historic</div>
     </div>
-    <canvas id="threeCv"></canvas>
+    <canvas id="threeCv" role="img" aria-label="Interactive three-dimensional relationship map. Signatory details also appear in the investigation below."></canvas>
     <div id="threeLabels"></div>
   </div>
 </section>
@@ -1145,7 +1151,7 @@ img{max-width:100%;display:block}
 </footer>
 
 <!-- ===== DATA + BEHAVIOUR ===== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Three.js is now loaded as a pinned ES module on demand by the interactive board. -->
 <script>
 /* ============================================================
    43 DISTINCT SIGNATORIES  -  canonical News24 / Smile 90.4FM list
@@ -1777,8 +1783,15 @@ const INSTITUTIONS = [
    Every bubble clickable (signatories → bio · institutions /
    funders / state → intel brief)
    ============================================================= */
-(function board3d(){
-  if(typeof THREE === "undefined") return;
+(async function board3d(){
+  let THREE;
+  try { THREE=await import('https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js'); }
+  catch(error) {
+    console.error('3D map module unavailable',error);
+    const status=document.getElementById('graph-access-status');
+    if(status)status.textContent='3D map unavailable. The full investigation and signatory information remain accessible below.';
+    return;
+  }
 
   const box = document.getElementById("map3dBox");
   const cv  = document.getElementById("threeCv");
@@ -1794,7 +1807,7 @@ const INSTITUTIONS = [
   cam.position.set(0, 10, 72);
 
   const ren = new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:false});
-  ren.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  ren.setPixelRatio(Math.min(window.devicePixelRatio||1, 1.5));
   ren.setSize(w, h, false);
 
   /* Daytime lighting  -  brighter, warmer, less dramatic */
@@ -2299,12 +2312,17 @@ const INSTITUTIONS = [
   /* ── RENDER LOOP ── */
   const V = new THREE.Vector3();
   let tick = 0;
+  const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let inView=true;
+  const viewObserver=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;},{threshold:0});
+  viewObserver.observe(box);
   function loop(){
     requestAnimationFrame(loop);
+    if(document.hidden||!inView)return;
     tick++;
     rotX += (tRotX - rotX) * 0.08;
     rotY += (tRotY - rotY) * 0.08;
-    if (!dragging) tRotY += 0.0010;
+    if (!dragging && !prefersReducedMotion.matches) tRotY += 0.0010;
     cam.position.x = Math.sin(rotY) * Math.cos(rotX) * camDist;
     cam.position.y = Math.sin(rotX) * camDist * 0.48 + 5;
     cam.position.z = Math.cos(rotY) * Math.cos(rotX) * camDist;
