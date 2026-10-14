@@ -170,6 +170,7 @@ footer{background:var(--navy-deep);border-top:2px solid var(--gold);padding:48px
   .pattern-grid{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="assets/investigation-premium.css">
 </head>
 <body>
 
@@ -260,6 +261,15 @@ footer{background:var(--navy-deep);border-top:2px solid var(--gold);padding:48px
     <div class="pt" id="pT"></div>
     <div><div class="pch">CONNECTIONS</div><div id="pC"></div></div>
   </div>
+<div class="investigation-toolbar" role="region" aria-label="Accessible journalist network directory">
+  <h3>Explore the journalist and media network</h3>
+  <p>The interactive 3D map is an exploratory visualisation. A relationship shown here is not itself evidence of editorial direction or misconduct. Use the original investigation's sources to assess specific claims.</p>
+  <details open><summary>Search profiles without using 3D</summary>
+    <label for="journalist-entity-search">Search people and organisations</label>
+    <input type="search" id="journalist-entity-search" placeholder="Name, outlet or subject">
+    <div id="journalist-entity-list" class="investigation-entity-list" aria-live="polite"></div>
+  </details>
+</div>
 </section>
 
 <!-- INFOGRAPHIC: THE NUMBERS -->
