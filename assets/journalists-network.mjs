@@ -110,7 +110,7 @@ cam.position.set(0,32,68);
 
 const ren=new THREE.WebGLRenderer({canvas:cv,antialias:true});
 ren.setSize(cv.clientWidth,cv.clientHeight);
-ren.setPixelRatio(Math.min(devicePixelRatio,2));
+ren.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
 
 // Soft lighting
 sc.add(new THREE.AmbientLight(0xffffff,1.0));
@@ -304,10 +304,15 @@ function filterMap(filter,btn){
   });
 }
 
+const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+let graphVisible=true;
+const visibilityObserver=new IntersectionObserver(entries=>{graphVisible=entries[0].isIntersecting;},{threshold:0});
+visibilityObserver.observe(cv);
 let ti=0;const v3=new THREE.Vector3();
 function anim(){
   requestAnimationFrame(anim);
-  ti+=0.004;
+  if(document.hidden||!graphVisible)return;
+  if(!motionPreference.matches)ti+=0.004;
   rX+=(tX-rX)*0.04;rY+=(tY-rY)*0.04;
   cam.position.x=Math.sin(rY)*Math.cos(rX)*zm;
   cam.position.y=Math.sin(rX)*zm*0.4+20;
@@ -344,9 +349,34 @@ anim();
 window.addEventListener("resize",()=>{
   cam.aspect=cv.clientWidth/cv.clientHeight;
   cam.updateProjectionMatrix();
-  ren.setSize(cv.clientWidth,cv.clientHeight);
+  ren.setSize(Math.max(cv.clientWidth,1),Math.max(cv.clientHeight,1));
 });
+
 
 
 // Expose only controls used by existing inline HTML handlers.
 Object.assign(window,{filterMap,closePanel,openPanel});
+
+/* Progressive keyboard-accessible directory; values are text, not HTML. */
+(function createDirectory(){
+  const list=document.getElementById('journalist-entity-list');
+  const search=document.getElementById('journalist-entity-search');
+  if(!list||!search)return;
+  function refresh(){
+    const term=search.value.trim().toLocaleLowerCase();
+    const visible=ND.filter(n=>(n.n+' '+(n.desc||'')+' '+(n.topics||[]).join(' ')).toLocaleLowerCase().includes(term));
+    const frag=document.createDocumentFragment();
+    for(const n of visible){
+      const entry=document.createElement('article');entry.className='investigation-entity';
+      const heading=document.createElement('strong');heading.textContent=n.n;entry.appendChild(heading);
+      const type=document.createElement('small');type.textContent=n.t==='m'?'Organisation':'Journalist';entry.appendChild(type);
+      const desc=document.createElement('p');desc.textContent=n.desc||'';entry.appendChild(desc);
+      const button=document.createElement('button');button.type='button';button.className='entity-open';button.textContent='Open existing profile';button.addEventListener('click',()=>openPanel(n));entry.appendChild(button);
+      frag.appendChild(entry);
+    }
+    list.replaceChildren(frag);
+    list.setAttribute('aria-label',visible.length+' matching entries');
+  }
+  search.addEventListener('input',refresh);
+  refresh();
+})();
