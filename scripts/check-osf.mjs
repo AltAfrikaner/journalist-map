@@ -5,7 +5,7 @@ const html=readFileSync('osf.html','utf8');
 const renderer=readFileSync('assets/osf-network.mjs','utf8');
 const accessible=readFileSync('assets/osf-entity-list.mjs','utf8');
 assert.equal(NODES.length,67,'OSF original graph must retain 67 nodes');
-assert.equal(Object.keys(CAT).length,13,'Preserve category taxonomy');
+assert.equal(Object.keys(CAT).length,14,'Preserve original 14-category taxonomy');
 assert(NODES.every(n=>n.id&&n.label),'All nodes need IDs and labels');
 const byId=new Set(NODES.map(n=>n.id));
 assert.equal(byId.size,NODES.length,'Node IDs must be unique');
