@@ -395,6 +395,22 @@ body{background:linear-gradient(160deg,var(--blue-deep) 0%,var(--blue) 40%,var(-
   .stat{border-right:none;border-bottom:1px solid var(--gold-dim);padding:10px 12px}
   .stat:last-child{border-bottom:none}
 }
+
+/* OSF modular network: accessible alternative and keyboard navigation */
+#osf-graph-status{font:12px var(--mono);padding:10px 0;color:var(--ink-mute)}
+.osf-accessible-list{margin:18px 0 0;padding:18px;background:var(--paper);border:1px solid var(--gold-dim);border-radius:6px}
+.osf-accessible-list summary{cursor:pointer;font-weight:700;color:var(--navy3);margin-bottom:12px}
+.osf-accessible-list label{display:block;font:12px var(--mono);margin:12px 0 6px}
+#osf-entity-search{padding:10px;width:min(100%,470px);font:16px var(--sans);border:1px solid #74829a;border-radius:4px;background:white;color:#151923}
+#osf-entity-results{max-height:380px;overflow:auto;margin-top:12px}
+.osf-entity{padding:10px 4px;border-bottom:1px solid rgba(27,42,74,.18)}
+.osf-entity strong{display:block;color:var(--navy3)}
+.osf-entity small{display:block;color:#4b5770;margin:4px 0}
+.osf-evidence-link{display:inline-block;margin:14px 0;color:var(--navy3);text-decoration:underline;font-weight:700}
+.osf-evidence-note{font-size:12px}
+.cat-chip, .map-legend-item{font:inherit;border:0;text-align:left;background:transparent}
+.cat-chip:focus-visible,.map-legend-item:focus-visible,#osf-entity-search:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.map-3d-wrap *,#nodeLabels *{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -485,9 +501,16 @@ body{background:linear-gradient(160deg,var(--blue-deep) 0%,var(--blue) 40%,var(-
   <div class="map-3d-wrap" id="map3d">
     <div class="map-hint">Drag &middot; Scroll &middot; Click any sphere</div>
     <div class="map-legend-wrap" id="mapLegend"><div class="map-legend-title">Categories</div></div>
-    <canvas id="threeCv"></canvas>
-    <div id="nodeLabels"></div>
+    <canvas id="threeCv" role="img" aria-label="Interactive three-dimensional organisational relationship graph. See the searchable entity directory below for a keyboard-accessible alternative."></canvas>
+    <div id="nodeLabels" aria-hidden="true"></div>
   </div>
+  <div id="osf-graph-status" role="status" aria-live="polite">Loading 3D graph. A searchable text directory is available below.</div>
+  <details class="osf-accessible-list" open>
+    <summary>Searchable entity directory and documented relationships (accessible alternative)</summary>
+    <label for="osf-entity-search">Search entities</label>
+    <input id="osf-entity-search" type="search" placeholder="Find people and organisations">
+    <div id="osf-entity-results" aria-live="polite"></div>
+  </details>
 </section>
 
 <!-- SECTION 2: THE FOUNDING BOARD -->
@@ -896,7 +919,6 @@ body{background:linear-gradient(160deg,var(--blue-deep) 0%,var(--blue) 40%,var(-
 </footer>
 
 <!-- THREE.JS + 3D MAP SCRIPT -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* HERO CANVAS */
 (function(){
@@ -937,462 +959,7 @@ const io=new IntersectionObserver(entries=>{
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 
-<script>
-/* ================================================================
-   3D INVESTIGATION MAP — 70 NODES — ACCESSIBILITY REBUILD
-   ================================================================ */
-(function(){
-const CAT = {
-  core:      {col:0xc5a258, label:"OSF Core"},
-  regional:  {col:0x2a8050, label:"Regional Foundations"},
-  usgov:     {col:0x4a60c0, label:"US Gov Parallel"},
-  media:     {col:0xb81c2c, label:"SA Media Recipients"},
-  academia:  {col:0x1a3888, label:"SA Academia"},
-  civil:     {col:0x1a6868, label:"Civil Society"},
-  legal:     {col:0x7a3898, label:"Legal / Constitutional"},
-  personnel: {col:0xd08030, label:"Personnel Bridges"},
-  funding:   {col:0x1a6a3a, label:"Co-Funders"},
-  intl:      {col:0x3a5a80, label:"International Amplifiers"},
-  health:    {col:0xa82858, label:"Health / Social"},
-  govt:      {col:0x6a7828, label:"Govt Adjacent"},
-  political: {col:0x9a5a2a, label:"Political Connections"},
-  platform:  {col:0x444444, label:"Platform / Enforcement"}
-};
-
-const NODES = [
-  // ── OSF CORE ──
-  {id:"osf",label:"OSF (Global)",cat:"core",r:2.6,x:0,y:0,z:0,
-   desc:"Open Society Foundations. Founded 1979 (first act: UCT bursaries). $25B+ total global spend. South Africa was the founding country of Soros philanthropy. Bifurcated structure: US 501(c)(3) + Swiss Zug entity.",
-   detail:"$25B+ globally · SA = origin of Soros philanthropy · Swiss bifurcation"},
-  {id:"osf_sa",label:"OSF-SA",cat:"core",r:2.0,x:6,y:2,z:2,
-   desc:"Open Society Foundation for South Africa. Cape Town, April 1993. First chair: Van Zyl Slabbert. Board included Helen Zille, Alex Boraine, Fikile Bam. $230M+ invested. 750+ grantees.",
-   detail:"$230M+ · 750+ grantees · Zille on board · Slabbert chair"},
-  {id:"osisa",label:"OSISA",cat:"regional",r:1.5,x:-5,y:3,z:1,
-   desc:"Open Society Initiative for Southern Africa. 11 countries. $5M/year. Founded 1997, Slabbert first chair. Merged into global OSF Africa 2022.",
-   detail:"11 countries · $5M/year · Slabbert founding chair"},
-  {id:"osiea",label:"OSIEA",cat:"regional",r:1.3,x:-4,y:-3,z:3,
-   desc:"Open Society Initiative for Eastern Africa. Nairobi. Kenya, Uganda, Tanzania, Rwanda, Ethiopia.",
-   detail:"East Africa operations · Nairobi HQ"},
-
-  // ── US GOVERNMENT ──
-  {id:"usaid",label:"USAID SA",cat:"usgov",r:1.5,x:9,y:4,z:-2,
-   desc:"USAID South Africa. $38M/year pre-2025. Democracy, governance, media grants to amaBhungane, Daily Maverick.",
-   detail:"$38M/year · Journalism grants"},
-  {id:"ned",label:"NED",cat:"usgov",r:1.3,x:8,y:6,z:1,
-   desc:"National Endowment for Democracy. Funds The Continent via Adamela Trust. Simon Allison connection.",
-   detail:"Funds The Continent · $2M+ SA"},
-  {id:"pepfar",label:"PEPFAR",cat:"usgov",r:1.1,x:10,y:2,z:-4,
-   desc:"PEPFAR. HIV/AIDS programme. TAC overlap documented.",
-   detail:"TAC overlap documented"},
-  {id:"prm",label:"US State Dept PRM",cat:"usgov",r:1.0,x:11,y:0,z:2,
-   desc:"Bureau of Population, Refugees and Migration. Confirmed funder of LHR.",
-   detail:"LHR funder · 2025 letter overlap"},
-
-  // ── SA MEDIA RECIPIENTS ──
-  {id:"dm",label:"Daily Maverick",cat:"media",r:1.5,x:-8,y:2,z:-3,
-   desc:"SA's most-read online investigative platform. OSF grantee. USAID grant. Pierre de Vos regular contributor. Launched Factcheck Hub in partnership with Africa Check.",
-   detail:"OSF grantee · USAID · AC Factcheck Hub partner"},
-  {id:"ama",label:"amaBhungane",cat:"media",r:1.4,x:-9,y:4,z:1,
-   desc:"Investigative unit. OSF grantee. USAID Open Tender. Ford Foundation.",
-   detail:"OSF · USAID · Ford Foundation"},
-  {id:"ac",label:"Africa Check",cat:"media",r:1.8,x:-7,y:5,z:3,
-   desc:"The chokepoint. Wits-housed. OSF 12%. Gates 13%. Luminate 8%. Co-founded by Peter Cunliffe-Jones (now on IFCN board). Partners News24 and Daily Maverick. Feeds Meta content moderation via IFCN certification.",
-   detail:"OSF 12% · Gates 13% · IFCN · Meta pipeline · Partners News24"},
-  {id:"iss",label:"ISS Africa",cat:"media",r:1.4,x:-6,y:3,z:-5,
-   desc:"Institute for Security Studies. OSF-funded ($5.1M, largest Africa recipient). Born from 1990 Lusaka meeting. Allison connection. Farm attack data sourcing.",
-   detail:"$5.1M OSF · Simon Allison · Farm attack brief"},
-  {id:"continent",label:"The Continent",cat:"media",r:1.2,x:-5,y:7,z:2,
-   desc:"Pan-African newspaper. NED-funded via Adamela Trust. Editor: Simon Allison. WhatsApp distribution to 160 countries.",
-   detail:"NED-funded · Allison · 160 countries"},
-  {id:"groundup",label:"GroundUp",cat:"media",r:1.0,x:-9,y:-1,z:3,
-   desc:"Community media. OSF grantee. SECTION 27 partner.",
-   detail:"OSF grantee · Housing rights"},
-  {id:"mg",label:"Mail & Guardian",cat:"media",r:1.3,x:-10,y:1,z:-2,
-   desc:"SA liberal weekly. OSF grantee. Allison was Africa editor.",
-   detail:"OSF grantee · Allison revolving door"},
-  {id:"vrye",label:"Vrye Weekblad",cat:"media",r:1.0,x:-7,y:-3,z:-6,
-   desc:"First anti-apartheid Afrikaans newspaper. Founded 1988 by du Preez after Dakar. Rescued 2022 by Pienaar (51%). Closed March 2025.",
-   detail:"Dakar origin · Pienaar 51% · Closed 2025"},
-  {id:"news24",label:"News24",cat:"media",r:1.3,x:-11,y:3,z:-1,
-   desc:"SA's largest digital news platform. Naspers/Media24 owned. Editor: Adriaan Basson (one of six white progressives). Africa Check partner. Launched full-time Disinformation Desk February 2025. SA's most trusted news brand (Reuters Institute).",
-   detail:"Naspers · Basson editor · AC partner · Disinfo Desk 2025"},
-  {id:"aiac",label:"Africa Is a Country",cat:"media",r:0.9,x:-12,y:0,z:0,
-   desc:"OSF-funded publication. Described as a 'propaganda tool against Afrikaner culture' in Alt Afrikaner analysis. OSF Q&A: 'How One Publication Is Reframing Narratives on Africa.'",
-   detail:"OSF-funded · Anti-Afrikaner narrative framing"},
-
-  // ── PLATFORM / ENFORCEMENT ──
-  {id:"ifcn",label:"IFCN (Poynter)",cat:"platform",r:1.3,x:-4,y:8,z:5,
-   desc:"International Fact-Checking Network. Housed at Poynter Institute. Certifies Africa Check. Cunliffe-Jones (Africa Check co-founder) sits on IFCN board. Certification determines which organisations can flag content for Meta removal.",
-   detail:"Certifies Africa Check · Cunliffe-Jones on board · Meta gateway"},
-  {id:"meta",label:"Meta / Facebook",cat:"platform",r:1.4,x:-3,y:9,z:4,
-   desc:"Meta Platforms. Uses IFCN-certified fact-checkers (including Africa Check) to flag and suppress content. Farm attack posts documented as removed. Facebook partnership with Africa Check since 2019 for African languages.",
-   detail:"AC fact-check partner · Farm posts removed · IFCN enforcement"},
-
-  // ── SA ACADEMIA ──
-  {id:"wits",label:"Wits University",cat:"academia",r:1.5,x:2,y:6,z:-5,
-   desc:"OSF direct grants $4.83M+. Africa Check housed here. CALS receives OSF grants.",
-   detail:"$4.83M+ · Africa Check housed · CALS"},
-  {id:"uct",label:"UCT",cat:"academia",r:1.4,x:3,y:5,z:5,
-   desc:"$2.6M+ OSF grants. Karl Popper Bursary Fund 1979 (founding act of OSF). Pierre de Vos Claude Leon Chair.",
-   detail:"$2.6M+ · 1979 founding act · de Vos Chair"},
-  {id:"su",label:"Stellenbosch Univ.",cat:"academia",r:1.4,x:1,y:7,z:-3,
-   desc:"$1.032M OSF ACCAI grant. Wasserman Chair. IDRC R20M CINIA 2026.",
-   detail:"$1.032M+ · Wasserman Chair · R20M IDRC"},
-  {id:"up",label:"Univ. of Pretoria",cat:"academia",r:1.0,x:4,y:4,z:-6,
-   desc:"Faculty of Humanities OSF engagement.",detail:"OSF Humanities"},
-  {id:"ukzn",label:"UKZN",cat:"academia",r:0.9,x:5,y:3,z:-7,
-   desc:"OSF civil society research.",detail:"OSF research"},
-
-  // ── CIVIL SOCIETY ──
-  {id:"casac",label:"CASAC",cat:"civil",r:1.2,x:2,y:-5,z:2,desc:"Council for Advancement of SA Constitution. OSF-funded. de Vos advisory.",detail:"OSF-funded · de Vos"},
-  {id:"cw",label:"Corruption Watch",cat:"civil",r:1.1,x:3,y:-6,z:4,desc:"OSF-funded. amaBhungane partner.",detail:"OSF-funded"},
-  {id:"csvr",label:"CSVR",cat:"civil",r:1.0,x:4,y:-4,z:6,desc:"Centre for Study of Violence & Reconciliation. OSF/OSISA grantee.",detail:"OSF/OSISA grantee"},
-  {id:"sjc",label:"Social Justice Coalition",cat:"civil",r:0.9,x:1,y:-7,z:3,desc:"Cape Town community organising. OSF grantee.",detail:"OSF grantee"},
-
-  // ── LEGAL / CONSTITUTIONAL ──
-  {id:"s27",label:"SECTION 27",cat:"legal",r:1.2,x:5,y:-5,z:-2,desc:"Health rights litigation. OSF grantee.",detail:"OSF grantee"},
-  {id:"tac",label:"TAC",cat:"health",r:1.1,x:7,y:-3,z:-4,desc:"Treatment Action Campaign. OSF grantee. PEPFAR co-funding.",detail:"OSF grantee · PEPFAR overlap"},
-  {id:"ee",label:"Equal Education",cat:"civil",r:0.9,x:6,y:-6,z:-3,desc:"Education rights. OSF grantee.",detail:"OSF grantee"},
-  {id:"lhr",label:"Lawyers for Human Rights",cat:"legal",r:1.3,x:6,y:-4,z:2,desc:"Three-generation institutional spine. OSF + Ford + PRM + Constitutionalism Fund. 2025 letter signatories.",detail:"OSF + Ford + PRM + CF · 2025 letter"},
-  {id:"nu",label:"Ndifuna Ukwazi",cat:"civil",r:0.8,x:2,y:-8,z:-1,desc:"Housing rights. OSF grantee.",detail:"OSF grantee"},
-  {id:"seri",label:"SERI",cat:"legal",r:0.9,x:7,y:-2,z:4,desc:"Socio-Economic Rights Institute. OSF-funded.",detail:"OSF-funded"},
-  {id:"cfund",label:"Constitutionalism Fund",cat:"legal",r:1.5,x:5,y:0,z:5,desc:"$29M. OSF + Ford + Atlantic. Selection panel: Justice Mokgoro. 60+ grantees. LHR primary.",detail:"$29M · Mokgoro panel · LHR primary"},
-  {id:"cals",label:"CALS (Wits)",cat:"legal",r:0.9,x:4,y:1,z:6,desc:"Centre for Applied Legal Studies. Wits. OSF grants.",detail:"OSF-funded"},
-  {id:"judges",label:"Judges Matter",cat:"legal",r:0.8,x:6,y:1,z:-5,desc:"Judicial transparency advocacy. OSF programme.",detail:"OSF programme"},
-  {id:"lrc",label:"Legal Resources Centre",cat:"legal",r:1.2,x:8,y:1,z:6,desc:"Founded 1979 by Chaskalson (later first ConCourt President). Ford + Carnegie + RBF funded. Fikile Bam was LRC PE director.",detail:"Chaskalson · Ford + Carnegie · Bam bridge"},
-
-  // ── PERSONNEL BRIDGES ──
-  {id:"nowrojee",label:"Binaifer Nowrojee",cat:"personnel",r:1.2,x:-1,y:4,z:6,desc:"OSF Global VP Programmes. HRW Africa to OSF. Controls all global disbursements.",detail:"HRW to OSF · Global VP"},
-  {id:"gaspard",label:"Patrick Gaspard",cat:"personnel",r:1.2,x:-2,y:3,z:7,desc:"OSF President 2019-2023. Obama WH political director. US Ambassador to SA 2013-2016.",detail:"Obama WH to SA Ambassador to OSF President"},
-  {id:"slabbert",label:"Van Zyl Slabbert",cat:"personnel",r:1.3,x:-3,y:2,z:8,desc:"PFP leader. IDASA co-founder. Dakar 1987. OSF-SA + OSISA founding chair. ISS origin via Lusaka. The origin node. Died 2010.",detail:"OSF-SA + OSISA chair · Dakar · ISS origin"},
-  {id:"hassan",label:"Fatima Hassan",cat:"personnel",r:1.1,x:-4,y:1,z:5,desc:"OSF-SA ED 2013-2019.",detail:"OSF-SA ED"},
-  {id:"wasserman",label:"Prof Wasserman",cat:"personnel",r:1.3,x:-5,y:5,z:4,desc:"Stellenbosch Chair. Edits AJS + Annals ICA. Commissioned by Africa Check. IDRC R4.5M. Called Afrikaner refugees 'fake/props'.",detail:"SU Chair · AJS + Annals · Africa Check · R4.5M IDRC"},
-  {id:"devos",label:"Pierre de Vos",cat:"personnel",r:1.1,x:-2,y:6,z:-4,desc:"UCT Claude Leon Chair. CASAC advisory. DM contributor. 2025 letter.",detail:"UCT Chair · CASAC · DM · 2025 letter"},
-  {id:"allison",label:"Simon Allison",cat:"personnel",r:1.0,x:-6,y:-1,z:6,desc:"DM to M&G to ISS (OSF) to The Continent (NED). One person, four institutions.",detail:"DM to M&G to ISS to Continent"},
-  {id:"dupreez",label:"Max du Preez",cat:"personnel",r:1.0,x:-8,y:-2,z:-5,desc:"Vrye Weekblad founder. Attended Dakar 1987. Pienaar rescued 2022 (49% stake).",detail:"Dakar · VW founder · Pienaar 49%"},
-
-  // ── POLITICAL CONNECTIONS ──
-  {id:"zille",label:"Helen Zille",cat:"political",r:1.3,x:8,y:5,z:5,desc:"OSF-SA Board Trustee. DA leader. Cape Town Mayor. WC Premier. Confirmed by gov.za, Britannica, SA History Online. Spoke of 'Popperian philosophy'.",detail:"OSF-SA Board · DA · Premier"},
-  {id:"boraine",label:"Alex Boraine",cat:"political",r:1.0,x:7,y:6,z:3,desc:"IDASA co-founder. OSF-SA board. Later TRC Deputy Chairman.",detail:"IDASA · OSF-SA · TRC"},
-  {id:"bam",label:"Fikile Bam",cat:"political",r:0.9,x:9,y:3,z:4,desc:"OSF-SA board. Former Robben Island prisoner. LRC PE director. Land Claims Court President.",detail:"OSF-SA board · LRC · Land Claims Court"},
-  {id:"mokgoro",label:"Justice Mokgoro",cat:"political",r:1.2,x:7,y:2,z:7,desc:"ConCourt Justice 1994-2009. First black woman on bench. Chaired $29M Constitutionalism Fund selection panel.",detail:"ConCourt · CF panel chair"},
-  {id:"pienaar",label:"Andre Pienaar",cat:"personnel",r:0.9,x:-9,y:-3,z:-7,desc:"C5 Capital CEO. Rescued VW 2022 (51%). C5 partners: former CIA European chief, GCHQ director, US Joint Chiefs chairman.",detail:"C5 · VW 51% · Intelligence partners"},
-  {id:"idasa",label:"IDASA",cat:"civil",r:1.1,x:-1,y:0,z:9,desc:"Institute for Democracy in Africa. Co-founded 1986 by Slabbert and Boraine. Organised Dakar 1987 and Lusaka 1990.",detail:"Slabbert + Boraine · Dakar · ISS origin"},
-  {id:"dirco",label:"DIRCO",cat:"govt",r:1.1,x:0,y:-8,z:-5,desc:"Department of International Relations and Cooperation. ISS findings adopted as official talking points. DIRCO farm crime statement echoes ISS language within weeks.",detail:"ISS echo · Farm crime talking points"},
-
-  // ── CO-FUNDERS ──
-  {id:"ford",label:"Ford Foundation",cat:"funding",r:1.3,x:8,y:-5,z:3,desc:"$3M+ to LHR. $29M CF co-funder. 60+ years in SA. LRC founding funder.",detail:"$3M+ LHR · $29M CF · LRC founding"},
-  {id:"atlantic",label:"Atlantic Philanthropies",cat:"funding",r:1.2,x:9,y:-3,z:5,desc:"$355M+ total SA investment. Closed 2016. $29M CF as exit mechanism.",detail:"$355M+ SA · CF exit mechanism"},
-  {id:"gates",label:"Gates Foundation",cat:"funding",r:1.2,x:7,y:-7,z:2,desc:"Africa Check 13%. Health programme overlap.",detail:"Africa Check 13%"},
-  {id:"luminate",label:"Luminate (Omidyar)",cat:"funding",r:1.0,x:6,y:-8,z:-1,desc:"Africa Check 8%. Omidyar Network spinoff.",detail:"Africa Check 8%"},
-  {id:"idrc",label:"IDRC (Canada)",cat:"funding",r:1.1,x:5,y:8,z:-2,desc:"R4.5M to Wasserman. R20M CINIA 2026 to Stellenbosch.",detail:"R4.5M Wasserman · R20M CINIA"},
-  {id:"hewlett",label:"Hewlett Foundation",cat:"funding",r:0.8,x:10,y:-1,z:-5,desc:"Governance and accountability grants in SA.",detail:"Governance SA"},
-
-  // ── INTERNATIONAL AMPLIFIERS ──
-  {id:"bbc",label:"BBC Africa",cat:"intl",r:1.1,x:-10,y:-3,z:-3,desc:"Cites Africa Check. Amplifies ISS. No disclosure of grantee status.",detail:"AC cites · ISS amplifies"},
-  {id:"guardian",label:"The Guardian",cat:"intl",r:1.1,x:-11,y:-1,z:2,desc:"Africa Check citations. M&G historical co-investment.",detail:"AC · M&G co-investment"},
-  {id:"hrw",label:"Human Rights Watch",cat:"intl",r:1.0,x:-9,y:-5,z:-1,desc:"Nowrojee career origin. Farm attack framing consistent with OSF grantees.",detail:"Nowrojee origin"},
-  {id:"amnesty",label:"Amnesty Intl",cat:"intl",r:0.9,x:-11,y:-4,z:-4,desc:"Kemp apartheid-genocide lecture. Stellenbosch to ICJ pipeline.",detail:"Kemp lecture · ICJ pipeline"},
-  {id:"aj",label:"Al Jazeera",cat:"intl",r:0.9,x:-10,y:-6,z:1,desc:"ISS and Africa Check citations. SA government narrative amplification.",detail:"ISS + AC cites"},
-
-  // ── GOVT ADJACENT ──
-  {id:"npc",label:"NPC",cat:"govt",r:1.0,x:0,y:-6,z:-6,desc:"National Planning Commission. Landman sat on NPC + signed 2025 letter.",detail:"Landman NPC + 2025 letter"},
-  {id:"siu",label:"SIU adjacent",cat:"govt",r:0.8,x:-1,y:-7,z:-4,desc:"Special Investigating Unit. Corruption Watch referral pipeline.",detail:"CW referrals"}
-];
-
-const EDGES = [
-  // OSF core
-  ["osf","osf_sa","owns"],["osf","osisa","owns"],["osf","osiea","owns"],
-  // OSF-SA grants to media
-  ["osf_sa","dm","grants"],["osf_sa","ama","grants"],["osf_sa","ac","grants"],
-  ["osf_sa","iss","grants"],["osf_sa","groundup","grants"],["osf_sa","mg","grants"],
-  ["osf_sa","aiac","grants"],
-  // OSF-SA grants to academia
-  ["osf_sa","wits","grants"],["osf_sa","uct","grants"],["osf_sa","su","grants"],
-  ["osf_sa","up","grants"],["osf_sa","ukzn","grants"],
-  // OSF-SA grants to civil society
-  ["osf_sa","casac","grants"],["osf_sa","cw","grants"],["osf_sa","s27","grants"],
-  ["osf_sa","ee","grants"],["osf_sa","lhr","grants"],["osf_sa","nu","grants"],
-  ["osisa","csvr","grants"],["osisa","sjc","grants"],["osisa","seri","grants"],
-  // OSF to legal
-  ["osf","cfund","cofunds"],["osf_sa","cals","grants"],["osf_sa","judges","grants"],
-  // OSF to health
-  ["osf_sa","tac","grants"],
-  // US Gov
-  ["usaid","dm","grants"],["usaid","ama","grants"],["usaid","ac","grants"],
-  ["ned","continent","funds"],["pepfar","tac","funds"],["prm","lhr","funds"],
-  // Co-funders
-  ["ford","cfund","cofunds"],["ford","lhr","grants"],["ford","lrc","grants"],
-  ["atlantic","cfund","cofunds"],
-  ["gates","ac","funds"],["luminate","ac","funds"],
-  ["idrc","wasserman","funds"],["idrc","su","grants"],
-  ["hewlett","osf_sa","cofunds"],
-  // CF grantees
-  ["cfund","lhr","grants"],["cfund","casac","grants"],["cfund","s27","grants"],
-  // Content suppression pipeline
-  ["ac","ifcn","certified"],["ifcn","meta","authorises"],["meta","ac","partner"],
-  ["ac","news24","partner"],["ac","dm","partner"],
-  // Personnel
-  ["nowrojee","osf","staff"],["gaspard","osf","president"],
-  ["gaspard","osf_sa","bridge"],["slabbert","osf_sa","chair"],
-  ["slabbert","osisa","chair"],["slabbert","idasa","cofounded"],
-  ["hassan","osf_sa","director"],
-  ["wasserman","ac","commissioned"],["wasserman","su","chair"],
-  ["devos","uct","chair"],["devos","casac","advisory"],["devos","dm","contributor"],
-  ["allison","dm","staff"],["allison","mg","editor"],
-  ["allison","iss","consultant"],["allison","continent","editor"],
-  ["dupreez","vrye","founded"],["dupreez","dm","contributor"],
-  // Political
-  ["zille","osf_sa","board"],["boraine","osf_sa","board"],["bam","osf_sa","board"],
-  ["boraine","idasa","cofounded"],["bam","lrc","director"],
-  ["mokgoro","cfund","panel_chair"],
-  ["pienaar","vrye","investor"],
-  // Media amplification
-  ["ac","bbc","cited"],["ac","guardian","cited"],["ac","hrw","network"],
-  ["iss","bbc","cited"],["iss","aj","cited"],["iss","dirco","echo"],
-  ["dm","guardian","partner"],["dm","bbc","cited"],
-  ["continent","aj","cited"],
-  ["ama","dm","partner"],["cw","ama","partner"],
-  // Legal
-  ["lhr","cfund","grantee"],["cals","wits","housed"],["lrc","cfund","network"],
-  ["judges","casac","network"],["seri","s27","network"],
-  // Govt
-  ["devos","npc","adjacent"],["cw","siu","referrals"],["dirco","iss","echo"],
-  // Origin chain
-  ["idasa","slabbert","origin"],["vrye","dupreez","origin"],
-];
-
-
-/* ═══════════════════════════════════════
-   BUILD SCENE
-   ═══════════════════════════════════════ */
-const container=document.getElementById('map3d');
-let cw=container.clientWidth,ch=container.clientHeight;
-const ren=new THREE.WebGLRenderer({canvas:document.getElementById('threeCv'),antialias:true,alpha:false});
-ren.setSize(cw,ch,false);ren.setPixelRatio(Math.min(window.devicePixelRatio,2));
-ren.setClearColor(0xf0ece3);
-
-const scene=new THREE.Scene();
-scene.fog=new THREE.Fog(0xf0ece3,110,260);
-const cam=new THREE.PerspectiveCamera(38,cw/ch,0.5,400);
-cam.position.set(0,30,88);cam.lookAt(0,0,0);
-
-// Better lighting
-scene.add(new THREE.AmbientLight(0xffffff,.6));
-const dl=new THREE.DirectionalLight(0xfff8e8,.6);dl.position.set(12,20,8);scene.add(dl);
-const dl2=new THREE.DirectionalLight(0xd0e0f0,.25);dl2.position.set(-10,10,-5);scene.add(dl2);
-
-const meshes={};
-NODES.forEach(n=>{
-  const c=CAT[n.cat]?.col||0x888888;
-  const geo=new THREE.SphereGeometry((n.r||1)*0.7,24,18);
-  const mat=new THREE.MeshStandardMaterial({color:c,roughness:.32,metalness:.12,transparent:true,opacity:0.8});
-  const m=new THREE.Mesh(geo,mat);
-  m.position.set(n.x*1.3,n.y*1.3,n.z*1.3);m.userData=n;
-  scene.add(m);meshes[n.id]=m;
-});
-
-/* ── Lines: THICKER, DARKER ── */
-const lines=[];
-EDGES.forEach(([a,b,type])=>{
-  const ma=meshes[a],mb=meshes[b];if(!ma||!mb)return;
-  const pts=[ma.position.clone(),mb.position.clone()];
-  const geo=new THREE.BufferGeometry().setFromPoints(pts);
-  let col,opacity,width;
-  switch(type){
-    case'owns':col=0xc5a258;opacity=.65;break;
-    case'grants':col=0x8B0000;opacity=.4;break;
-    case'funds':case'cofunds':col=0x1a6a3a;opacity=.35;break;
-    case'staff':case'chair':case'president':case'director':case'board':col=0xd08030;opacity=.5;break;
-    case'certified':case'authorises':case'partner':col=0x444444;opacity=.55;break;
-    case'cited':case'echo':col=0x3a5a80;opacity=.3;break;
-    default:col=0x666666;opacity=.2;
-  }
-  const mat=new THREE.LineBasicMaterial({color:col,transparent:true,opacity:opacity,linewidth:1});
-  const ln=new THREE.Line(geo,mat);ln.userData={from:a,to:b,type};
-  scene.add(ln);lines.push(ln);
-});
-
-/* ── Panel logic ── */
-let hoveredNode=null;
-const tt=document.getElementById('tooltip');
-const ttLabel=tt.querySelector('.tt-label');
-const ttCat=tt.querySelector('.tt-cat');
-const ttDesc=tt.querySelector('.tt-desc');
-const ttDetail=tt.querySelector('.tt-detail');
-
-function openPanel(n){
-  const pb=document.getElementById('panelBody');
-  const ci=CAT[n.cat]||{label:'Unknown',col:0x888888};
-  const hx='#'+ci.col.toString(16).padStart(6,'0');
-  let conns=[];
-  EDGES.forEach(([a,b,t])=>{
-    if(a===n.id){const tn=NODES.find(x=>x.id===b);if(tn)conns.push(tn.label+' ('+t+')');}
-    if(b===n.id){const tn=NODES.find(x=>x.id===a);if(tn)conns.push(tn.label+' ('+t+')');}
-  });
-  pb.innerHTML=`
-    <div class="panel-badge" style="background:${hx}22;color:${hx};border:1px solid ${hx}44">${ci.label}</div>
-    <div class="panel-name">${n.label}</div>
-    <div class="panel-cat">${ci.label}</div>
-    <div class="panel-desc">${n.desc||''}</div>
-    ${n.detail?'<div class="panel-detail">'+n.detail+'</div>':''}
-    <div class="panel-connections-h">Connections (${conns.length})</div>
-    ${conns.map(c=>'<div class="panel-conn">'+c+'</div>').join('')}
-  `;
-  document.getElementById('node-panel').classList.add('open');
-  document.getElementById('panel-backdrop').classList.add('open');
-  document.getElementById('panel-backdrop').style.display='block';
-  tt.classList.remove('show');
-}
-window.closePanel=function(){
-  document.getElementById('node-panel').classList.remove('open');
-  document.getElementById('panel-backdrop').classList.remove('open');
-  document.getElementById('panel-backdrop').style.display='none';
-};
-document.getElementById('panel-backdrop').onclick=window.closePanel;
-
-/* ── Raycaster ── */
-const ray=new THREE.Raycaster();const mv=new THREE.Vector2();
-let isDragging=false,dragMoved=false;
-container.addEventListener('pointerdown',()=>{isDragging=true;dragMoved=false;});
-window.addEventListener('pointermove',e=>{
-  if(isDragging){dragMoved=true;return;}
-  const rect=container.getBoundingClientRect();
-  mv.x=((e.clientX-rect.left)/rect.width)*2-1;
-  mv.y=-((e.clientY-rect.top)/rect.height)*2+1;
-  ray.setFromCamera(mv,cam);
-  const hits=ray.intersectObjects(Object.values(meshes));
-  if(hits.length){
-    const n=hits[0].object.userData;hoveredNode=n;container.style.cursor='pointer';
-    ttLabel.textContent=n.label;ttCat.textContent=CAT[n.cat]?.label||n.cat;
-    ttDesc.textContent=(n.desc||'').slice(0,200)+(n.desc?.length>200?'...':'');
-    ttDetail.textContent=n.detail||'';
-    tt.style.left=(e.clientX+18)+'px';tt.style.top=(e.clientY-22)+'px';
-    tt.classList.add('show');
-  } else {hoveredNode=null;container.style.cursor='grab';tt.classList.remove('show');}
-});
-window.addEventListener('pointerup',()=>{isDragging=false;tt.classList.remove('show');});
-container.addEventListener('click',e=>{
-  if(dragMoved)return;
-  const rect=container.getBoundingClientRect();
-  mv.x=((e.clientX-rect.left)/rect.width)*2-1;
-  mv.y=-((e.clientY-rect.top)/rect.height)*2+1;
-  ray.setFromCamera(mv,cam);
-  const hits=ray.intersectObjects(Object.values(meshes));
-  if(hits.length)openPanel(hits[0].object.userData);
-});
-
-/* ── Orbit ── */
-let rotX=0.18,rotY=0,tRotX=0.18,tRotY=0,camDist=88;
-let pX=0,pY=0,dragging3d=false;
-container.addEventListener('pointerdown',e=>{dragging3d=true;pX=e.clientX;pY=e.clientY;});
-window.addEventListener('pointermove',e=>{
-  if(!dragging3d)return;
-  tRotY+=(e.clientX-pX)*0.005;tRotX+=(e.clientY-pY)*0.003;
-  tRotX=Math.max(-1.1,Math.min(1.1,tRotX));pX=e.clientX;pY=e.clientY;
-});
-window.addEventListener('pointerup',()=>{dragging3d=false;});
-container.addEventListener('wheel',e=>{
-  e.preventDefault();camDist+=e.deltaY*.04;
-  camDist=Math.max(35,Math.min(200,camDist));
-},{passive:false});
-window.addEventListener('resize',()=>{
-  cw=container.clientWidth;ch=container.clientHeight;
-  cam.aspect=cw/ch;cam.updateProjectionMatrix();ren.setSize(cw,ch,false);
-});
-
-/* ── Filters ── */
-window._catFilter='all';window._searchFilter='';
-const lblContainer=document.getElementById('nodeLabels');
-const labelEls={};
-NODES.forEach(n=>{
-  const el=document.createElement('div');el.className='nlbl';
-  el.textContent=n.label;el.title=n.label;
-  lblContainer.appendChild(el);labelEls[n.id]=el;
-});
-
-function applyVisibility(){
-  Object.values(meshes).forEach(m=>{
-    const n=m.userData;
-    const catOk=window._catFilter==='all'||n.cat===window._catFilter;
-    const srch=window._searchFilter.toLowerCase();
-    const searchOk=!srch||n.label.toLowerCase().includes(srch)||n.cat.toLowerCase().includes(srch);
-    const show=catOk&&searchOk;
-    m.material.opacity=show?0.8:0.05;m.visible=true;
-    if(labelEls[n.id])labelEls[n.id].dataset.hidden=show?'':'1';
-  });
-  lines.forEach(ln=>{
-    const av=meshes[ln.userData.from]?.material.opacity>0.4;
-    const bv=meshes[ln.userData.to]?.material.opacity>0.4;
-    const baseOp=ln.userData.type==='owns'?.65:ln.userData.type==='grants'?.4:.25;
-    ln.material.opacity=(av&&bv)?baseOp:0.03;
-  });
-}
-window.filterByCat=function(cat){
-  window._catFilter=cat;applyVisibility();
-  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.toggle('active',c.dataset.cat===cat));
-  document.querySelectorAll('.map-legend-item').forEach(c=>c.classList.toggle('active',c.dataset.cat===cat));
-};
-window.searchNodes=function(q){window._searchFilter=q;applyVisibility();};
-
-/* ── Render loop ── */
-let tick=0;const V=new THREE.Vector3();
-function loop(){
-  requestAnimationFrame(loop);tick++;
-  rotX+=(tRotX-rotX)*.07;rotY+=(tRotY-rotY)*.07;
-  if(!dragging3d)tRotY+=.0007;
-  cam.position.x=Math.sin(rotY)*Math.cos(rotX)*camDist;
-  cam.position.y=Math.sin(rotX)*camDist*.45+5;
-  cam.position.z=Math.cos(rotY)*Math.cos(rotX)*camDist;
-  cam.lookAt(0,0,0);
-
-  // Pulse OSF core
-  if(meshes['osf']){const p=1+Math.sin(tick*.035)*.1;meshes['osf'].scale.set(p,p,p);}
-  // Pulse Africa Check
-  if(meshes['ac']){const p=1+Math.sin(tick*.04+1)*.08;meshes['ac'].scale.set(p,p,p);}
-
-  // Project labels
-  NODES.forEach(n=>{
-    const el=labelEls[n.id];const mesh=meshes[n.id];
-    if(!el||!mesh)return;
-    if(el.dataset.hidden==='1'){el.style.display='none';return;}
-    V.copy(mesh.position).project(cam);
-    if(V.z>1){el.style.display='none';return;}
-    el.style.display='';
-    const sx=(V.x*0.5+0.5)*cw;
-    const sy=(-V.y*0.5+0.5)*ch+(n.r||1)*3.5+6;
-    el.style.left=sx+'px';el.style.top=sy+'px';
-    const fade=Math.max(0.55,1-((V.z+1)*0.4));
-    const vis=mesh.material.opacity>0.4?1:0;
-    el.style.opacity=(fade*vis).toFixed(2);
-  });
-
-  ren.render(scene,cam);
-}
-loop();
-
-/* ── Build legend ── */
-const legWrap=document.getElementById('mapLegend');
-const catChipWrap=document.getElementById('catLegend');
-const allChip=document.createElement('div');
-allChip.className='cat-chip active';allChip.dataset.cat='all';
-allChip.innerHTML='<span class="dot" style="background:var(--gold)"></span>All';
-allChip.onclick=()=>window.filterByCat('all');
-catChipWrap.appendChild(allChip);
-Object.entries(CAT).forEach(([k,v])=>{
-  const hexCol='#'+v.col.toString(16).padStart(6,'0');
-  const chip=document.createElement('div');
-  chip.className='cat-chip';chip.dataset.cat=k;
-  chip.innerHTML=`<span class="dot" style="background:${hexCol}"></span>${v.label}`;
-  chip.onclick=()=>window.filterByCat(k);
-  catChipWrap.appendChild(chip);
-  const li=document.createElement('div');
-  li.className='map-legend-item';li.dataset.cat=k;
-  li.innerHTML=`<span class="dot" style="background:${hexCol}"></span>${v.label}`;
-  li.onclick=()=>window.filterByCat(k);
-  legWrap.appendChild(li);
-});
-})();
-</script>
+<script type="module" src="assets/osf-entity-list.mjs"></script>
+<script type="module" src="assets/osf-network.mjs"></script>
 </body>
 </html>
