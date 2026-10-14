@@ -1,0 +1,20 @@
+/* Alt Afrikaner / reusable premium investigation controls */
+:root{--investigation-gold:#C5A258}
+html{scroll-behavior:smooth}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--investigation-gold);outline-offset:3px}
+.investigation-toolbar{margin:20px auto;max-width:1160px;padding:18px 20px;background:linear-gradient(140deg,rgba(27,42,74,.96),rgba(10,18,32,.95));border:1px solid rgba(197,162,88,.45);border-radius:8px;color:#f4f0e8;box-shadow:0 14px 32px rgba(0,0,0,.18)}
+.investigation-toolbar h3{font-family:'Playfair Display',Georgia,serif;font-size:clamp(18px,2vw,25px);margin-bottom:6px;color:#f1ddb0}
+.investigation-toolbar p{font-size:14px;line-height:1.65;color:#d6dfeb;margin:4px 0 12px}
+.investigation-toolbar label{display:block;margin:12px 0 5px;font-weight:600}
+.investigation-toolbar input{width:min(100%,520px);background:#101e31;color:#fff;border:1px solid #758ca4;border-radius:5px;padding:12px;font-size:16px}
+.investigation-toolbar summary{cursor:pointer;color:#f1ddb0;font-weight:700}
+.investigation-entity-list{max-height:400px;overflow:auto;margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:10px}
+.investigation-entity{padding:15px;border:1px solid rgba(197,162,88,.3);background:rgba(255,255,255,.04);border-radius:5px}
+.investigation-entity strong{display:block;color:#f4e0ad;font-size:16px}
+.investigation-entity small{color:#c9d6e7}
+.investigation-entity p{color:#e2e5ea;line-height:1.55;margin:8px 0}
+.entity-open{background:#C5A258;border:0;color:#0b1525;font-weight:700;cursor:pointer;padding:9px 12px;border-radius:3px}
+.investigation-status{font:12px 'JetBrains Mono',monospace;color:#d1dced;padding:9px 0}
+.investigation-map-hint{font-size:12px;color:#e5d8b9}
+@media(max-width:620px){.investigation-toolbar{margin:12px;padding:14px}.investigation-entity-list{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
