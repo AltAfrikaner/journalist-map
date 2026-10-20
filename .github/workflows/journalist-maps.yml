@@ -1,0 +1,23 @@
+name: Journalist map upgrade checks
+on:
+  pull_request:
+    paths:
+      - 'sa_journalists.html'
+      - '44afrikaners.html'
+      - 'assets/journalists-network.mjs'
+      - 'assets/investigation-premium.css'
+      - 'scripts/check-journalist-maps.mjs'
+      - '.github/workflows/journalist-maps.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check assets/journalists-network.mjs
+      - run: node scripts/check-journalist-maps.mjs
