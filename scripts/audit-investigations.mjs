@@ -44,6 +44,19 @@ const reports=local.map((file,i)=>{
   below1500:visibleWords<1500,nearThreshold:visibleWords>=1500&&visibleWords<1550,
   hasContrast,isGiant,sourcesSignal,sectionCount:(page.match(/<section\b/gi)||[]).length};
 });
+/* Editorial addendum integrity: require cited, substantive context, not padding. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ for(const file of ['sixstage.html','metasuppression.html','usaidtonewsroom.html','sa_journalists.html']){
+  const html=readFileSync(file,'utf8');
+  const report=reports.find(r=>r.file===file);
+  assert(html.includes('class="aa-evidence-context"'),'Missing source-linked evidence note: '+file);
+  assert(html.includes('UNVERIFIED'),'Missing evidence-status qualification: '+file);
+  assert(report&&report.narrativeWordsApprox>=1500,'Insufficient substantive narrative in '+file+': '+report?.narrativeWordsApprox);
+ }
+ const roster=readFileSync('44afrikaners.html','utf8');
+ assert(roster.includes('Tied to One of 5 Universities'),'University roster/count contradiction remains');
+ assert(roster.includes('UNVERIFIED SECTOR BREAKDOWN'),'Missing chart arithmetic audit notice');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
