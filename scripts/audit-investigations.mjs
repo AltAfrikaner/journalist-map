@@ -134,6 +134,24 @@ if(process.argv.includes('--enforce-evidence-notes')){
   'The Afrikaans press has zero documented connections'
  ])assert(!page.includes(invalid),'Unverified source-to-outcome inference restored: '+invalid);
 }
+/* MTN: preserve procedural ruling distinction and SS7 attribution uncertainty. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const html=readFileSync('mtn.html','utf8');
+ for(const v of [
+  'What the courts have ruled, and what remains alleged',
+  '25 September 2026',
+  'Civil liability is UNVERIFIED',
+  'Missile Targeting?',
+  'UNVERIFIED',
+  'law.justia.com/cases/federal/district-courts/new-york',
+  'www2.sharenet.co.za/v3/sens_display.php'
+ ])assert(html.toLowerCase().includes(v.toLowerCase()),'MTN legal evidence block missing: '+v);
+ for(const old of [
+  'How Africa\'s largest mobile operator built a surveillance and targeting architecture',
+  'From Subscriber Data to <span>Missile Guidance</span>',
+  'these connections are directly accessible to Iran\'s military intelligence'
+ ])assert(!html.includes(old),'MTN concluded unproven allegation: '+old);
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
