@@ -225,4 +225,33 @@ for(const f of batch16){
   assert(existsSync(dest),'Invalid investigation navigation target '+dest);
 }
 
+/* Investigations 26–28: verify the original journalism and maps survive. */
+{
+ const list=['cws.html','omidyar.html','real411.html'];
+ const names=['cws','omidyar','real411'];
+ const css=readFileSync('assets/dossier-batch-26-28.css','utf8');
+ assert(css.includes('prefers-reduced-motion'),'Missing 26–28 reduced-motion CSS');
+ assert(css.includes('focus-visible'),'Missing 26–28 keyboard focus CSS');
+ const hits=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+ for(let i=0;i<list.length;i++){
+  const file=list[i], html=readFileSync(file,'utf8');
+  const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:24*1024*1024});
+  for(const req of ['aa-premium--'+names[i],'assets/dossier-batch-26-28.css','class="aa-page-links"','href="index.html#investigations"','class="aa-editorial-skip"','rel="canonical"'])
+   assert(html.includes(req),'Missing editorial feature '+req+' on '+file);
+  for(const [name,re] of [
+   ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+   ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['images',/<img\b[^>]*>/gi]
+  ])assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
+  const oldIds=hits(old,/\bid=["'][^"']+["']/g);
+  const newIds=hits(html,/\bid=["'][^"']+["']/g);
+  assert.deepEqual(newIds,file==='cws.html'?[...oldIds,'id="start-investigation"']:oldIds,'Changed original element IDs in '+file);
+  for(const asset of ['<canvas','data:image','<iframe'])
+   assert.equal(html.split(asset).length,old.split(asset).length,'Changed original asset '+asset+' in '+file);
+ }
+ for(const dest of ['fwdeklerk_foundation_investigation.html','cws.html','omidyar.html','real411.html','osf-funded-orgs.html'])
+  assert(existsSync(dest),'Broken series navigation: '+dest);
+}
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
