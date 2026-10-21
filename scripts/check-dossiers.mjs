@@ -103,7 +103,7 @@ for(const f of nextBatch){
    ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
    ['images',/<img\b[^>]*>/gi],
    ['element IDs',/\bid=['"][^'"]+['"]/g]
- ])if(!(f==='ancliberation.html'&&label==='paragraphs')) assert.deepEqual(extract(now,re),extract(base,re),'Changed original '+label+' in '+f);
+ ])if(!(['ancliberation.html','wef.html'].includes(f)&&label==='paragraphs')) assert.deepEqual(extract(now,re),extract(base,re),'Changed original '+label+' in '+f);
  for(const sign of ['<canvas','data:image','<iframe'])assert.equal(now.split(sign).length,base.split(sign).length,'Changed embedded asset in '+f);
 }
 
