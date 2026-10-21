@@ -1,11 +1,12 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
+console.log('Dossier verification started');
 const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html','un.html','mbalula.html','44afrikaners.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
 assert(css.includes('.aa-page-links'),'Missing page navigation styles');
 const seen=new Set();
-for(const file of paths){
+for(const file of paths){ console.log('Static '+file);
   assert(existsSync(file),'Missing investigation: '+file);
   const html=readFileSync(file,'utf8');
   assert(html.includes('class="aa-premium'),'Missing premium class '+file);
@@ -33,9 +34,11 @@ for(const file of paths){
 }
 
 import {execFileSync} from 'node:child_process';
+console.log('Imports done');
 // On pull requests, the baseline is the checked-out main tree. Assert original
 // data-bearing JS/SVG/images are unchanged in the newly upgraded files.
-for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){
+console.log('Checking previous changed files');
+for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){ console.log('Previous '+file);
   let baseline;
   try {baseline=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:12*1024*1024});}
   catch {continue;} // manual runs without origin/main still use static structural checks
@@ -63,7 +66,7 @@ assert(newTheme.includes('prefers-reduced-motion'), 'Motion preferences missing 
 // Fetch the complete base branch during CI, then verify that original articles,
 // source/data references and all interactive code survive the cosmetic upgrade.
 const readOriginal=path=>execFileSync('git',['show','origin/main:'+path],{encoding:'utf8',maxBuffer:16*1024*1024});
-for(const file of newPages){
+for(const file of newPages){ console.log('Batch 10-12 preserve '+file);
   const base=readOriginal(file);
   const now=readFileSync(file,'utf8');
   const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]);
@@ -86,7 +89,7 @@ for(const file of newPages){
 const nextBatch=['communists.html','ancliberation.html','wef.html'];
 const batchTheme=readFileSync('assets/dossier-batch-13-15.css','utf8');
 assert(batchTheme.includes('prefers-reduced-motion'),'Batch 13–15 missing motion fallback');
-for(const f of nextBatch){
+for(const f of nextBatch){ console.log('Batch 13-15 preserve '+f);
  const now=readFileSync(f,'utf8');
  const cls=f==='ancliberation.html'?'liberation':f.slice(0,-5);
  assert(now.includes('aa-premium--'+cls),'Missing premium class: '+f);
@@ -110,7 +113,7 @@ for(const f of nextBatch){
 const batch=[['un.html','un'],['mbalula.html','mbalula'],['44afrikaners.html','afrikaners-letter']];
 const theme=readFileSync('assets/dossier-batch-16-17-19.css','utf8');
 assert(theme.includes('prefers-reduced-motion'),'Batch theme missing reduced motion support');
-for(const [path,klass] of batch) {
+for(const [path,klass] of batch) { console.log('Batch 16-17-19 preserve '+path);
   const now=readFileSync(path,'utf8');
   assert(now.includes('aa-premium--'+klass),'Missing premium class: '+path);
   assert(now.includes('href="assets/dossier-batch-16-17-19.css"'),'Missing stylesheet: '+path);
