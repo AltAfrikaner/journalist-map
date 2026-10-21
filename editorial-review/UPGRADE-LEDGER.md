@@ -11,7 +11,7 @@ Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map
 | 5 | `sixstage.html` | context merged | #21 and #26; verify individual examples and source-to-platform causal links |
 | 6 | `metasuppression.html` | context merged | #21 and #26; claim-level moderation outcomes remain to be independently documented |
 | 7 | `iol.html` | context merged | #32 distinguished IOL digital and Independent Newspapers, documented 2016–2024 Press Council changes and disputed SACTWU rectification; examine other editorial claims individually |
-| 8 | `usaid.html` | pending | Historical versus modern causal chain needs red-team |
+| 8 | `usaid.html` | source correction proposed | Dated 2025 suspension and 2026 OIG records; NED institutional distinction; correct USAID primer definition and Meta policy. Check individual awards and newsroom influence before full evidence sign-off |
 | 9 | `usaidtonewsroom.html` | pending | Grant-by-grant sourcing |
 | 10 | `mtn.html` | pending | Court allegations, findings and denials |
 | 11 | `prototypenation.html` | pending | Causal transfer documentation |

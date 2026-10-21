@@ -103,6 +103,19 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(!index.includes('IOL: The ANC&#x27;s Print Arm'),'Unsupported homepage editorial control claim');
  assert(index.includes('IOL &amp; Independent Media: Who Owns the Headlines?'),'Missing corrected IOL archive headline');
 }
+/* USAID: dated 2025 termination and source distinctions must remain visible. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const page=readFileSync('usaid.html','utf8');
+ for(const s of [
+  'The 2025 funding shutdown changed the story',
+  '30 of the 51 terminated awards lacked approved disposal plans',
+  'USAID Disinformation Primer (February 2021)',
+  'https://oig.usaid.gov/node/8106',
+  'https://www.gao.gov/assets/nsiad-84-121.pdf'
+ ])assert(page.includes(s),'Missing or misquoted USAID evidence update: '+s);
+ assert(!page.includes('a single unbroken chain of institutional continuity'),'Unsupported USAID/press control claim returned');
+ assert(!page.includes('single editorial decision at a single organisation housed at the University of the Witwatersrand can suppress content across three billion users'),'Unsupported global factual outcome claim');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
