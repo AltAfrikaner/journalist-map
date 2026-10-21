@@ -175,6 +175,11 @@ if(process.argv.includes('--enforce-evidence-notes')){
   assert(page.includes(phrase),'Missing Motsepe fact qualification: '+phrase);
  assert(!page.includes('Breakthrough Energy Ventures (sole African partner, Gates-Soros-Bezos).'),'Old exclusivity claim returned');
 }
+/* SACP timeline: source ideology to party programmes, not unsupported foreign command. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const s=readFileSync('communists.html','utf8');
+ for(const q of ['What the SACP\'s programmes actually say','sacp.org.za/content/path-power-programme','sacp.org.za/docs/docs/2017/Position-Papers.pdf','UNVERIFIED'])assert(s.includes(q),'Missing SACP primary-source context '+q);
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
