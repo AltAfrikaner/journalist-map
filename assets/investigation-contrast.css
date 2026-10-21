@@ -1,0 +1,128 @@
+/* ALT AFRIKANER — publication-wide readable contrast layer, 2026-10-21.
+ * Loaded AFTER existing dossier themes. Applies only to the published
+ * investigation pages; preserves data, diagrams and color-coded status labels.
+ * WCAG AA target: body copy >= 4.5:1, large headings >= 3:1.
+ */
+body.aa-premium{
+  --aa-on-paper:#253548;
+  --aa-subtle-on-paper:#4d5c6a;
+  --aa-on-ink:#f4eee5;
+  --aa-subtle-on-ink:#dfd5c8;
+  --aa-paper-field:#fffdfa;
+  --aa-ink-field:#15253b;
+}
+
+/* Anchor contrast/keyboard navigation everywhere. */
+body.aa-premium :is(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:3px solid #b78a42;outline-offset:3px;
+}
+body.aa-premium .aa-page-links,body.aa-premium .aa-page-links :is(p,small,span){
+  color:var(--aa-on-paper);
+}
+body.aa-premium .aa-page-links a{color:#7b111b}
+
+/* Shared *light* article and document regions. Limit to text-bearing
+ * wrappers: a broad section p override would damage dark evidence panels. */
+body.aa-premium :is(.ctx-card,.ctx-full,.provenance,.legal-box,.light-panel,.light-card,
+  .dossier-wrap,.finding:not(.on-dark),.tl-ev .c,.gls,.src,.context-box.light,
+  .prose-sec .prose,.section .intro,.section-lede,.section .lede)
+  :is(p,li,td,blockquote,small){
+  color:var(--aa-on-paper);
+}
+body.aa-premium :is(.ctx-card,.ctx-full,.provenance,.legal-box,.light-panel,.light-card,
+  .dossier-wrap,.tl-ev .c,.gls,.src) :is(h2,h3,h4,strong){
+  color:#172b44;
+}
+body.aa-premium :is(.ctx-card,.ctx-full,.provenance,.legal-box,.light-panel,.light-card,.src)
+  :is(.sub,.desc,.muted,.caption,.role){color:var(--aa-subtle-on-paper)}
+
+/* Dark information plates, charts and network modules: avoid using the
+ * light-section rule on embedded diagram cards. */
+body.aa-premium :is(.viz-panel,.network-wrap,.map-wrap,.map-3d .map-legend,.dash,
+  .dark-panel,.dark-card,.dark-section,.figure.dark,.graph-panel,.finding-card,
+  .entity-card,.pipe-node,.flow-node,.criterion-card,.concept-box,.method-card,
+  .table-container,.legal-box.dark,.hero) :is(p,li,td,blockquote,small){
+  color:var(--aa-on-ink);
+}
+body.aa-premium :is(.viz-panel,.network-wrap,.map-wrap,.dash,.dark-panel,.dark-card,
+  .dark-section,.finding-card,.entity-card,.pipe-node,.flow-node,.criterion-card,
+  .concept-box,.method-card,.table-container) :is(.desc,.sub,.caption,.muted,.role){
+  color:var(--aa-subtle-on-ink);
+}
+
+/* REAL411: reproduce and correct the reported white-on-ivory table and
+ * the IEC explainer. Original dark-theme table styles were being inherited
+ * inside the new ivory editorial layout. */
+body.aa-premium--real411 #whorunsit .data-table,
+body.aa-premium--real411 #whorunsit .data-table tbody{
+  background:#fffdfa;color:#253548;
+}
+body.aa-premium--real411 #whorunsit .data-table th{
+  background:#1b2a4a!important;color:#fff2dc!important;
+  border-bottom:2px solid #9a753a;font-weight:700;
+}
+body.aa-premium--real411 #whorunsit .data-table td,
+body.aa-premium--real411 #whorunsit .data-table td:first-child,
+body.aa-premium--real411 #whorunsit .data-table td.sv,
+body.aa-premium--real411 #whorunsit .data-table td.su,
+body.aa-premium--real411 #whorunsit .data-table td.sp{
+  color:#23344a!important;background:#fffdfa!important;
+  border-bottom:1px solid #c4bdaf;font-weight:500;
+}
+body.aa-premium--real411 #whorunsit .data-table tr:nth-child(even) td{
+  background:#f0ece4!important;
+}
+body.aa-premium--real411 #whorunsit .data-table tbody tr:hover td{
+  background:#e4ebf0!important;
+}
+body.aa-premium--real411 #whorunsit .data-table td:first-child{
+  font-weight:700;color:#172c47!important;
+}
+body.aa-premium--real411 #whorunsit .iec-box{
+  background:#fffdfa!important;border:1px solid #aaacb0!important;
+  border-left:4px solid #8b0000!important;box-shadow:none;
+}
+body.aa-premium--real411 #whorunsit .iec-box :is(p,li,small),
+body.aa-premium--real411 #whorunsit .iec-box p strong{
+  color:#253548!important;
+}
+body.aa-premium--real411 #whorunsit .iec-box h3{
+  color:#1b2a4a!important;
+}
+body.aa-premium--real411 #whorunsit > .container > p,
+body.aa-premium--real411 #whorunsit > .container > h3{
+  color:#253548!important;
+}
+body.aa-premium--real411 #whorunsit > .container > p strong{color:#142b45!important}
+
+/* Editorial explanations on warm paper, without disturbing dark infographics. */
+body.aa-premium--splc section:not(.hero):not(#map) > .container > :is(p,ul,ol),
+body.aa-premium--real411 section:not(.hero) > .container > :is(p,ul,ol),
+body.aa-premium--wits section:not(.hero) .prose,
+body.aa-premium--constitution .section > p,
+body.aa-premium--fwdeklerk article > p,
+body.aa-premium--cws .section:not([style*="background:var(--navy)"]) .prose,
+body.aa-premium--omidyar main .section > p,
+body.aa-premium--funding-atlas section:not(.hero) > .section-inner > p{
+  color:#27384a!important;
+}
+body.aa-premium--splc section:not(.hero):not(#map) > .container > p strong,
+body.aa-premium--real411 section:not(.hero) > .container > p strong{
+  color:#142940!important;
+}
+
+/* Original article-based dossiers: prose blocks should inherit legible
+ * paper text even if original dark palette supplied low-contrast colors. */
+body.aa-premium :is(.sec,.section,.ctx-section,.prose-sec,.article,.reading-section)
+ > :is(p,.intro,.lede,.section-lede){
+ color:#283b4e;
+}
+
+/* Keep native high-contrast and forced-color modes working. */
+@media(forced-colors:active){
+  body.aa-premium .data-table :is(td,th),
+  body.aa-premium .iec-box :is(p,h3),
+  body.aa-premium :is(.dark-card,.light-card) p{
+    color:CanvasText!important;background:Canvas!important;
+  }
+}

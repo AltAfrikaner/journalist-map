@@ -167,3 +167,19 @@
 .aa-premium--rooivalk .reveal,.aa-premium--rooivalk .reveal-left,.aa-premium--rooivalk .reveal-right
 {animation:none!important;transition:none!important;opacity:1!important;transform:none!important}
 }
+/* Contrast override for the 2 MB archival Rooivalk investigation.
+ * Kept here to avoid rewriting its extremely large original HTML file.
+ * Text-only colour declarations; research content and scripts are untouched. */
+.aa-premium--rooivalk .section:not(.section-dark) :is(.prose,p,li,.tl-text,.fish-detail,.person-detail,.quote-source){
+ color:#283a4b;
+}
+.aa-premium--rooivalk .section:not(.section-dark) :is(h2,h3,h4,strong,.tl-title,.fish-name,.person-name){
+ color:#172a44;
+}
+.aa-premium--rooivalk .section-dark :is(.prose,p,li,.tl-text),
+.aa-premium--rooivalk .full-bleed :is(.prose,p,li){
+ color:#f0e9dc;
+}
+.aa-premium--rooivalk .network-container :is(p,li,.caption){color:#eee4d5}
+.aa-premium--rooivalk .fish-card :is(p,.fish-detail),
+.aa-premium--rooivalk .person-card :is(p,.person-detail){color:#314353}
