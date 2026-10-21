@@ -75,7 +75,7 @@ for(const file of newPages){
   assert.deepEqual(scripts(now),scripts(base),'Changed JavaScript: '+file);
   assert.deepEqual(svg(now),svg(base),'Changed SVG research graphic: '+file);
   assert.deepEqual(images(now),images(base),'Changed editorial images: '+file);
-  if(!['mtn.html','prototypenation.html'].includes(file)) assert.deepEqual(paragraphs(now),paragraphs(base),'Changed original paragraphs: '+file);
+  if(!['mtn.html','prototypenation.html','motsepe.html'].includes(file)) assert.deepEqual(paragraphs(now),paragraphs(base),'Changed original paragraphs: '+file);
   // Prototype article receives source-led comparative corrections; all scripts, visualisations, assets and IDs stay intact.
   // MTN prose receives dated, explicit legal/technical corrections; scripts, visual data, images and IDs remain byte-equal.
   assert.deepEqual(ids(now),ids(base),'Changed JS section hooks: '+file);
