@@ -246,12 +246,38 @@ for(const f of batch16){
   ])assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   const oldIds=hits(old,/\bid=["'][^"']+["']/g);
   const newIds=hits(html,/\bid=["'][^"']+["']/g);
-  assert.deepEqual(newIds,file==='cws.html'?[...oldIds,'id="start-investigation"']:oldIds,'Changed original element IDs in '+file);
+  const extraAnchor='id="start-investigation"';
+  const expectedIds=file==='cws.html' && !oldIds.includes(extraAnchor)?[...oldIds,extraAnchor]:oldIds;
+  assert.deepEqual(newIds,expectedIds,'Changed original element IDs in '+file);
   for(const asset of ['<canvas','data:image','<iframe'])
    assert.equal(html.split(asset).length,old.split(asset).length,'Changed original asset '+asset+' in '+file);
  }
  for(const dest of ['fwdeklerk_foundation_investigation.html','cws.html','omidyar.html','real411.html','osf-funded-orgs.html'])
   assert(existsSync(dest),'Broken series navigation: '+dest);
+}
+
+/* Investigation 29: funded-organisations atlas content integrity. */
+{
+ const file='osf-funded-orgs.html';
+ const now=readFileSync(file,'utf8');
+ const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
+ const css=readFileSync('assets/dossier-29.css','utf8');
+ for(const s of ['aa-premium--funding-atlas','href="assets/dossier-29.css"','rel="canonical"','class="aa-page-links"','href="#findings"','href="index.html#investigations"'])
+  assert(now.includes(s),'Funding atlas missing '+s);
+ assert(css.includes('prefers-reduced-motion'),'Atlas missing motion safety');
+ assert(css.includes('focus-visible'),'Atlas missing keyboard focus treatment');
+ const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ for(const [label,re] of [
+  ['original article paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+  ['original filter scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+  ['original images',/<img\b[^>]*>/gi],
+  ['original illustrations',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+  ['original IDs',/\bid=["'][^"']+["']/g]
+ ])assert.deepEqual(take(now,re),take(old,re),'Changed '+label+' in '+file);
+ for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
+  assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
+ for(const dest of ['real411.html','osf.html'])
+  assert(existsSync(dest),'Broken investigation atlas navigation '+dest);
 }
 
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
