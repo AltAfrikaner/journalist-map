@@ -197,3 +197,6 @@ body.aa-premium .aa-factual-update a{
 }
 body.aa-premium--splc section.aa-factual-update{border-left:5px solid #8b0000!important}
 @media(max-width:620px){body.aa-premium .aa-factual-update{margin:25px 14px;padding:24px 20px}}
+
+body.aa-premium .aa-evidence-context .aa-evidence-copy{color:#293b4c!important;font:400 clamp(17px,1.5vw,19px)/1.85 'Source Sans 3',system-ui,sans-serif;margin:0 0 23px;max-width:860px}
+body.aa-premium .aa-evidence-context .aa-evidence-copy strong{color:#152b44!important}
