@@ -1,0 +1,109 @@
+/* ALT AFRIKANER | INVESTIGATIONS 13–15.
+ * Newspaper-grade ivory reading surface, navy research plates, dark cinematic covers.
+ * Existing timelines, charts, canvas graphics, SVG and research data are unchanged.
+ */
+.aa-premium--communists,.aa-premium--liberation,.aa-premium--wef {background:#f7f4ec;color:#22303d;font-family:'Source Sans 3',system-ui,sans-serif;scroll-padding-top:86px}
+.aa-premium--communists .nav,.aa-premium--liberation .nav,.aa-premium--wef .nav {background:#172132;border-bottom:1px solid #546073;backdrop-filter:blur(14px)}
+.aa-premium--communists .nav a,.aa-premium--liberation .nav a,.aa-premium--wef .nav-links a{font:700 11px 'Source Sans 3',sans-serif;letter-spacing:.07em;color:#eadfcd;text-transform:uppercase}
+.aa-premium--communists .nav a:hover,.aa-premium--liberation .nav a:hover,.aa-premium--wef .nav-links a:hover {color:#f3d396;background:rgba(197,162,88,.12)}
+.aa-premium--wef .nav-logo{mix-blend-mode:normal}
+.aa-premium--communists .hero,.aa-premium--liberation .hero,.aa-premium--wef .hero {min-height:0;background:radial-gradient(ellipse at 75% 23%,#384a66 0%,#172132 65%,#101826 100%);color:#f7f0e5;}
+.aa-premium--communists .hero::before,.aa-premium--liberation .hero::before,.aa-premium--wef .hero::before {background:linear-gradient(90deg,rgba(12,20,32,.25),rgba(12,20,32,.06));}
+.aa-premium--communists .hero h1,.aa-premium--liberation .hero h1,.aa-premium--wef .hero h1 {font:900 clamp(42px,6vw,79px)/1.075 'Playfair Display',Georgia,serif;letter-spacing:-.047em;max-width:1100px;color:#fffdf8;}
+.aa-premium--communists .hero h1 em,.aa-premium--liberation .hero h1 em,.aa-premium--wef .hero h1 em{color:#e2c28d;}
+.aa-premium--communists .hero h1 .red,.aa-premium--liberation .hero h1 .red,.aa-premium--wef .hero h1 .rd{color:#edb8a8;}
+.aa-premium--communists .hero-label,.aa-premium--liberation .hero-label,.aa-premium--wef .hero-label{color:#ddc490;font:700 11px 'JetBrains Mono',monospace;letter-spacing:.13em;}
+.aa-premium--communists .hero-sub,.aa-premium--liberation .hero-sub,.aa-premium--wef .hero-sub{font:400 clamp(17px,1.7vw,21px)/1.72 'Source Sans 3',sans-serif;color:#eee6da;max-width:870px;}
+.aa-premium--communists .hero{padding:175px max(25px,calc((100vw - 1170px)/2)) 90px;}
+.aa-premium--liberation .hero{padding:165px 26px 92px;}
+.aa-premium--wef .hero{padding:155px max(25px,calc((100vw - 1170px)/2)) 93px;}
+.aa-premium--liberation .hero-logo{max-height:64px;margin-bottom:18px;}
+.aa-premium--wef .hero-label{display:flex;}
+.aa-premium--wef .hero-inner{max-width:1070px}
+.aa-premium--wef .hero-btns .btn-g{background:#e1c086;color:#132135;border-color:#e1c086}
+.aa-premium--wef .hero-btns .btn-o{border-color:#d4bf9c;color:#f5e9d1}
+.aa-premium--wef .hero-btns .btn-g:hover{background:#fff7e6}
+.aa-premium--wef .hero-btns .btn-o:hover{background:#ead7b8;color:#172132}
+.aa-premium--communists .hero .aa-story-kicker,.aa-premium--liberation .hero .aa-story-kicker,.aa-premium--wef .hero .aa-story-kicker{position:relative;z-index:2;margin-bottom:22px}
+.aa-premium--liberation .hero canvas,.aa-premium--wef #hero-cv{opacity:.42}
+.aa-premium--communists .ctx,.aa-premium--liberation .ctx,.aa-premium--wef .ctx{background:#fffdf8;border-color:#d8ccbd;padding:26px max(20px,calc((100vw - 1200px)/2));gap:12px;}
+.aa-premium--communists .ctx-i,.aa-premium--liberation .ctx-i,.aa-premium--wef .ctx-i{border-right:1px solid #dfd6ca;padding:6px 9px}
+.aa-premium--communists .ctx-i:last-child,.aa-premium--liberation .ctx-i:last-child,.aa-premium--wef .ctx-i:last-child{border:0}
+.aa-premium--communists .ctx-i .n,.aa-premium--liberation .ctx-i .n,.aa-premium--wef .ctx-i .n{font:900 clamp(29px,3vw,44px) 'Playfair Display',Georgia,serif;color:#8b0000}
+.aa-premium--communists .ctx-i .l,.aa-premium--liberation .ctx-i .l,.aa-premium--wef .ctx-i .l{font:600 11px/1.45 'Source Sans 3',sans-serif;color:#62646a;letter-spacing:.04em;}
+.aa-premium--communists .sec,.aa-premium--liberation .sec,.aa-premium--wef .sec{background:#f7f4ec;max-width:1190px;padding:65px clamp(21px,4vw,60px);border-bottom:1px solid #dfd6ca;color:#24303b}
+.aa-premium--communists .sec h2,.aa-premium--liberation .sec h2,.aa-premium--wef .sec h2{font:700 clamp(30px,3.5vw,46px)/1.16 'Playfair Display',Georgia,serif;letter-spacing:-.035em;color:#1b2a4a;margin-bottom:20px}
+.aa-premium--communists .sec h2 em,.aa-premium--liberation .sec h2 em,.aa-premium--wef .sec h2 em {color:#8b0000}
+.aa-premium--communists .sec-lb,.aa-premium--liberation .sec-lb,.aa-premium--wef .sec-lb{font:700 11px/1.5 'JetBrains Mono',monospace;letter-spacing:.12em;color:#8b0000;margin-bottom:14px}
+.aa-premium--communists .sec .intro,.aa-premium--liberation .sec .intro,.aa-premium--wef .sec .intro{font:400 clamp(17px,1.5vw,19px)/1.8 'Source Sans 3',sans-serif;color:#3c4954;max-width:910px}
+.aa-premium--communists .sec p,.aa-premium--liberation .sec p,.aa-premium--wef .sec p{color:#39454e}
+.aa-premium--communists .dv,.aa-premium--liberation .dv,.aa-premium--wef .dv{background:#ded2c3;margin:0 auto;max-width:1090px;height:1px}
+.aa-premium--communists .gls,.aa-premium--wef .gls,.aa-premium--communists .tl-ev .c,.aa-premium--wef .tl-ev .c,.aa-premium--communists .fb,.aa-premium--wef .fb,.aa-premium--communists .nc,.aa-premium--wef .nc{background:#fffdf8;border:1px solid #dbd1c3;border-radius:2px;color:#273441;box-shadow:none}
+.aa-premium--communists .gls h3,.aa-premium--wef .gls h3,.aa-premium--communists .gls-i b,.aa-premium--wef .gls-i b,.aa-premium--communists .nc .rl,.aa-premium--wef .nc .rl{color:#8b0000}
+.aa-premium--communists .gls-i span,.aa-premium--wef .gls-i span,.aa-premium--communists .tl-ev .ds,.aa-premium--wef .tl-ev .tl-ds,.aa-premium--communists .tl-ev .ex,.aa-premium--wef .tl-ev .tl-ex,.aa-premium--communists .nc .bio,.aa-premium--wef .nc .bio{color:#505b64}
+.aa-premium--communists .tl-ev .tt,.aa-premium--wef .tl-ev .tl-tt,.aa-premium--communists .nc .nm,.aa-premium--wef .nc .nm{color:#1b2a4a}
+.aa-premium--communists .tl-ev .yr,.aa-premium--wef .tl-ev .tl-yr{color:#8b0000}
+.aa-premium--communists .bq,.aa-premium--liberation .bq,.aa-premium--wef .bq{background:#fffdf8;border-color:#8b0000;border-radius:2px}
+.aa-premium--communists .bq p,.aa-premium--liberation .bq p,.aa-premium--wef .bq p{color:#1b2a4a;font-family:'Playfair Display',Georgia,serif}
+.aa-premium--communists .src,.aa-premium--liberation .src,.aa-premium--wef .src{background:#fffdf8;color:#35414b;border:1px solid #ded2c4;margin:30px auto;max-width:1120px;}
+.aa-premium--communists .src h2,.aa-premium--liberation .src h2,.aa-premium--wef .src h2{color:#1b2a4a}
+.aa-premium--communists .src a,.aa-premium--liberation .src a,.aa-premium--wef .src a{color:#8b0000;text-decoration:underline;text-underline-offset:3px}
+.aa-premium--communists .sec .fl .fb,.aa-premium--wef .sec .fl .fb{color:#263341}
+.aa-premium--communists .sec .fl .fb h3,.aa-premium--wef .sec .fl .fb h3{color:#1b2a4a}
+.aa-premium--communists .gear,.aa-premium--wef .jcard{background:#172132;color:#e9e0d3;border:1px solid #40516b;border-radius:2px}
+.aa-premium--communists .gear h3,.aa-premium--wef .jcard h3,.aa-premium--communists .gear p,.aa-premium--wef .jcard p{color:#ede4d7}
+.aa-premium--communists .sec .gear .who,.aa-premium--wef .jcard .jbar-val{color:#e2bf83}
+.aa-premium--wef .jcard .jbar-name{color:#f4eee4}
+.aa-premium--wef .pat-box{background:#fffdf8;border-color:#d9cdbc;border-radius:2px}
+.aa-premium--wef .pat-box h3{color:#1b2a4a}
+.aa-premium--wef .fgrid .fc,.aa-premium--wef .pat-box .nc{background:#fffdf8;color:#1b2a4a}
+.aa-premium--wef .fgrid .fc p,.aa-premium--wef .pat-box p{color:#47535e}
+.aa-premium--wef .jbar-bg{background:#384a66}
+.aa-premium--liberation .dash{background:#172132;border:1px solid #3c4f6a;border-radius:2px;color:#f1e7d7}
+.aa-premium--liberation .dash-head{background:#21324a;color:#eee5d6}
+.aa-premium--liberation .dash-head.dh-left{color:#e2d3bd}
+.aa-premium--liberation .dash-cell.dc-left{background:#202f43}
+.aa-premium--liberation .dash-cell.dc-right{background:#372331}
+.aa-premium--liberation .dash-val,.aa-premium--liberation .dash-note{color:#f1e7d6}
+.aa-premium--liberation .dash-cell.dc-right .dash-val{color:#f0bca8}
+.aa-premium--liberation .dash-metric{color:#e4bf85}
+.aa-premium--liberation .dash .dash-worse{color:#efb4b4}
+.aa-premium--liberation .tree-box,.aa-premium--liberation .lc,.aa-premium--liberation .ev-card{background:#172132;color:#ebe3d8;border:1px solid #42516b;border-radius:2px}
+.aa-premium--liberation .tree-box p,.aa-premium--liberation .lc p,.aa-premium--liberation .ev-card p,.aa-premium--liberation .tree-box .tb-ds{color:#ddd5cb}
+.aa-premium--liberation .ev-card .ev-finding{color:#f7f0e3}
+.aa-premium--liberation .ev-card .ev-detail{color:#d9d4cd}
+.aa-premium--liberation .ev-card .ev-src{color:#e4c089}
+.aa-premium--liberation .fb{background:#fffdf8;color:#23313f;border:1px solid #dcd1c2;border-radius:2px}
+.aa-premium--liberation .fb h3,.aa-premium--liberation .fb h4{color:#1b2a4a}
+.aa-premium--liberation .fb p{color:#46515b}
+.aa-premium--liberation .ctx-i .n{color:#8b0000}
+.aa-premium--liberation .scroll-cue{display:none}
+@media(max-width:850px){
+ .aa-premium--communists .nav,.aa-premium--liberation .nav{position:relative;padding:12px;gap:7px}
+ .aa-premium--communists .hero,.aa-premium--liberation .hero{padding:65px 22px 80px}
+ .aa-premium--wef .nav{height:auto;padding:12px;flex-wrap:wrap;justify-content:center;gap:12px}
+ .aa-premium--wef .nav-links{justify-content:center;gap:12px}
+ .aa-premium--wef .hero{padding:70px 24px 75px}
+ .aa-premium--communists .ctx,.aa-premium--liberation .ctx,.aa-premium--wef .ctx{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .aa-premium--communists .ctx-i,.aa-premium--liberation .ctx-i,.aa-premium--wef .ctx-i{border-right:0}
+}
+@media(max-width:550px){
+ .aa-premium--communists .nav a,.aa-premium--liberation .nav a{font-size:10px;letter-spacing:.02em;padding:7px}
+ .aa-premium--liberation .nav-logo{height:32px}
+ .aa-premium--wef .nav-links{gap:8px}
+ .aa-premium--wef .nav-links a{font-size:10px}
+ .aa-premium--communists .sec,.aa-premium--liberation .sec,.aa-premium--wef .sec{padding:44px 18px}
+ .aa-premium--liberation .dash{display:block}
+ .aa-premium--liberation .dash-row{display:grid;grid-template-columns:1fr 1fr}
+ .aa-premium--liberation .dash-head{display:inline-block;width:50%}
+ .aa-premium--liberation .dash-cell{padding:13px}
+ .aa-premium--wef .tl-ev .c,.aa-premium--communists .tl-ev .c{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ .aa-premium--communists *, .aa-premium--liberation *, .aa-premium--wef *{scroll-behavior:auto!important}
+ .aa-premium--communists .hero h1,.aa-premium--communists .hero-sub,.aa-premium--communists .hero-label,
+ .aa-premium--liberation .hero h1,.aa-premium--liberation .hero-sub,.aa-premium--liberation .hero-label,
+ .aa-premium--wef .hero h1,.aa-premium--wef .hero-sub,.aa-premium--wef .hero-label,.aa-premium--wef .hero-btns
+ {animation:none!important;opacity:1!important;transform:none!important}
+ .aa-premium--communists .tl-ev .c,.aa-premium--liberation .ev-card,.aa-premium--wef .tl-ev .c {transition:none!important}
+}
