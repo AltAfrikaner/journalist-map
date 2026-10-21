@@ -14,7 +14,7 @@ Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map
 | 8 | `usaid.html` | source correction proposed | Dated 2025 suspension and 2026 OIG records; NED institutional distinction; correct USAID primer definition and Meta policy. Check individual awards and newsroom influence before full evidence sign-off |
 | 9 | `usaidtonewsroom.html` | pending | Grant-by-grant sourcing |
 | 10 | `mtn.html` | source correction proposed | #37 September 2026 procedural rulings and MTN response; telecom-to-missile hypothesis marked UNVERIFIED. Review original historic claims and named relationships individually |
-| 11 | `prototypenation.html` | pending | Causal transfer documentation |
+| 11 | `prototypenation.html` | source correction proposed | #38 chronology/UN/EEOC/ICTJ cross-check; distinguish policy borrowing from analogy and unverified central direction; individual comparisons and figures still need case-level audit |
 | 12 | `motsepe.html` | pending | Institutional and individual associations |
 | 13 | `communists.html` | pending | Historical chain and analogous policies |
 | 14 | `ancliberation.html` | pending | Quantitative method and psychology |
