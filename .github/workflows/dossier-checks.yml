@@ -9,6 +9,7 @@ on:
       - 'assets/dossier-19.css'
       - 'assets/dossier-batch-20-22.css'
       - 'assets/dossier-batch-23-25.css'
+      - 'assets/dossier-batch-26-28.css'
       - '**.html'
       - 'scripts/check-dossiers.mjs'
       - '.github/workflows/dossier-checks.yml'
