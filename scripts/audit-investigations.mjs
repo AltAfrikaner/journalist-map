@@ -168,6 +168,13 @@ if(process.argv.includes('--enforce-evidence-notes')){
    'The Afrikaner was the prototype. The methodology was Fabian:'
  ])assert(!page.includes(statement),'Overstated policy-export claim still in narrative: '+statement);
 }
+/* Motsepe: preserve date-specific governance and verified investor relationship. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const page=readFileSync('motsepe.html','utf8');
+ for(const phrase of ['Dated governance update · October 2026','non-executive chairman','sole African partner</strong> is <strong>UNVERIFIED','irhosted.profiledata.co.za/AfricanRainbowMinerals/2020_feeds/SensPopUp.aspx?id=539165'])
+  assert(page.includes(phrase),'Missing Motsepe fact qualification: '+phrase);
+ assert(!page.includes('Breakthrough Energy Ventures (sole African partner, Gates-Soros-Bezos).'),'Old exclusivity claim returned');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
