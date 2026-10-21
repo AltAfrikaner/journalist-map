@@ -93,6 +93,16 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(!osf.includes('The fund\'s primary grantee is'),'Unverified OSF ranking reintroduced');
  assert(!osf.includes('Confirms $29M Constitutionalism Fund. Justice Mokgoro'),'Incorrect 2015 press attribution restored');
 }
+/* IOL: do not conflate post-2014 digital ownership with 2013 newspaper shareholdings. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const page=readFileSync('iol.html','utf8');
+ const index=readFileSync('index.html','utf8');
+ for(const token of ['Independent Newspapers and IOL are not the same legal company','23 October 2024','UNVERIFIED at document level','sekunjalo.com/what-we-do/investments/media-and-publishing/independent-online/'])
+  assert(page.includes(token),'Missing IOL source-status correction: '+token);
+ assert(!page.includes('No external accountability.'),'Outdated Press Council assertion');
+ assert(!index.includes('IOL: The ANC&#x27;s Print Arm'),'Unsupported homepage editorial control claim');
+ assert(index.includes('IOL &amp; Independent Media: Who Owns the Headlines?'),'Missing corrected IOL archive headline');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
