@@ -1,6 +1,6 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
-const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html'];
+const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
 assert(css.includes('.aa-page-links'),'Missing page navigation styles');
@@ -79,6 +79,30 @@ for(const file of newPages){
   assert.deepEqual(ids(now),ids(base),'Changed JS section hooks: '+file);
   for(const s of ['data:image','<canvas','<iframe','<source'])
     assert.equal(now.split(s).length,base.split(s).length,'Changed interactive asset count: '+file+' '+s);
+}
+
+
+/* Batch 13–15: verify untouched original articles and interactive data. */
+const nextBatch=['communists.html','ancliberation.html','wef.html'];
+const batchTheme=readFileSync('assets/dossier-batch-13-15.css','utf8');
+assert(batchTheme.includes('prefers-reduced-motion'),'Batch 13–15 missing motion fallback');
+for(const f of nextBatch){
+ const now=readFileSync(f,'utf8');
+ const cls=f==='ancliberation.html'?'liberation':f.slice(0,-5);
+ assert(now.includes('aa-premium--'+cls),'Missing premium class: '+f);
+ assert(now.includes('assets/dossier-batch-13-15.css'),'Missing theme: '+f);
+ assert(now.includes('href="index.html#investigations"'),'Missing archive link: '+f);
+ assert(batchTheme.includes('.aa-premium--'+cls),'Missing page-specific styles: '+f);
+ const base=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
+ const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ for(const [label,re] of [
+   ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+   ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['images',/<img\b[^>]*>/gi],
+   ['element IDs',/\bid=['"][^'"]+['"]/g]
+ ])assert.deepEqual(extract(now,re),extract(base,re),'Changed original '+label+' in '+f);
+ for(const sign of ['<canvas','data:image','<iframe'])assert.equal(now.split(sign).length,base.split(sign).length,'Changed embedded asset in '+f);
 }
 
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
