@@ -180,6 +180,13 @@ if(process.argv.includes('--enforce-evidence-notes')){
  const s=readFileSync('communists.html','utf8');
  for(const q of ['What the SACP\'s programmes actually say','sacp.org.za/content/path-power-programme','sacp.org.za/docs/docs/2017/Position-Papers.pdf','UNVERIFIED'])assert(s.includes(q),'Missing SACP primary-source context '+q);
 }
+/* Guard the statistical-methodology qualification in liberation analysis. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const html=readFileSync('ancliberation.html','utf8');
+ assert(html.includes('What the numbers can tell us, and what they cannot'),'Methodology section missing');
+ assert(html.includes('the asserted cause or trend is UNVERIFIED'),'No evidence qualification');
+ assert(!html.includes('Confidence level: HIGH across all metrics'),'Unsubstantiated universal confidence restored');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
