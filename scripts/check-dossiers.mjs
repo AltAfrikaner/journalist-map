@@ -246,7 +246,9 @@ for(const f of batch16){
   ])assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   const oldIds=hits(old,/\bid=["'][^"']+["']/g);
   const newIds=hits(html,/\bid=["'][^"']+["']/g);
-  assert.deepEqual(newIds,file==='cws.html'?[...oldIds,'id="start-investigation"']:oldIds,'Changed original element IDs in '+file);
+  const extraAnchor='id="start-investigation"';
+  const expectedIds=file==='cws.html' && !oldIds.includes(extraAnchor)?[...oldIds,extraAnchor]:oldIds;
+  assert.deepEqual(newIds,expectedIds,'Changed original element IDs in '+file);
   for(const asset of ['<canvas','data:image','<iframe'])
    assert.equal(html.split(asset).length,old.split(asset).length,'Changed original asset '+asset+' in '+file);
  }
