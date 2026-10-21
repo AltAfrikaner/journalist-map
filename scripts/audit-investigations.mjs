@@ -187,6 +187,13 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(html.includes('the asserted cause or trend is UNVERIFIED'),'No evidence qualification');
  assert(!html.includes('Confidence level: HIGH across all metrics'),'Unsubstantiated universal confidence restored');
 }
+/* WEF domestic public-authority correction must stay sourced. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const html=readFileSync('wef.html','utf8');
+ for(const token of ['Influence is not the same as public authority','19 October 2022','December 2022','UNVERIFIED','weforum.org/about/leadership-and-governance/'])
+  assert(html.includes(token),'Missing WEF governance clarification: '+token);
+ assert(!html.includes('At no point in this three-stage cycle does the South African Parliament debate'),'Incorrect no-scrutiny claim restored');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
