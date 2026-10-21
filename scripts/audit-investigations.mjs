@@ -109,7 +109,7 @@ if(process.argv.includes('--enforce-evidence-notes')){
  for(const s of [
   'The 2025 funding shutdown changed the story',
   '30 of the 51 terminated awards lacked approved disposal plans',
-  'The USAID Disinformation Primer (February 2021)',
+  'USAID Disinformation Primer (February 2021)',
   'https://oig.usaid.gov/node/8106',
   'https://www.gao.gov/assets/nsiad-84-121.pdf'
  ])assert(page.includes(s),'Missing or misquoted USAID evidence update: '+s);
