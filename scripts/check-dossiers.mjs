@@ -134,4 +134,33 @@ for(const f of batch16){
   assert.equal(now.split(sig).length,base.split(sig).length,'Original embedded visual changed in '+f);
 }
 
+/* Investigation 19: verify cosmetic-only upgrades to the signed-letter dossier.
+ * The full interactive signatory roster, research wording, charts and WebGL
+ * source must remain byte-for-byte identical to the main-branch baseline.
+ */
+{
+ const page='44afrikaners.html';
+ const now=readFileSync(page,'utf8');
+ const old=execFileSync('git',['show','origin/main:'+page],{encoding:'utf8',maxBuffer:16*1024*1024});
+ const theme=readFileSync('assets/dossier-19.css','utf8');
+ for(const required of ['aa-premium--letter','href="assets/dossier-19.css"','class="aa-page-links"','href="index.html#investigations"','href="#context"','rel="canonical"'])
+   assert(now.includes(required),'Investigation 19 missing '+required);
+ assert(theme.includes('prefers-reduced-motion'),'Investigation 19 has no reduced-motion fallback');
+ assert(theme.includes(':focus-visible'),'Investigation 19 has no keyboard focus treatment');
+ const extract=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
+ for(const [category,re] of [
+  ['original scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+  ['original paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+  ['research diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+  ['original images',/<img\b[^>]*>/gi],
+  ['interactive IDs',/\bid=['"][^'"]+['"]/g]
+ ])assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
+ for(const sig of ['<canvas','data:image','<iframe'])
+   assert.equal(now.split(sig).length,old.split(sig).length,'Changed embedded asset '+sig);
+ for(const id of ['context','roll','finding','anatomy','network','map','provenance'])
+   assert(now.includes('href="#'+id+'"'),'Missing accessible section navigation '+id);
+ for(const name of ['MTNrooivalkIRAN.html','mbalula_network.html'])
+   assert(existsSync(name),'Invalid investigation series destination: '+name);
+}
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
