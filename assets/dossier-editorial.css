@@ -162,3 +162,25 @@
 .aa-premium--africacheck .source b{color:#172132;}
 .aa-premium--africacheck .source a {color:#8b0000;}
 @media(max-width:800px){.aa-premium--africacheck .hero{padding:56px 20px 64px;}.aa-premium--africacheck main section{padding:50px 0;}.aa-premium--africacheck .navlinks{padding-bottom:5px;}}
+
+/* Shared file treatment: each original story/map retains its bespoke content design.
+   Unified navigation, feature labels and finishing details from the editorial homepage. */
+.aa-premium .aa-story-kicker{display:flex;gap:13px;flex-wrap:wrap;align-items:center;margin:0 0 24px;font:600 10px/1.7 'JetBrains Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:#d8c39c;}
+.aa-premium .aa-story-kicker a{color:#ecd5a9;text-decoration:none;border-bottom:1px solid rgba(238,213,169,.65);}
+.aa-premium .aa-story-kicker a:hover{color:#fff;}
+.aa-premium .aa-story-kicker i{color:#c5a258;font-style:normal;}
+.aa-premium--light .aa-story-kicker{color:#6d6152;}
+.aa-premium--light .aa-story-kicker a{color:#8b0000;border-color:#c5a258;}
+.aa-premium--light .aa-story-kicker a:hover{color:#1b2a4a;}
+.aa-premium--special{--aa-navy:#1b2a4a;--aa-gold:#c5a258;--aa-burgundy:#8b0000;}
+.aa-premium--special a:focus-visible,.aa-premium--special button:focus-visible{outline:3px solid #d2b272;outline-offset:3px;}
+.aa-premium--special .aa-page-links {scroll-margin-top:85px;}
+.aa-premium--special h1,.aa-premium--special h2{font-family:'Playfair Display',Georgia,serif;}
+.aa-premium--special :is(.hero,.header) .aa-story-kicker {font-size:10px;}
+.aa-premium--special :is(.hero,.header) .aa-story-kicker a{font:700 10px 'JetBrains Mono',monospace;}
+.aa-premium--special :is(.hero,.header) h1{letter-spacing:-.04em;}
+@media (max-width:700px){
+.aa-premium .aa-story-kicker{justify-content:center;text-align:center;gap:7px;font-size:9px;}
+.aa-premium--special .aa-page-links{grid-template-columns:1fr;gap:10px;}
+.aa-premium--special .aa-page-links .aa-link-center,.aa-premium--special .aa-page-links .aa-link-next{text-align:left;align-items:flex-start;}
+}
