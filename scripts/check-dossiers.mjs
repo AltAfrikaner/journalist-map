@@ -1,6 +1,6 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
-const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html'];
+const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html','un.html','mbalula.html','44afrikaners.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
 assert(css.includes('.aa-page-links'),'Missing page navigation styles');
@@ -103,6 +103,30 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ])assert.deepEqual(extract(now,re),extract(base,re),'Changed original '+label+' in '+f);
  for(const sign of ['<canvas','data:image','<iframe'])assert.equal(now.split(sign).length,base.split(sign).length,'Changed embedded asset in '+f);
+}
+
+
+/* Batch 16,17,19: verify the article and embedded intelligence sources are untouched. */
+const batch=[['un.html','un'],['mbalula.html','mbalula'],['44afrikaners.html','afrikaners-letter']];
+const theme=readFileSync('assets/dossier-batch-16-17-19.css','utf8');
+assert(theme.includes('prefers-reduced-motion'),'Batch theme missing reduced motion support');
+for(const [path,klass] of batch) {
+  const now=readFileSync(path,'utf8');
+  assert(now.includes('aa-premium--'+klass),'Missing premium class: '+path);
+  assert(now.includes('href="assets/dossier-batch-16-17-19.css"'),'Missing stylesheet: '+path);
+  assert(now.includes('class="aa-page-links"'),'Missing navigation: '+path);
+  assert(theme.includes('.aa-premium--'+klass),'Missing style for '+path);
+  const before=execFileSync('git',['show','origin/main:'+path],{encoding:'utf8',maxBuffer:16*1024*1024});
+  const match=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+  for(const [label,re] of [
+    ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+    ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+    ['SVGs',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+    ['images',/<img\b[^>]*>/gi],
+    ['IDs',/\bid=['"][^'"]+['"]/g]
+  ])assert.deepEqual(match(now,re),match(before),'Original '+label+' changed in '+path);
+  for(const sig of ['<canvas','data:image','<iframe','<source'])
+    assert.equal(now.split(sig).length,before.split(sig).length,'Embedded asset changed '+path+' '+sig);
 }
 
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
