@@ -57,6 +57,17 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(roster.includes('Tied to One of 5 Universities'),'University roster/count contradiction remains');
  assert(roster.includes('UNVERIFIED SECTOR BREAKDOWN'),'Missing chart arithmetic audit notice');
 }
+/* Keep dated case updates conspicuous and evidence-linked. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const real=readFileSync('real411.html','utf8');
+ const splc=readFileSync('splc.html','utf8');
+ for(const [file,html] of [['real411.html',real],['splc.html',splc]]){
+  assert(html.includes('class="aa-factual-update"'),'Missing dated factual update in '+file);
+  assert(html.includes('UNVERIFIED'),'Missing factual uncertainty notice in '+file);
+ }
+ assert(real.includes('20 October 2026')&&real.includes('www.sanews.gov.za/south-africa/iec-enters-partnership-counter-disinformation'),'Missing new IEC partnership reference');
+ assert(splc.includes('second superseding indictment')&&splc.includes('www.justice.gov/usao-mdal/pr/second-superseding-indictment-adds-defendant-and-charges-southern-poverty-law-center'),'Missing updated indictment record');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
