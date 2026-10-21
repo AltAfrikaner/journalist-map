@@ -184,3 +184,59 @@
 .aa-premium--special .aa-page-links{grid-template-columns:1fr;gap:10px;}
 .aa-premium--special .aa-page-links .aa-link-center,.aa-premium--special .aa-page-links .aa-link-next{text-align:left;align-items:flex-start;}
 }
+
+/* 04 IFCN: preserve complex dark charts and graphics while refining frame. */
+.aa-premium--tool{--aa-paper:#f7f4ec;background:var(--aa-paper); color:#f4efe5;}
+.aa-premium--tool .aa-tool-header{max-width:none;position:relative;z-index:2001;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:16px max(20px,calc((100vw - 1140px)/2));background:#f7f4ec;border-bottom:1px solid #d9cdbd;color:#5f5c55;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.08em}
+.aa-premium--tool .aa-tool-header a{color:#1b2a4a;font:700 12px 'Source Sans 3',sans-serif;text-decoration:none;border-bottom:1px solid #b4a28c;padding:3px 0}
+.aa-premium--tool .aa-tool-header a:hover{color:#8b0000}
+.aa-premium--tool .aa-tool-header .aa-tool-brand{font:900 19px 'Playfair Display',Georgia,serif;letter-spacing:-.04em;border:0;color:#1b2a4a}
+.aa-premium--tool .aa-tool-brand span{font:600 10px 'JetBrains Mono',monospace;letter-spacing:.04em;color:#8b0000}
+.aa-premium--tool .aa-page-links{color:#182433}
+.aa-premium--ifcn{background:#172132}
+.aa-premium--ifcn .hero{min-height:calc(100vh - 54px);background:linear-gradient(135deg,#172132,#0c1423);}
+.aa-premium--ifcn .hero h1{letter-spacing:-.045em;font-size:clamp(45px,6.5vw,83px)}
+.aa-premium--ifcn .hero h1 span{color:#e0c08a}
+.aa-premium--ifcn .hero .desc{color:#e0d7ca;max-width:730px;font-size:clamp(16px,1.5vw,19px)}
+.aa-premium--ifcn .hero .subtitle{color:#d6c9b6}
+.aa-premium--ifcn .hero .kicker{letter-spacing:.16em;color:#eccd92}
+.aa-premium--ifcn .nav{background:#172132}
+.aa-premium--ifcn .nav-links a{color:#e4d6c1}
+.aa-premium--ifcn .nav-links a:hover{color:#eac88f}
+.aa-premium--ifcn section{max-width:1150px}
+.aa-premium--ifcn .sh{font-size:clamp(32px,3.9vw,50px);line-height:1.15;letter-spacing:-.03em}
+.aa-premium--ifcn .ssub{color:#d4d2cf;font:400 clamp(16px,1.5vw,18px)/1.72 'DM Sans',sans-serif;max-width:830px}
+.aa-premium--ifcn .card{border-radius:2px;border-color:#34445b}
+.aa-premium--ifcn .card:hover{border-color:#c5a258}
+.aa-premium--ifcn .card p{color:#cbd0dc;line-height:1.78}
+.aa-premium--ifcn .card h3{font-size:22px;line-height:1.2}
+.aa-premium--ifcn .stat-n{color:#e4c38e}
+.aa-premium--ifcn .stat-l{color:#ccd1d9}
+.aa-premium--ifcn .stag{letter-spacing:.14em;color:#e8c48d}
+.aa-premium--ifcn .footer{background:#172132;border-top:1px solid #5d4f3a}
+.aa-premium--ifcn .fi:not(.v){opacity:1;transform:none}
+.aa-premium--sixstage{background:#f7f4ec}
+.aa-premium--sixstage>.container{width:min(calc(100% - 32px),1200px);max-width:1200px;background:#172132;box-shadow:0 18px 46px rgba(23,33,50,.17);padding:clamp(34px,5vw,70px) clamp(14px,4vw,55px) 46px;margin:38px auto}
+.aa-premium--sixstage .header h1{font-size:clamp(30px,4vw,53px);line-height:1.08;letter-spacing:-.04em}
+.aa-premium--sixstage .header .subtitle{color:#e1d8ca;line-height:1.5}
+.aa-premium--sixstage .stage-title{font-size:clamp(19px,2vw,25px)}
+.aa-premium--sixstage .stage-body{font-size:clamp(15px,1.4vw,17px);line-height:1.64;color:#dde3eb}
+.aa-premium--sixstage .annotation-panel{font-size:15px;line-height:1.55}
+.aa-premium--sixstage .footer-brand{font-family:'Playfair Display',Georgia,serif}
+.aa-premium--flowchart{background:#f7f4ec}
+.aa-premium--flowchart>.container{width:min(calc(100% - 32px),950px);max-width:950px;margin:38px auto;background:#101a2a;padding:clamp(32px,5vw,60px) clamp(16px,4vw,48px) 70px;border:1px solid #b7a58e;box-shadow:0 18px 46px rgba(23,33,50,.15)}
+.aa-premium--flowchart .header h1{font-size:clamp(25px,3.2vw,44px);letter-spacing:.05em}
+.aa-premium--flowchart .header .subtitle{color:#c7d9e6}
+.aa-premium--flowchart .context-block p{line-height:1.7}
+.aa-premium--flowchart .stage-body p{line-height:1.7}
+@media(max-width:760px){
+.aa-premium--tool .aa-tool-header{padding:14px 16px;justify-content:center;text-align:center}
+.aa-premium--tool .aa-tool-header .aa-tool-brand{font-size:18px}
+.aa-premium--ifcn .hero{min-height:0;padding:110px 22px 75px}
+.aa-premium--ifcn .nav.visible{max-width:100vw;overflow-x:auto}
+.aa-premium--sixstage>.container,.aa-premium--flowchart>.container{width:100%;margin:0 auto;border:none}
+}
+@media(prefers-reduced-motion:reduce){
+.aa-premium--ifcn .hero h1,.aa-premium--ifcn .hero .kicker,.aa-premium--ifcn .hero .desc,.aa-premium--ifcn .hero .subtitle,.aa-premium--ifcn .hero-logo{opacity:1!important;animation:none!important;transform:none!important}
+.aa-premium--flowchart .eye-icon{animation:none!important}
+}
