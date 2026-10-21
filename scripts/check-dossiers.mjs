@@ -1,6 +1,6 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
-const paths=['osf.html','sa_journalists.html','africacheck.html'];
+const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
 assert(css.includes('.aa-page-links'),'Missing page navigation styles');
@@ -24,5 +24,8 @@ for(const file of paths){
     assert(html.includes('new THREE'),'3D graph source removed: '+file);
   }
   if(file==='africacheck.html')assert(html.includes('id="sources"'),'Sources removed');
+  if(file==='ifcn.html')assert(html.includes('id="particles"'),'IFCN visualisation removed');
+  if(file==='sixstage.html')assert((html.match(/class="stage"/g)||[]).length===6,'Six stages must remain');
+  if(file==='metasuppression.html')assert((html.match(/class="stage stage-/g)||[]).length===6,'Six stages must remain');
 }
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
