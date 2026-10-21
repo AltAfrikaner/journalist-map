@@ -171,11 +171,15 @@ abbr[title]{text-decoration:underline dotted var(--gold-dim);cursor:help;text-un
   .ft{flex-direction:column;align-items:center;text-align:center;}
 }
 </style>
+<link rel="stylesheet" href="assets/dossier-editorial.css">
+<link rel="stylesheet" href="assets/dossier-batch-10-12.css">
+<link rel="canonical" href="https://altafrikaner.com/mtn.html">
+<meta name="theme-color" content="#f7f4ec">
 </head>
-<body>
+<body class="aa-premium aa-premium--mtn">
 
 <!-- STICKY NAV -->
-<div class="nav">
+<div class="nav"><a class="aa-hub-return" href="index.html#investigations">← Archive</a>
   <a onclick="document.getElementById('snooker').scrollIntoView({behavior:'smooth'})">Project Snooker</a>
   <a onclick="document.getElementById('arms').scrollIntoView({behavior:'smooth'})">Arms List</a>
   <a onclick="document.getElementById('network').scrollIntoView({behavior:'smooth'})">Network Map</a>
@@ -188,6 +192,7 @@ abbr[title]{text-decoration:underline dotted var(--gold-dim);cursor:help;text-un
 
 <!-- HERO -->
 <section class="hero" id="top">
+  <div class="aa-story-kicker "><a href="index.html#investigations">ALT AFRIKANER</a><i>/</i><span>NETWERK LEAKS · INVESTIGATION 10</span></div>
   <div class="hero-badge">Open Source Intelligence Investigation</div>
   <h1>Project <span>Snooker</span></h1>
   <p class="hero-sub">How Africa's largest mobile operator built a surveillance and targeting architecture for a designated terrorist organisation, traded South African weapons and United Nations votes for a telecoms licence, and became trapped inside the machine it helped create.</p>
@@ -719,5 +724,10 @@ abbr[title]{text-decoration:underline dotted var(--gold-dim);cursor:help;text-un
 const aObs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='translateY(0)';}});},{threshold:0.1});
 document.querySelectorAll('.tl-item,.person-card,.shell-card,.legal-card,.chain-step,.killed-card,.arms-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.5s ease,transform 0.5s ease';aObs.observe(el);});
 </script>
+<aside class="aa-page-links" aria-label="Investigation series navigation">
+<a class="aa-link aa-link-prev" href="usaidtonewsroom.html"><span class="aa-link-label">← Previous investigation</span><span class="aa-link-title">Washington to Newsroom</span></a>
+<a class="aa-link aa-link-center" href="index.html#investigations"><span class="aa-link-label">ALT AFRIKANER / NETWERK LEAKS</span><span class="aa-link-title">All investigations</span><span class="aa-link-caption">File 10 of 31</span></a>
+<a class="aa-link aa-link-next" href="prototypenation.html"><span class="aa-link-label">Next investigation →</span><span class="aa-link-title">The Prototype Nation</span></a>
+</aside>
 </body>
 </html>
