@@ -1,6 +1,6 @@
 # Editorial upgrade completion ledger
 
-Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map. This ledger tracks **evidence-led editorial upgrades**, not the earlier premium visual design. **A merged contextual note is not a completed evidence audit.** No article is marked substantively complete solely because a correction, design upgrade, or source-link note was merged.
+Status reviewed 2026-10-21 after merged PR #34 and the 11–13 evidence-review attempt. Repository: AltAfrikaner/journalist-map. This ledger tracks **evidence-led editorial upgrades**, not the earlier premium visual design. **A merged contextual note is not a completed evidence audit.** No article is marked substantively complete solely because a correction, design upgrade, or source-link note was merged.
 
 | # | Local investigation | Status | Next requirement |
 |---:|---|---|---|
@@ -11,12 +11,12 @@ Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map
 | 5 | `sixstage.html` | context merged | #21 and #26; verify individual examples and source-to-platform causal links |
 | 6 | `metasuppression.html` | context merged | #21 and #26; claim-level moderation outcomes remain to be independently documented |
 | 7 | `iol.html` | context merged | #32 distinguished IOL digital and Independent Newspapers, documented 2016–2024 Press Council changes and disputed SACTWU rectification; examine other editorial claims individually |
-| 8 | `usaid.html` | pending | Historical versus modern causal chain needs red-team |
-| 9 | `usaidtonewsroom.html` | pending | Grant-by-grant sourcing |
-| 10 | `mtn.html` | pending | Court allegations, findings and denials |
-| 11 | `prototypenation.html` | pending | Causal transfer documentation |
-| 12 | `motsepe.html` | pending | Institutional and individual associations |
-| 13 | `communists.html` | pending | Historical chain and analogous policies |
+| 8 | `usaid.html` | context merged #34; incomplete | Source note separates NED from USAID; historical versus current causation and grant-by-grant analysis still need review |
+| 9 | `usaidtonewsroom.html` | context merged #34; incomplete | Funding-versus-control caveat added; original grant/subaward dates and editorial decisions remain unverified |
+| 10 | `mtn.html` | context merged #34; incomplete | #34 distinguished 2025 appeal rulings from merits; updated court docket and additional allegations/denials still to verify |
+| 11 | `prototypenation.html` | source reviewed, ARTICLE WRITE BLOCKED; incomplete | [21 Oct correction memo](SOURCE-CORRECTIONS-11-13-20261021.md) on FEIE/CIA/OSF causality, 1989 intersectionality and pre-1995 truth commissions; full-file GitHub write rejected |
+| 12 | `motsepe.html` | source reviewed, ARTICLE WRITE BLOCKED; incomplete | [21 Oct correction memo](SOURCE-CORRECTIONS-11-13-20261021.md) on CAF 54-member governance, 2027 denial, WEF powers and 2002 Mining Charter; full-file GitHub write rejected |
+| 13 | `communists.html` | source reviewed, ARTICLE WRITE BLOCKED; incomplete | [21 Oct correction memo](SOURCE-CORRECTIONS-11-13-20261021.md) on 1928 Comintern, 1969 ANC, 1989 US intersectionality and TRC predecessors; full-file GitHub write rejected |
 | 14 | `ancliberation.html` | pending | Quantitative method and psychology |
 | 15 | `wef.html` | pending | Authority versus access; chronology |
 | 16 | `un.html` | pending | Legal standard comparison |
@@ -42,4 +42,8 @@ For each article, record: recovered prior shared evidence consulted; primary sup
 
 ## Concurrent work and safeguards
 
-PRs #23, #25–#28 and #30–#32 have merged after checks; #24 remains a review-only draft. Legacy technical PRs #3/#4 remain open. Avoid duplicate writes and test competing PRs independently. Refresh exact PR status and main deployment before counting an investigation as complete.
+PRs #23, #25–#28, #30–#32 and #34 have merged after checks; #24 remains a review-only draft. Legacy technical PRs #3/#4 remain open. Avoid duplicate writes and test competing PRs independently. Refresh exact PR status and main deployment before counting an investigation as complete.
+
+## 21 October 2026 run — investigations 11–13
+
+Read current `main/index.html` and all open PRs (#3, #4, #24). Evidence and contrary positions for 11–13 recorded in [source/correction log](SOURCE-CORRECTIONS-11-13-20261021.md). A full-page HTML write was attempted for each investigation and each was **blocked by safety checks**; no article change was made, and none is completed. These three remain eligible for re-attempt when a permitted edit path becomes available. This run made no change to excluded external sites, map data, scripts, images or editorial viewpoint. Source-log and ledger additions are administrative research records, **not** finished substantive HTML upgrades.
