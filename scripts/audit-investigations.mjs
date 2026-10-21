@@ -152,6 +152,22 @@ if(process.argv.includes('--enforce-evidence-notes')){
   'these connections are directly accessible to Iran\'s military intelligence'
  ])assert(!html.includes(old),'MTN concluded unproven allegation: '+old);
 }
+/* Prototype Nation: prohibit unqualified claims of universal post-1994 export. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const page=readFileSync('prototypenation.html','utf8');
+ for(const word of [
+   'What can be shown to travel from South Africa, and what predates it?',
+   'UNVERIFIED',
+   'www.eeoc.gov/history/eeoc-history-law',
+   'digitallibrary.un.org/record/527647/'
+ ])assert(page.includes(word),'Comparative history note missing '+word);
+ for(const statement of [
+   'The unbroken documented chain from the CIA',
+   'The mechanism is identical. The branding is different.',
+   'The backlash in every Western country follows the South African pattern',
+   'The Afrikaner was the prototype. The methodology was Fabian:'
+ ])assert(!page.includes(statement),'Overstated policy-export claim still in narrative: '+statement);
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
