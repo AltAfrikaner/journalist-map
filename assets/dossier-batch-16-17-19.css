@@ -1,0 +1,179 @@
+/* ALT AFRIKANER | DOSSIERS 16, 17 AND 19
+ * Scoped editorial enhancements. Original interactive maps, source
+ * references and data graphics are left untouched.
+ */
+.aa-premium--un,.aa-premium--mbalula,.aa-premium--afrikaners-letter {
+  --aa-paper:#f7f4ec;--aa-ink:#22303e;--aa-red:#8b0000;--aa-navy:#1b2a4a;
+  background:#f7f4ec;color:#22303e;font-family:'Source Sans 3',system-ui,sans-serif;
+}
+.aa-premium--un .nav,.aa-premium--mbalula .nav,.aa-premium--afrikaners-letter .site-header {
+  background:#172132;border-bottom:1px solid #45546c;
+}
+.aa-premium--un .nav a,.aa-premium--mbalula .nav a {font:700 11px 'Source Sans 3',sans-serif;letter-spacing:.07em;color:#eedfc8;border-color:#817258;}
+.aa-premium--un .nav a:hover,.aa-premium--mbalula .nav a:hover,
+.aa-premium--mbalula .nav a.active {background:#c5a258;color:#132036;}
+.aa-premium--un .hero,.aa-premium--mbalula .hero {
+  min-height:0;padding:170px max(25px,calc((100vw - 1140px)/2)) 88px;
+  background:radial-gradient(ellipse at 80% 19%,#344b6a 0%,#172132 62%,#101b2b 100%);
+}
+.aa-premium--un .hero::before,.aa-premium--mbalula .hero::before {background:none;}
+.aa-premium--un .hero h1,.aa-premium--mbalula .hero h1 {
+ font:900 clamp(43px,5.5vw,77px)/1.08 'Playfair Display',Georgia,serif;
+ letter-spacing:-.047em;color:#fffdf7;max-width:1070px;
+}
+.aa-premium--un .hero h1 em,.aa-premium--mbalula .hero h1 em{color:#e7c88f;}
+.aa-premium--un .hero h1 .red,.aa-premium--mbalula .hero h1 .red{color:#edb5a9;}
+.aa-premium--un .hero h1 .unb{color:#b0d5f4;}
+.aa-premium--un .hero-sub,.aa-premium--mbalula .hero-sub{
+  font:400 clamp(17px,1.6vw,21px)/1.72 'Source Sans 3',sans-serif;
+  color:#efe7da;max-width:900px;
+}
+.aa-premium--un .hero-label,.aa-premium--mbalula .hero-label{
+  color:#e5c490;font:700 11px 'JetBrains Mono',monospace;letter-spacing:.12em;
+}
+.aa-premium--un .hero .aa-story-kicker,.aa-premium--mbalula .hero .aa-story-kicker{
+  position:relative;z-index:2;margin:0 0 25px;
+}
+.aa-premium--un .ctx,.aa-premium--mbalula .ctx{
+  background:#fffdf8;border:1px solid #ddd1c1;
+  padding:25px max(14px,calc((100vw - 1180px)/2));
+}
+.aa-premium--un .ctx-i,.aa-premium--mbalula .ctx-i{border-right:1px solid #e0d7cd;padding:8px 5px;}
+.aa-premium--un .ctx-i:last-child,.aa-premium--mbalula .ctx-i:last-child{border:0;}
+.aa-premium--un .ctx-i .n,.aa-premium--mbalula .ctx-i .n{
+  font:900 clamp(28px,3vw,41px) 'Playfair Display',serif;color:#8b0000;
+}
+.aa-premium--un .ctx-i .l,.aa-premium--mbalula .ctx-i .l {
+  color:#535b63;font:700 11px/1.44 'Source Sans 3',sans-serif;letter-spacing:.04em;
+}
+.aa-premium--un .sec,.aa-premium--mbalula .sec {
+  padding:65px clamp(23px,4.8vw,60px);max-width:1180px;
+  border-bottom:1px solid #ded5c9;color:#26333f;
+}
+.aa-premium--un .sec h2,.aa-premium--mbalula .sec h2 {
+  font:700 clamp(31px,3.6vw,47px)/1.17 'Playfair Display',Georgia,serif;
+  letter-spacing:-.034em;color:#1b2a4a;margin-bottom:22px;
+}
+.aa-premium--un .sec h2 em,.aa-premium--mbalula .sec h2 em{color:#8b0000;}
+.aa-premium--un .sec h2 .unb {color:#2d6398;}
+.aa-premium--un .sec-lb,.aa-premium--mbalula .sec-lb {
+  color:#8b0000;letter-spacing:.12em;font:700 11px 'JetBrains Mono',monospace;
+}
+.aa-premium--un .sec .intro,.aa-premium--mbalula .sec .intro{
+  color:#37414a;font:400 clamp(17px,1.5vw,19px)/1.78 'Source Sans 3',sans-serif;
+  max-width:910px;
+}
+.aa-premium--un .sec p,.aa-premium--mbalula .sec p{color:#37424d;}
+/* UN comparison and temporal evidence */
+.aa-premium--un .gls,.aa-premium--un .con-box,.aa-premium--un .tl-ev .c,
+.aa-premium--un .stat-card,.aa-premium--un .src{
+  background:#fffdf8;border:1px solid #dbd0c3;border-radius:2px;color:#283542;
+  box-shadow:0 5px 22px rgba(23,32,47,.04);
+}
+.aa-premium--un .gls h3,.aa-premium--un .gls-i b {color:#8b0000;}
+.aa-premium--un .gls-i span,.aa-premium--un .con-box .ci,
+.aa-premium--un .tl-ev .ex,.aa-premium--un .tl-ev .ds{color:#4b5966;}
+.aa-premium--un .con-box h3,.aa-premium--un .tl-ev .tt{color:#1b2a4a;}
+.aa-premium--un .tl-ev .yr,.aa-premium--un .con-stat{color:#8b0000;}
+.aa-premium--un .contrast{gap:18px;grid-template-columns:minmax(0,1fr) 38px minmax(0,1fr);}
+.aa-premium--un .con-mid{color:#8b0000;}
+.aa-premium--un .src a{color:#8b0000;}
+/* Mbalula public-record clusters. Keep network explorer on navy. */
+.aa-premium--mbalula .hero .hero-stats{margin-top:29px;}
+.aa-premium--mbalula .hero-stat .n{color:#e8c990;font:700 clamp(27px,3vw,38px) 'Playfair Display',serif;}
+.aa-premium--mbalula .hero-stat .l{color:#dac8ae;font-size:11px;}
+.aa-premium--mbalula .card,.aa-premium--mbalula .conn-card,.aa-premium--mbalula .tl-ev .c{
+  background:#fffdf8;border:1px solid #dbd1c4;border-radius:2px;color:#253240;
+  box-shadow:none;
+}
+.aa-premium--mbalula .card:hover,.aa-premium--mbalula .conn-card:hover{border-color:#b5a084;background:#fff;}
+.aa-premium--mbalula .card-h h3,.aa-premium--mbalula .card h3,
+.aa-premium--mbalula .tl-ev .tt {color:#1b2a4a;}
+.aa-premium--mbalula .card-body,.aa-premium--mbalula .card-body-inner,
+.aa-premium--mbalula .card p,.aa-premium--mbalula .tl-ev .ds {color:#46525f;}
+.aa-premium--mbalula .card-h .tag{letter-spacing:.035em;}
+.aa-premium--mbalula .tl-ev .tl-yr{color:#8b0000;}
+.aa-premium--mbalula .src{background:#fffdf8;border:1px solid #d8cebf;padding:28px;}
+.aa-premium--mbalula .src a{color:#8b0000;text-decoration:underline;text-underline-offset:3px;}
+.aa-premium--mbalula #network{
+  max-width:none;background:#172132;padding:65px max(20px,calc((100vw - 1180px)/2));
+  border-top:1px solid #485977;border-bottom:1px solid #485977;color:#f4eadb;
+}
+.aa-premium--mbalula #network h2,.aa-premium--mbalula #network .intro{color:#f4eadb;}
+.aa-premium--mbalula #network .sec-lb{color:#dfc08c;}
+.aa-premium--mbalula #network .net-wrap{background:#1a2940;border-color:#465a76;}
+/* Letter, signatories and 3D source board: warm-paper reading panels. */
+.aa-premium--afrikaners-letter{background:#f7f4ec;color:#24313d;background-image:none;}
+.aa-premium--afrikaners-letter::before{opacity:.14;mix-blend-mode:multiply;}
+.aa-premium--afrikaners-letter .site-header{position:sticky;top:0;z-index:65;}
+.aa-premium--afrikaners-letter .site-header .wrap{max-width:1320px;padding:13px 22px;}
+.aa-premium--afrikaners-letter .nav a {font:700 11px 'Source Sans 3',sans-serif;color:#e8dbc7;letter-spacing:.065em;}
+.aa-premium--afrikaners-letter .nav a:hover{color:#efce8e;}
+.aa-premium--afrikaners-letter .hero{
+  max-width:none;padding:94px max(23px,calc((100vw - 1180px)/2)) 79px;
+  background:radial-gradient(ellipse at 73% 22%,#354967,#172132 66%);
+  border-color:#47516a;
+}
+.aa-premium--afrikaners-letter .hero .ghost-44{opacity:.09;}
+.aa-premium--afrikaners-letter .hero h1{
+  font:900 clamp(43px,5.8vw,82px)/1.04 'Playfair Display',Georgia,serif;
+  max-width:850px;letter-spacing:-.05em;color:#fffdf8;
+}
+.aa-premium--afrikaners-letter .hero h1 em{color:#e2c48f;}
+.aa-premium--afrikaners-letter .hero .eyebrow{color:#ddc28f;letter-spacing:.14em;}
+.aa-premium--afrikaners-letter .hero .deck{
+  font:400 clamp(17px,1.72vw,22px)/1.68 'Source Sans 3',sans-serif;
+  max-width:780px;color:#efe5d6;
+}
+.aa-premium--afrikaners-letter .hero .meta{color:#e2d3bf;margin-top:31px;}
+.aa-premium--afrikaners-letter .hero .meta strong{color:#f4d197;}
+.aa-premium--afrikaners-letter .section{padding:66px clamp(20px,4vw,55px);max-width:1210px;}
+.aa-premium--afrikaners-letter .section-head{margin-bottom:35px;}
+.aa-premium--afrikaners-letter .section-title{
+  color:#1b2a4a;font:700 clamp(30px,3.4vw,46px)/1.13 'Playfair Display',Georgia,serif;
+  letter-spacing:-.035em;
+}
+.aa-premium--afrikaners-letter .section-lede{color:#47525c;font:400 clamp(16px,1.5vw,19px)/1.72 'Source Sans 3',sans-serif;}
+.aa-premium--afrikaners-letter .section-kicker{background:#f1e7da;color:#8b0000;border-color:#d8c8b3;font:700 11px 'JetBrains Mono',monospace;}
+.aa-premium--afrikaners-letter .datapoints {background:#e2d8c9;}
+.aa-premium--afrikaners-letter .dp,.aa-premium--afrikaners-letter .ctx-card,
+.aa-premium--afrikaners-letter .ctx-full,.aa-premium--afrikaners-letter .legal-box,
+.aa-premium--afrikaners-letter .viz-panel,.aa-premium--afrikaners-letter .sig-grid{
+  background:#fffdf8;border-color:#d9cebd;color:#253240;
+}
+.aa-premium--afrikaners-letter .dp .n{color:#8b0000;}
+.aa-premium--afrikaners-letter .dp .lbl,.aa-premium--afrikaners-letter .ctx-card h3{color:#1b2a4a;}
+.aa-premium--afrikaners-letter .dp .sub,.aa-premium--afrikaners-letter .ctx-card p{color:#4e5862;}
+.aa-premium--afrikaners-letter #map,.aa-premium--afrikaners-letter .network-wrap,
+.aa-premium--afrikaners-letter .map-3d{
+  background:#172132;color:#f3e9dc;border-color:#43536d;
+}
+.aa-premium--afrikaners-letter #map .section-title,.aa-premium--afrikaners-letter #network .section-title{color:#1b2a4a;}
+.aa-premium--afrikaners-letter .map-legend,.aa-premium--afrikaners-letter #panel-backdrop{color:#f4e9d8;}
+.aa-premium--afrikaners-letter .legal-notice{color:#45505b;}
+.aa-premium--afrikaners-letter .legal-box p{color:#454f5a;}
+@media(max-width:840px){
+ .aa-premium--un .nav,.aa-premium--mbalula .nav{position:relative;gap:5px;padding:12px;}
+ .aa-premium--un .hero,.aa-premium--mbalula .hero{padding:72px 22px 76px;}
+ .aa-premium--un .contrast{grid-template-columns:1fr;gap:10px;}
+ .aa-premium--un .con-mid{min-height:30px;}
+ .aa-premium--afrikaners-letter .site-header .wrap{flex-wrap:wrap;gap:8px;justify-content:center;}
+ .aa-premium--afrikaners-letter .hero{padding:64px 20px 69px;}
+ .aa-premium--afrikaners-letter .section{padding:47px 18px;}
+}
+@media(max-width:560px){
+ .aa-premium--un .nav a,.aa-premium--mbalula .nav a{font-size:10px;padding:7px;letter-spacing:.03em;}
+ .aa-premium--un .sec,.aa-premium--mbalula .sec{padding:42px 18px;}
+ .aa-premium--un .ctx,.aa-premium--mbalula .ctx{grid-template-columns:repeat(2,minmax(0,1fr));}
+ .aa-premium--un .ctx-i,.aa-premium--mbalula .ctx-i{border:0;}
+ .aa-premium--afrikaners-letter .nav{display:flex;flex-wrap:wrap;justify-content:center;}
+ .aa-premium--afrikaners-letter .nav a{font-size:10px;padding:7px;}
+}
+@media(prefers-reduced-motion:reduce){
+ .aa-premium--un *, .aa-premium--mbalula *, .aa-premium--afrikaners-letter *{scroll-behavior:auto!important;}
+ .aa-premium--un .hero-label,.aa-premium--un .hero h1,.aa-premium--un .hero-sub,
+ .aa-premium--mbalula .hero-label,.aa-premium--mbalula .hero h1,.aa-premium--mbalula .hero-sub,.aa-premium--mbalula .hero-stats{
+   animation:none!important;opacity:1!important;transform:none!important;
+ }
+ .aa-premium--un .tl-ev .c,.aa-premium--mbalula .card,.aa-premium--afrikaners-letter .reveal {transition:none!important;}
+}
