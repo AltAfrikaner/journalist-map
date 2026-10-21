@@ -68,6 +68,18 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(real.includes('20 October 2026')&&real.includes('www.sanews.gov.za/south-africa/iec-enters-partnership-counter-disinformation'),'Missing new IEC partnership reference');
  assert(splc.includes('second superseding indictment')&&splc.includes('www.justice.gov/usao-mdal/pr/second-superseding-indictment-adds-defendant-and-charges-southern-poverty-law-center'),'Missing updated indictment record');
 }
+/* Prevent categorical unsupported language and payroll inferences. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const journalists=readFileSync('sa_journalists.html','utf8');
+ const index=readFileSync('index.html','utf8');
+ assert(!index.includes('SA Journalists on the OSF Payroll'),'Unsupported individual payroll headline remains on homepage');
+ assert(index.includes('The Outbound Network: SA Journalists and Media Connections'),'Missing corrected archive label');
+ for(const disallowed of ['Zero Afrikaans-speaking journalists hold positions','Zero Afrikaans voices at any international outlet','None speak Afrikaans. None are Afrikaner.','240+ FCASA Members vs 0 Afrikaans'])
+  assert(!journalists.includes(disallowed),'Unsupported generalisation remains: '+disallowed);
+ assert(journalists.includes('Language data unverified'),'Statistical denominator not qualified');
+ assert(journalists.includes('document.getElementById("sA").textContent="?";'),'Old synthetic language statistic remains');
+ assert(journalists.includes('UNVERIFIED'),'Missing explicit evidential uncertainty');
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
