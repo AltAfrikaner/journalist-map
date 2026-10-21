@@ -149,11 +149,11 @@ for(const f of batch16){
  assert(theme.includes(':focus-visible'),'Investigation 19 has no keyboard focus treatment');
  const extract=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
  for(const [category,re] of [
-  ['original scripts',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],
-  ['original paragraphs',/<p\\b[^>]*>[\\s\\S]*?<\\/p>/gi],
-  ['research diagrams',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],
-  ['original images',/<img\\b[^>]*>/gi],
-  ['interactive IDs',/\\bid=['"][^'"]+['"]/g]
+  ['original scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+  ['original paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+  ['research diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+  ['original images',/<img\b[^>]*>/gi],
+  ['interactive IDs',/\bid=['"][^'"]+['"]/g]
  ])assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  for(const sig of ['<canvas','data:image','<iframe'])
    assert.equal(now.split(sig).length,old.split(sig).length,'Changed embedded asset '+sig);
