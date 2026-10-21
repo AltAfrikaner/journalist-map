@@ -1,16 +1,16 @@
 # Editorial upgrade completion ledger
 
-Status reviewed 2026-10-21 after PR #30. Repository: AltAfrikaner/journalist-map. This ledger tracks **evidence-led editorial upgrades**, not the earlier premium visual design. **A merged contextual note is not a completed evidence audit.** No article is marked substantively complete solely because a correction, design upgrade, or source-link note was merged.
+Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map. This ledger tracks **evidence-led editorial upgrades**, not the earlier premium visual design. **A merged contextual note is not a completed evidence audit.** No article is marked substantively complete solely because a correction, design upgrade, or source-link note was merged.
 
 | # | Local investigation | Status | Next requirement |
 |---:|---|---|---|
-| 1 | `osf.html` | pending | Legacy technical PR #3; no completed evidence upgrade confirmed |
+| 1 | `osf.html` | context merged | #31 corrected Constitutionalism Fund launch/total figures and LHR grantee ranking; broader OSF network causal assertions and legacy technical PR #3 still need independent verification |
 | 2 | `sa_journalists.html` | correction merged | #23 corrected unsupported payroll and language-census claims; selected nodes and individual funding claims still need source-by-source verification |
 | 3 | `africacheck.html` | context merged | #28 methodology/financial context; audit individual examples and funding periods |
 | 4 | `ifcn.html` | context merged | #26 policy chronology; check period-specific South African application |
 | 5 | `sixstage.html` | context merged | #21 and #26; verify individual examples and source-to-platform causal links |
 | 6 | `metasuppression.html` | context merged | #21 and #26; claim-level moderation outcomes remain to be independently documented |
-| 7 | `iol.html` | pending | Ownership and editorial directions require source-level checks |
+| 7 | `iol.html` | context merged | #32 distinguished IOL digital and Independent Newspapers, documented 2016–2024 Press Council changes and disputed SACTWU rectification; examine other editorial claims individually |
 | 8 | `usaid.html` | pending | Historical versus modern causal chain needs red-team |
 | 9 | `usaidtonewsroom.html` | pending | Grant-by-grant sourcing |
 | 10 | `mtn.html` | pending | Court allegations, findings and denials |
@@ -42,4 +42,4 @@ For each article, record: recovered prior shared evidence consulted; primary sup
 
 ## Concurrent work and safeguards
 
-PRs #23 and #25–#28, and #30, have merged after checks; #24 remains a review-only draft. Legacy technical PRs #3/#4 remain open. Avoid duplicate writes and test competing PRs independently. Refresh exact PR status and main deployment before counting an investigation as complete.
+PRs #23, #25–#28 and #30–#32 have merged after checks; #24 remains a review-only draft. Legacy technical PRs #3/#4 remain open. Avoid duplicate writes and test competing PRs independently. Refresh exact PR status and main deployment before counting an investigation as complete.
