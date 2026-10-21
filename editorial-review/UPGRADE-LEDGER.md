@@ -15,7 +15,7 @@ Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map
 | 9 | `usaidtonewsroom.html` | pending | Grant-by-grant sourcing |
 | 10 | `mtn.html` | source correction proposed | #37 September 2026 procedural rulings and MTN response; telecom-to-missile hypothesis marked UNVERIFIED. Review original historic claims and named relationships individually |
 | 11 | `prototypenation.html` | source correction proposed | #38 chronology/UN/EEOC/ICTJ cross-check; distinguish policy borrowing from analogy and unverified central direction; individual comparisons and figures still need case-level audit |
-| 12 | `motsepe.html` | pending | Institutional and individual associations |
+| 12 | `motsepe.html` | context merged | #39 ARM executive-to-non-executive transition, WEF trustee responsibilities and Breakthrough Energy investor relationship corrected; remaining political, financial and legal allegations require source-level verification |
 | 13 | `communists.html` | pending | Historical chain and analogous policies |
 | 14 | `ancliberation.html` | pending | Quantitative method and psychology |
 | 15 | `wef.html` | pending | Authority versus access; chronology |
