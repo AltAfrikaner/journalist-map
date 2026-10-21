@@ -79,3 +79,49 @@
  .aa-page-links .aa-link-center,.aa-page-links .aa-link-next{text-align:left;align-items:flex-start;}
 }
 @media(prefers-reduced-motion:reduce){.aa-premium--osf * {scroll-behavior:auto !important;}.aa-page-links .aa-link-title{transition:none;}}
+
+/* File 02: The Outbound Network: light reading surface, dark interactive map */
+.aa-premium--journalists{background:#f7f4ec;color:#1b2027;}
+.aa-premium--journalists .nav{background:rgba(23,33,50,.98);border-color:#3e4a5c;}
+.aa-premium--journalists .nav-links a {color:#ece3d3;font:700 10px 'Source Sans 3',sans-serif;letter-spacing:.08em;}
+.aa-premium--journalists .nav-links a:hover{color:#e9c788;}
+.aa-premium--journalists .nav-links .aa-return {color:#e9c788;border-bottom:1px solid #c5a258;}
+.aa-premium--journalists .hero{padding:clamp(95px,9vw,145px) 25px 92px;background:radial-gradient(ellipse at 80% 20%,#304564,#172132 70%);margin-top:58px;}
+.aa-premium--journalists .hero::before{opacity:.025;}
+.aa-premium--journalists .hero h1{font-size:clamp(43px,6.4vw,83px);line-height:1.03;letter-spacing:-.04em;}
+.aa-premium--journalists .hero h1 em{color:#dec393;}
+.aa-premium--journalists .hero-label{font:600 11px 'JetBrains Mono',monospace;letter-spacing:.16em;}
+.aa-premium--journalists .hero-sub{max-width:800px;font:400 clamp(16px,1.6vw,20px)/1.67 'Source Sans 3',sans-serif;color:#f0eadd;}
+.aa-premium--journalists .stats{background:#fffdf8;border-top:1px solid #d9d0c3;border-bottom:1px solid #d9d0c3;padding:24px 14px;flex-wrap:wrap;}
+.aa-premium--journalists .stat-n{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,3.7vw,45px);color:#8b0000;}
+.aa-premium--journalists .stat-l{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.09em;color:#5d5b57;}
+.aa-premium--journalists body>section:not(.hero){background:#f7f4ec;}
+.aa-premium--journalists >section:not(.hero):not(#map-section){border-bottom:1px solid #e0d7c9;}
+.aa-premium--journalists .container{max-width:980px;}
+.aa-premium--journalists section h2{font-size:clamp(30px,3.4vw,46px);letter-spacing:-.028em;line-height:1.16;color:#1b2a4a;}
+.aa-premium--journalists section h2 em{color:#8b0000;}
+.aa-premium--journalists section p{color:#313c45;font:400 clamp(16px,1.45vw,18px)/1.78 'Source Sans 3',sans-serif;}
+.aa-premium--journalists .section-label{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#8b0000;}
+.aa-premium--journalists .finding,.aa-premium--journalists .pattern{background:#fffdf8;border:1px solid #d6ccbe;box-shadow:none;border-radius:2px;}
+.aa-premium--journalists .finding-num{background:#f7f4ec;color:#8b0000;border-color:#cdbda8;}
+.aa-premium--journalists .finding h3,.aa-premium--journalists .pattern h4{color:#1b2a4a;font-size:clamp(18px,2vw,23px);}
+.aa-premium--journalists .finding p,.aa-premium--journalists .pattern p{color:#40434a;font-size:15px;}
+.aa-premium--journalists .pattern .tag{color:#8b0000;}
+.aa-premium--journalists #map-section{background:#eee8de;border-top:1px solid #d1c6b7;}
+.aa-premium--journalists #map-section h2{color:#1b2a4a;}
+.aa-premium--journalists #mw{border:2px solid #b7a58c;border-radius:2px;box-shadow:0 15px 45px rgba(18,30,48,.17);}
+.aa-premium--journalists .sources{border-top:1px solid #d8cdbd;color:#464e56;}
+.aa-premium--journalists .sources strong{color:#8b0000;}
+.aa-premium--journalists footer{background:#172132;border-top:2px solid #c5a258;}
+.aa-premium--journalists footer p,.aa-premium--journalists footer .footer-tag{color:#e0d3bb;}
+@media(max-width:720px){
+ .aa-premium--journalists .nav{height:auto;min-height:58px;position:relative;padding:10px 16px;gap:8px;flex-wrap:wrap;}
+ .aa-premium--journalists .nav-links{justify-content:center;flex-wrap:wrap;margin:0;width:100%;gap:5px;}
+ .aa-premium--journalists .nav-links a{padding:5px;}
+ .aa-premium--journalists .hero{margin-top:0;padding:60px 16px 70px;}
+ .aa-premium--journalists .stats{gap:20px;}
+ .aa-premium--journalists .container{padding:0 18px;}
+ .aa-premium--journalists section{padding:45px 0;}
+ .aa-premium--journalists #mw{height:480px;}
+ .aa-premium--journalists #pn{top:0;width:min(100vw,380px);}
+}
