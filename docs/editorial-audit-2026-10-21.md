@@ -37,3 +37,10 @@ The two externally hosted investigation cards (CitizenIntel Kalahari and AAIT) a
 - Existing research claims, scripts, SVGs, IDs and image data remain preserved for design-only changes.
 - No unsourced length padding, fabricated citations, or unverified allegations introduced.
 - Browser checks remain a separate step: desktop/mobile, dark/light plates, hover, focus, and reading contrast in tables and callout boxes.
+
+## 21 October evidence-refresh notes
+
+- **Real411 / LGE 2026:** The IEC's 20 October partnership announcement is now prominently linked in `real411.html`, including Microsoft as a currently named partner. The previous September observation of contradictory wording on Moxii's website remains as historical context. Contract-level terms and viewpoint-asymmetric outcomes remain **UNVERIFIED**.
+- **SPLC:** The page now links the August 2026 second superseding indictment and subsequent scheduling order, explicitly distinguishing accusations from findings and the original April charging record from the later amended one. The case's disposition remains unresolved in this audit; do not assert a conviction.
+
+Other pages still require case-by-case external source review; passing automated checks is **not** substantive validation of every legacy assertion.
