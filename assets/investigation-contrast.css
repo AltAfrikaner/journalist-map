@@ -200,3 +200,43 @@ body.aa-premium--splc section.aa-factual-update{border-left:5px solid #8b0000!im
 
 body.aa-premium .aa-evidence-context .aa-evidence-copy{color:#293b4c!important;font:400 clamp(17px,1.5vw,19px)/1.85 'Source Sans 3',system-ui,sans-serif;margin:0 0 23px;max-width:860px}
 body.aa-premium .aa-evidence-context .aa-evidence-copy strong{color:#152b44!important}
+
+
+/* 2026-10-21: journalist 3D section sits on cream, not navy. */
+body.aa-premium--journalists #map-section :is(.f-label,.ftxt,.ctxt){
+ color:#253548!important;font-size:clamp(11px,1.1vw,13px);letter-spacing:.03em;
+}
+body.aa-premium--journalists #map-section .fbtn{
+ color:#26364b!important;background:#fffdfa;border:1px solid #99886d;
+ font-size:11px;letter-spacing:.06em;font-weight:700;min-height:36px;
+}
+body.aa-premium--journalists #map-section .fbtn.active{
+ background:#1b2a4a;color:#fff!important;border-color:#1b2a4a;
+}
+body.aa-premium--journalists #map-section .fbtn:hover{
+ background:#e6d9c5;color:#17263a!important;border-color:#6a5638;
+}
+body.aa-premium--journalists #map-section .filter-bar,
+body.aa-premium--journalists #map-section .conn-legend{
+ gap:10px 12px;row-gap:12px;
+}
+body.aa-premium--journalists #map-section .filter-legend{
+ margin-left:0;gap:9px 14px;
+}
+body.aa-premium--journalists #map-section .fleg .fdot{
+ border:1px solid #3f5062;width:11px;height:11px;
+}
+body.aa-premium--journalists #map-section .container p,
+body.aa-premium--journalists #map-section > .container p{
+ color:#304051!important;
+}
+body.aa-premium--journalists #map-section .nl .nm{
+ color:#fff!important;text-shadow:0 1px 5px #000;
+}
+body.aa-premium--journalists #map-section .filter-bar{
+ border-bottom:1px solid #c6b9a6;
+}
+@media(max-width:720px){
+ body.aa-premium--journalists #map-section .fbtn{font-size:11px;padding:8px 10px}
+ body.aa-premium--journalists #map-section .filter-legend{width:100%}
+}
