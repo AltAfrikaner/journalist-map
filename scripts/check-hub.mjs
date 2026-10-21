@@ -19,4 +19,18 @@ assert(html.includes('src="assets/hub-discovery.js"'));
 assert(css.includes('prefers-reduced-motion'),'Missing reduced-motion fallback');
 assert(js.includes('card.hidden=!matched'),'Missing progressive filtering');
 assert(js.includes("textContent=cat"),'Filter labels must be text-only');
-console.log('Hub smoke checks passed: 31 routes preserved, safe discovery hooks, reduced motion.');
+
+const editorial=readFileSync('assets/hub-editorial.css','utf8');
+for(const section of ['class="site-header"','id="featured"','class="spotlight-lead"','class="archive-heading"','id="editorial-standards"']){
+  assert(html.includes(section),'Missing editorial homepage element: '+section);
+}
+const featured=[...html.matchAll(/class="(?:spotlight-lead|spotlight-side-story|rail-story)" href="([^"]+)"/g)].map(m=>m[1]);
+assert(featured.length>=4,'Expected feature links');
+for(const href of featured){assert(originalLinks.includes(href),'Featured link must be an existing archive route: '+href);}
+for(const href of ['mbalula_network.html','https://citizenintel.github.io/AAIT/'])assert(html.includes('href="'+href+'"'));
+assert(editorial.includes('color-scheme: light'),'Light editorial palette must be present');
+assert(editorial.includes('prefers-reduced-motion'),'Editorial layout must respect reduced motion');
+assert(html.includes('href="assets/hub-editorial.css"'),'Missing editorial stylesheet');
+assert(html.includes('https://altafrikaner.com/'),'Canonical custom domain missing');
+assert.equal((html.match(/<details\b/g)||[]).length,(html.match(/<\/details>/g)||[]).length,'Disclosure element must close');
+console.log('Hub smoke checks passed: 31 routes preserved, editorial links, discovery, accessibility.');
