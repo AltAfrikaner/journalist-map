@@ -13,3 +13,5 @@ The audit distinguishes a historic investment from a present balance, a grant re
 Official sources consulted for page 01: https://www.opensocietyfoundations.org/publications/30-years-of-the-open-society-foundation-for-south-africa and https://constitutionalismfund.co.za/.
 
 Official journalist-association source: https://www.fcasa.org/history.
+
+Current association website estimate: more than 280 correspondents.
