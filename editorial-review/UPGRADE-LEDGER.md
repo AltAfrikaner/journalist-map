@@ -13,7 +13,7 @@ Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map
 | 7 | `iol.html` | context merged | #32 distinguished IOL digital and Independent Newspapers, documented 2016–2024 Press Council changes and disputed SACTWU rectification; examine other editorial claims individually |
 | 8 | `usaid.html` | source correction proposed | Dated 2025 suspension and 2026 OIG records; NED institutional distinction; correct USAID primer definition and Meta policy. Check individual awards and newsroom influence before full evidence sign-off |
 | 9 | `usaidtonewsroom.html` | pending | Grant-by-grant sourcing |
-| 10 | `mtn.html` | pending | Court allegations, findings and denials |
+| 10 | `mtn.html` | source correction proposed | #37 September 2026 procedural rulings and MTN response; telecom-to-missile hypothesis marked UNVERIFIED. Review original historic claims and named relationships individually |
 | 11 | `prototypenation.html` | pending | Causal transfer documentation |
 | 12 | `motsepe.html` | pending | Institutional and individual associations |
 | 13 | `communists.html` | pending | Historical chain and analogous policies |
