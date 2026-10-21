@@ -197,4 +197,32 @@ for(const f of batch16){
   assert(readFileSync('mbalula_network.html','utf8').includes('href="#'+id+'"'),'Missing Mbalula accessible nav: '+id);
 }
 
+/* Dossiers 23–25: premium presentation with strictly preserved evidence. */
+{
+ const files=['wits.html','constitution.html','fwdeklerk_foundation_investigation.html'];
+ const names=['wits','constitution','fwdeklerk'];
+ const css=readFileSync('assets/dossier-batch-23-25.css','utf8');
+ assert(css.includes('prefers-reduced-motion'),'Batch 23-25 motion preference missing');
+ assert(css.includes(':focus-visible'),'Batch 23-25 accessible focus missing');
+ const extract=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+ for(let i=0;i<files.length;i++){
+  const file=files[i], now=readFileSync(file,'utf8');
+  const base=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
+  for(const req of ['aa-premium--'+names[i],'href="assets/dossier-batch-23-25.css"','class="aa-page-links"','href="index.html#investigations"','class="aa-editorial-skip"','rel="canonical"'])
+   assert(now.includes(req),'Missing '+req+' in '+file);
+  assert(css.includes('.aa-premium--'+names[i]),'Missing CSS for '+file);
+  for(const [what,re] of [
+   ['original scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['original paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+   ['original diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['original images',/<img\b[^>]*>/gi],
+   ['original element IDs',/\bid=["'][^"']+["']/g]
+  ])assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
+  for(const asset of ['data:image','<canvas','<iframe'])
+   assert.equal(now.split(asset).length,base.split(asset).length,'Changed '+asset+' in '+file);
+ }
+ for(const dest of ['adl.html','wits.html','constitution.html','fwdeklerk_foundation_investigation.html','cws.html'])
+  assert(existsSync(dest),'Invalid investigation navigation target '+dest);
+}
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
