@@ -15,6 +15,7 @@ on:
       - '**.html'
       - 'scripts/check-dossiers.mjs'
       - 'scripts/audit-investigations.mjs'
+      - 'editorial-review/UPGRADE-LEDGER.md'
       - '.github/workflows/dossier-checks.yml'
   workflow_dispatch:
 permissions:
