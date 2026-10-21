@@ -32,7 +32,7 @@ Status reviewed 2026-10-21 after PR #32. Repository: AltAfrikaner/journalist-map
 | 26 | `cws.html` | context merged | #27 litigation clarification; retain distinction between allegation and finding |
 | 27 | `omidyar.html` | context merged | #30 legal-entity provenance; verify recipient totals, grant dates, Reset post-2024 relationships |
 | 28 | `real411.html` | context merged | #22 dated IEC agreement update; individual platform-action evidence remains unverified |
-| 29 | `osf-funded-orgs.html` | pending | Funding percentages and dates |
+| 29 | `osf-funded-orgs.html` | source correction proposed | Distinguishes donor grants, IFCN status, Meta policy, individual payroll and unsupported zero-language claims; complete grant-level validation and percentages/dates remain outstanding |
 
 External investigations in the homepage's 31-entry list: two external destinations are out of scope and are not counted among the 29 local files.
 

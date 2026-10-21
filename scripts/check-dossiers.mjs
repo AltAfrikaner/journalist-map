@@ -268,7 +268,8 @@ for(const f of batch16){
  assert(css.includes('focus-visible'),'Atlas missing keyboard focus treatment');
  const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
  for(const [label,re] of [
-  ['original article paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+  // Narrative paragraphs intentionally receive documented editorial corrections in PR #36.
+  ['original table data',/<table\b[^>]*>[\s\S]*?<\/table>/gi],
   ['original filter scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
   ['original images',/<img\b[^>]*>/gi],
   ['original illustrations',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],

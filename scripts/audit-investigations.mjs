@@ -116,6 +116,24 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(!page.includes('a single unbroken chain of institutional continuity'),'Unsupported USAID/press control claim returned');
  assert(!page.includes('single editorial decision at a single organisation housed at the University of the Witwatersrand can suppress content across three billion users'),'Unsupported global factual outcome claim');
 }
+/* OSF funded directory: distinguish grants from platform policy and personal payroll. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const page=readFileSync('osf-funded-orgs.html','utf8');
+ for(const phrase of [
+  'How to read the funding directory without mistaking links for instructions',
+  'Africa Check publishes its institutional funders',
+  'case-level rating and platform action notice',
+  'funding directory',
+  'UNVERIFIED'
+ ])assert(page.includes(phrase),'Missing funding directory editorial check: '+phrase);
+ for(const invalid of [
+  'Meta adopted that code globally',
+  'the mechanism that reduced the reach of Afrikaner farm attack content',
+  'SA journalists on the OSF payroll',
+  'Journalists on OSF Payroll →',
+  'The Afrikaans press has zero documented connections'
+ ])assert(!page.includes(invalid),'Unverified source-to-outcome inference restored: '+invalid);
+}
 const contrastSheet=readFileSync('assets/investigation-contrast.css','utf8');
 if(process.argv.includes('--enforce-contrast')){
  assert(contrastSheet.includes('aa-premium--real411 #whorunsit .data-table td'),'Real411 contrast contract missing');
