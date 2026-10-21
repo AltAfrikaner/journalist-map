@@ -111,14 +111,17 @@ a{color:var(--gold);text-decoration:none}
   .ctx{grid-template-columns:repeat(2,1fr)}
 }
 </style>
+<link rel="stylesheet" href="assets/dossier-editorial.css">
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
+<link rel="canonical" href="https://altafrikaner.com/usaid.html">
+<meta name="theme-color" content="#f7f4ec">
 </head>
-<body>
+<body class="aa-premium aa-premium--usaid">
 
 <!-- NAV -->
-<nav class="nav">
+<nav class="nav" aria-label="Investigation chapters"><a class="aa-hub-return" href="index.html#investigations">← Archive</a>
 <a onclick="document.getElementById('origin').scrollIntoView({behavior:'smooth'})">Origins</a>
 <a onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">Pipeline</a>
 <a onclick="document.getElementById('media').scrollIntoView({behavior:'smooth'})">Media</a>
@@ -131,6 +134,7 @@ a{color:var(--gold);text-decoration:none}
 
 <!-- HERO -->
 <section class="hero">
+<div class="aa-story-kicker"><a href="index.html#investigations">ALT AFRIKANER</a><i>/</i><span>NETWERK LEAKS · INVESTIGATION 08</span></div>
 <div class="hero-label">Alt Afrikaner · Forensic Investigation</div>
 <h1>USAID <span class="red">&ndash;</span> <em>South Africa</em> Connections</h1>
 <p class="hero-sub">The USAID-to-Newsroom Pipeline: How USAID Funding Reaches South African "Independent" Media. Tracing a single unbroken chain of institutional continuity from classified CIA operations through the National Endowment for Democracy, through USAID's development architecture, to the specific newsrooms that shape how the ANC government's South Africa is reported to the world.</p>
@@ -503,5 +507,6 @@ build();animate();
 
 <!-- TIMELINE JS -->
 <script>document.querySelectorAll('.tl-ev .c').forEach(c=>{c.addEventListener('click',()=>c.classList.toggle('open'))});</script>
+<aside class="aa-page-links" aria-label="Investigation series navigation"><a class="aa-link aa-link-prev" href="iol.html"><span class="aa-link-label">← Previous investigation</span><span class="aa-link-title">IOL: The ANC's Print Arm</span></a><a class="aa-link aa-link-center" href="index.html#investigations"><span class="aa-link-label">ALT AFRIKANER / NETWERK LEAKS</span><span class="aa-link-title">All investigations</span><span class="aa-link-caption">File 08 of 31</span></a><a class="aa-link aa-link-next" href="usaidtonewsroom.html"><span class="aa-link-label">Next investigation →</span><span class="aa-link-title">Washington to Newsroom</span></a></aside>
 </body>
 </html>
