@@ -1,0 +1,149 @@
+/* Alt Afrikaner | OSF / Omidyar organisations funding atlas
+   Final editorial investigation: scoped presentation, unchanged research data. */
+body.aa-premium--funding-atlas{
+ --aa-paper:#f7f4ec;--aa-paper-alt:#efe8df;--aa-navy:#1b2a4a;
+ --aa-ink:#30414f;--aa-red:#8b0000;--aa-gold:#c5a258;--aa-border:#dccfbe;
+ background:#f7f4ec;color:#30414f;font-family:'Source Sans 3',system-ui,sans-serif;
+}
+.aa-premium--funding-atlas::before{opacity:.08;mix-blend-mode:multiply;z-index:50}
+.aa-premium--funding-atlas a:focus-visible,
+.aa-premium--funding-atlas button:focus-visible,
+.aa-premium--funding-atlas input:focus-visible,
+.aa-premium--funding-atlas select:focus-visible{outline:3px solid #c5a258;outline-offset:3px}
+.aa-premium--funding-atlas .aa-editorial-skip{
+ position:fixed;top:-105px;left:13px;z-index:2500;
+ background:#fffdfa;color:#1b2a4a;border:2px solid #8b0000;
+ padding:14px 20px;font:700 14px 'Source Sans 3',sans-serif;text-decoration:none;
+}
+.aa-premium--funding-atlas .aa-editorial-skip:focus{top:13px}
+.aa-premium--funding-atlas > nav{
+ height:auto;min-height:66px;z-index:100;background:rgba(18,32,51,.98);
+ border-bottom:1px solid #a58860;padding:15px max(20px,calc((100vw - 1200px)/2));
+ flex-wrap:wrap;gap:12px 22px;
+}
+.aa-premium--funding-atlas .nav-logo{color:#e8c78f}
+.aa-premium--funding-atlas .nav-links{gap:12px 17px;flex-wrap:wrap;justify-content:flex-end}
+.aa-premium--funding-atlas .nav-links a{color:#e6dfd3;letter-spacing:.055em}
+.aa-premium--funding-atlas .nav-links a:hover{color:#fff2d5}
+.aa-premium--funding-atlas .hero{
+ background:radial-gradient(ellipse at 81% 15%,#3c4e69 0%,#18283f 59%,#111d30 100%);
+ padding:100px clamp(24px,4vw,55px) 94px;border-bottom:5px solid #8b0000;
+}
+.aa-premium--funding-atlas .hero-kicker{color:#e0c08d;letter-spacing:.15em;font-size:11px}
+.aa-premium--funding-atlas .hero h1{
+ font:900 clamp(43px,5.7vw,81px)/1.075 'Playfair Display',serif;
+ max-width:1100px;color:#fffaf2;letter-spacing:-.042em;margin-bottom:30px
+}
+.aa-premium--funding-atlas .hero-sub{
+ color:#e4ddd3;font:400 clamp(18px,1.72vw,22px)/1.76 'Source Sans 3',sans-serif;
+ max-width:890px
+}
+.aa-premium--funding-atlas .hero-sub .xlink{color:#ebca91}
+.aa-premium--funding-atlas .stat{
+ border-left-color:#b99b6b;padding-left:20px;background:rgba(255,255,255,.025)
+}
+.aa-premium--funding-atlas .stat-num{color:#ebcd9e;font-size:clamp(29px,3vw,43px)}
+.aa-premium--funding-atlas .stat-label{color:#e3ded6}
+.aa-premium--funding-atlas .hero-actions .btn-primary{background:#8b0000}
+.aa-premium--funding-atlas .hero-actions .btn-secondary{border-color:#bca175;color:#eddec7}
+.aa-premium--funding-atlas .related-strip{
+ background:#1b2a4a;border-block:1px solid #bc9d6e
+}
+.aa-premium--funding-atlas .related-label{color:#e2c697}
+.aa-premium--funding-atlas .related-links .rel-link{
+ background:#253b57;border-color:#50617a;color:#f2e7d3
+}
+.aa-premium--funding-atlas section:not(.hero){
+ background:#f7f4ec;color:#2d3d4b;
+ border-bottom:1px solid #e0d4c5;padding-block:70px
+}
+.aa-premium--funding-atlas section:not(.hero):nth-of-type(odd){
+ background:#efe9e0
+}
+.aa-premium--funding-atlas section:not(.hero) .section-inner{max-width:1200px}
+.aa-premium--funding-atlas section:not(.hero) .section-label{
+ color:#8b0000;font-size:11px;letter-spacing:.15em
+}
+.aa-premium--funding-atlas section:not(.hero) h2{
+ font:700 clamp(30px,3.5vw,48px)/1.18 'Playfair Display',serif;
+ color:#1b2a4a;letter-spacing:-.035em;margin-bottom:20px
+}
+.aa-premium--funding-atlas section:not(.hero) > .section-inner > p{
+ color:#394b58;font-size:17px;line-height:1.85
+}
+.aa-premium--funding-atlas section:not(.hero) > .section-inner > h3{color:#8b0000}
+.aa-premium--funding-atlas .finding-card{
+ background:#1c2d44;border:1px solid #46566f;border-top:3px solid #b18e59;
+ color:#f0e9dd;border-radius:2px;box-shadow:0 9px 27px rgba(25,38,54,.09)
+}
+.aa-premium--funding-atlas .finding-card h3{color:#ebc994}
+.aa-premium--funding-atlas .finding-card p{color:#e2ddd6}
+.aa-premium--funding-atlas .pipeline-step{background:#fffdfa;border:1px solid #dccfbe;padding:16px 18px;margin-bottom:9px}
+.aa-premium--funding-atlas .pipeline-content{border-bottom:0}
+.aa-premium--funding-atlas .pipeline-content h4{color:#1b2a4a;font-size:16px}
+.aa-premium--funding-atlas .pipeline-content p{color:#394b58;font-size:15px}
+.aa-premium--funding-atlas .pipeline-badge{color:#8b0000}
+.aa-premium--funding-atlas .pipeline-see{color:#8b0000}
+.aa-premium--funding-atlas .filter-bar{
+ background:#1b2d45;border:1px solid #50617d;color:#f3e9db;
+ border-radius:2px;padding:20px;
+}
+.aa-premium--funding-atlas .filter-bar input{
+ background:#f7f4ec;border-color:#c1ab8d;color:#253649
+}
+.aa-premium--funding-atlas .filter-bar input::placeholder{color:#5d6973}
+.aa-premium--funding-atlas .filter-btn{color:#efe8dc;border-color:#77839a}
+.aa-premium--funding-atlas .filter-btn:hover{background:#2e4763}
+.aa-premium--funding-atlas .table-container{
+ background:#15263d;border:1px solid #485a75;border-radius:2px;
+ box-shadow:0 12px 34px rgba(20,34,54,.11)
+}
+.aa-premium--funding-atlas table thead th{
+ background:#101c30;color:#e7c78f;border-color:#ac8b58;padding:16px 13px;
+}
+.aa-premium--funding-atlas table tbody td{
+ color:#e4e0dc;font-size:14px;line-height:1.65;padding:13px 12px
+}
+.aa-premium--funding-atlas table tbody tr{border-bottom-color:#344762}
+.aa-premium--funding-atlas table tbody tr:hover{background:#263b56}
+.aa-premium--funding-atlas .method-card{
+ background:#1b2d45;border:1px solid #485875;border-radius:2px;
+}
+.aa-premium--funding-atlas .method-card h4{color:#edcc98}
+.aa-premium--funding-atlas .method-card p,.aa-premium--funding-atlas .method-card ul{color:#e2dcd2}
+.aa-premium--funding-atlas .download-section{
+ background:#1b2d45;border:1px solid #a99170;border-radius:2px
+}
+.aa-premium--funding-atlas .download-section h3{color:#f9f0e2}
+.aa-premium--funding-atlas .download-section p{color:#e6dccc}
+.aa-premium--funding-atlas .aa-page-links{
+ display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
+ background:#eee8df;border-block:1px solid #d1c1b1;
+ padding:34px max(22px,calc((100vw - 1140px)/2));
+ font:700 12px/1.5 'Source Sans 3',sans-serif;
+ text-transform:uppercase;letter-spacing:.075em
+}
+.aa-premium--funding-atlas .aa-page-links a{
+ color:#8b0000;text-decoration:none;border-bottom:1px solid #b78d86;padding:7px 0
+}
+.aa-premium--funding-atlas .aa-page-links a:hover{color:#1b2a4a;border-color:#1b2a4a}
+.aa-premium--funding-atlas footer{background:#142339}
+@media(max-width:850px){
+ .aa-premium--funding-atlas > nav{justify-content:center}
+ .aa-premium--funding-atlas .nav-links{justify-content:center}
+ .aa-premium--funding-atlas .hero{padding:80px 24px}
+ .aa-premium--funding-atlas .hero-stats{gap:23px}
+ .aa-premium--funding-atlas section:not(.hero){padding:50px 22px}
+}
+@media(max-width:530px){
+ .aa-premium--funding-atlas .hero h1{font-size:40px}
+ .aa-premium--funding-atlas .stat{width:45%;padding-left:12px}
+ .aa-premium--funding-atlas .filter-bar input{min-width:100%;width:100%}
+ .aa-premium--funding-atlas .filter-group{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .aa-premium--funding-atlas *, .aa-premium--funding-atlas *::before,.aa-premium--funding-atlas *::after{
+ animation:none!important;transition:none!important;scroll-behavior:auto!important
+ }
+ .aa-premium--funding-atlas .reveal{opacity:1!important;transform:none!important}
+}
