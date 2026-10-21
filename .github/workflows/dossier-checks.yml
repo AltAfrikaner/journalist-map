@@ -10,6 +10,7 @@ on:
       - 'assets/dossier-batch-20-22.css'
       - 'assets/dossier-batch-23-25.css'
       - 'assets/dossier-batch-26-28.css'
+      - 'assets/dossier-29.css'
       - '**.html'
       - 'scripts/check-dossiers.mjs'
       - '.github/workflows/dossier-checks.yml'
