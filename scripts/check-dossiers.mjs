@@ -1,12 +1,11 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
-console.log('Dossier verification started');
 const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html','un.html','mbalula.html','44afrikaners.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
 assert(css.includes('.aa-page-links'),'Missing page navigation styles');
 const seen=new Set();
-for(const file of paths){ console.log('Static '+file);
+for(const file of paths){
   assert(existsSync(file),'Missing investigation: '+file);
   const html=readFileSync(file,'utf8');
   assert(html.includes('class="aa-premium'),'Missing premium class '+file);
@@ -34,11 +33,9 @@ for(const file of paths){ console.log('Static '+file);
 }
 
 import {execFileSync} from 'node:child_process';
-console.log('Imports done');
 // On pull requests, the baseline is the checked-out main tree. Assert original
 // data-bearing JS/SVG/images are unchanged in the newly upgraded files.
-console.log('Checking previous changed files');
-for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){ console.log('Previous '+file);
+for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){
   let baseline;
   try {baseline=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:12*1024*1024});}
   catch {continue;} // manual runs without origin/main still use static structural checks
@@ -66,7 +63,7 @@ assert(newTheme.includes('prefers-reduced-motion'), 'Motion preferences missing 
 // Fetch the complete base branch during CI, then verify that original articles,
 // source/data references and all interactive code survive the cosmetic upgrade.
 const readOriginal=path=>execFileSync('git',['show','origin/main:'+path],{encoding:'utf8',maxBuffer:16*1024*1024});
-for(const file of newPages){ console.log('Batch 10-12 preserve '+file);
+for(const file of newPages){
   const base=readOriginal(file);
   const now=readFileSync(file,'utf8');
   const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]);
@@ -89,7 +86,7 @@ for(const file of newPages){ console.log('Batch 10-12 preserve '+file);
 const nextBatch=['communists.html','ancliberation.html','wef.html'];
 const batchTheme=readFileSync('assets/dossier-batch-13-15.css','utf8');
 assert(batchTheme.includes('prefers-reduced-motion'),'Batch 13–15 missing motion fallback');
-for(const f of nextBatch){ console.log('Batch 13-15 preserve '+f);
+for(const f of nextBatch){
  const now=readFileSync(f,'utf8');
  const cls=f==='ancliberation.html'?'liberation':f.slice(0,-5);
  assert(now.includes('aa-premium--'+cls),'Missing premium class: '+f);
@@ -109,27 +106,38 @@ for(const f of nextBatch){ console.log('Batch 13-15 preserve '+f);
 }
 
 
-/* Batch 16,17,19: verify the article and embedded intelligence sources are untouched. */
-const batch=[['un.html','un'],['mbalula.html','mbalula'],['44afrikaners.html','afrikaners-letter']];
-const theme=readFileSync('assets/dossier-batch-16-17-19.css','utf8');
-assert(theme.includes('prefers-reduced-motion'),'Batch theme missing reduced motion support');
-for(const [path,klass] of batch) { console.log('Batch 16-17-19 preserve '+path);
-  const now=readFileSync(path,'utf8');
-  assert(now.includes('aa-premium--'+klass),'Missing premium class: '+path);
-  assert(now.includes('href="assets/dossier-batch-16-17-19.css"'),'Missing stylesheet: '+path);
-  assert(now.includes('class="aa-page-links"'),'Missing navigation: '+path);
-  assert(theme.includes('.aa-premium--'+klass),'Missing style for '+path);
-  const before=execFileSync('git',['show','origin/main:'+path],{encoding:'utf8',maxBuffer:16*1024*1024});
-  const match=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
-  for(const [label,re] of [
-    ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
-    ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
-    ['SVGs',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
-    ['images',/<img\b[^>]*>/gi],
-    ['IDs',/\bid=['"][^'"]+['"]/g]
-  ])assert.deepEqual(match(now,re),match(before),'Original '+label+' changed in '+path);
-  for(const sig of ['<canvas','data:image','<iframe','<source'])
-    assert.equal(now.split(sig).length,before.split(sig).length,'Embedded asset changed '+path+' '+sig);
+/* Batch 16,17,19: reversible page-edit test.
+ * Removing only the design additions MUST reproduce each original file byte-for-byte.
+ * This tests all paragraphs, scripts, citations and media without expensive nested scans. */
+const cases=[
+ ['un.html','un',16,'<div class="hero-label">'],
+ ['mbalula.html','mbalula',17,'<div class="hero-label">'],
+ ['44afrikaners.html','afrikaners-letter',19,'  <span class="eyebrow">']
+];
+const design=readFileSync('assets/dossier-batch-16-17-19.css','utf8');
+assert(design.includes('prefers-reduced-motion'),'Missing motion preference');
+const crumbs=(number)=>'<div class="aa-story-kicker"><a href="index.html#investigations">ALT AFRIKANER</a><i>/</i><span>NETWERK LEAKS · INVESTIGATION '+String(number).padStart(2,'0')+'</span></div>\n';
+for(const [path,klass,number,following] of cases){
+ console.log('Reversible verification '+path);
+ let now=readFileSync(path,'utf8');
+ assert(now.includes('aa-premium--'+klass),'Missing page class');
+ assert(design.includes('.aa-premium--'+klass),'Missing page styles');
+ assert(now.includes('class="aa-page-links"'),'Missing series navigation');
+ const before=execFileSync('git',['show','origin/main:'+path],{encoding:'utf8',maxBuffer:16*1024*1024});
+ console.log('Read base file '+path);
+ const remove=(str)=>{assert(now.includes(str),'Expected addition absent: '+path);now=now.replace(str,'');};
+ now=now.replace('<body class="aa-premium aa-premium--'+klass+'">','<body>');
+ remove('\n<link rel="stylesheet" href="assets/dossier-editorial.css">\n<link rel="stylesheet" href="assets/dossier-batch-16-17-19.css">');
+ remove(crumbs(number));
+ const start=now.indexOf('<aside class="aa-page-links"');
+ const stop=now.indexOf('</aside>',start);
+ assert(start>=0&&stop>start,'Navigation block not found: '+path);
+ now=now.slice(0,start)+now.slice(stop+'</aside>'.length);
+ remove('<link rel="canonical" href="https://altafrikaner.com/'+path+'">\n<meta name="theme-color" content="#f7f4ec">\n');
+ // The insertion before </body> ends with a newline; remove exactly that newline.
+ now=now.replace('\n</body>','</body>');
+ assert.equal(now,before,'Unexpected original source modification: '+path);
+ console.log('Verified original source '+path);
 }
 
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
