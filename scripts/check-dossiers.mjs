@@ -163,4 +163,38 @@ for(const f of batch16){
    assert(existsSync(name),'Invalid investigation series destination: '+name);
 }
 
+/* Investigation 20–22: preserve source code, evidence wording and graphics. */
+{
+ const files=['mbalula_network.html','splc.html','adl.html'];
+ const names=['mbnet','splc','adl'];
+ const css=readFileSync('assets/dossier-batch-20-22.css','utf8');
+ assert(css.includes('prefers-reduced-motion'),'Batch 20–22 missing motion preference');
+ assert(css.includes(':focus-visible'),'Batch 20–22 missing accessible focus');
+ const extract=(html,re)=>[...html.matchAll(re)].map(x=>x[0]);
+ for(let i=0;i<files.length;i++){
+  const file=files[i], now=readFileSync(file,'utf8');
+  const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
+  for(const value of [
+   'aa-premium--'+names[i],
+   'href="assets/dossier-batch-20-22.css"',
+   'class="aa-page-links"',
+   'href="index.html#investigations"',
+   'rel="canonical"',
+   'class="aa-editorial-skip"'
+  ])assert(now.includes(value),'Investigation '+file+' missing '+value);
+  assert(css.includes('.aa-premium--'+names[i]),'Missing styles for '+file);
+  for(const [label,re] of [
+   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+   ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['images',/<img\b[^>]*>/gi],
+   ['element IDs',/\bid=["'][^"']+["']/g]
+  ])assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
+  for(const s of ['data:image','<canvas','<iframe'])
+   assert.equal(now.split(s).length,old.split(s).length,'Modified embedded media '+s+' in '+file);
+ }
+ for(const id of ['dossier','essay','iteration','findings','map','board','conflict','shield','vectors','bozwana','defence-arch','kgb-inherit'])
+  assert(readFileSync('mbalula_network.html','utf8').includes('href="#'+id+'"'),'Missing Mbalula accessible nav: '+id);
+}
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
