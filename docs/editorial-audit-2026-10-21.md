@@ -44,3 +44,10 @@ The two externally hosted investigation cards (CitizenIntel Kalahari and AAIT) a
 - **SPLC:** The page now links the August 2026 second superseding indictment and subsequent scheduling order, explicitly distinguishing accusations from findings and the original April charging record from the later amended one. The case's disposition remains unresolved in this audit; do not assert a conviction.
 
 Other pages still require case-by-case external source review; passing automated checks is **not** substantive validation of every legacy assertion.
+
+## Journalist network wording correction (21 October 2026)
+
+- Changed homepage archive card to **The Outbound Network: SA Journalists and Media Connections**, matching the actual HTML dossier rather than describing everyone as paid by OSF.
+- Recast page-level generalisations that asserted **zero** Afrikaans-speaking journalists across all international outlets, and unverified personal home-language claims, as explicitly **UNVERIFIED**. Changed the dashboard and animated chart from a synthetic numerical zero to a question mark rather than presenting a census that was never performed.
+- Preserved its 3D dataset, the selected journalists' professional connections and all original node IDs. One chart label, status count and their display scripts were revised narrowly to prevent reintroducing the unsupported statistic.
+- Follow-up evidence required for a categorical claim: a dated independently assembled full correspondent roster, individual voluntarily disclosed language fluency, verified staffing/commercial syndication agreements, and a reproducible methodology.
