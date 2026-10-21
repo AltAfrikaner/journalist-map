@@ -11,8 +11,10 @@ on:
       - 'assets/dossier-batch-23-25.css'
       - 'assets/dossier-batch-26-28.css'
       - 'assets/dossier-29.css'
+      - 'assets/investigation-contrast.css'
       - '**.html'
       - 'scripts/check-dossiers.mjs'
+      - 'scripts/audit-investigations.mjs'
       - '.github/workflows/dossier-checks.yml'
   workflow_dispatch:
 permissions:
@@ -28,3 +30,4 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/check-dossiers.mjs
+      - run: node scripts/audit-investigations.mjs --enforce-contrast
