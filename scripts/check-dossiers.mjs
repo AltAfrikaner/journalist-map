@@ -1,6 +1,6 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
-const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html'];
+const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html','un.html','mbalula.html','MTNrooivalkIRAN.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
 assert(css.includes('.aa-page-links'),'Missing page navigation styles');
@@ -103,6 +103,35 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ])assert.deepEqual(extract(now,re),extract(base,re),'Changed original '+label+' in '+f);
  for(const sign of ['<canvas','data:image','<iframe'])assert.equal(now.split(sign).length,base.split(sign).length,'Changed embedded asset in '+f);
+}
+
+
+/* Investigation 16–18 preservation checks.
+ * All investigation wording, source references, imagery and visualisation
+ * code should remain byte-identical to the last main baseline.
+ */
+const batch16=['un.html','mbalula.html','MTNrooivalkIRAN.html'];
+const css16=readFileSync('assets/dossier-batch-16-18.css','utf8');
+assert(css16.includes('prefers-reduced-motion'),'Batch 16–18 missing reduced motion fallback');
+for(const f of batch16){
+ const now=readFileSync(f,'utf8');
+ const name=f==='MTNrooivalkIRAN.html'?'rooivalk':f.replace('.html','');
+ assert(now.includes('aa-premium--'+name),'Missing class '+f);
+ assert(now.includes('assets/dossier-batch-16-18.css'),'Missing new stylesheet '+f);
+ assert(now.includes('class="aa-page-links"'),'Missing next/prev navigation '+f);
+ assert(now.includes('href="index.html#investigations"'),'Missing archive link '+f);
+ assert(css16.includes('.aa-premium--'+name),'Missing CSS for '+f);
+ const base=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
+ const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ for(const [category,re] of [
+  ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
+  ['script blocks',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+  ['SVG diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+  ['image tags',/<img\b[^>]*>/gi],
+  ['section IDs',/\bid=["'][^"']+["']/g]
+ ])assert.deepEqual(extract(now,re),extract(base,re),'Original '+category+' changed in '+f);
+ for(const sig of ['data:image','<canvas','<iframe'])
+  assert.equal(now.split(sig).length,base.split(sig).length,'Original embedded visual changed in '+f);
 }
 
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
