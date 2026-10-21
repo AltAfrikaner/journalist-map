@@ -1,0 +1,14 @@
+/* Shared site branding, scoped to aa-* classes */
+.aa-brand-badge{position:absolute;top:76px;right:clamp(12px,3vw,38px);z-index:95;width:108px;max-width:22vw;display:block;padding:7px;border-radius:6px;border:1px solid #987d4b;background:#0d1829;box-shadow:0 6px 24px #0005;line-height:0}
+.aa-brand-badge img{width:100%;height:auto;display:block}
+.aa-brand-badge:focus-visible,.aa-footer-social a:focus-visible{outline:3px solid #ffe2a2;outline-offset:3px}
+.aa-site-footer{clear:both;position:relative;z-index:2;background:#0d1829;color:#f4f0e8;border-top:2px solid #c5a258;padding:30px 18px;text-align:center;font:400 15px/1.6 'Source Sans 3',Arial,sans-serif}
+.aa-site-footer img{display:block;width:110px;height:auto;margin:0 auto 9px}
+.aa-site-footer-title{font:700 18px Georgia,serif;color:#fff}
+.aa-footer-social{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px auto}
+.aa-footer-social a{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;background:#1b2a4a;border:1px solid #7891a8;border-radius:5px;color:#fff!important;text-decoration:none!important;font:600 14px 'Source Sans 3',Arial,sans-serif}
+.aa-footer-social a:hover{border-color:#e5c788;background:#30466a}
+.aa-footer-social svg,.aa-existing-social svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.aa-existing-social{display:inline-flex!important;align-items:center;gap:6px}
+.aa-site-footer-note{font-size:12px;color:#c7d2df}
+@media(max-width:780px){.aa-brand-badge{top:72px;right:10px;width:72px}.aa-site-footer{padding:26px 12px}}
