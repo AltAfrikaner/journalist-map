@@ -1,0 +1,186 @@
+/* ALT AFRIKANER | DOSSIER EDITORIAL SERIES
+   Progressive presentation layer. Individual page research, graph code,
+   section IDs and all existing source references remain untouched.
+*/
+.aa-premium { --aa-paper:#f7f4ec;--aa-paper2:#fffdf8;--aa-ink:#1b2027;--aa-navy:#1b2a4a;--aa-red:#8b0000;--aa-gold:#c5a258;--aa-rule:#d8d0c3; }
+.aa-premium .aa-page-links, .aa-page-links {
+  position:relative;z-index:3;margin:0; padding:34px max(22px,calc((100vw - 1150px)/2));
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;background:#f7f4ec;
+  border-top:1px solid #d8d0c3;border-bottom:1px solid #d8d0c3;
+  color:#1b2027;font-family:'Source Sans 3',system-ui,sans-serif;
+}
+.aa-page-links .aa-link {min-width:0;display:flex;flex-direction:column;gap:6px;padding:8px 0;color:#1b2a4a;text-decoration:none;border:none;}
+.aa-page-links .aa-link:hover .aa-link-title {color:#8b0000;}
+.aa-page-links .aa-link-label {font:600 10px 'JetBrains Mono',monospace;color:#8b0000;letter-spacing:.13em;text-transform:uppercase;}
+.aa-page-links .aa-link-title {font:700 clamp(16px,2vw,23px)/1.28 'Playfair Display',Georgia,serif;transition:color .15s;}
+.aa-page-links .aa-link-center {text-align:center;justify-content:center;align-items:center;}
+.aa-page-links .aa-link-next{text-align:right;align-items:flex-end;}
+.aa-page-links a:focus-visible,.aa-article-topline a:focus-visible,.aa-quick-menu a:focus-visible {outline:3px solid #8b0000;outline-offset:4px;}
+.aa-page-links .aa-link-caption {color:#66635c;font:400 13px/1.35 'Source Sans 3',sans-serif;}
+.aa-article-topline {display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#e8d7b8;margin:0 auto 28px;}
+.aa-article-topline a {text-decoration:none;color:#f9ead1;border-bottom:1px solid rgba(238,220,183,.6);padding:3px 0}
+.aa-article-topline .aa-dot {color:#c5a258;}
+.aa-quick-menu {margin:0 auto;max-width:1200px;width:min(calc(100% - 48px),1200px);display:flex;justify-content:center;flex-wrap:wrap;align-items:center;gap:6px 20px;padding:23px 15px 25px;border-bottom:1px solid #d7ccbe;}
+.aa-quick-menu strong {font:700 10px 'JetBrains Mono',monospace;color:#8b0000;letter-spacing:.1em;text-transform:uppercase;margin-right:10px;}
+.aa-quick-menu a {color:#1b2a4a;font:700 12px 'Source Sans 3',sans-serif;letter-spacing:.05em;text-decoration:none;white-space:nowrap;border-bottom:1px solid #c5ad87;padding:7px 0;}
+.aa-quick-menu a:hover {color:#8b0000;border-color:#8b0000;}
+/* File 01: Open Society Foundation / 3D interactive network */
+.aa-premium--osf {background:#f7f4ec;min-width:320px;}
+.aa-premium--osf .site-header {position:sticky;top:0;left:auto;right:auto;padding:9px max(24px,calc((100vw - 1200px)/2));min-height:75px;height:auto;background:#172132;border-bottom:1px solid rgba(197,162,88,.3);backdrop-filter:blur(12px);gap:24px;}
+.aa-premium--osf .site-header.scrolled {background:#172132;}
+.aa-premium--osf .brand-logo {position:relative;top:auto;left:auto;height:59px;max-width:180px;object-fit:contain;}
+.aa-premium--osf .site-header .nav {display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;column-gap:16px;row-gap:9px;min-width:0;}
+.aa-premium--osf .site-header .nav a {font:600 10px 'Source Sans 3',sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#f5ede0;}
+.aa-premium--osf .site-header .nav a:hover {color:#e7be74;}
+.aa-premium--osf .site-header .nav .aa-return {color:#e8c999;border-bottom:1px solid #c5a258;padding:5px 0;}
+.aa-premium--osf .hero {min-height:0;padding:91px 6% 105px;background:radial-gradient(ellipse at 73% 20%,#334967 0%,#1b2a4a 41%,#111d2c 100%);isolation:isolate;}
+.aa-premium--osf .hero::before {background:linear-gradient(90deg,rgba(8,15,27,.56),rgba(8,15,27,.18));z-index:1;}
+.aa-premium--osf .hero-canvas {opacity:.50;z-index:0;}
+.aa-premium--osf .hero-content {max-width:920px;}
+.aa-premium--osf .hero h1 {font-size:clamp(40px,6.9vw,82px);line-height:1.04;letter-spacing:-.045em;margin-bottom:17px;}
+.aa-premium--osf .hero h1 em {color:#e3c38a;}
+.aa-premium--osf .hero-kicker {font-size:11px;letter-spacing:.19em;color:#ead4ac;margin-bottom:15px;}
+.aa-premium--osf .hero-sub {font:600 11px/1.8 'JetBrains Mono',monospace;color:#e6dbc9;letter-spacing:.08em;margin-bottom:20px;}
+.aa-premium--osf .hero-rule {height:2px;background:#c5a258;margin:0 auto 21px;}
+.aa-premium--osf .hero-deck {max-width:780px;font:400 clamp(16px,1.5vw,19px)/1.7 'Source Sans 3',sans-serif;color:#f5eee5;}
+.aa-premium--osf .stats-bar {width:min(calc(100% - 48px),1200px);max-width:1200px;padding:22px 18px;margin-top:-36px;border-radius:2px;background:#fffdf8;border:1px solid #d6cabc;box-shadow:0 6px 35px rgba(27,42,74,.12);}
+.aa-premium--osf .stat-n {color:#8b0000;}
+.aa-premium--osf .stat-label {letter-spacing:.11em;color:#66635a;line-height:1.5;}
+.aa-premium--osf .content-panel {width:min(calc(100% - 48px),1200px);max-width:1200px;background:#fffdf8;box-shadow:none;border:1px solid #e0d9cf;border-top:0;border-radius:0 0 2px 2px;margin-bottom:40px;}
+.aa-premium--osf .section {padding:clamp(35px,5vw,64px) clamp(22px,6vw,75px);}
+.aa-premium--osf .section + .section {border-color:#e0d9ce;}
+.aa-premium--osf .section-title {font-size:clamp(30px,3.4vw,45px);line-height:1.13;letter-spacing:-.035em;color:#1c2532;}
+.aa-premium--osf .section-kicker {font-size:10px;letter-spacing:.14em;color:#8b0000;}
+.aa-premium--osf .section-body {font:400 clamp(16px,1.4vw,18px)/1.79 'Source Sans 3',sans-serif;color:#33373b;max-width:790px;}
+.aa-premium--osf .section-body strong {color:#202a36;}
+.aa-premium--osf .intel-card,.aa-premium--osf .board-card,.aa-premium--osf .finding-card,.aa-premium--osf .context-item,.aa-premium--osf .provenance,.aa-premium--osf .infographic,.aa-premium--osf .legal-box {border-radius:2px;border-color:#e0d5c6;background:#f5f0e8;}
+.aa-premium--osf .map-section-head {padding:38px clamp(22px,6vw,75px) 24px;}
+.aa-premium--osf .map-3d-wrap {width:90%;height:700px;background:#f3eee6;border:1px solid #d6cabc;box-shadow:none;}
+.aa-premium--osf .site-foot {background:#172132;border-top:0;}
+.aa-premium--osf .hub-btn {border-radius:2px;}
+@media(max-width:900px){
+ .aa-premium--osf .site-header {padding:10px 16px;flex-wrap:wrap;gap:8px;}
+ .aa-premium--osf .brand-logo {height:48px;}
+ .aa-premium--osf .site-header .nav {margin-left:auto;gap:9px 13px;}
+ .aa-premium--osf .hero {padding:68px 5% 100px;}
+ .aa-premium--osf .map-3d-wrap {width:94%;height:550px;}
+}
+@media(max-width:600px){
+ .aa-premium--osf .site-header {padding:10px 12px;gap:6px;}
+ .aa-premium--osf .site-header .nav {justify-content:center;width:100%;margin:0;}
+ .aa-premium--osf .site-header .nav a {font-size:10px;padding:4px 0;}
+ .aa-premium--osf .hero {padding:62px 6% 88px;}
+ .aa-premium--osf .stats-bar {width:calc(100% - 24px);margin-top:-22px;}
+ .aa-premium--osf .content-panel {width:calc(100% - 24px);}
+ .aa-premium--osf .section {padding:34px 18px;}
+ .aa-premium--osf .map-3d-wrap {width:95%;height:460px;}
+ .aa-quick-menu {width:calc(100% - 24px);gap:8px 14px;justify-content:flex-start;}
+ .aa-page-links {grid-template-columns:1fr;gap:15px;padding:25px 22px;}
+ .aa-page-links .aa-link-center,.aa-page-links .aa-link-next{text-align:left;align-items:flex-start;}
+}
+@media(prefers-reduced-motion:reduce){.aa-premium--osf * {scroll-behavior:auto !important;}.aa-page-links .aa-link-title{transition:none;}}
+
+/* File 02: The Outbound Network: light reading surface, dark interactive map */
+.aa-premium--journalists{background:#f7f4ec;color:#1b2027;}
+.aa-premium--journalists .nav{background:rgba(23,33,50,.98);border-color:#3e4a5c;}
+.aa-premium--journalists .nav-links a {color:#ece3d3;font:700 10px 'Source Sans 3',sans-serif;letter-spacing:.08em;}
+.aa-premium--journalists .nav-links a:hover{color:#e9c788;}
+.aa-premium--journalists .nav-links .aa-return {color:#e9c788;border-bottom:1px solid #c5a258;}
+.aa-premium--journalists .hero{padding:clamp(95px,9vw,145px) 25px 92px;background:radial-gradient(ellipse at 80% 20%,#304564,#172132 70%);margin-top:58px;}
+.aa-premium--journalists .hero::before{opacity:.025;}
+.aa-premium--journalists .hero h1{font-size:clamp(43px,6.4vw,83px);line-height:1.03;letter-spacing:-.04em;}
+.aa-premium--journalists .hero h1 em{color:#dec393;}
+.aa-premium--journalists .hero-label{font:600 11px 'JetBrains Mono',monospace;letter-spacing:.16em;}
+.aa-premium--journalists .hero-sub{max-width:800px;font:400 clamp(16px,1.6vw,20px)/1.67 'Source Sans 3',sans-serif;color:#f0eadd;}
+.aa-premium--journalists .stats{background:#fffdf8;border-top:1px solid #d9d0c3;border-bottom:1px solid #d9d0c3;padding:24px 14px;flex-wrap:wrap;}
+.aa-premium--journalists .stat-n{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,3.7vw,45px);color:#8b0000;}
+.aa-premium--journalists .stat-l{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.09em;color:#5d5b57;}
+.aa-premium--journalists body>section:not(.hero){background:#f7f4ec;}
+.aa-premium--journalists >section:not(.hero):not(#map-section){border-bottom:1px solid #e0d7c9;}
+.aa-premium--journalists .container{max-width:980px;}
+.aa-premium--journalists section h2{font-size:clamp(30px,3.4vw,46px);letter-spacing:-.028em;line-height:1.16;color:#1b2a4a;}
+.aa-premium--journalists section h2 em{color:#8b0000;}
+.aa-premium--journalists section p{color:#313c45;font:400 clamp(16px,1.45vw,18px)/1.78 'Source Sans 3',sans-serif;}
+.aa-premium--journalists .section-label{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#8b0000;}
+.aa-premium--journalists .finding,.aa-premium--journalists .pattern{background:#fffdf8;border:1px solid #d6ccbe;box-shadow:none;border-radius:2px;}
+.aa-premium--journalists .finding-num{background:#f7f4ec;color:#8b0000;border-color:#cdbda8;}
+.aa-premium--journalists .finding h3,.aa-premium--journalists .pattern h4{color:#1b2a4a;font-size:clamp(18px,2vw,23px);}
+.aa-premium--journalists .finding p,.aa-premium--journalists .pattern p{color:#40434a;font-size:15px;}
+.aa-premium--journalists .pattern .tag{color:#8b0000;}
+.aa-premium--journalists #map-section{background:#eee8de;border-top:1px solid #d1c6b7;}
+.aa-premium--journalists #map-section h2{color:#1b2a4a;}
+.aa-premium--journalists #mw{border:2px solid #b7a58c;border-radius:2px;box-shadow:0 15px 45px rgba(18,30,48,.17);}
+.aa-premium--journalists .sources{border-top:1px solid #d8cdbd;color:#464e56;}
+.aa-premium--journalists .sources strong{color:#8b0000;}
+.aa-premium--journalists footer{background:#172132;border-top:2px solid #c5a258;}
+.aa-premium--journalists footer p,.aa-premium--journalists footer .footer-tag{color:#e0d3bb;}
+@media(max-width:720px){
+ .aa-premium--journalists .nav{height:auto;min-height:58px;position:relative;padding:10px 16px;gap:8px;flex-wrap:wrap;}
+ .aa-premium--journalists .nav-links{justify-content:center;flex-wrap:wrap;margin:0;width:100%;gap:5px;}
+ .aa-premium--journalists .nav-links a{padding:5px;}
+ .aa-premium--journalists .hero{margin-top:0;padding:60px 16px 70px;}
+ .aa-premium--journalists .stats{gap:20px;}
+ .aa-premium--journalists .container{padding:0 18px;}
+ .aa-premium--journalists section{padding:45px 0;}
+ .aa-premium--journalists #mw{height:480px;}
+ .aa-premium--journalists #pn{top:0;width:min(100vw,380px);}
+}
+
+/* File 03: Africa Check - newspaper reading layout */
+.aa-premium--africacheck {--bg:#f7f4ec;--panel:#fffdf8;--panel2:#f3ece2;--line:#d7cfc3;--ink:#1c2531;--muted:#5b6267;--gold:#8b0000;--cyan:#1b2a4a;--red:#a10017;--green:#236544;color:#1c2531;font:400 18px/1.75 'Source Sans 3',sans-serif;}
+.aa-premium--africacheck a{color:#8b0000;text-decoration-color:#b88c83;}
+.aa-premium--africacheck a:hover{color:#1b2a4a;}
+.aa-premium--africacheck h1,.aa-premium--africacheck h2,.aa-premium--africacheck h3,.aa-premium--africacheck blockquote{font-family:'Playfair Display',Georgia,serif;}
+.aa-premium--africacheck h2{font-size:clamp(29px,3.4vw,44px);color:#1b2a4a;letter-spacing:-.03em;line-height:1.18;}
+.aa-premium--africacheck h3 {color:#1b2a4a;}
+.aa-premium--africacheck strong{color:#1d2731;}
+.aa-premium--africacheck header{background:#172132;border-bottom:1px solid #364459;}
+.aa-premium--africacheck header .nav{max-width:1180px;}
+.aa-premium--africacheck header .brand{color:#f6e9d8;letter-spacing:.09em;font:700 13px 'Playfair Display',Georgia,serif;}
+.aa-premium--africacheck header .navlinks a{color:#ddd3c3;font:600 12px 'Source Sans 3',sans-serif;}
+.aa-premium--africacheck header .navlinks a:hover{color:#e6c98e;}
+.aa-premium--africacheck .hero{background:radial-gradient(ellipse at 77% 20%,#304667 0%,transparent 56%),linear-gradient(135deg,#172132,#101927);padding:85px 25px 82px;border-color:#283752;}
+.aa-premium--africacheck .hero h1{color:#fffdf8;font-size:clamp(44px,6vw,78px);margin:18px 0 23px;}
+.aa-premium--africacheck .hero h1 span[style]{color:#dec394 !important;}
+.aa-premium--africacheck .hero .eyebrow {color:#f4d59c;font:600 11px/1.55 'JetBrains Mono',monospace;letter-spacing:.12em;}
+.aa-premium--africacheck .hero .lead {color:#f1ede6;font:400 clamp(17px,1.85vw,23px)/1.68 'Source Sans 3',sans-serif;}
+.aa-premium--africacheck .hero .meta{color:#d8cebc;}
+.aa-premium--africacheck .jump a {border-color:#b9ad9a;background:rgba(255,255,255,.05);color:#f6f0e5;border-radius:2px;}
+.aa-premium--africacheck .jump a:hover{background:#fff;color:#1b2a4a;}
+.aa-premium--africacheck main section{padding:75px 0;border-bottom-color:#ddd4c7;}
+.aa-premium--africacheck .box,.aa-premium--africacheck .card,.aa-premium--africacheck .fact,.aa-premium--africacheck .metric,.aa-premium--africacheck .questions div {background:#fffdf8;border:1px solid #d7cfc3;border-radius:2px;}
+.aa-premium--africacheck .card p{color:#525b61;font-size:16px;}
+.aa-premium--africacheck .metric b{font-family:'Playfair Display',serif;}
+.aa-premium--africacheck .node{background:#f0e7da;border-color:#d5c7b5;border-radius:2px;}
+.aa-premium--africacheck .node b{color:#8b0000;}
+.aa-premium--africacheck .node span{color:#37424b;}
+.aa-premium--africacheck .step{background:linear-gradient(90deg,#eee6d9,transparent);}
+.aa-premium--africacheck .step:before{background:#8b0000;color:#fff;}
+.aa-premium--africacheck blockquote{color:#1b2a4a;}
+.aa-premium--africacheck footer{color:#d4c7b2;background:#172132;padding:46px 25px;}
+.aa-premium--africacheck footer a{color:#efd09b;}
+.aa-premium--africacheck .source b{color:#172132;}
+.aa-premium--africacheck .source a {color:#8b0000;}
+@media(max-width:800px){.aa-premium--africacheck .hero{padding:56px 20px 64px;}.aa-premium--africacheck main section{padding:50px 0;}.aa-premium--africacheck .navlinks{padding-bottom:5px;}}
+
+/* Shared file treatment: each original story/map retains its bespoke content design.
+   Unified navigation, feature labels and finishing details from the editorial homepage. */
+.aa-premium .aa-story-kicker{display:flex;gap:13px;flex-wrap:wrap;align-items:center;margin:0 0 24px;font:600 10px/1.7 'JetBrains Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:#d8c39c;}
+.aa-premium .aa-story-kicker a{color:#ecd5a9;text-decoration:none;border-bottom:1px solid rgba(238,213,169,.65);}
+.aa-premium .aa-story-kicker a:hover{color:#fff;}
+.aa-premium .aa-story-kicker i{color:#c5a258;font-style:normal;}
+.aa-premium--light .aa-story-kicker{color:#6d6152;}
+.aa-premium--light .aa-story-kicker a{color:#8b0000;border-color:#c5a258;}
+.aa-premium--light .aa-story-kicker a:hover{color:#1b2a4a;}
+.aa-premium--special{--aa-navy:#1b2a4a;--aa-gold:#c5a258;--aa-burgundy:#8b0000;}
+.aa-premium--special a:focus-visible,.aa-premium--special button:focus-visible{outline:3px solid #d2b272;outline-offset:3px;}
+.aa-premium--special .aa-page-links {scroll-margin-top:85px;}
+.aa-premium--special h1,.aa-premium--special h2{font-family:'Playfair Display',Georgia,serif;}
+.aa-premium--special :is(.hero,.header) .aa-story-kicker {font-size:10px;}
+.aa-premium--special :is(.hero,.header) .aa-story-kicker a{font:700 10px 'JetBrains Mono',monospace;}
+.aa-premium--special :is(.hero,.header) h1{letter-spacing:-.04em;}
+@media (max-width:700px){
+.aa-premium .aa-story-kicker{justify-content:center;text-align:center;gap:7px;font-size:9px;}
+.aa-premium--special .aa-page-links{grid-template-columns:1fr;gap:10px;}
+.aa-premium--special .aa-page-links .aa-link-center,.aa-premium--special .aa-page-links .aa-link-next{text-align:left;align-items:flex-start;}
+}
