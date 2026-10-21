@@ -5,3 +5,7 @@ Initial findings pending validation. This file records primary-source checks for
 Review status: in progress.
 
 One official source has a higher reported recipient count than the page.
+
+## Source-check workflow
+
+The audit distinguishes a historic investment from a present balance, a grant recipient from a network relationship, and membership from professional language ability. Independent attribution is required for every material inference. Each page will receive a dated source register and an adversarial review. A link between institutions does not establish control over a decision. The originals are preserved until relevant source documentation can support an explicit correction.
