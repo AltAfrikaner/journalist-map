@@ -62,7 +62,6 @@ for(const page of newPages){
 assert(newTheme.includes('prefers-reduced-motion'), 'Motion preferences missing in new design');
 // Fetch the complete base branch during CI, then verify that original articles,
 // source/data references and all interactive code survive the cosmetic upgrade.
-import {execFileSync} from 'node:child_process';
 const readOriginal=path=>execFileSync('git',['show','origin/main:'+path],{encoding:'utf8',maxBuffer:16*1024*1024});
 for(const file of newPages){
   const base=readOriginal(file);
