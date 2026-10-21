@@ -80,6 +80,19 @@ if(process.argv.includes('--enforce-evidence-notes')){
  assert(journalists.includes('document.getElementById("sA").textContent="?";'),'Old synthetic language statistic remains');
  assert(journalists.includes('UNVERIFIED'),'Missing explicit evidential uncertainty');
 }
+/* OSF funding timeline: separate contemporaneous $25m launch from $29m programme total. */
+if(process.argv.includes('--enforce-evidence-notes')){
+ const osf=readFileSync('osf.html','utf8');
+ for(const token of [
+  'Record reconciliation · October 2026',
+  'reason for the $4 million difference remains UNVERIFIED',
+  'fordfoundation.org/news-and-stories/news-and-press/news/new-25-million-fund',
+  'constitutionalismfund.co.za/',
+  'lhr.org.za/lhr-news/press-statement-lhr-stands-with-lgbtiq-communities/'
+ ]) assert(osf.includes(token),'OSF source reconciliation missing: '+token);
+ assert(!osf.includes('The fund\'s primary grantee is'),'Unverified OSF ranking reintroduced');
+ assert(!osf.includes('Confirms $29M Constitutionalism Fund. Justice Mokgoro'),'Incorrect 2015 press attribution restored');
+}
 /* IOL: do not conflate post-2014 digital ownership with 2013 newspaper shareholdings. */
 if(process.argv.includes('--enforce-evidence-notes')){
  const page=readFileSync('iol.html','utf8');
