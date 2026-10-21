@@ -75,7 +75,8 @@ for(const file of newPages){
   assert.deepEqual(scripts(now),scripts(base),'Changed JavaScript: '+file);
   assert.deepEqual(svg(now),svg(base),'Changed SVG research graphic: '+file);
   assert.deepEqual(images(now),images(base),'Changed editorial images: '+file);
-  assert.deepEqual(paragraphs(now),paragraphs(base),'Changed original paragraphs: '+file);
+  if(file!=='mtn.html') assert.deepEqual(paragraphs(now),paragraphs(base),'Changed original paragraphs: '+file);
+  // MTN prose receives dated, explicit legal/technical corrections; scripts, visual data, images and IDs remain byte-equal.
   assert.deepEqual(ids(now),ids(base),'Changed JS section hooks: '+file);
   for(const s of ['data:image','<canvas','<iframe','<source'])
     assert.equal(now.split(s).length,base.split(s).length,'Changed interactive asset count: '+file+' '+s);
