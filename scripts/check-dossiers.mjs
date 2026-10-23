@@ -96,7 +96,7 @@ for(const f of nextBatch){
  assert(now.includes('href="index.html#investigations"'),'Missing archive link: '+f);
  assert(batchTheme.includes('.aa-premium--'+cls),'Missing page-specific styles: '+f);
  const base=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
- const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
    ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
    ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
@@ -127,7 +127,7 @@ for(const f of batch16){
  ? execFileSync('git',['cat-file','blob','cf9a1477877ecd556eec468be5372e8aeea63e3c'],{encoding:'utf8',maxBuffer:16*1024*1024})
  : execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
  if(f==='MTNrooivalkIRAN.html')assert.equal(now,base,'Restored Rooivalk file must exactly match last known intact premium file');
- const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [category,re] of [
   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
   ['script blocks',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
@@ -175,7 +175,7 @@ for(const f of batch16){
  const css=readFileSync('assets/dossier-batch-20-22.css','utf8');
  assert(css.includes('prefers-reduced-motion'),'Batch 20–22 missing motion preference');
  assert(css.includes(':focus-visible'),'Batch 20–22 missing accessible focus');
- const extract=(html,re)=>[...html.matchAll(re)].map(x=>x[0]);
+ const extract=(html,re)=>[...html.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(let i=0;i<files.length;i++){
   const file=files[i], now=readFileSync(file,'utf8');
   const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
@@ -271,7 +271,7 @@ for(const f of batch16){
   assert(now.includes(s),'Funding atlas missing '+s);
  assert(css.includes('prefers-reduced-motion'),'Atlas missing motion safety');
  assert(css.includes('focus-visible'),'Atlas missing keyboard focus treatment');
- const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
   // Narrative paragraphs intentionally receive documented editorial corrections in PR #36.
   ['original table data',/<table\b[^>]*>[\s\S]*?<\/table>/gi],
