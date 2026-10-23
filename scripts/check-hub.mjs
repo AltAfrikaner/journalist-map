@@ -33,4 +33,33 @@ assert(editorial.includes('prefers-reduced-motion'),'Editorial layout must respe
 assert(html.includes('href="assets/hub-editorial.css"'),'Missing editorial stylesheet');
 assert(html.includes('https://altafrikaner.com/'),'Canonical custom domain missing');
 assert.equal((html.match(/<details\b/g)||[]).length,(html.match(/<\/details>/g)||[]).length,'Disclosure element must close');
+
+/* Publication departments must remain independent. */
+const investigationPos=html.indexOf('id="investigations"');
+const featuredPos=html.indexOf('id="featured"');
+const articlesPos=html.indexOf('id="articles"');
+const footerPos=html.indexOf('id="site-information"');
+assert(featuredPos>0&&investigationPos>featuredPos&&articlesPos>investigationPos&&footerPos>articlesPos,
+ 'Investigations and articles must be separate, with research before the editorial department');
+assert.equal((html.match(/id="articles"/g)||[]).length,1,'Single Articles & Opinion department');
+assert(html.includes('href="articles/index.html"'),'Missing independent articles index');
+assert(html.includes('class="aa-articles-department"'),'Missing editorial department visual container');
+assert(html.includes('class="aa-article-feature"'),'Missing article feature');
+assert(!html.slice(investigationPos,articlesPos).includes('tom-eaton-trojan-horse.html'),
+ 'Opinion article must not be mixed into investigation archive');
+const rail=readFileSync('assets/hub-departments.css','utf8');
+assert(rail.includes('.hero-rail .rail-story')&&rail.includes('text-decoration: none'),
+ 'Archive panel headline must use the house typography and avoid browser-default underline');
+assert(rail.includes("'Playfair Display'"),'Missing editorial serif heading');
+assert(rail.includes('align-self: start'),'Rail must not create tall unused space');
+const shared=readFileSync('assets/editorial-shell.js','utf8');
+const sharedCss=readFileSync('assets/editorial-shell.css','utf8');
+const library=readFileSync('articles/index.html','utf8');
+for(const dept of ['investigations','articles'])assert(shared.includes('data-aa-department="'+dept+'"'), 'Missing shared department link '+dept);
+assert(shared.includes("currentDepartment.classList.add('is-active')"), 'Department switcher must identify active section');
+assert(sharedCss.includes('.aa-editorial-actions a.is-active'), 'Missing active department styling');
+assert(library.includes('<h1>Articles &amp; Opinion.</h1>')&&library.includes('href="../index.html#investigations"'),
+ 'The editorial library must link back to the investigation hub');
+console.log('Sections verified: 31 investigations remain separate from the Articles & Opinion library.');
+
 console.log('Hub smoke checks passed: 31 routes preserved, editorial links, discovery, accessibility.');

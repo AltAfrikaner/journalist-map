@@ -36,3 +36,55 @@ body.aa-editorial-site:has(.artwork) .hero{background:#fbf8f3;color:#172338}
 .aa-editorial-archive-nav a{font:700 14px 'Source Sans 3',sans-serif;color:#172338;border:1px solid #bcae9d;border-radius:3px;padding:8px 13px;text-decoration:none;background:#fffdf9}
 .aa-editorial-archive-nav a[aria-current="true"]{background:#172338;color:white;border-color:#172338}
 .aa-editorial-empty{background:#fffdf9;padding:28px;border:1px solid #d9cfbd;color:#24354e}
+
+/* Two publication departments: persistent, visually separate and keyboard accessible. */
+.aa-editorial-bar .aa-editorial-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  background: #f1eadd;
+  border: 1px solid #d2c7b8;
+  border-radius: 3px;
+}
+.aa-editorial-bar .aa-editorial-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 39px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #1b2a4a;
+  font: 700 12px 'Source Sans 3',sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .065em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.aa-editorial-bar .aa-editorial-actions a.is-active {
+  background: #1b2a4a;
+  color: #fffdf8;
+  border-color: #1b2a4a;
+}
+.aa-editorial-bar .aa-editorial-actions a:not(.is-active):hover {
+  background: #fffdf8;
+  color: #8b0000;
+}
+.aa-editorial-actions .aa-dept-short { display:none; }
+@media(max-width:580px){
+  .aa-editorial-bar { gap:6px; padding: 7px 9px; }
+  .aa-editorial-bar .aa-menu-toggle { width:34px; height:40px; font-size:25px; }
+  .aa-editorial-bar .aa-editorial-logo { min-width:64px;max-width:90px;height:43px; }
+  .aa-editorial-bar .aa-editorial-actions { gap:1px; padding:3px; }
+  .aa-editorial-bar .aa-editorial-actions a:not(.aa-editorial-subscribe) {
+    display:inline-flex;
+    padding:6px 8px;
+    min-height:34px;
+    font-size:10px;
+    letter-spacing:.015em;
+  }
+  .aa-editorial-actions .aa-dept-full { display:none; }
+  .aa-editorial-actions .aa-dept-short { display:inline; }
+}
