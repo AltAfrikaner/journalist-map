@@ -18,8 +18,8 @@ Status reconciled 23 October 2026 against main after the sitewide editorial-shel
 | 12 | `motsepe.html` | context merged | #39 ARM executive-to-non-executive transition, WEF trustee responsibilities and Breakthrough Energy investor relationship corrected; remaining political, financial and legal allegations require source-level verification |
 | 13 | `communists.html` | historical context present; full audit open | Published SACP policy-source note distinguishes documented party strategy from unverified cross-country transfer; review timeline, Crenshaw 1989 chronology and individual international causal claims |
 | 14 | `ancliberation.html` | statistical correction (23 Oct 2026); full audit open | Q1 2025 ages 15–24 unemployment corrected 62.2→62.4% in prose and labelled SVG; UNICEF 1.7M identified as 2020 projection for 2025, not a 2025 survey; reconcile remaining crime, water, mortality and causation metrics |
-| 15 | `wef.html` | pending | Authority versus access; chronology |
-| 16 | `un.html` | pending | Legal standard comparison |
+| 15 | `wef.html` | 23 Oct 2026 targeted primary-source correction; full audit open | US$2.8B→US$12.8B March 2025 JETP pledge, 2021 initial US$8.5B and later US$13.7B broader update; December 2022 parliamentary briefing documented; archived partner bars UNVERIFIED; verify binding finance, 35-year timeline and named causal/beneficiary assertions |
+| 16 | `un.html` | 23 Oct 2026 treaty/statistical correction; full audit open | CERD 2016 and Nov–Dec 2023 treaty scrutiny disproves absolute UN silence; differentiate apartheid crimes and conditional redress law; Q4 2024 official jobless 16.3M→8.0M; reconcile IRR law-index counts, other unemployment rates, personnel allegations |
 | 17 | `mbalula.html` | pending | Allegations and dispositions |
 | 18 | `MTNrooivalkIRAN.html` | large-source audit blocked; content guarded | Following PR #50 restoration, intact recorded blob cf9a1477877ecd556eec468be5372e8aeea63e3c rechecked on main (expected 2,093,468 bytes). Limited line fetch returns no text; no write permitted without an independent full-blob preservation check |
 | 19 | `44afrikaners.html` | correction merged | #21 corrected five-university label and flagged 45 versus 43 sector tally; full roster reconciliation still outstanding |
@@ -54,3 +54,7 @@ PRs #23, #25–#28 and #30–#32 have merged after checks; #24 remains a review-
 ## 23 October 2026 source/correction entry
 
 Two local pages received primary-evidence corrections under `editorial/source-verified-newsroom-liberation-20261023`. Details, before/after claims, counterevidence and preservation checks: [SOURCE-CORRECTIONS-09-14-20261023.md](SOURCE-CORRECTIONS-09-14-20261023.md). The resulting PR, its exact-head CI and Pages deployment must be verified before a merged/deployed status is claimed. Legacy draft PRs #3, #4 and #24 remain excluded. The two external repositories remain read-only.
+
+## 23 October 2026 evidence reconciliation — investigations 15 and 16
+
+Source-by-source corrections to the WEF/JETP funding chronology and UN/CERD treaty-monitoring claims are recorded in [SOURCE-CORRECTIONS-15-16-20261023.md](SOURCE-CORRECTIONS-15-16-20261023.md), including links to primary/independent documentation, red-team alternatives and preservation tests. These are **targeted source corrections, not final audit completion**. HTML corrections must pass exact-head CI, conflict checks, merge and Pages deployment verification before being called published. The two external cards remain GitHub pull-only, push-disabled; MTNrooivalkIRAN remains an oversized, write-protected exception.
