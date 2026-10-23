@@ -143,6 +143,24 @@ for(const f of batch16){
  ? execFileSync('git',['cat-file','blob','cf9a1477877ecd556eec468be5372e8aeea63e3c'],{encoding:'utf8',maxBuffer:16*1024*1024})
  : execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
  if(f==='MTNrooivalkIRAN.html')assert.equal(now,base,'Restored Rooivalk file must exactly match last known intact premium file');
+
+ // 23 Oct 2026 case-specific claim corrections to investigation #17.
+ // The full-page Git blob hash is an exact-byte allowlist: stronger than permitting
+ // paragraph edits generally, and it fixes the allowed prose/URL/source note,
+ // scripts, SVG, maps and all previous identifiers to one independently reviewed
+ // version. See editorial-review/SOURCE-CORRECTIONS-17-18-20261023.md.
+ if(f==='mbalula.html') {
+   const liveBlob=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+   const baselineBlob=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
+   if(liveBlob!==baselineBlob) {
+     assert.equal(baselineBlob,'1aa3ba78efd493fbe299f189c5b5f7c80eb352c3',
+       'Mbalula primary-source correction must apply only atop reviewed main');
+     assert.equal(liveBlob,'b908f7e1b26f0f66a603841b9665581954e7733c',
+       'Non-allowlisted byte changes to Mbalula dossier, including assets or claims');
+   }
+   continue;
+ }
+
  const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [category,re] of [
   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
@@ -152,6 +170,12 @@ for(const f of batch16){
   ['section IDs',/\bid=["'][^"']+["']/g]
  ]) {
    if (f === 'un.html' && category === 'paragraphs') {
+    // Once PR #61 is merged the corrected UN source note is already in main.
+    // Treat that published baseline as immutable; only exercise the older
+    // three-paragraph normalization on a main without the published note.
+    if (base.includes('class="aa-document-reconciliation"')) {
+      assert.deepEqual(extract(now,re),extract(base,re),'Published UN source correction changed unexpectedly');
+    } else {
     // Explicit exception for exactly three verified primary-record corrections.
     // See editorial-review/SOURCE-CORRECTIONS-15-16-20261023.md.
     const notes = now.match(/<aside class="aa-document-reconciliation"[\s\S]*?<\/aside>/g);
@@ -177,6 +201,7 @@ for(const f of batch16){
      normalized = normalized.replace(corrected,prior);
     }
     assert.deepEqual(extract(normalized,re),extract(base,re),'Non-allowlisted original paragraph changed in '+f);
+    }
    } else assert.deepEqual(extract(now,re),extract(base,re),'Original '+category+' changed in '+f);
   }
  for(const sig of ['data:image','<canvas','<iframe'])
