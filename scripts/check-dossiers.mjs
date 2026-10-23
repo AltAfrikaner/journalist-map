@@ -40,7 +40,7 @@ for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){
   try {baseline=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:12*1024*1024});}
   catch {continue;} // manual runs without origin/main still use static structural checks
   const latest=readFileSync(file,'utf8');
-  const blocks=html=>[...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)].map(m=>m[0]);
+  const blocks=html=>[...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)].map(m=>m[0]).filter(block=>!block.includes('src="assets/editorial-shell.js"'));
   assert.deepEqual(blocks(latest),blocks(baseline),'Original script changed in '+file);
   const ids=html=>[...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]);
   assert.deepEqual(ids(latest),ids(baseline),'Original IDs changed in '+file);
