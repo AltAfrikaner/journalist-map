@@ -228,7 +228,17 @@ for(const f of batch16){
   ['research diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
   ['original images',/<img\b[^>]*>/gi],
   ['interactive IDs',/\bid=['"][^'"]+['"]/g]
- ])assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
+ ]) {
+   if(category==='original paragraphs' && now!==old) {
+     // Approved source corrections in PR #64.  Match BOTH complete blob hashes
+     // instead of allowing arbitrary prose edits or weakening any graphic guard.
+     // See editorial-review/SOURCE-CORRECTIONS-19-20-20261023.md.
+     const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+     const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+     assert.equal(originalHash,'3f2b5bac0c0bdf8b4fd8d3c27a484783fd458c11','Unexpected original #19 source');
+     assert.equal(revisedHash,'b28a968536dd9f17c551ba9ffd0165dd9fa9e541','Unreviewed #19 source/content change');
+   } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
+ }
  for(const sig of ['<canvas','data:image','<iframe'])
    assert.equal(now.split(sig).length,old.split(sig).length,'Changed embedded asset '+sig);
  for(const id of ['context','roll','finding','anatomy','network','map','provenance'])
@@ -263,7 +273,16 @@ for(const f of batch16){
    ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
    ['images',/<img\b[^>]*>/gi],
    ['element IDs',/\bid=["'][^"']+["']/g]
-  ])assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
+  ]) {
+    if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
+      // Exact whole-file allowance for reviewed PR #64 correction; leave other
+      // sections and all remaining script/SVG/image/ID checks strictly intact.
+      const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+      const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+      assert.equal(originalHash,'e909d4f778f60aa687a029dd20c57952e5f4f3a8','Unexpected #20 source baseline');
+      assert.equal(revisedHash,'116aff20270f8509a64b5541499d4f5a426d82fd','Unreviewed #20 source/content change');
+    } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
+  }
   for(const s of ['data:image','<canvas','<iframe'])
    assert.equal(now.split(s).length,old.split(s).length,'Modified embedded media '+s+' in '+file);
  }
