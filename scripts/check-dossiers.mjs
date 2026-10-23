@@ -150,7 +150,35 @@ for(const f of batch16){
   ['SVG diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
   ['image tags',/<img\b[^>]*>/gi],
   ['section IDs',/\bid=["'][^"']+["']/g]
- ])assert.deepEqual(extract(now,re),extract(base,re),'Original '+category+' changed in '+f);
+ ]) {
+   if (f === 'un.html' && category === 'paragraphs') {
+    // Explicit exception for exactly three verified primary-record corrections.
+    // See editorial-review/SOURCE-CORRECTIONS-15-16-20261023.md.
+    const notes = now.match(/<aside class="aa-document-reconciliation"[\s\S]*?<\/aside>/g);
+    assert.equal(notes?.length,1,'Exactly one UN research note expected');
+    let normalized = now.replace(notes[0], '');
+    const exactCorrections = [
+     [
+      '<p>No successor to the Special Committee Against Apartheid. No monitoring body. No resolution. The most racially legislated democracy on earth operates inside a complete institutional vacuum of international scrutiny.</p>',
+      '<p>The Special Committee Against Apartheid was discontinued, and contemporary treaty monitoring has a different mandate from Security Council embargoes. CERD reviewed South Africa in 2016 and 2023. Whether that review was sufficiently detailed and independent regarding the discriminatory effect of particular affirmative-action rules warrants case-level investigation; <strong>no monitoring body</strong> and <strong>complete institutional vacuum</strong> are inaccurate descriptions.</p>'
+     ],
+     [
+      '<p>The ANC government, validated by UN partnership and unchallenged by CERD, passes more race law. Ramaphosa confirms publicly: race-based legislation will continue. The loop has no exit point.</p>',
+      '<p>The government continues to defend redress policies while CERD conducts periodic treaty scrutiny and UN agencies cooperate on development programmes. That coexistence creates a fair question about the rigour of international oversight; it does not establish that CERD never reviewed the country or directed Parliament to adopt any particular measure. The outcome of specific complaints remains to be evidenced.</p>'
+     ],
+     [
+      '<p>After 21+ years of BEE: black unemployment rose from 29% to 39%. White unemployment declined. Total jobless: 3.7M to 16.3M. Harvard Growth Lab: "stagnation and exclusion." The policy failed its own stated beneficiaries.</p>',
+      "<p>South Africa's Q4 2024 labour survey recorded approximately 8.0 million officially unemployed and 16.5 million economically inactive people; these are different groups. The earlier 16.3 million figure labelled unemployed was not an official unemployment count. Racial employment disparities deserve investigation, but changes across years must use comparable definitions, quarters, population denominators and counterfactuals before attributing them causally to BEE alone.</p>"
+     ]
+    ];
+    for (const [prior, corrected] of exactCorrections) {
+     assert.equal(normalized.split(corrected).length,2,'Missing/duplicate allowlisted editorial paragraph');
+     assert.equal(base.split(prior).length,2,'Unexpected original article paragraph');
+     normalized = normalized.replace(corrected,prior);
+    }
+    assert.deepEqual(extract(normalized,re),extract(base,re),'Non-allowlisted original paragraph changed in '+f);
+   } else assert.deepEqual(extract(now,re),extract(base,re),'Original '+category+' changed in '+f);
+  }
  for(const sig of ['data:image','<canvas','<iframe'])
   assert.equal(now.split(sig).length,base.split(sig).length,'Original embedded visual changed in '+f);
 }
