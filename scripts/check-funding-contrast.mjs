@@ -7,4 +7,6 @@ function rgb(hex){const h=hex.replace('#','');return [0,2,4].map(i=>parseInt(h.s
 function luminance(hex){return rgb(hex).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0)}
 function contrast(a,b){const [l,h]=[luminance(a),luminance(b)].sort((x,y)=>x-y);return (h+.05)/(l+.05)}
 for(const [fg,bg] of [['#253548','#fffdfa'],['#175334','#fffdfa'],['#58308b','#fffdfa'],['#123f2a','#edf4ef'],['#3f256a','#f1eaf7']])assert(contrast(fg,bg)>=4.5,'Insufficient funding panel contrast: '+fg+' on '+bg);
-console.log('Funding panel colour pairs meet WCAG AA regular-text contrast.');
+for(const [fg,bg] of [['#253548','#fffdfa'],['#1b4879','#fffdfa'],['#7d2028','#fffdfa'],['#334456','#f7f4ec']])assert(contrast(fg,bg)>=4.5,'Omidyar note contrast failed: '+fg+' '+bg);
+for(const token of ['.usaid-note{','background:#fffdfa!important;color:#253548!important','body.aa-premium--funding-atlas #omidyar-orgs>.section-inner>p'])assert(css.includes(token),'Missing Omidyar contrast rule: '+token);
+console.log('Funding and Omidyar note colour pairs meet WCAG AA regular-text contrast.');
