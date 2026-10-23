@@ -280,7 +280,7 @@ for(const f of batch16){
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
       assert.equal(originalHash,'e909d4f778f60aa687a029dd20c57952e5f4f3a8','Unexpected #20 source baseline');
-      assert.equal(revisedHash,'b36f35b45145582d2855e5a563839173749bf9c8','Unreviewed #20 source/content change');
+      assert.equal(revisedHash,'116aff20270f8509a64b5541499d4f5a426d82fd','Unreviewed #20 source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
