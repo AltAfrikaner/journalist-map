@@ -5,6 +5,10 @@ on:
       - 'index.html'
       - 'assets/hub-premium.css'
       - 'assets/hub-discovery.js'
+      - 'assets/hub-departments.css'
+      - 'assets/editorial-shell.css'
+      - 'assets/editorial-shell.js'
+      - 'articles/index.html'
       - 'scripts/check-hub.mjs'
       - '.github/workflows/hub-checks.yml'
   workflow_dispatch:

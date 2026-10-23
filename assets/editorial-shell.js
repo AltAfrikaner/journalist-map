@@ -8,7 +8,7 @@ document.body.prepend(overlay,drawer,bar);const department=location.pathname.inc
 const currentDepartment=bar.querySelector('[data-aa-department="'+department+'"]');
 if(currentDepartment){
  currentDepartment.classList.add('is-active');
- if(location.pathname.endsWith('/index.html')||location.pathname.endsWith('/articles/'))currentDepartment.setAttribute('aria-current','page');
+ if(location.pathname==='/'||location.pathname.endsWith('/index.html')||location.pathname.endsWith('/articles/'))currentDepartment.setAttribute('aria-current','page');
 }
 const toggle=bar.querySelector('.aa-menu-toggle'),close=drawer.querySelector('.aa-drawer-close');let prior=null;function setOpen(open){overlay.classList.toggle('open',open);drawer.classList.toggle('open',open);drawer.setAttribute('aria-hidden',String(!open));toggle.setAttribute('aria-expanded',String(open));document.body.style.overflow=open?'hidden':'';if(open){prior=document.activeElement;close.focus()}else if(prior&&typeof prior.focus==='function')prior.focus()}
 toggle.addEventListener('click',()=>setOpen(true));close.addEventListener('click',()=>setOpen(false));overlay.addEventListener('click',()=>setOpen(false));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))setOpen(false)});
