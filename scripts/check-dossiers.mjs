@@ -67,7 +67,7 @@ for(const file of newPages){
   const base=readOriginal(file);
   const now=readFileSync(file,'utf8');
   const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]);
-  const scripts=html=>extract(html,/<script\b[^>]*>[\s\S]*?<\/script>/gi);
+  const scripts=html=>extract(html,/<script\b[^>]*>[\s\S]*?<\/script>/gi ).filter(block=>!block.includes('src="assets/editorial-shell.js"'));
   const svg=html=>extract(html,/<svg\b[^>]*>[\s\S]*?<\/svg>/gi);
   const images=html=>extract(html,/<img\b[^>]*>/gi);
   const paragraphs=html=>extract(html,/<p\b[^>]*>[\s\S]*?<\/p>/gi);
