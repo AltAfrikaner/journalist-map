@@ -1,0 +1,22 @@
+name: Investigation contrast checks
+on:
+  pull_request:
+    paths:
+      - 'assets/investigation-contrast.css'
+      - 'osf-funded-orgs.html'
+      - 'scripts/check-funding-contrast.mjs'
+      - '.github/workflows/investigation-contrast.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'assets/investigation-contrast.css'
+      - 'osf-funded-orgs.html'
+jobs:
+  contrast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/check-funding-contrast.mjs
