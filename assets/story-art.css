@@ -1,0 +1,40 @@
+/* Alt Afrikaner | Illustrated feature system, 5:2, visual-only.
+ * Preserves existing hero copy, links, galleries, diagrams and WebGL.
+ */
+.aa-feature-art {
+  display: block;
+  box-sizing: border-box;
+  width: min(1200px, calc(100% - 40px));
+  max-width: 1200px;
+  margin: clamp(28px,4vw,58px) auto clamp(36px,5vw,70px);
+  border: 1px solid #d3c7b6;
+  background: #172132;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(20,29,45,.09);
+  isolation: isolate;
+}
+.aa-feature-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 2;
+  object-fit: cover;
+  background: #172132;
+}
+.aa-feature-art figcaption {
+  font: 500 12px/1.5 'Source Sans 3',system-ui,sans-serif;
+  color: #454b54;
+  letter-spacing: .02em;
+  background: #f7f4ec;
+  padding: 12px 17px;
+  border-top: 1px solid #c6b79c;
+  text-align: left;
+}
+.aa-feature-art:focus-within{outline: 2px solid #8b0000;outline-offset:4px;}
+@media(max-width:680px){
+ .aa-feature-art{width:calc(100% - 24px);margin:25px auto 38px;}
+ .aa-feature-art figcaption{font-size:11px;padding:10px 12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ .aa-feature-art, .aa-feature-art * {scroll-behavior:auto!important;transition:none!important;animation:none!important;}
+}
