@@ -291,3 +291,23 @@ body.aa-premium :is(a,button,input,select,textarea):focus-visible{
 @media(max-width:740px){
  body.aa-premium--funding-atlas :is(.cf-box,.stacked-box){padding:20px 16px}
 }
+
+
+/* Light OSF/Omidyar funding atlas: USAID note and section introductions. */
+body.aa-premium--funding-atlas .usaid-note{
+ background:#fffdfa!important;color:#253548!important;
+ border:1px solid #c5d0dc!important;border-left:4px solid #285d91!important;
+ font-size:clamp(15px,1.25vw,17px)!important;line-height:1.75!important;
+}
+body.aa-premium--funding-atlas .usaid-note :is(strong,b){
+ color:#1b4879!important;
+}
+body.aa-premium--funding-atlas .usaid-note :is(a,.xlink){
+ color:#7d2028!important;text-decoration:underline!important;text-underline-offset:3px;
+}
+body.aa-premium--funding-atlas #omidyar-orgs>.section-inner>p{
+ color:#334456!important;font-size:clamp(16px,1.35vw,18px)!important;line-height:1.78;
+}
+body.aa-premium--funding-atlas #omidyar-orgs>.section-inner>p .xlink{
+ color:#85202b!important;
+}
