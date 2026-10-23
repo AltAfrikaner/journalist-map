@@ -1,0 +1,27 @@
+name: First five double artwork integrity
+on:
+  pull_request:
+    paths:
+      - 'assets/story-art/**'
+      - 'assets/site-branding.js'
+      - 'assets/story-pairs.css'
+      - 'osf.html'
+      - 'sa_journalists.html'
+      - 'africacheck.html'
+      - 'ifcn.html'
+      - 'sixstage.html'
+      - 'scripts/check-story-pairs.mjs'
+      - '.github/workflows/story-pairs-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check assets/site-branding.js
+      - run: node scripts/check-story-pairs.mjs

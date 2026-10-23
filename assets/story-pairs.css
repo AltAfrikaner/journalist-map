@@ -1,0 +1,45 @@
+/* ALT AFRIKANER | THE FIRST FIVE · premium in-article editorial art.
+   Graphic plates illustrate topics, never depict actual donors, people or rulings. */
+.aa-story-inline-art{
+ box-sizing:border-box;display:block;
+ width:min(1100px,calc(100% - 40px));
+ max-width:1100px;margin:48px auto 62px;
+ border:1px solid #cfc2ad;border-radius:3px;
+ overflow:hidden;background:#172132;
+ box-shadow:0 20px 42px rgba(20,30,42,.11);
+ isolation:isolate;
+}
+.aa-story-inline-art img{
+ display:block;width:100%;height:auto;
+ aspect-ratio:16 / 9;object-fit:cover;
+ background:#19283f;
+}
+.aa-story-inline-art figcaption{
+ padding:12px 19px 14px;
+ color:#3d4851;background:#f7f4ec;
+ border-top:1px solid #c4b398;
+ font:500 13px/1.6 'Source Sans 3',system-ui,sans-serif;
+ text-align:left;
+}
+.aa-premium--osf .content-panel .aa-story-inline-art{
+ width:calc(100% - clamp(40px,6vw,110px));
+}
+.aa-premium--journalists .aa-story-inline-art{
+ width:min(1080px,calc(100% - 36px));
+}
+.aa-premium--africacheck .aa-story-inline-art{
+ width:min(1050px,100%);
+}
+.aa-premium--ifcn .aa-story-inline-art{
+ width:min(1100px,calc(100% - 42px));
+}
+.aa-premium--sixstage .aa-story-inline-art{
+ width:min(1060px,100%);
+}
+@media(max-width:680px){
+ .aa-story-inline-art{width:calc(100% - 20px)!important;margin:28px auto 36px;}
+ .aa-story-inline-art figcaption{font-size:11px;padding:9px 12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ .aa-story-inline-art *{transition:none!important;animation:none!important}
+}

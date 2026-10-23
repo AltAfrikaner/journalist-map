@@ -39,3 +39,46 @@
     document.addEventListener('DOMContentLoaded', placeArticleArtwork, { once: true });
   else placeArticleArtwork();
 })();
+
+
+/* Alt Afrikaner: five bespoke illustrated in-article features.
+   Positioned after explanatory sections, separate from source diagrams. */
+;(function(){
+ 'use strict';
+ const details={
+  'osf.html':{after:'#board',asset:'assets/story-art/osf-inside.svg',subject:'institutional funding records and organisational links'},
+  'sa_journalists.html':{after:'#patterns',asset:'assets/story-art/sa_journalists-inside.svg',subject:'newsrooms, journalism and professional affiliations'},
+  'africacheck.html':{after:'#funding',asset:'assets/story-art/africacheck-inside.svg',subject:'verification methods and the evaluation of public claims'},
+  'ifcn.html':{after:'#guild',asset:'assets/story-art/ifcn-inside.svg',subject:'international standards and certification'},
+  'sixstage.html':{after:'.pipeline',asset:'assets/story-art/sixstage-inside.svg',subject:'six separate stages of an information workflow'}
+ };
+ function placeStoryDetailArt(){
+  const slug=decodeURIComponent((location.pathname.split('/').pop()||'').trim());
+  const entry=details[slug];
+  if(!entry||document.querySelector('.aa-story-inline-art'))return;
+  const anchor=document.querySelector(entry.after);
+  if(!anchor)return;
+  const figure=document.createElement('figure');
+  figure.className='aa-story-inline-art';
+  const img=document.createElement('img');
+  img.src=entry.asset;
+  img.alt='Conceptual editorial illustration of '+entry.subject+'. Not a depiction of verified relationships.';
+  img.width=1600;
+  img.height=900;
+  img.loading='lazy';
+  img.decoding='async';
+  const cap=document.createElement('figcaption');
+  cap.textContent='Inside the investigation · Illustration of '+entry.subject+'. This artwork is illustrative, not documentary evidence.';
+  figure.append(img,cap);
+  anchor.insertAdjacentElement('afterend',figure);
+  if(!document.querySelector('link[href="assets/story-pairs.css"]')){
+   const sheet=document.createElement('link');
+   sheet.rel='stylesheet';
+   sheet.href='assets/story-pairs.css';
+   document.head.appendChild(sheet);
+  }
+ }
+ if(document.readyState==='loading')
+  document.addEventListener('DOMContentLoaded',placeStoryDetailArt,{once:true});
+ else placeStoryDetailArt();
+})();
