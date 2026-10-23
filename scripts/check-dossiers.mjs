@@ -123,7 +123,10 @@ for(const f of batch16){
  assert(now.includes('class="aa-page-links"'),'Missing next/prev navigation '+f);
  assert(now.includes('href="index.html#investigations"'),'Missing archive link '+f);
  assert(css16.includes('.aa-premium--'+name),'Missing CSS for '+f);
- const base=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
+ const base=f==='MTNrooivalkIRAN.html'
+ ? execFileSync('git',['cat-file','blob','cf9a1477877ecd556eec468be5372e8aeea63e3c'],{encoding:'utf8',maxBuffer:16*1024*1024})
+ : execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
+ if(f==='MTNrooivalkIRAN.html')assert.equal(now,base,'Restored Rooivalk file must exactly match last known intact premium file');
  const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
  for(const [category,re] of [
   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
