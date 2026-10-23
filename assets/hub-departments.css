@@ -246,3 +246,15 @@ body.aa-editorial-site #investigation-grid>a.card[href="usaidtonewsroom.html"]::
 body.aa-editorial-site #investigation-grid>a.card[href="mtn.html"]::before{background-image:url("story-art/mtn.svg")}
 @media(max-width:650px){body.aa-editorial-site #investigation-grid>a.card::before{margin-bottom:1rem}}
 @media(forced-colors:active){body.aa-editorial-site #investigation-grid>a.card::before{border-bottom:2px solid CanvasText}}
+
+/* Batch 2: evidence-labelled research covers, files 11–20. */
+body.aa-editorial-site #investigation-grid>a.card[href="prototypenation.html"]::before{background-image:url("story-art/prototypenation.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="motsepe.html"]::before{background-image:url("story-art/motsepe.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="communists.html"]::before{background-image:url("story-art/communists.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="ancliberation.html"]::before{background-image:url("story-art/ancliberation.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="wef.html"]::before{background-image:url("story-art/wef.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="un.html"]::before{background-image:url("story-art/un.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="mbalula.html"]::before{background-image:url("story-art/mbalula.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="MTNrooivalkIRAN.html"]::before{background-image:url("story-art/MTNrooivalkIRAN.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="44afrikaners.html"]::before{background-image:url("story-art/44afrikaners.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="mbalula_network.html"]::before{background-image:url("story-art/mbalula_network.svg")}
