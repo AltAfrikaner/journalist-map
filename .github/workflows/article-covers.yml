@@ -1,0 +1,16 @@
+name: Article cover verification
+on:
+  pull_request:
+    paths: ['articles/**','assets/articles/**','.github/workflows/article-covers.yml','scripts/check-article-covers.mjs']
+  push:
+    branches: [main]
+    paths: ['articles/**','assets/articles/**']
+jobs:
+  covers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/check-article-covers.mjs
