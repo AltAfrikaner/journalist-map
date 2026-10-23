@@ -311,3 +311,21 @@ body.aa-premium--funding-atlas #omidyar-orgs>.section-inner>p{
 body.aa-premium--funding-atlas #omidyar-orgs>.section-inner>p .xlink{
  color:#85202b!important;
 }
+
+
+/* Evidence-led whole-archive pass: legacy inline light labels on ivory sections. */
+body.aa-premium--funding-atlas section:not(.hero) > .section-inner > p[style*="color:rgba(244,240,232"]{
+ color:#304252!important;
+ font-size:clamp(16px,1.3vw,18px);
+ line-height:1.78;
+}
+body.aa-premium--funding-atlas section:not(.hero) > .section-inner > p[style*="color:rgba(244,240,232"] a{
+ color:#79222a!important;text-decoration:underline;
+}
+body.aa-premium--funding-atlas section:not(.hero) :is(.usaid-note,.cf-box,.stacked-box) :is(.xlink,a):focus-visible{
+ outline:3px solid #8b4215;outline-offset:3px;
+}
+/* Text in premium article information regions must not inherit dark-map white. */
+body.aa-premium--funding-atlas :is(.cf-box,.stacked-box,.usaid-note) :is(code,pre){
+ color:#203448!important;overflow-wrap:anywhere;white-space:pre-wrap;
+}
