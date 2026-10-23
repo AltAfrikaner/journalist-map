@@ -183,3 +183,15 @@
 .aa-premium--rooivalk .network-container :is(p,li,.caption){color:#eee4d5}
 .aa-premium--rooivalk .fish-card :is(p,.fish-detail),
 .aa-premium--rooivalk .person-card :is(p,.person-detail){color:#314353}
+
+/* Story-art visual for the 2MB archival Rooivalk file: placed in the
+   existing stats row without rewriting or touching the embedded aircraft,
+   investigation photographs, visualisations or JavaScript. */
+.aa-premium--rooivalk .stat-row::after {
+ content:"";display:block;grid-column:1/-1;
+ width:min(1200px,calc(100% - 24px));aspect-ratio:5 / 2;
+ margin:clamp(24px,3vw,44px) auto 10px;
+ background:#172132 url("story-art/MTNrooivalkIRAN.svg") center/cover no-repeat;
+ border:1px solid #c5b49a;
+ box-shadow:0 10px 26px rgba(20,29,45,.09);
+}
