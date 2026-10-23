@@ -103,7 +103,23 @@ for(const f of nextBatch){
    ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
    ['images',/<img\b[^>]*>/gi],
    ['element IDs',/\bid=['"][^'"]+['"]/g]
- ])if(!(['ancliberation.html','wef.html'].includes(f)&&label==='paragraphs')) assert.deepEqual(extract(now,re),extract(base,re),'Changed original '+label+' in '+f);
+ ]) {
+    if (['ancliberation.html','wef.html'].includes(f) && label==='paragraphs') continue;
+    const baselineBlocks=extract(base,re);
+    if (f==='ancliberation.html' && label==='SVG') {
+      // Primary-record correction: QLFS Q1:2025 (Stats SA p.23), 15–24 unemployment 62.4%.
+      // Permit only this exact visible SVG text replacement; all other SVG bytes remain fixed.
+      // Future PRs compare against a main baseline that may already contain the correction.
+      const before='<text x="560" y="145" font-size="10" fill="#999">62.2% Youth</text>';
+      const after='<text x="560" y="145" font-size="10" fill="#999">62.4% Youth</text>';
+      const currentBlocks=extract(now,re);
+      assert.equal(currentBlocks.filter(block=>block.includes(after)).length,1,'Missing single corrected QLFS SVG label');
+      assert.equal(currentBlocks.filter(block=>block.includes(before)).length,0,'Stale QLFS SVG label');
+      assert.deepEqual(currentBlocks,baselineBlocks.map(block=>block.replace(before,after)),'Unexpected SVG change beyond verified QLFS text correction in '+f);
+    } else {
+      assert.deepEqual(extract(now,re),baselineBlocks,'Changed original '+label+' in '+f);
+    }
+  }
  for(const sign of ['<canvas','data:image','<iframe'])assert.equal(now.split(sign).length,base.split(sign).length,'Changed embedded asset in '+f);
 }
 
