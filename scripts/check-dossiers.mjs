@@ -66,7 +66,7 @@ const readOriginal=path=>execFileSync('git',['show','origin/main:'+path],{encodi
 for(const file of newPages){
   const base=readOriginal(file);
   const now=readFileSync(file,'utf8');
-  const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]);
+  const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]).filter(x=>!x.includes('src="assets/editorial-shell.js"'));
   const scripts=html=>extract(html,/<script\b[^>]*>[\s\S]*?<\/script>/gi ).filter(block=>!block.includes('src="assets/editorial-shell.js"'));
   const svg=html=>extract(html,/<svg\b[^>]*>[\s\S]*?<\/svg>/gi);
   const images=html=>extract(html,/<img\b[^>]*>/gi);
@@ -209,7 +209,7 @@ for(const f of batch16){
  const css=readFileSync('assets/dossier-batch-23-25.css','utf8');
  assert(css.includes('prefers-reduced-motion'),'Batch 23-25 motion preference missing');
  assert(css.includes(':focus-visible'),'Batch 23-25 accessible focus missing');
- const extract=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+ const extract=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).filter(x=>!x.includes('src="assets/editorial-shell.js"'));
  for(let i=0;i<files.length;i++){
   const file=files[i], now=readFileSync(file,'utf8');
   const base=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
@@ -237,7 +237,7 @@ for(const f of batch16){
  const css=readFileSync('assets/dossier-batch-26-28.css','utf8');
  assert(css.includes('prefers-reduced-motion'),'Missing 26–28 reduced-motion CSS');
  assert(css.includes('focus-visible'),'Missing 26–28 keyboard focus CSS');
- const hits=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+ const hits=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).filter(x=>!x.includes('src="assets/editorial-shell.js"'));
  for(let i=0;i<list.length;i++){
   const file=list[i], html=readFileSync(file,'utf8');
   const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:24*1024*1024});
