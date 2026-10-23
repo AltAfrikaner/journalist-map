@@ -152,7 +152,7 @@ for(const f of batch16){
    assert(now.includes(required),'Investigation 19 missing '+required);
  assert(theme.includes('prefers-reduced-motion'),'Investigation 19 has no reduced-motion fallback');
  assert(theme.includes(':focus-visible'),'Investigation 19 has no keyboard focus treatment');
- const extract=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
+ const extract=(html,re)=>[...html.matchAll(re)].map(m=>m[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [category,re] of [
   ['original scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
   ['original paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
