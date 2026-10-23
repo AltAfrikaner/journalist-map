@@ -220,3 +220,29 @@ body.aa-editorial-site:has(#aa-articles-title) .archive-heading::after {
   }
   .aa-article-feature:hover { transform:none; }
 }
+
+
+/* 2026-10-23: research archive image-led card treatment.
+   Use existing, repository-hosted editorial illustration assets; all artwork
+   remains expressly illustrative and never substitutes for cited evidence. */
+body.aa-editorial-site #investigation-grid>a.card{display:flex;flex-direction:column;overflow:hidden;min-width:0}
+body.aa-editorial-site #investigation-grid>a.card::before{
+ content:"";display:block;flex:none;width:calc(100% + 3.5rem);
+ margin:-1.5rem -1.75rem 1.3rem;aspect-ratio:5/2;
+ background-color:#182943;background-position:center;background-size:cover;
+ border-bottom:3px solid #b28d4f;
+}
+body.aa-editorial-site #investigation-grid>a.card .card-foot{margin-top:auto}
+body.aa-editorial-site #investigation-grid>a.card:hover::before{filter:brightness(1.05)}
+body.aa-editorial-site #investigation-grid>a.card[href="osf.html"]::before{background-image:url("story-art/osf.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="sa_journalists.html"]::before{background-image:url("story-art/sa_journalists.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="africacheck.html"]::before{background-image:url("story-art/africacheck.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="ifcn.html"]::before{background-image:url("story-art/ifcn.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="sixstage.html"]::before{background-image:url("story-art/sixstage.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="metasuppression.html"]::before{background-image:url("story-art/metasuppression.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="iol.html"]::before{background-image:url("story-art/iol.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="usaid.html"]::before{background-image:url("story-art/usaid.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="usaidtonewsroom.html"]::before{background-image:url("story-art/usaidtonewsroom.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="mtn.html"]::before{background-image:url("story-art/mtn.svg")}
+@media(max-width:650px){body.aa-editorial-site #investigation-grid>a.card::before{margin-bottom:1rem}}
+@media(forced-colors:active){body.aa-editorial-site #investigation-grid>a.card::before{border-bottom:2px solid CanvasText}}
