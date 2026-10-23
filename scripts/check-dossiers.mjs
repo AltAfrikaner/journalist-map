@@ -170,6 +170,12 @@ for(const f of batch16){
   ['section IDs',/\bid=["'][^"']+["']/g]
  ]) {
    if (f === 'un.html' && category === 'paragraphs') {
+    // Once PR #61 is merged the corrected UN source note is already in main.
+    // Treat that published baseline as immutable; only exercise the older
+    // three-paragraph normalization on a main without the published note.
+    if (base.includes('class="aa-document-reconciliation"')) {
+      assert.deepEqual(extract(now,re),extract(base,re),'Published UN source correction changed unexpectedly');
+    } else {
     // Explicit exception for exactly three verified primary-record corrections.
     // See editorial-review/SOURCE-CORRECTIONS-15-16-20261023.md.
     const notes = now.match(/<aside class="aa-document-reconciliation"[\s\S]*?<\/aside>/g);
@@ -195,6 +201,7 @@ for(const f of batch16){
      normalized = normalized.replace(corrected,prior);
     }
     assert.deepEqual(extract(normalized,re),extract(base,re),'Non-allowlisted original paragraph changed in '+f);
+    }
    } else assert.deepEqual(extract(now,re),extract(base,re),'Original '+category+' changed in '+f);
   }
  for(const sig of ['data:image','<canvas','<iframe'])
