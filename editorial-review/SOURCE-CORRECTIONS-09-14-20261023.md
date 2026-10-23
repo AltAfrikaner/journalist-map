@@ -39,3 +39,7 @@
 ## Inventory / limitations
 
 The main homepage has **31 `a.card` anchors: 29 local and two external**, at absolute card positions **26** (Kalahari) and **27** (AAIT). Rechecked permissions on 23 October: `citizenintel/kalahari` and `citizenintel/AAIT` both have `pull:true`, `push:false`. The external pages are therefore read-only and outside this PR; neither is marked edited. Editorial ledger tracks all 29 local source-audit statuses, none of which is newly certified complete by these limited corrections. Remaining local investigations and the full audit of 09/14 remain open.
+
+### CI preservation-fixture exception (after first PR check)
+
+PR #55's first test run, [Editorial dossier checks #40015312863](https://github.com/AltAfrikaner/journalist-map/actions/runs/40015312863), failed because `scripts/check-dossiers.mjs` correctly detected an original SVG-byte difference—even though the difference was the verified, explicitly logged visible unemployment label correction. The preservation test is now constrained to allow **only** `<text x="560" y="145" font-size="10" fill="#999">62.2% Youth</text>` → `62.4% Youth` in `ancliberation.html`; it requires exactly one corrected text element, zero stale copies, and equality for **every other byte of every SVG block**. All original JS, IDs, embedded images, graphics and the full restored Rooivalk dossier remain subject to the pre-existing integrity assertions. This is a scoped evidence correction, not a bypass of checks. A new exact-head CI pass is required before merger.
