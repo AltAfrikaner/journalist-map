@@ -40,7 +40,7 @@ for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){
   try {baseline=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:12*1024*1024});}
   catch {continue;} // manual runs without origin/main still use static structural checks
   const latest=readFileSync(file,'utf8');
-  const blocks=html=>[...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)].map(m=>m[0]);
+  const blocks=html=>[...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)].map(m=>m[0]).filter(block=>!block.includes('src="assets/editorial-shell.js"'));
   assert.deepEqual(blocks(latest),blocks(baseline),'Original script changed in '+file);
   const ids=html=>[...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]);
   assert.deepEqual(ids(latest),ids(baseline),'Original IDs changed in '+file);
@@ -66,8 +66,8 @@ const readOriginal=path=>execFileSync('git',['show','origin/main:'+path],{encodi
 for(const file of newPages){
   const base=readOriginal(file);
   const now=readFileSync(file,'utf8');
-  const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]);
-  const scripts=html=>extract(html,/<script\b[^>]*>[\s\S]*?<\/script>/gi);
+  const extract=(html,regex)=>[...html.matchAll(regex)].map(m=>m[0]).filter(x=>!x.includes('src="assets/editorial-shell.js"'));
+  const scripts=html=>extract(html,/<script\b[^>]*>[\s\S]*?<\/script>/gi ).filter(block=>!block.includes('src="assets/editorial-shell.js"'));
   const svg=html=>extract(html,/<svg\b[^>]*>[\s\S]*?<\/svg>/gi);
   const images=html=>extract(html,/<img\b[^>]*>/gi);
   const paragraphs=html=>extract(html,/<p\b[^>]*>[\s\S]*?<\/p>/gi);
@@ -96,7 +96,7 @@ for(const f of nextBatch){
  assert(now.includes('href="index.html#investigations"'),'Missing archive link: '+f);
  assert(batchTheme.includes('.aa-premium--'+cls),'Missing page-specific styles: '+f);
  const base=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
- const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
    ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
    ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
@@ -127,7 +127,7 @@ for(const f of batch16){
  ? execFileSync('git',['cat-file','blob','cf9a1477877ecd556eec468be5372e8aeea63e3c'],{encoding:'utf8',maxBuffer:16*1024*1024})
  : execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
  if(f==='MTNrooivalkIRAN.html')assert.equal(now,base,'Restored Rooivalk file must exactly match last known intact premium file');
- const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ const extract=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [category,re] of [
   ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
   ['script blocks',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
@@ -152,7 +152,7 @@ for(const f of batch16){
    assert(now.includes(required),'Investigation 19 missing '+required);
  assert(theme.includes('prefers-reduced-motion'),'Investigation 19 has no reduced-motion fallback');
  assert(theme.includes(':focus-visible'),'Investigation 19 has no keyboard focus treatment');
- const extract=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
+ const extract=(html,re)=>[...html.matchAll(re)].map(m=>m[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [category,re] of [
   ['original scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
   ['original paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
@@ -175,7 +175,7 @@ for(const f of batch16){
  const css=readFileSync('assets/dossier-batch-20-22.css','utf8');
  assert(css.includes('prefers-reduced-motion'),'Batch 20–22 missing motion preference');
  assert(css.includes(':focus-visible'),'Batch 20–22 missing accessible focus');
- const extract=(html,re)=>[...html.matchAll(re)].map(x=>x[0]);
+ const extract=(html,re)=>[...html.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(let i=0;i<files.length;i++){
   const file=files[i], now=readFileSync(file,'utf8');
   const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
@@ -209,7 +209,7 @@ for(const f of batch16){
  const css=readFileSync('assets/dossier-batch-23-25.css','utf8');
  assert(css.includes('prefers-reduced-motion'),'Batch 23-25 motion preference missing');
  assert(css.includes(':focus-visible'),'Batch 23-25 accessible focus missing');
- const extract=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+ const extract=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).filter(x=>!x.includes('src="assets/editorial-shell.js"'));
  for(let i=0;i<files.length;i++){
   const file=files[i], now=readFileSync(file,'utf8');
   const base=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:20*1024*1024});
@@ -237,7 +237,7 @@ for(const f of batch16){
  const css=readFileSync('assets/dossier-batch-26-28.css','utf8');
  assert(css.includes('prefers-reduced-motion'),'Missing 26–28 reduced-motion CSS');
  assert(css.includes('focus-visible'),'Missing 26–28 keyboard focus CSS');
- const hits=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+ const hits=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).filter(x=>!x.includes('src="assets/editorial-shell.js"'));
  for(let i=0;i<list.length;i++){
   const file=list[i], html=readFileSync(file,'utf8');
   const old=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:24*1024*1024});
@@ -271,7 +271,7 @@ for(const f of batch16){
   assert(now.includes(s),'Funding atlas missing '+s);
  assert(css.includes('prefers-reduced-motion'),'Atlas missing motion safety');
  assert(css.includes('focus-visible'),'Atlas missing keyboard focus treatment');
- const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]);
+ const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
   // Narrative paragraphs intentionally receive documented editorial corrections in PR #36.
   ['original table data',/<table\b[^>]*>[\s\S]*?<\/table>/gi],
