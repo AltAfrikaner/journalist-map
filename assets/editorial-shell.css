@@ -27,3 +27,12 @@ body.aa-editorial-article .aa-article-cover img{border-radius:4px;max-height:690
 body.aa-editorial-article .aa-nav{display:none}
 body.aa-editorial-article .aa-copy>p:first-child:first-letter{color:#8b271b}
 body.aa-editorial-article .aa-bottom{background:#f1ede6}
+
+/* The existing fixed 3D investigation toolbars retain their own stacking context. */
+body.aa-editorial-site:not(:has(#aa-articles-title)):not(.aa-editorial-article):not(:has(.artwork)) .aa-editorial-bar{position:relative;z-index:1100}
+body.aa-editorial-site:has(#aa-articles-title)>.aa-editorial-bar,body.aa-editorial-site.aa-editorial-article>.aa-editorial-bar,body.aa-editorial-site:has(.artwork)>.aa-editorial-bar{position:sticky;top:0}
+body.aa-editorial-site:has(.artwork) .hero{background:#fbf8f3;color:#172338}
+.aa-editorial-archive-nav{display:flex;flex-wrap:wrap;gap:9px 12px;margin:0 0 30px}
+.aa-editorial-archive-nav a{font:700 14px 'Source Sans 3',sans-serif;color:#172338;border:1px solid #bcae9d;border-radius:3px;padding:8px 13px;text-decoration:none;background:#fffdf9}
+.aa-editorial-archive-nav a[aria-current="true"]{background:#172338;color:white;border-color:#172338}
+.aa-editorial-empty{background:#fffdf9;padding:28px;border:1px solid #d9cfbd;color:#24354e}
