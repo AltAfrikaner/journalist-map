@@ -240,3 +240,54 @@ body.aa-premium--journalists #map-section .filter-bar{
  body.aa-premium--journalists #map-section .fbtn{font-size:11px;padding:8px 10px}
  body.aa-premium--journalists #map-section .filter-legend{width:100%}
 }
+
+
+/* Contrast contract — 2026-10-23.
+   These boxes inherit pale text intended for navy but are painted onto
+   light editorial paper by the premium theme. Establish explicit foreground
+   AND background pairs instead of attempting to brighten every muted token. */
+body.aa-premium--funding-atlas :is(.cf-box,.stacked-box){
+ background:#fffdfa!important;color:#253548!important;
+ border:1px solid #cfc6b9!important;border-left-width:4px!important;
+ box-shadow:0 4px 20px rgba(23,37,55,.06);
+}
+body.aa-premium--funding-atlas .cf-box{border-left-color:#1a6941!important}
+body.aa-premium--funding-atlas .stacked-box{border-left-color:#6636a4!important}
+body.aa-premium--funding-atlas .cf-box h3,
+body.aa-premium--funding-atlas .cf-box strong{color:#175334!important}
+body.aa-premium--funding-atlas .stacked-box h3,
+body.aa-premium--funding-atlas .stacked-box strong{color:#58308b!important}
+body.aa-premium--funding-atlas :is(.cf-box,.stacked-box) :is(p,li,small,span){
+ color:#293a4b!important;
+}
+body.aa-premium--funding-atlas :is(.cf-box,.stacked-box) a{
+ color:#79202a!important;text-decoration:underline;text-underline-offset:2px;
+}
+body.aa-premium--funding-atlas .cf-chain{
+ background:#edf4ef!important;color:#123f2a!important;border:1px solid #b8cfc0;
+ font-size:clamp(12px,1.1vw,14px);line-height:1.8;overflow-wrap:anywhere;
+}
+body.aa-premium--funding-atlas .stacked-example{
+ background:#f1eaf7!important;color:#3f256a!important;border:1px solid #d2c1e6;
+ font-size:clamp(12px,1.1vw,14px);line-height:1.8;overflow-wrap:anywhere;
+}
+body.aa-premium--funding-atlas :is(.cf-chain,.stacked-example) :is(span,strong,a){
+ color:inherit!important;
+}
+body.aa-premium--funding-atlas :is(.cf-box,.stacked-box) [style*="color:#55aa77"]{
+ color:#175334!important;
+}
+/* Common light-panel evidence and chart notes: enforce readable ink on light surfaces. */
+body.aa-premium :is(.aa-factual-update,.aa-evidence-context,.aa-evidence-sources,.aa-page-links,.light-panel,.light-card)
+ :is(pre,code,.caption,.note,.small,.sub,.meta){
+ color:#27384b;
+}
+body.aa-premium :is(.aa-factual-update,.aa-evidence-context,.aa-evidence-sources,.light-panel,.light-card)
+ :is(pre,code){background:#ede8de;overflow-wrap:anywhere;white-space:pre-wrap}
+/* Explicit focus treatment for evidence links and interactive filters. */
+body.aa-premium :is(a,button,input,select,textarea):focus-visible{
+ outline:3px solid #97500b!important;outline-offset:3px;
+}
+@media(max-width:740px){
+ body.aa-premium--funding-atlas :is(.cf-box,.stacked-box){padding:20px 16px}
+}
