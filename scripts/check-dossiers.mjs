@@ -144,13 +144,13 @@ for(const f of batch16){
  : execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
  if(f==='MTNrooivalkIRAN.html'){
   // Protect both the intact restoration and the separately published 23 October
-  // cover redesign (commit cbce21f). The latter was independently compared to
+  // cover redesign (commits cbce21f and 671faa2). Both were compared to
   // the restoration: all 14 embedded image payloads, JS, SVG, IDs and links stay.
   // These are exact reviewed Git identities, never an arbitrary media exception.
   const original='cf9a1477877ecd556eec468be5372e8aeea63e3c';
-  const approvedCover='e4bfee4b5829065e74c443e89559d29af7af1ad9';
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-  assert([original,approvedCover].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
+  assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
   if(current===original)assert.equal(now,base,'Original restored Rooivalk dossier drift');
  }
