@@ -45,6 +45,11 @@ for(const file of ['iol.html','usaid.html','usaidtonewsroom.html']){
   assert.deepEqual(blocks(latest),blocks(baseline),'Original script changed in '+file);
   const ids=html=>[...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]);
   assert.deepEqual(ids(latest),ids(baseline),'Original IDs changed in '+file);
+  // The #07–08 fact corrections may change prose, not embedded evidence graphics.
+  for(const [name,re] of [['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],['image tags',/<img\b[^>]*>/gi]]) {
+    const extract=html=>[...html.matchAll(re)].map(m=>m[0]);
+    assert.deepEqual(extract(latest),extract(baseline),'Modified '+name+' in '+file);
+  }
   for(const sig of ['<svg','<canvas','data:image','class="track','class="node','class="tl-ev','class="tab'])
     assert.equal(latest.split(sig).length,baseline.split(sig).length,'Visual/data component changed: '+file+' '+sig);
 }
