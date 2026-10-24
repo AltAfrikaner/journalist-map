@@ -106,6 +106,14 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
     if (['ancliberation.html','wef.html'].includes(f) && label==='paragraphs') continue;
+    // Only the exact peer-reviewed investigation 13 article may differ in prose.
+    // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
+    if(f==='communists.html' && label==='paragraphs') {
+      const reviewed='1015d5941b1cce7bc807307a732efc18321b2196';
+      const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+      assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
+      continue;
+    }
     const baselineBlocks=extract(base,re);
     if (f==='ancliberation.html' && label==='SVG') {
       // Primary-record correction: QLFS Q1:2025 (Stats SA p.23), 15–24 unemployment 62.4%.
