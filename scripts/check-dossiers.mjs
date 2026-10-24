@@ -115,8 +115,8 @@ for(const f of nextBatch){
       // The original reviewed page and the merged corrected version are the only accepted bases.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'8f890b391a032546535623b3e4c3e638d8738c4d','Unexpected #14 second-pass prose change');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510'].includes(baseSha),'Unexpected #14 main baseline');
+      assert.equal(liveSha,'a79c55acf9d4339530f7a5707e7bc27b416f7510','Unexpected #14 second-pass prose change');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') continue;
@@ -125,7 +125,7 @@ for(const f of nextBatch){
     if(f==='communists.html' && label==='paragraphs') {
       // Second-pass 24 Oct 2026 Comintern-source correction has a reviewed whole-file hash.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='bfc19c107414010be5c746411bbc2fae4afb4aa0';
+      const reviewed='537b836626485a1043a2c9146fb8c7c3c791d98d';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;

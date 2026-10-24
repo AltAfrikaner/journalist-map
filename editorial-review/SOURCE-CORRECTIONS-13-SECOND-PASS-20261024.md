@@ -23,3 +23,7 @@ The Comintern's preference for organisational influence is a real historical fac
 ## Preservation and validation
 
 Six targeted prose / explanatory timeline replacements only; no script, SVG, feature image, interactive ID, embedded media or internal article URL intentionally changed. Exact reviewed Git blob **`bfc19c107414010be5c746411bbc2fae4afb4aa0`** pinned in dossier CI; independent asset comparisons retained. Browser/mobile, keyboard usability, external links and full network-data certification remain **OPEN**.
+
+## Follow-up: prominent timeline reconciliation
+
+A subsequent visual-text consistency audit found that two earlier timeline cards still repeated the very assertions qualified in the main mechanism section. The **1950–53** card's unlocated "lead, but not be seen to lead" quotation is now attributed cautiously and labelled **UNVERIFIED** pending an original text/page reference. The **1990** card no longer presents "25 of 50 NEC members" or universal MK founding-commander SACP membership as proven without matched name lists. This is a correction to prose/card labels, not a change to SVG or 3D network tuples. Reviewed whole-file blob: `537b836626485a1043a2c9146fb8c7c3c791d98d`. Full claim audit still OPEN.
