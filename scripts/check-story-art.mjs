@@ -16,7 +16,7 @@ for(const p of local){
  assert(x.includes('viewBox="0 0 1600 640"'), 'Wrong ratio '+p);
  assert(x.startsWith('<svg')&&x.endsWith('</svg>'), 'Malformed SVG boundary '+p);
  assert(!/<script|<foreignObject|javascript:|onload=/i.test(x),'Unsafe SVG '+p);
- if(p!=='MTNrooivalkIRAN.html')
+ if(p!=='MTNrooivalkIRAN.html'){
    const stem=p.replace(/\.html$/,'');
  const cinematic=new Set(['44afrikaners','mbalula_network','splc','adl','wits','constitution','fwdeklerk_foundation_investigation','cws','omidyar','real411']);
  const expectedAsset=cinematic.has(stem)?'assets/covers-2026/'+stem+'.webp':path;
@@ -29,6 +29,7 @@ for(const p of local){
    assert(page.includes('src="'+expectedAsset+'"'),'Wrong cover image '+p);
    assert(page.includes('AI-generated editorial illustration'),'Synthetic media must be identified '+p);
    assert(page.includes('property="og:image"'),'Missing social cover '+p);
+ }
  }
  const html=readFileSync(p,'utf8');
  if(p!=='MTNrooivalkIRAN.html'){
