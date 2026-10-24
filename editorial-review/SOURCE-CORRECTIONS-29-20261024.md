@@ -36,3 +36,11 @@
 
 ## Next evidence work
 Audit all 108 directory entry rows in a dated source register (legal entity, award/paid amount, fiscal year, original record URL and recipient confirmation); separately reconcile the claimed OSF $238.6m aggregate, CF >60 versus >200 categories, founder/funder investment forms versus grants, entity continuities, donor-imposed conditions, downloadable PDF contents and all stacked funding totals. Keep **UNVERIFIED** where the data are absent. The publication retains its investigative pro-Afrikaner viewpoint and the public's right to ask about donor influence without converting association into proved wrongdoing.
+
+
+## Published change validation (24 October 2026)
+- [PR #74](https://github.com/AltAfrikaner/journalist-map/pull/74) exact-head `7c66d796b4c148283295d26374004c1ec8e69da7` passed [editorial dossier checks](https://github.com/AltAfrikaner/journalist-map/actions/runs/40056030700) and [contrast checks](https://github.com/AltAfrikaner/journalist-map/actions/runs/40056030605), with no merge conflicts or draft status.
+- Squash merged onto main as `ee734df559f5664a0524649c3f48d83ec1baa1fc`; post-merge live main atlas blob exactly `dd4368e99808453c7607fdb9a6bb011c2589cc7a`, with 108 original tuples.
+- GitHub Pages [run 40056072881](https://github.com/AltAfrikaner/journalist-map/actions/runs/40056072881) completed with **success** for the same squash SHA; main [Hub smoke 40056073049](https://github.com/AltAfrikaner/journalist-map/actions/runs/40056073049) and [contrast 40056073056](https://github.com/AltAfrikaner/journalist-map/actions/runs/40056073056) also succeeded. External public-site crawler returned older cached text, therefore visitor CDN freshness cannot be independently certified here.
+- GitHub tree audit of main: all 29 locally linked investigations exist and are nonzero; index includes two CitizenIntel external cards. Protected Rooivalk dossier remains SHA `12a93cb7b98c8318ae530c93bb8b3d76bb740f29`, 2,094,214 bytes; unchanged. Both external repositories confirmed `pull:true,push:false` and neither edited.
+- **No full evidence-level certification** granted to investigation #29: the 108 funder relationships and accompanying downloadable PDF still require separate source-by-source review.
