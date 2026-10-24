@@ -528,4 +528,29 @@ for(const f of batch16){
   assert(existsSync(dest),'Broken investigation atlas navigation '+dest);
 }
 
+/* 24 October second pass, investigations 05/06: permitted prose/source-link
+ * corrections must never alter underlying JS, SVG, images, hook IDs, or
+ * previously published links. Compare with current main at exact PR head.
+ */
+for (const file of ['sixstage.html','metasuppression.html']) {
+  const current=readFileSync(file,'utf8');
+  const baseline=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
+  assert(current.length>70_000,'Unexpected truncated dossier '+file);
+  const take=(html,pattern)=>[...html.matchAll(pattern)].map(m=>m[0]);
+  for(const [kind,pattern] of [
+    ['JavaScript',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+    ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+    ['images',/<img\b[^>]*>/gi],
+    ['element IDs',/\bid=["'][^"']+["']/g],
+    ['iframes',/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi]
+  ])assert.deepEqual(take(current,pattern),take(baseline,pattern),'Unapproved '+kind+' change in '+file);
+  for(const sig of ['data:image','<canvas','<video','<source']){
+    assert.equal(current.split(sig).length,baseline.split(sig).length,'Embedded media altered in '+file+': '+sig);
+  }
+  const hrefs=html=>[...html.matchAll(/\bhref=["']([^"']+)["']/gi)].map(m=>m[1]);
+  const prior=hrefs(baseline),now=hrefs(current);let i=0;
+  for(const href of now)if(href===prior[i])i++;
+  assert.equal(i,prior.length,'Existing source/article link removed or reordered in '+file);
+}
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
