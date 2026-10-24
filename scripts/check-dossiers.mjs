@@ -153,7 +153,12 @@ for(const f of batch16){
   // 'object-fit:cover;object-position:center'. Full 2,093,489-char source
   // compared to 36f032f: all 14 base64 images, 2 scripts, 3 SVGs,
   // 18 IDs, 14 links and original dossier text unchanged.
-  // 24 October follow-up cover change in CURRENT main: added one scoped CSS style\n  // (id aa-rooivalk-cover-fix) and moved the existing cover figure above\n  // statistics. Full comparison against 4fd4f4: identical 14 image payloads,\n  // 2 scripts, 3 SVGs, 14 hrefs and dossier research; the only new ID is\n  // that CSS style block. Exact blob only; still reject every other mutation.\n  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29'];
+  // 24 October follow-up cover change in CURRENT main: added one scoped CSS style
+  // (id aa-rooivalk-cover-fix) and moved the existing cover figure above
+  // statistics. Full comparison against 4fd4f4: identical 14 image payloads,
+  // 2 scripts, 3 SVGs, 14 hrefs and dossier research; the only new ID is
+  // that CSS style block. Exact blob only; still reject every other mutation.
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
