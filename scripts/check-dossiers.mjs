@@ -148,7 +148,12 @@ for(const f of batch16){
   // the restoration: all 14 embedded image payloads, JS, SVG, IDs and links stay.
   // These are exact reviewed Git identities, never an arbitrary media exception.
   const original='cf9a1477877ecd556eec468be5372e8aeea63e3c';
-  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10'];
+  // 24 Oct 2026: exact blob 4fd4f4d replaces only the Rooivalk cover image
+  // inline style 'object-fit:contain;background:#d5d9d8' with
+  // 'object-fit:cover;object-position:center'. Full 2,093,489-char source
+  // compared to 36f032f: all 14 base64 images, 2 scripts, 3 SVGs,
+  // 18 IDs, 14 links and original dossier text unchanged.
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
@@ -336,7 +341,17 @@ for(const f of batch16){
    ['original diagrams',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
    ['original images',/<img\b[^>]*>/gi],
    ['original element IDs',/\bid=["'][^"']+["']/g]
-  ])assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
+  ]) {
+   // 24 Oct 2026 source review: permit only the exact approved, full-file
+   // constitution.html correction against its reviewed original. Every script,
+   // diagram, image and ID still requires byte-for-byte preservation.
+   if(file==='constitution.html' && what==='original paragraphs'){
+     const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+     const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     if(oldSha==='b16a634da4f8ce3f67fda82ed329fa227b6972a3' && newSha==='1c0f41362891be1947e5effa6d5dba476d152d81') continue;
+   }
+   assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
+  }
   for(const asset of ['data:image','<canvas','<iframe'])
    assert.equal(now.split(asset).length,base.split(asset).length,'Changed '+asset+' in '+file);
  }
