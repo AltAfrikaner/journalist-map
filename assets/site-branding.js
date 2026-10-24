@@ -4,36 +4,42 @@
 ;(function () {
   'use strict';
   const art = {"osf.html":{"asset":"assets/story-art/osf.svg","caption":"Foundations and institutional relationships"},"sa_journalists.html":{"asset":"assets/story-art/sa_journalists.svg","caption":"Journalists, newsrooms and professional links"},"africacheck.html":{"asset":"assets/story-art/africacheck.svg","caption":"Fact-checking and the verification process"},"ifcn.html":{"asset":"assets/story-art/ifcn.svg","caption":"The international fact-checking certification framework"},"sixstage.html":{"asset":"assets/story-art/sixstage.svg","caption":"Six-stage content assessment and distribution"},"metasuppression.html":{"asset":"assets/story-art/metasuppression.svg","caption":"Content ratings, labels and platform distribution"},"iol.html":{"asset":"assets/story-art/iol.svg","caption":"Media ownership and investment structures"},"usaid.html":{"asset":"assets/story-art/usaid.svg","caption":"Development funding and public records"},"usaidtonewsroom.html":{"asset":"assets/story-art/usaidtonewsroom.svg","caption":"Government funding and newsroom pathways"},"mtn.html":{"asset":"assets/story-art/mtn.svg","caption":"Telecommunications infrastructure and security questions"},"prototypenation.html":{"asset":"assets/story-art/prototypenation.svg","caption":"Comparative policy ideas and chronology"},"motsepe.html":{"asset":"assets/story-art/motsepe.svg","caption":"Corporate ownership and institutional roles"},"communists.html":{"asset":"assets/story-art/communists.svg","caption":"Political movements and historical documents"},"ancliberation.html":{"asset":"assets/story-art/ancliberation.svg","caption":"Political promises and governance outcomes"},"wef.html":{"asset":"assets/story-art/wef.svg","caption":"International forums and domestic policy debates"},"un.html":{"asset":"assets/story-art/un.svg","caption":"International institutions and legal scrutiny"},"mbalula.html":{"asset":"assets/story-art/mbalula.svg","caption":"Public documents and a political chronology"},"44afrikaners.html":{"asset":"assets/story-art/44afrikaners.svg","caption":"An open letter and its signatories"},"mbalula_network.html":{"asset":"assets/story-art/mbalula_network.svg","caption":"A research board of connections and sources"},"splc.html":{"asset":"assets/story-art/splc.svg","caption":"Civil society classifications and court documents"},"adl.html":{"asset":"assets/story-art/adl.svg","caption":"Donors, classifications and evidence standards"},"wits.html":{"asset":"assets/story-art/wits.svg","caption":"University networks and research"},"constitution.html":{"asset":"assets/story-art/constitution.svg","caption":"Constitutional texts and institutional procedures"},"fwdeklerk_foundation_investigation.html":{"asset":"assets/story-art/fwdeklerk_foundation_investigation.svg","caption":"A foundation's statements and public record"},"cws.html":{"asset":"assets/story-art/cws.svg","caption":"Faith-based organisations and public institutions"},"omidyar.html":{"asset":"assets/story-art/omidyar.svg","caption":"Technology philanthropy, media and grant networks"},"real411.html":{"asset":"assets/story-art/real411.svg","caption":"Online reporting and platform moderation mechanisms"},"osf-funded-orgs.html":{"asset":"assets/story-art/osf-funded-orgs.svg","caption":"A searchable record of grants and organisations"}};
+  // Always place the feature artwork *after* the complete hero/heading block.
+  // Older templates placed a static figure immediately after <h1>, inside
+  // the title panel, causing cropped headings and oversized heroes.
   function placeArticleArtwork() {
     const slug = decodeURIComponent((window.location.pathname.split('/').pop() || '').trim());
     const selected = art[slug];
-    if (!selected || document.querySelector('.aa-feature-art')) return;
-    const hero = document.querySelector('.hero');
-    const stats = ['.stats-bar', '.ctx', '.stats']
-      .map(selector => [...document.querySelectorAll(selector)].find(el => !el.closest('.hero')))
-      .find(Boolean);
-    const header = document.querySelector('.container > .header, main > .header, .container .header');
-    let anchor = stats || hero || header;
-    if (!anchor) return;
-    if (anchor.closest('.hero')) anchor = hero;
-    const fig = document.createElement('figure');
-    fig.className = 'aa-feature-art';
-    fig.setAttribute('aria-label', 'Illustrative editorial artwork');
-    const img = document.createElement('img');
-    img.src = selected.asset;
-    img.alt = 'Editorial illustration representing ' + selected.caption.toLowerCase();
-    img.width = 1600;
-    img.height = 640;
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    const cap = document.createElement('figcaption');
-    cap.textContent = 'Editorial illustration · ' + selected.caption + '. Illustration only; consult cited records for evidence.';
-    fig.append(img, cap);
-    const sheet = document.createElement('link');
-    sheet.rel = 'stylesheet';
-    sheet.href = 'assets/story-art.css';
-    document.head.append(sheet);
-    anchor.after(fig);
+    if (!selected) return;
+    const anchor = document.querySelector('section.hero, div.hero, header.hero') ||
+      document.querySelector('.container > .header, main > .header, .container .header, .aa-tool-header');
+    if (!anchor || !anchor.parentNode) return;
+    let fig = document.querySelector('figure.aa-feature-art');
+    if (!fig) {
+      fig = document.createElement('figure');
+      fig.className = 'aa-feature-art';
+      fig.setAttribute('aria-label', 'Illustrative editorial artwork');
+      const img = document.createElement('img');
+      img.src = selected.asset;
+      img.alt = 'Editorial illustration representing ' + selected.caption.toLowerCase();
+      img.width = 1600;
+      img.height = 640;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      const cap = document.createElement('figcaption');
+      cap.textContent = 'Editorial illustration · ' + selected.caption + '. Illustration only; consult cited records for evidence.';
+      fig.append(img, cap);
+    }
+    // Move legacy static figures instead of duplicating them. This also keeps
+    // each investigation's existing caption and image source intact.
+    if (fig.parentElement !== anchor.parentElement || fig.previousElementSibling !== anchor)
+      anchor.insertAdjacentElement('afterend', fig);
+    if (!document.querySelector('link[href="assets/story-art.css"]')) {
+      const sheet = document.createElement('link');
+      sheet.rel = 'stylesheet';
+      sheet.href = 'assets/story-art.css';
+      document.head.append(sheet);
+    }
   }
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', placeArticleArtwork, { once: true });
