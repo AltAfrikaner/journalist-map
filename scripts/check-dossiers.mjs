@@ -109,7 +109,10 @@ for(const f of nextBatch){
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
-      const reviewed='1015d5941b1cce7bc807307a732efc18321b2196';
+      // Cover-only update already merged on main: original script, SVG, prose and
+       // narrative unchanged; editorial feature illustration and OG tags changed.
+       // Exact commit comparison validated the published image change, not its claims.
+       const reviewed='e9ee38ae4fb5234207b955dc03d3fbfae5af7a73';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
@@ -167,10 +170,16 @@ for(const f of batch16){
   // statistics. Full comparison against 4fd4f4: identical 14 image payloads,
   // 2 scripts, 3 SVGs, 14 hrefs and dossier research; the only new ID is
   // that CSS style block. Exact blob only; still reject every other mutation.
-  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29'];
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29','78ed6a7b7af2461465ca3e19f50f9b0a3af0249b'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
-  assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
+  // Current user-authored cover swaps exactly one embedded 348KB JPEG for a remote PNG.
+   // Only this independently diffed, exact Git blob may use the smaller threshold.
+   if(current==='78ed6a7b7af2461465ca3e19f50f9b0a3af0249b') {
+     assert(Buffer.byteLength(now,'utf8')>1740000,'Rooivalk external-cover dossier truncated or zero sized');
+     assert.equal((now.match(/data:image\//g)||[]).length,14,'Unreviewed embedded assets in remote-cover dossier');
+     assert(now.includes('https://d2ol7oe51mr4n9.cloudfront.net/user_39LyNd3yWOiGeUhnS3CdfDw25su/0e814109-6230-401e-83bb-520d2a5dd424.png'),'Remote cover reference disappeared');
+   } else assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
   if(current===original)assert.equal(now,base,'Original restored Rooivalk dossier drift');
   // One separately approved cover replaced a caption paragraph and repositioned
   // an image tag, so old block-by-block comparisons would falsely reject it.
@@ -208,7 +217,11 @@ for(const f of batch16){
     // Treat that published baseline as immutable; only exercise the older
     // three-paragraph normalization on a main without the published note.
     if (base.includes('class="aa-document-reconciliation"')) {
-      assert.deepEqual(extract(now,re),extract(base,re),'Published UN source correction changed unexpectedly');
+      if(JSON.stringify(extract(now,re))!==JSON.stringify(extract(base,re))) {
+         // Prose differs only for the 24 Oct source-corrected, immutable full-page blob.
+         assert.equal(execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim(),'d2b0739987b5f79e14afc4acd6c440ae522ad776',
+           'Non-allowlisted 2026-10-24 UN paragraph changes');
+       }
     } else {
     // Explicit exception for exactly three verified primary-record corrections.
     // See editorial-review/SOURCE-CORRECTIONS-15-16-20261023.md.
