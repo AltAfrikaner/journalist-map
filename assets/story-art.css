@@ -38,3 +38,30 @@
 @media(prefers-reduced-motion:reduce){
  .aa-feature-art, .aa-feature-art * {scroll-behavior:auto!important;transition:none!important;animation:none!important;}
 }
+
+
+/* Cinematic 2026 investigation covers are generated illustrations, not evidence. */
+.aa-feature-art--cinematic{
+  max-width:1280px;
+  border:1px solid #b8a684;
+  box-shadow:0 18px 42px rgba(16,28,45,.14);
+  background:#101e31;
+}
+.aa-feature-art--cinematic img{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  aspect-ratio:5/2;
+  object-fit:contain;
+}
+.aa-feature-art--cinematic figcaption{
+  background:#f8f4ed;
+  color:#28374a;
+  line-height:1.55;
+  font-size:clamp(11px,1vw,13px);
+}
+.aa-feature-art--cinematic figcaption strong{color:#7c2026}
+@media(max-width:650px){
+  .aa-feature-art--cinematic{width:calc(100% - 22px);margin:24px auto 35px}
+}

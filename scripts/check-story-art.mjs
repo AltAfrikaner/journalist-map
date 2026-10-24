@@ -17,7 +17,19 @@ for(const p of local){
  assert(x.startsWith('<svg')&&x.endsWith('</svg>'), 'Malformed SVG boundary '+p);
  assert(!/<script|<foreignObject|javascript:|onload=/i.test(x),'Unsafe SVG '+p);
  if(p!=='MTNrooivalkIRAN.html')
-   assert(js.includes('"'+p+'":{"asset":"'+path+'"'),'Missing topic mapping '+p);
+   const stem=p.replace(/\.html$/,'');
+ const cinematic=new Set(['44afrikaners','mbalula_network','splc','adl','wits','constitution','fwdeklerk_foundation_investigation','cws','omidyar','real411']);
+ const expectedAsset=cinematic.has(stem)?'assets/covers-2026/'+stem+'.webp':path;
+ assert(js.includes('"'+p+'":{"asset":"'+expectedAsset+'"'),'Missing topic mapping '+p);
+ if(cinematic.has(stem)){
+   assert(existsSync(expectedAsset),'Missing cinematic image '+expectedAsset);
+   assert(statSync(expectedAsset).size>40000,'Cinematic image is unexpectedly small '+expectedAsset);
+   const page=readFileSync(p,'utf8');
+   assert(page.includes('class="aa-feature-art aa-feature-art--cinematic"'),'Missing visible in-page cover '+p);
+   assert(page.includes('src="'+expectedAsset+'"'),'Wrong cover image '+p);
+   assert(page.includes('AI-generated editorial illustration'),'Synthetic media must be identified '+p);
+   assert(page.includes('property="og:image"'),'Missing social cover '+p);
+ }
  const html=readFileSync(p,'utf8');
  if(p!=='MTNrooivalkIRAN.html'){
    assert(html.includes('site-branding.js'),'Missing shared image hook '+p);
@@ -28,4 +40,4 @@ const giantCSS=readFileSync('assets/dossier-batch-16-18.css','utf8');
 assert(giantCSS.includes('.aa-premium--rooivalk .aa-rooivalk-feature-cover'),'Protected Rooivalk cover layout missing');
 assert(giantCSS.includes('Do not inject the former generic'),'The site must preserve the current custom Rooivalk cover');
 assert(giantCSS.includes('.aa-premium--rooivalk .stat-row::after'),'Rooivalk placement selector missing');
-console.log('29 original editorial illustrations verified; 28 injected + Rooivalk custom cover protected.');
+console.log('29 SVG originals preserved, 10 new cinematic covers published, custom Rooivalk protected.');
