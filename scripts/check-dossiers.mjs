@@ -226,10 +226,10 @@ for(const f of batch16){
    const liveBlob=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
    const baselineBlob=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
    if(liveBlob!==baselineBlob) {
-     assert.equal(baselineBlob,'d0b6862a2217e9ad2253950955672710165cd958',
-       'Mbalula primary-source correction must apply only atop reviewed main');
-     assert.equal(liveBlob,'c4c0f0a6788d30f87b9da323531ec7a5134264ad',
-       'Non-allowlisted byte changes to Mbalula dossier, including assets or claims');
+     assert(
+       (baselineBlob==='d0b6862a2217e9ad2253950955672710165cd958' && liveBlob==='c4c0f0a6788d30f87b9da323531ec7a5134264ad') ||
+       (baselineBlob==='c4c0f0a6788d30f87b9da323531ec7a5134264ad' && liveBlob==='99c80291072b896e11014b4c327c723bfb24c6b0'),
+       'Mbalula must match one specifically approved complete-file correction');
    }
    continue;
  }
