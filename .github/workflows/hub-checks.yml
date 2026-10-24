@@ -1,5 +1,17 @@
 name: Hub smoke checks
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'articles/**'
+      - '*.html'
+      - 'assets/hub-departments.css'
+      - 'assets/site-branding.js'
+      - 'assets/editorial-shell.css'
+      - 'assets/editorial-shell.js'
+      - 'scripts/check-*.mjs'
+      - '.github/workflows/hub-checks.yml'
   pull_request:
     paths:
       - 'index.html'
@@ -10,6 +22,10 @@ on:
       - 'assets/editorial-shell.js'
       - 'articles/index.html'
       - 'scripts/check-hub.mjs'
+      - 'scripts/check-page-structure.mjs'
+      - 'assets/site-branding.js'
+      - 'scripts/check-story-art.mjs'
+      - 'scripts/check-article-covers.mjs'
       - '.github/workflows/hub-checks.yml'
   workflow_dispatch:
 permissions:
@@ -22,5 +38,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check investigation index
+      - name: Verify homepage content order and 31 investigation links
         run: node scripts/check-hub.mjs
+      - name: Verify all local story routes, images and footer structure
+        run: node scripts/check-page-structure.mjs
+      - name: Verify artwork and image placement wiring
+        run: node scripts/check-story-art.mjs
+      - name: Verify published article covers
+        run: node scripts/check-article-covers.mjs
+      - name: Check shared navigation and artwork JavaScript syntax
+        run: |
+          node --check assets/editorial-shell.js
+          node --check assets/site-branding.js
+          node --check assets/hub-discovery.js
