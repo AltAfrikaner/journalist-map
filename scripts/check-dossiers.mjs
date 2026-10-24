@@ -214,7 +214,11 @@ for(const f of batch16){
     assert(['303d26d3687f4e004f929559b86b30eb8b0e1947',approvedEditorial[0]].includes(mainBlob),'Unreviewed Rooivalk editorial baseline');
     for(const [label,re] of [['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],['images',/<img\b[^>]*>/gi],['IDs',/\bid=["'][^"']+["']/g]]){
       const items=x=>[...x.matchAll(re)].map(m=>m[0]);
-      assert.deepEqual(items(now),items(base),'Rooivalk '+label+' changed');
+      // Compare the October source correction to its immediate reviewed main,
+      // NOT the restored 2MB archival blob: the approved remote-cover revision
+      // predates this PR and changed one image tag without changing payloads.
+      const preEdit=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
+      assert.deepEqual(items(now),items(preEdit),'Rooivalk '+label+' changed');
     }
   }
   if(current===original)assert.equal(now,base,'Original restored Rooivalk dossier drift');
