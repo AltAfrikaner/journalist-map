@@ -1,6 +1,6 @@
 # Investigation 23–24: evidence-led corrections, 24 October 2026
 
-Status: reviewed and proposed in branch `editorial/wits-constitution-primary-sources-20261024`. **NOT a complete article certification**. Publication, CI and Pages deployment must be verified independently. All dates are Gregorian, South African case numbers refer to South African jurisdictions.
+Status: reviewed and proposed in PR #68, branch `editorial/wits-constitution-primary-20261024-current-main` (replaces stale PR #67). **NOT a complete article certification**. Publication, CI and Pages deployment must be verified independently. All dates are Gregorian, South African case numbers refer to South African jurisdictions.
 
 ## #23 `wits.html` — institutional boundaries and Meta distribution authority
 
