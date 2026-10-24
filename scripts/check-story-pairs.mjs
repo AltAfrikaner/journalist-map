@@ -1,5 +1,6 @@
 import {readFileSync,existsSync,statSync} from 'node:fs';
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
 const pages=[
  ['osf.html','#board'],
  ['sa_journalists.html','#patterns'],
@@ -36,5 +37,33 @@ for(const [page,anchor] of pages){
 }
 const links=[...readFileSync('index.html','utf8').matchAll(/<a class="card" href="([^"]+)"/g)].map(x=>x[1]);
 assert.equal(links.length,31,'Original archive entries changed');
-assert(readFileSync('MTNrooivalkIRAN.html','utf8').length>2_000_000,'Large Rooivalk file must remain restored');
+// The Rooivalk dossier has several independently reviewed, exact-byte cover variants.
+// Two approved versions substitute a remote cover image, reducing HTML bytes but not
+// dossier text/graph integrity. Match the editorial check's exact-hash guard instead
+// of accepting arbitrary small or zero-byte pages.
+const rooivalkPath='MTNrooivalkIRAN.html';
+const rooivalkText=readFileSync(rooivalkPath,'utf8');
+const rooivalkBytes=Buffer.byteLength(rooivalkText,'utf8');
+const rooivalkHash=execFileSync('git',['hash-object',rooivalkPath],{encoding:'utf8'}).trim();
+const rooivalkFull=new Set([
+ 'cf9a1477877ecd556eec468be5372e8aeea63e3c',
+ 'e4bfee4b5829065e74c443e89559d29af7af1ad9',
+ '36f032ff4f0028743f3747c548acf5f9e4418e10',
+ '4fd4f4dad223e8977f704be50bd3ed48399793aa',
+ '12a93cb7b98c8318ae530c93bb8b3d76bb740f29'
+]);
+const rooivalkRemote=new Set([
+ '78ed6a7b7af2461465ca3e19f50f9b0a3af0249b',
+ '303d26d3687f4e004f929559b86b30eb8b0e1947'
+]);
+assert(rooivalkFull.has(rooivalkHash)||rooivalkRemote.has(rooivalkHash),
+ 'Unknown, zero-sized or truncated Rooivalk dossier: exact reviewed Git identity required');
+if(rooivalkRemote.has(rooivalkHash)){
+ assert(rooivalkBytes>1_740_000,'Approved remote-cover Rooivalk dossier unexpectedly truncated');
+ assert.equal((rooivalkText.match(/data:image\//g)||[]).length,14,'Rooivalk inline evidence images changed');
+ assert(rooivalkText.includes('https://d2ol7oe51mr4n9.cloudfront.net/user_39LyNd3yWOiGeUhnS3CdfDw25su/0e814109-6230-401e-83bb-520d2a5dd424.png'),
+  'Reviewed Rooivalk cover URL missing');
+}else{
+ assert(rooivalkBytes>2_090_000,'Approved full-size Rooivalk dossier unexpectedly truncated');
+}
 console.log('Five article covers and five in-article illustrations verified with source anchors and 31 archive routes.');
