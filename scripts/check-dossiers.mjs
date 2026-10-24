@@ -110,14 +110,22 @@ for(const f of nextBatch){
    ['images',/<img\b[^>]*>/gi],
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
-    if (['ancliberation.html','wef.html'].includes(f) && label==='paragraphs') continue;
+    if (f==='ancliberation.html' && label==='paragraphs') {
+      // Source-scoped 24 Oct second pass. Do not weaken the existing image/SVG/JS/ID guards.
+      // The original reviewed page and the merged corrected version are the only accepted bases.
+      const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
+      const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d'].includes(baseSha),'Unexpected #14 main baseline');
+      assert.equal(liveSha,'8f890b391a032546535623b3e4c3e638d8738c4d','Unexpected #14 second-pass prose change');
+      continue;
+    }
+    if (f==='wef.html' && label==='paragraphs') continue;
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
-      // Cover-only update already merged on main: original script, SVG, prose and
-       // narrative unchanged; editorial feature illustration and OG tags changed.
-       // Exact commit comparison validated the published image change, not its claims.
-       const reviewed='e9ee38ae4fb5234207b955dc03d3fbfae5af7a73';
+      // Second-pass 24 Oct 2026 Comintern-source correction has a reviewed whole-file hash.
+      // Independent checks below still compare scripts, SVG, IDs and image tags to main.
+      const reviewed='bfc19c107414010be5c746411bbc2fae4afb4aa0';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
