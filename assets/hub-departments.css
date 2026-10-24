@@ -307,3 +307,33 @@ body.aa-editorial-site:has(#aa-articles-title) .aa-article-feature-copy{
     object-fit:contain;
   }
 }
+
+body.aa-editorial-site #investigation-grid>a.card[href="splc.html"]::before{background-image:url("story-art/splc.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="adl.html"]::before{background-image:url("story-art/adl.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="wits.html"]::before{background-image:url("story-art/wits.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="constitution.html"]::before{background-image:url("story-art/constitution.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="fwdeklerk_foundation_investigation.html"]::before{background-image:url("story-art/fwdeklerk_foundation_investigation.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="cws.html"]::before{background-image:url("story-art/cws.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="omidyar.html"]::before{background-image:url("story-art/omidyar.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="real411.html"]::before{background-image:url("story-art/real411.svg")}
+body.aa-editorial-site #investigation-grid>a.card[href="osf-funded-orgs.html"]::before{background-image:url("story-art/osf-funded-orgs.svg")}
+
+/* Every homepage investigation remains correctly sized at tablet/mobile widths.
+   The [hidden] rule preserves search and category filtering. */
+body.aa-editorial-site #investigation-grid > a.card[hidden]{display:none!important}
+body.aa-editorial-site #investigation-grid > a.card::before{
+  width:calc(100% + 3.5rem);
+  background-repeat:no-repeat;
+  background-position:center center;
+}
+@media(max-width:760px){
+  body.aa-editorial-site #investigation-grid > a.card::before{
+    width:calc(100% + 42px);
+    margin:-21px -21px 19px;
+  }
+}
+@media(max-width:530px){
+  body.aa-editorial-site #investigation-grid > a.card::before{
+    aspect-ratio:5/2;
+  }
+}
