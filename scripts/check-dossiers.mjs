@@ -142,7 +142,22 @@ for(const f of batch16){
  const base=f==='MTNrooivalkIRAN.html'
  ? execFileSync('git',['cat-file','blob','cf9a1477877ecd556eec468be5372e8aeea63e3c'],{encoding:'utf8',maxBuffer:16*1024*1024})
  : execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
- if(f==='MTNrooivalkIRAN.html')assert.equal(now,base,'Restored Rooivalk file must exactly match last known intact premium file');
+ if(f==='MTNrooivalkIRAN.html'){
+  // Protect both the intact restoration and the separately published 23 October
+  // cover redesign (commits cbce21f and 671faa2). Both were compared to
+  // the restoration: all 14 embedded image payloads, JS, SVG, IDs and links stay.
+  // These are exact reviewed Git identities, never an arbitrary media exception.
+  const original='cf9a1477877ecd556eec468be5372e8aeea63e3c';
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10'];
+  const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+  assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
+  assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
+  if(current===original)assert.equal(now,base,'Original restored Rooivalk dossier drift');
+  // One separately approved cover replaced a caption paragraph and repositioned
+  // an image tag, so old block-by-block comparisons would falsely reject it.
+  // Full Git blob identity above is stronger and prohibits ALL other changes.
+  continue;
+ }
 
  // 23 Oct 2026 case-specific claim corrections to investigation #17.
  // The full-page Git blob hash is an exact-byte allowlist: stronger than permitting
@@ -274,7 +289,18 @@ for(const f of batch16){
    ['images',/<img\b[^>]*>/gi],
    ['element IDs',/\bid=["'][^"']+["']/g]
   ]) {
-    if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
+    if(['splc.html','adl.html'].includes(file) && label==='paragraphs' && now!==old){
+      // 24 October primary-source prose corrections. Only exact reviewed full
+      // blobs are permitted, with original JS/SVG/image/ID checks below intact.
+      const reviewed={
+       'splc.html':['8314f0a66246aaf572fac6880de8ecdad18cc5f7','12aff9244b9d16cebd77bf8c03a58eff0bdec593'],
+       'adl.html':['0f7f28838e000486701c38ce1b206cc733a9b2d6','88f1908c2a4526bdf1129283f22f500ee002487d']
+      };
+      const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+      const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+      assert.equal(before,reviewed[file][0],'Unexpected baseline before editorial corrections: '+file);
+      assert.equal(after,reviewed[file][1],'Unreviewed content change: '+file);
+     } else if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
       // Exact whole-file allowance for reviewed PR #64 correction; leave other
       // sections and all remaining script/SVG/image/ID checks strictly intact.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
