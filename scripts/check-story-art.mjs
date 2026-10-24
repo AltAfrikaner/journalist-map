@@ -25,6 +25,7 @@ for(const p of local){
 }
 assert(readFileSync('MTNrooivalkIRAN.html','utf8').length>1000000,'Giant preserved investigation must not be emptied');
 const giantCSS=readFileSync('assets/dossier-batch-16-18.css','utf8');
-assert(giantCSS.includes('story-art/MTNrooivalkIRAN.svg'),'Giant page illustration placement missing');
+assert(giantCSS.includes('.aa-premium--rooivalk .aa-rooivalk-feature-cover'),'Protected Rooivalk cover layout missing');
+assert(giantCSS.includes('Do not inject the former generic'),'The site must preserve the current custom Rooivalk cover');
 assert(giantCSS.includes('.aa-premium--rooivalk .stat-row::after'),'Rooivalk placement selector missing');
-console.log('29 original editorial illustrations verified; 28 injected + large archive CSS artwork.');
+console.log('29 original editorial illustrations verified; 28 injected + Rooivalk custom cover protected.');
