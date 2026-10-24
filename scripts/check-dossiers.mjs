@@ -450,6 +450,14 @@ for(const f of batch16){
      const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(before===reviewed[file][0] && after===reviewed[file][1]) continue;
+     // 24 Oct second pass #27–28: exact main-to-reviewed prose only.
+     // No blanket paragraph waiver; scripts, SVGs, images, IDs and media
+     // remain compared byte-for-byte in this same test loop.
+     const secondPass={
+       'omidyar.html':['689886df68bab56b446e30d712bdf455ea6ee0bd','c0d57f55dcf1e3c3bf57c7377da615c715cc3ad3'],
+       'real411.html':['e60e0ee1ea7adb6dbc23904e6ab0fb799c0d015e','752476a07ea9723d694987ea55a46613b535cdee']
+     };
+     if(before===secondPass[file][0] && after===secondPass[file][1]) continue;
    }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
