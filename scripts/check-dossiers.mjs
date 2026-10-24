@@ -385,6 +385,11 @@ for(const f of batch16){
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     // 24 October second-pass legal-source reconciliation: this exact baseline
+     // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
+     // independently and byte-for-byte compared in the same test loop.
+     // See editorial-review/SOURCE-CORRECTIONS-24-SECOND-PASS-20261024.md.
+     if(oldSha==='0811bef18d20cb922867f50d9682c0b48e46715c' && newSha==='8893cea1519dbb80b5d63666c7e71025964f8437') continue;
      if(oldSha==='b16a634da4f8ce3f67fda82ed329fa227b6972a3' && newSha==='1c0f41362891be1947e5effa6d5dba476d152d81') continue;
    }
    // PR #70 source corrections: allow only the reviewed, exact full-file
