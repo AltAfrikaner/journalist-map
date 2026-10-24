@@ -398,6 +398,18 @@ for(const f of batch16){
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(oldSha==='dde8f9a795dfadaa1cb492243711fa599985866f' && newSha==='b0329231ef9ade47ff84031bc490103679dda23c') continue;
    }
+   // PR #72: strictly permit the two reviewed source-qualification revisions
+   // against their exact original main blobs. No blanket paragraph bypass:
+   // every script, SVG, image, ID and embedded-media guard remains active.
+   if(name==='paragraphs' && (file==='omidyar.html' || file==='real411.html')){
+     const reviewed={
+       'omidyar.html':['936a6d1fdfde18ed4d54684b2a552a5681034e16','689886df68bab56b446e30d712bdf455ea6ee0bd'],
+       'real411.html':['9c0114d38045eb42720a228779f516f737301922','e60e0ee1ea7adb6dbc23904e6ab0fb799c0d015e']
+     };
+     const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+     const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     if(before===reviewed[file][0] && after===reviewed[file][1]) continue;
+   }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
   const oldIds=hits(old,/\bid=["'][^"']+["']/g);
