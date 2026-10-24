@@ -8,6 +8,10 @@ const css=readFileSync('assets/story-art.css','utf8');
 assert(js.includes('placeArticleArtwork'),'Feature injector missing');
 assert(css.includes('aspect-ratio: 5 / 2'),'Editorial 5:2 ratio missing');
 assert(css.includes('prefers-reduced-motion'),'Reduced motion support missing');
+const legacyCinematic=new Set(["44afrikaners","mbalula_network","splc","adl","wits","constitution","fwdeklerk_foundation_investigation","cws","omidyar","real411"]);
+const photographic=new Set(["osf","sa_journalists","africacheck","ifcn","sixstage","metasuppression","iol","usaid","usaidtonewsroom","mtn","prototypenation","motsepe","communists","ancliberation","wef","un","mbalula","osf-funded-orgs"]);
+const cinematic=new Set([...legacyCinematic,...photographic]);
+const hubCSS=readFileSync('assets/hub-departments.css','utf8');
 for(const p of local){
  const path='assets/story-art/'+p.replace(/\.html$/,'')+'.svg';
  assert(existsSync(path),'Missing feature illustration '+p);
@@ -18,8 +22,7 @@ for(const p of local){
  assert(!/<script|<foreignObject|javascript:|onload=/i.test(x),'Unsafe SVG '+p);
  if(p!=='MTNrooivalkIRAN.html'){
    const stem=p.replace(/\.html$/,'');
- const cinematic=new Set(['44afrikaners','mbalula_network','splc','adl','wits','constitution','fwdeklerk_foundation_investigation','cws','omidyar','real411']);
- const expectedAsset=cinematic.has(stem)?'assets/covers-2026/'+stem+'.webp':path;
+ const expectedAsset=cinematic.has(stem)?'assets/covers-2026/'+stem+(legacyCinematic.has(stem)?'.webp':'.jpg'):path;
  assert(js.includes('"'+p+'":{"asset":"'+expectedAsset+'"'),'Missing topic mapping '+p);
  if(cinematic.has(stem)){
    assert(existsSync(expectedAsset),'Missing cinematic image '+expectedAsset);
@@ -29,6 +32,11 @@ for(const p of local){
    assert(page.includes('src="'+expectedAsset+'"'),'Wrong cover image '+p);
    assert(page.includes('AI-generated editorial illustration'),'Synthetic media must be identified '+p);
    assert(page.includes('property="og:image"'),'Missing social cover '+p);
+   assert(page.includes('name="twitter:image"'),'Missing Twitter image '+p);
+   assert(page.indexOf('src="'+expectedAsset+'"') > page.indexOf('<body'),'Cover is not in body '+p);
+   assert(page.includes('width="1600"'),'Cover dimensions missing '+p);
+   assert(page.includes('href="assets/story-art.css"'),'Cover stylesheet missing '+p);
+   assert(hubCSS.includes('a.card[href="'+p+'"]::before{background-image:url("covers-2026/'+stem+(legacyCinematic.has(stem)?'.webp':'.jpg')+'")'), 'Homepage card has wrong cover '+p);
  }
  }
  const html=readFileSync(p,'utf8');
@@ -41,4 +49,5 @@ const giantCSS=readFileSync('assets/dossier-batch-16-18.css','utf8');
 assert(giantCSS.includes('.aa-premium--rooivalk .aa-rooivalk-feature-cover'),'Protected Rooivalk cover layout missing');
 assert(giantCSS.includes('Do not inject the former generic'),'The site must preserve the current custom Rooivalk cover');
 assert(giantCSS.includes('.aa-premium--rooivalk .stat-row::after'),'Rooivalk placement selector missing');
-console.log('29 SVG originals preserved, 10 new cinematic covers published, custom Rooivalk protected.');
+assert.equal(cinematic.size,28,'Expected 28 cinematic covers plus the protected Rooivalk cover');
+console.log('29 SVG originals preserved, 28 distinct cinematic investigation covers linked and source captions checked; custom Rooivalk protected.');

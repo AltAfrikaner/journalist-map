@@ -47,13 +47,15 @@
   box-shadow:0 18px 42px rgba(16,28,45,.14);
   background:#101e31;
 }
+/* Photos are supplied at 16:9 with safe-centre composition and cropped to a consistent 5:2 editorial hero. */
 .aa-feature-art--cinematic img{
   display:block;
   width:100%;
   max-width:100%;
   height:auto;
   aspect-ratio:5/2;
-  object-fit:contain;
+  object-fit:cover;
+  object-position:center center;
 }
 .aa-feature-art--cinematic figcaption{
   background:#f8f4ed;
