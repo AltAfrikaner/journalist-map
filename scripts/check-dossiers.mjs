@@ -334,8 +334,9 @@ for(const f of batch16){
       // 24 October primary-source prose corrections. Only exact reviewed full
       // blobs are permitted, with original JS/SVG/image/ID checks below intact.
       const reviewed={
-       'splc.html':['8314f0a66246aaf572fac6880de8ecdad18cc5f7','12aff9244b9d16cebd77bf8c03a58eff0bdec593'],
-       'adl.html':['0f7f28838e000486701c38ce1b206cc733a9b2d6','88f1908c2a4526bdf1129283f22f500ee002487d']
+       // Second-pass edits are pinned from exact current main blobs; no open-ended exception.
+       'splc.html':['38bad056d281d5fdabce4fcb3845d10d972a57c2','371a1f833de617faf13268bdc61c545e31484882'],
+       'adl.html':['1e5789a0b4f2399f1b56d6504f25b95c77b3786d','716389a78f7246257edc28c89fd75fbaca0f2220']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
