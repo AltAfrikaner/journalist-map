@@ -1,0 +1,23 @@
+name: OSF graph source checks
+on:
+  pull_request:
+    paths:
+      - 'osf.html'
+      - 'assets/osf-*.mjs'
+      - 'scripts/check-osf.mjs'
+      - '.github/workflows/osf-graph.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check assets/osf-network.mjs
+      - run: node --check assets/osf-entity-list.mjs
+      - run: node --check assets/osf-graph-data.mjs
+      - run: node scripts/check-osf.mjs
