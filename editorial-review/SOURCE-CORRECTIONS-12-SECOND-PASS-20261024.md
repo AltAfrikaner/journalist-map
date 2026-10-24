@@ -16,3 +16,7 @@
 
 ## Still UNVERIFIED / release requirements
 Appeal outcome or fresh proceedings; merits evidence and confidentiality agreement; exact current corporate stakes; Phala Phala cattle allegation source chain; CAF auditing; ownership/voting and investment graphs; polling and campaign funding. Embedded visuals/data and other accusations remain uncertified. Scripts, SVGs, images, media, element IDs and page URLs were not intentionally changed.
+
+## Homepage-level dossier overview consistency follow-up
+
+The article's top fact-strip still called the case an **'Active Tanzania lawsuit'** despite the corrected legal card. That label is now **'Tanzania claim struck out; appeal reported'**, consistent with the procedural nature of the October ruling and Pula's public appeal/refiling position. This is a plain-text change only, not a new adjudication finding. No other data, media, interactive elements or page URLs changed.
