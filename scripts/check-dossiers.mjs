@@ -399,6 +399,8 @@ for(const f of batch16){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(oldSha==='6acd67a3219e67e2c3d101c7e21d5d0e681ca69a' && newSha==='58719ea349192d91100c5ec3e4b950de2305acd6') continue;
+     // PR #88 second pass: exact original-to-reviewed prose only.
+     if(oldSha==='58719ea349192d91100c5ec3e4b950de2305acd6' && newSha==='7f197efb884375f87ec7db114e7b698c274aa8fc') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -434,6 +436,8 @@ for(const f of batch16){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(oldSha==='dde8f9a795dfadaa1cb492243711fa599985866f' && newSha==='b0329231ef9ade47ff84031bc490103679dda23c') continue;
+     // PR #88 second pass: exact immigration-law prose correction only.
+     if(oldSha==='b0329231ef9ade47ff84031bc490103679dda23c' && newSha==='19a3864d963117c17a21f2f3bd2d3232e4b14d20') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
