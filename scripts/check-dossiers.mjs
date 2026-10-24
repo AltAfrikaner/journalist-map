@@ -148,7 +148,12 @@ for(const f of batch16){
   // the restoration: all 14 embedded image payloads, JS, SVG, IDs and links stay.
   // These are exact reviewed Git identities, never an arbitrary media exception.
   const original='cf9a1477877ecd556eec468be5372e8aeea63e3c';
-  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10'];
+  // 24 Oct 2026: exact blob 4fd4f4d replaces only the Rooivalk cover image
+  // inline style 'object-fit:contain;background:#d5d9d8' with
+  // 'object-fit:cover;object-position:center'. Full 2,093,489-char source
+  // compared to 36f032f: all 14 base64 images, 2 scripts, 3 SVGs,
+  // 18 IDs, 14 links and original dossier text unchanged.
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
