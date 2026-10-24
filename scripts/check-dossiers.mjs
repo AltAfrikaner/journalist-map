@@ -174,7 +174,7 @@ for(const f of batch16){
    // Only this independently diffed, exact Git blob may use the smaller threshold.
    if(current==='78ed6a7b7af2461465ca3e19f50f9b0a3af0249b') {
      assert(Buffer.byteLength(now,'utf8')>1740000,'Rooivalk external-cover dossier truncated or zero sized');
-     assert.equal((now.match(/data:image\\//g)||[]).length,14,'Unreviewed embedded assets in remote-cover dossier');
+     assert.equal((now.match(/data:image\//g)||[]).length,14,'Unreviewed embedded assets in remote-cover dossier');
      assert(now.includes('https://d2ol7oe51mr4n9.cloudfront.net/user_39LyNd3yWOiGeUhnS3CdfDw25su/0e814109-6230-401e-83bb-520d2a5dd424.png'),'Remote cover reference disappeared');
    } else assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
   if(current===original)assert.equal(now,base,'Original restored Rooivalk dossier drift');
