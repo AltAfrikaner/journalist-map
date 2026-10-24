@@ -60,7 +60,7 @@ assert(rooivalkFull.has(rooivalkHash)||rooivalkRemote.has(rooivalkHash),
  'Unknown, zero-sized or truncated Rooivalk dossier: exact reviewed Git identity required');
 if(rooivalkRemote.has(rooivalkHash)){
  assert(rooivalkBytes>1_740_000,'Approved remote-cover Rooivalk dossier unexpectedly truncated');
- assert.equal((rooivalkText.match(/data:image\\//g)||[]).length,14,'Rooivalk inline evidence images changed');
+ assert.equal((rooivalkText.match(/data:image\//g)||[]).length,14,'Rooivalk inline evidence images changed');
  assert(rooivalkText.includes('https://d2ol7oe51mr4n9.cloudfront.net/user_39LyNd3yWOiGeUhnS3CdfDw25su/0e814109-6230-401e-83bb-520d2a5dd424.png'),
   'Reviewed Rooivalk cover URL missing');
 }else{
