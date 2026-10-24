@@ -1,0 +1,86 @@
+name: Import ten generated editorial covers
+on:
+  push:
+    paths:
+      - '.github/workflows/aa-import-covers-once.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: aa-generated-covers-once
+  cancel-in-progress: false
+jobs:
+  import-image-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install WebP encoder
+        run: python3 -m pip install --quiet --break-system-packages Pillow
+      - name: Retrieve original editorial PNGs and verify content
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/aa-cover-source" assets/covers-2026
+          while IFS='|' read -r basename source; do
+            [ -z "$basename" ] && continue
+            echo "Retrieving cover for $basename"
+            curl --fail --location --retry 3 --retry-delay 2 --max-time 120 --output "$RUNNER_TEMP/aa-cover-source/$basename.png" "$source"
+            file "$RUNNER_TEMP/aa-cover-source/$basename.png"
+          done <<'ASSET_INPUTS'
+          44afrikaners|https://at.adobe.com/YRO9jM5LPI4YQwFn
+          mbalula_network|https://at.adobe.com/5spx2mUcwYpVhkEH
+          splc|https://at.adobe.com/x7du58tKYvBay6JQ
+          adl|https://at.adobe.com/tpKpUGdpXUOBtR36
+          wits|https://at.adobe.com/UFjAy1hP3eZLW5ZK
+          constitution|https://at.adobe.com/vI0j4a3lBNZFW9sk
+          fwdeklerk_foundation_investigation|https://at.adobe.com/OYYsYiFDhnyUc79R
+          cws|https://at.adobe.com/rZ4tHuuLQ0VNy5nW
+          omidyar|https://at.adobe.com/Un6R8MbPk8K36wg4
+          real411|https://at.adobe.com/ahQSOKckHLtIIM0w
+          ASSET_INPUTS
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import os
+          root=Path(os.environ["RUNNER_TEMP"])/"aa-cover-source"
+          output=Path("assets/covers-2026")
+          sources=sorted(root.glob("*.png"))
+          assert len(sources)==10, f"Expected ten PNG files, got {len(sources)}"
+          for src in sources:
+              data=src.read_bytes()
+              assert data.startswith(b"\x89PNG\r\n\x1a\n"), f"Not an actual PNG: {src.name}"
+              with Image.open(src) as original:
+                  original.load()
+                  assert original.size==(1983,793), f"Wrong source dimensions {src.name}: {original.size}"
+                  art=original.convert("RGB").resize((1600,640),Image.Resampling.LANCZOS)
+                  dest=output/(src.stem+".webp")
+                  art.save(dest,format="WEBP",quality=87,method=6)
+                  with Image.open(dest) as check:
+                      check.verify()
+                  print(f"{src.stem} -> {dest}: {dest.stat().st_size:,} bytes")
+          PY
+      - name: Commit and push the ten image files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/covers-2026/*.webp
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "All ten image assets already committed"
+            exit 0
+          fi
+          git commit -m "Add ten cinematic investigation cover images"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              echo "All ten images committed to main"
+              exit 0
+            fi
+            echo "Retry $attempt/3 following concurrent updates"
+          done
+          exit 1
