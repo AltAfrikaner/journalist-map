@@ -170,12 +170,16 @@ for(const f of batch16){
   // statistics. Full comparison against 4fd4f4: identical 14 image payloads,
   // 2 scripts, 3 SVGs, 14 hrefs and dossier research; the only new ID is
   // that CSS style block. Exact blob only; still reject every other mutation.
-  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29','78ed6a7b7af2461465ca3e19f50f9b0a3af0249b'];
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29','78ed6a7b7af2461465ca3e19f50f9b0a3af0249b','303d26d3687f4e004f929559b86b30eb8b0e1947'];
+  // 24 October follow-up main cover edit: exact 303d26d differs from 78ed6a7 only
+  // in one cover-specific style block, its figure aspect ratio, and one cover
+  // image style attribute (not its URL). Compared: 2 scripts, 3 SVGs, 14
+  // embedded image payloads, 14 img tags, all paragraphs and IDs retained.
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   // Current user-authored cover swaps exactly one embedded 348KB JPEG for a remote PNG.
    // Only this independently diffed, exact Git blob may use the smaller threshold.
-   if(current==='78ed6a7b7af2461465ca3e19f50f9b0a3af0249b') {
+   if(['78ed6a7b7af2461465ca3e19f50f9b0a3af0249b','303d26d3687f4e004f929559b86b30eb8b0e1947'].includes(current)) {
      assert(Buffer.byteLength(now,'utf8')>1740000,'Rooivalk external-cover dossier truncated or zero sized');
      assert.equal((now.match(/data:image\//g)||[]).length,14,'Unreviewed embedded assets in remote-cover dossier');
      assert(now.includes('https://d2ol7oe51mr4n9.cloudfront.net/user_39LyNd3yWOiGeUhnS3CdfDw25su/0e814109-6230-401e-83bb-520d2a5dd424.png'),'Remote cover reference disappeared');
@@ -187,6 +191,11 @@ for(const f of batch16){
   continue;
  }
 
+ // 24 Oct 2026 case-specific corrections: 21 September NPA charging decision,
+ // Public Protector Report 24, PRASA historical cumulative audit denominator,
+ // chronology and leaked-intelligence attribution. Changes include one JS
+ // tooltip string and dated source prose, pinned by exact entire-file blob.
+ // All other JS, images, identifiers and SVGs independently compared.
  // 23 Oct 2026 case-specific claim corrections to investigation #17.
  // The full-page Git blob hash is an exact-byte allowlist: stronger than permitting
  // paragraph edits generally, and it fixes the allowed prose/URL/source note,
@@ -196,9 +205,9 @@ for(const f of batch16){
    const liveBlob=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
    const baselineBlob=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
    if(liveBlob!==baselineBlob) {
-     assert.equal(baselineBlob,'1aa3ba78efd493fbe299f189c5b5f7c80eb352c3',
+     assert.equal(baselineBlob,'d0b6862a2217e9ad2253950955672710165cd958',
        'Mbalula primary-source correction must apply only atop reviewed main');
-     assert.equal(liveBlob,'b908f7e1b26f0f66a603841b9665581954e7733c',
+     assert.equal(liveBlob,'c4c0f0a6788d30f87b9da323531ec7a5134264ad',
        'Non-allowlisted byte changes to Mbalula dossier, including assets or claims');
    }
    continue;
