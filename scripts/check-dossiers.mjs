@@ -119,7 +119,15 @@ for(const f of nextBatch){
       assert.equal(liveSha,'a79c55acf9d4339530f7a5707e7bc27b416f7510','Unexpected #14 second-pass prose change');
       continue;
     }
-    if (f==='wef.html' && label==='paragraphs') continue;
+    if (f==='wef.html' && label==='paragraphs') {
+      // Second-pass 24 October WEF corrections: exact baseline-to-reviewed
+      // full-file blobs. Subsequent unchanged-main pages compare normally.
+      const original=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
+      const revised=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+      if(original==='7befe749783a46805cbc53e5fb2fb743b45803f6' && revised==='3b2427c20bb2593b23b7fdaa465152fb83be6a8b') continue;
+      assert.deepEqual(extract(now,re),extract(base,re),'Non-allowlisted WEF prose changed');
+      continue;
+    }
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
@@ -240,9 +248,12 @@ for(const f of batch16){
     // three-paragraph normalization on a main without the published note.
     if (base.includes('class="aa-document-reconciliation"')) {
       if(JSON.stringify(extract(now,re))!==JSON.stringify(extract(base,re))) {
-         // Prose differs only for the 24 Oct source-corrected, immutable full-page blob.
-         assert.equal(execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim(),'d2b0739987b5f79e14afc4acd6c440ae522ad776',
-           'Non-allowlisted 2026-10-24 UN paragraph changes');
+         // Permit only the reviewed, exact 24 Oct second-pass UN blob against
+         // the pre-change main blob. All JS/SVG/images/IDs still compare to main.
+         const oldSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
+         const newSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+         assert.equal(oldSha,'d2b0739987b5f79e14afc4acd6c440ae522ad776','Unexpected UN main baseline');
+         assert.equal(newSha,'a6d7410805225b6f1b2e3b7e946630e4f248c9ed','Non-allowlisted 2026-10-24 UN paragraph changes');
        }
     } else {
     // Explicit exception for exactly three verified primary-record corrections.
