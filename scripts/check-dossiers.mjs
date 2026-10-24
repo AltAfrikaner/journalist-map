@@ -1,5 +1,6 @@
 import {readFileSync,existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
+import {runInNewContext} from 'node:vm';
 const paths=['osf.html','sa_journalists.html','africacheck.html','ifcn.html','sixstage.html','metasuppression.html','iol.html','usaid.html','usaidtonewsroom.html','mtn.html','prototypenation.html','motsepe.html','communists.html','ancliberation.html','wef.html','un.html','mbalula.html','MTNrooivalkIRAN.html'];
 const css=readFileSync('assets/dossier-editorial.css','utf8');
 assert(css.includes('prefers-reduced-motion'),'Missing motion safety');
@@ -424,7 +425,7 @@ for(const f of batch16){
   assert(existsSync(dest),'Broken series navigation: '+dest);
 }
 
-/* Investigation 29: funded-organisations atlas content integrity. */
+/* Investigation 29: funding atlas data integrity + reviewed table-renderer correction. */
 {
  const file='osf-funded-orgs.html';
  const now=readFileSync(file,'utf8');
@@ -434,17 +435,47 @@ for(const f of batch16){
   assert(now.includes(s),'Funding atlas missing '+s);
  assert(css.includes('prefers-reduced-motion'),'Atlas missing motion safety');
  assert(css.includes('focus-visible'),'Atlas missing keyboard focus treatment');
+ const oldHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+ const newHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+ const reviewedChange=oldHash==='4a992f4a7592b32bd1d7d23eca43f2711791f1eb'
+  && newHash==='dd4368e99808453c7607fdb9a6bb011c2589cc7a';
+ // No general exemption for script or source data changes: only this reviewed
+ // exact Git blob pair may differ; original 73+35 source tuples must be identical.
+ function atlasData(h){const a=h.indexOf('const OSF_ORGS = [');const b=h.indexOf('// ── RENDER',a);
+  assert(a>=0&&b>a,'Atlas data anchors missing');return h.slice(a,b)}
+ assert.equal(atlasData(now),atlasData(old),'Funding atlas grant data changed');
  const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
-  // Narrative paragraphs intentionally receive documented editorial corrections in PR #36.
   ['original table data',/<table\b[^>]*>[\s\S]*?<\/table>/gi],
   ['original filter scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
   ['original images',/<img\b[^>]*>/gi],
   ['original illustrations',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
   ['original IDs',/\bid=["'][^"']+["']/g]
- ])assert.deepEqual(take(now,re),take(old,re),'Changed '+label+' in '+file);
+ ]){
+  if(label==='original filter scripts' && reviewedChange)continue;
+  assert.deepEqual(take(now,re),take(old,re),'Changed '+label+' in '+file);
+ }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
+ if(reviewedChange){
+  const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
+  assert(body,'Inline directory renderer missing');
+  const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
+  assert(js.length>3000,'Directory script unexpectedly short');
+  const els=Object.create(null);
+  const document={getElementById:id=>els[id]||(els[id]={innerHTML:''})};
+  runInNewContext(js+'\nrenderOSF();renderOmid();',{document,updateCount:()=>{}},{timeout:1500});
+  const osf=els['osf-tbody']?.innerHTML||'',omid=els['omid-tbody']?.innerHTML||'';
+  assert.equal((osf.match(/<tr data-name=/g)||[]).length,73,'OSF 73-row directory broken');
+  assert.equal((omid.match(/<tr data-name=/g)||[]).length,35,'Omidyar 35-row directory broken');
+  for(const s of ['href="https://issafrica.org"','data-sector="research / think tank"','data-track="osf-d"','<td class="org-sector">Research / Think Tank</td>','<td class="org-amount">$5.1M / 7 grants</td>'])
+   assert(osf.includes(s),'OSF mapping/link error: '+s);
+  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="luminate (formerly omidyar network)"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">$500K joint 2017 + ongoing</td>'])
+   assert(omid.includes(s),'Omidyar mapping/link error: '+s);
+  assert(!osf.includes('href="https://N/A"')&&!omid.includes('href="https://Archived"'),'Bad archival links');
+  assert(!omid.includes('<td class="org-status">YES</td>'),'Incorrect status column mapping');
+  assert(now.includes('aria-label="Search OSF organisations"')&&now.includes('aria-label="Search Omidyar organisations"'),'Atlas search input labels missing');
+ }
  for(const dest of ['real411.html','osf.html'])
   assert(existsSync(dest),'Broken investigation atlas navigation '+dest);
 }
