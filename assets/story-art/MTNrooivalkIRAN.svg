@@ -1,20 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 640" width="1600" height="640" role="img" aria-label="Aerospace, telecoms and international contracts"><defs>
-<linearGradient id="d" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101b2e"/><stop offset=".55" stop-color="#1b2a4a"/><stop offset="1" stop-color="#354962"/></linearGradient>
-<linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8f0e1"/><stop offset=".6" stop-color="#e8ddc9"/><stop offset="1" stop-color="#d9c8ad"/></linearGradient>
-<pattern id="g" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#455d73" stroke-width="1" opacity=".25"/></pattern>
-<clipPath id="right"><rect x="790" y="0" width="810" height="640"/></clipPath>
-</defs>
-<rect width="1600" height="640" fill="url(#d)"/><rect x="790" width="810" height="640" fill="url(#p)"/>
-<rect width="1600" height="640" fill="url(#g)" opacity=".48"/>
-<path d="M725 0L860 0L760 640L625 640Z" fill="#c5a258" opacity=".13"/>
-<path d="M776 0L681 640" fill="none" stroke="#c5a258" stroke-width="3" opacity=".9"/>
-<g clip-path="url(#right)"><circle cx="1298" cy="572" r="3" fill="#8b0000" opacity=".3"/><circle cx="1395" cy="105" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1492" cy="158" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="839" cy="211" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="936" cy="264" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1033" cy="317" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1130" cy="370" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1227" cy="423" r="3" fill="#a47c42" opacity=".3"/><circle cx="1324" cy="476" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1421" cy="529" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1518" cy="62" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="865" cy="115" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="962" cy="168" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1059" cy="221" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1156" cy="274" r="3" fill="#a47c42" opacity=".3"/><circle cx="1253" cy="327" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1350" cy="380" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1447" cy="433" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1544" cy="486" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="891" cy="539" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="988" cy="72" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1085" cy="125" r="3" fill="#8b0000" opacity=".3"/><circle cx="1182" cy="178" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1279" cy="231" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1376" cy="284" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1473" cy="337" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="820" cy="390" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="917" cy="443" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1014" cy="496" r="3" fill="#a47c42" opacity=".3"/><circle cx="1111" cy="549" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1208" cy="82" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1305" cy="135" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1402" cy="188" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1499" cy="241" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="846" cy="294" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="943" cy="347" r="3" fill="#a47c42" opacity=".3"/><circle cx="1040" cy="400" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1137" cy="453" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1234" cy="506" r="1.4" fill="#a47c42" opacity=".3"/><circle cx="1331" cy="559" r="1.4" fill="#8b0000" opacity=".3"/><circle cx="1218" cy="319" r="245" fill="none" stroke="#8b0000" stroke-width="2" stroke-dasharray="6 22" opacity=".32"/><circle cx="1218" cy="319" r="320" fill="none" stroke="#aa8a56" stroke-width="1" opacity=".4"/><path d="M925 334l173-29 77-112 39 0 16 103 189 36 34 45-225-13-46 103-34 0-56-113-166 4Z" fill="#273f58" stroke="#c5a258" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M1000 505L1460 505" stroke="#8b0000" stroke-width="8" stroke-linecap="round"/></g>
-<g fill="#e6d0a3"><text x="76" y="91" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="5">ALT AFRIKANER / INVESTIGATIONS</text></g>
-<path d="M76 122H655" stroke="#a48a62" stroke-width="2" opacity=".67"/>
-<text x="76" y="262" fill="#fff8eb" font-family="Georgia,serif" font-size="70" font-weight="700" letter-spacing="-2">AIRCRAFT AND</text>
-<text x="76" y="343" fill="#e5be7c" font-family="Georgia,serif" font-size="71" font-weight="700" font-style="italic" letter-spacing="-2">CONTRACTS</text>
-<path d="M76 399H192" stroke="#8b0000" stroke-width="7"/>
-<text x="76" y="453" fill="#d6dce2" font-family="Arial,sans-serif" font-size="19" letter-spacing="3">EDITORIAL ARTWORK  /  FILE 18</text>
-<path d="M76 567H658" stroke="#c5a258" stroke-width="1" opacity=".6"/>
-<text x="76" y="597" fill="#aeb7c0" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">ILLUSTRATIVE  •  REFER TO ARTICLE SOURCES FOR EVIDENCE</text>
-<path d="M0 636H1600" stroke="#c5a258" stroke-width="8"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 640" width="1600" height="640" role="img" aria-label="Rooivalk attack helicopter investigation cover">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#0a1424"/><stop offset=".66" stop-color="#1d3147"/><stop offset="1" stop-color="#756952"/></linearGradient><linearGradient id="metal" x2="0" y2="1"><stop stop-color="#bec5b6"/><stop offset=".5" stop-color="#6c786e"/><stop offset="1" stop-color="#26392f"/></linearGradient><linearGradient id="shade"><stop stop-color="#101b2e" stop-opacity=".94"/><stop offset=".7" stop-color="#101b2e" stop-opacity=".65"/><stop offset="1" stop-color="#101b2e" stop-opacity="0"/></linearGradient><pattern id="grid" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M70 0H0V70" fill="none" stroke="#c8b58e" opacity=".13"/></pattern></defs>
+<rect width="1600" height="640" fill="url(#sky)"/><circle cx="1268" cy="260" r="255" fill="#edca81" opacity=".08"/><path d="M0 530Q400 475 820 540T1600 510V640H0Z" fill="#0e1e27" opacity=".6"/><rect width="1600" height="640" fill="url(#grid)"/>
+<g transform="translate(765 155)" stroke-linejoin="round" stroke-linecap="round">
+<ellipse cx="400" cy="400" rx="480" ry="33" fill="#020a10" opacity=".35"/>
+<!-- Rotor mast and broad main rotor -->
+<path d="M330 105L338 31L363 28L372 105Z" fill="#65766c" stroke="#172a2d" stroke-width="5"/>
+<path d="M-60 15L790 5 830 16 30 25Z" fill="#aeb3a4" stroke="#15242b" stroke-width="5"/><path d="M300 14L450 14" stroke="#d5c3a0" stroke-width="5"/>
+<!-- Tailboom and stabilizer -->
+<path d="M382 203L698 162L778 151L792 167L718 193L486 264Z" fill="url(#metal)" stroke="#1b2c32" stroke-width="7"/>
+<path d="M699 157L713 65L737 61L733 178Z" fill="#607265" stroke="#1b2c32" stroke-width="6"/>
+<path d="M738 102L811 100M774 67L774 139" stroke="#d0ceb9" stroke-width="8"/>
+<path d="M658 201L753 241L696 249L613 222Z" fill="#46574b" stroke="#182b30" stroke-width="5"/>
+<!-- Main fuselage and tapered nose -->
+<path d="M-28 221Q33 167 140 158L260 115Q354 103 430 143L490 198Q508 247 461 277L300 311L95 302Q-13 288-38 261Z" fill="url(#metal)" stroke="#162b30" stroke-width="8"/>
+<path d="M-28 221Q44 197 123 195L167 235L120 271L-23 262Z" fill="#8b9f96" stroke="#23373c" stroke-width="5"/>
+<path d="M140 161L263 116Q322 108 358 135L321 210L168 228Z" fill="#152936" stroke="#9ca99c" stroke-width="6"/>
+<path d="M170 203L306 182M264 116L222 213" stroke="#c9d0c0" stroke-width="4" opacity=".75"/>
+<path d="M108 284L320 308L396 291" fill="none" stroke="#192d31" stroke-width="10"/>
+<!-- Wing pylons and ordnance -->
+<path d="M310 248L491 233L501 258L348 290Z" fill="#354c45" stroke="#162930" stroke-width="6"/>
+<path d="M415 267L438 346L464 346L476 267" fill="#41564e" stroke="#1a2d32" stroke-width="5"/>
+<path d="M414 330L483 330" stroke="#c2bda2" stroke-width="9"/><path d="M340 287L327 352L350 360L375 286" fill="#43564b" stroke="#1a2d32" stroke-width="5"/>
+<!-- Landing gear -->
+<path d="M111 293L95 376M350 308L350 378" stroke="#192b30" stroke-width="13"/><path d="M68 380H126M315 382H388" stroke="#b2b8ab" stroke-width="14"/>
+<!-- Sensor and nose detail -->
+<ellipse cx="4" cy="268" rx="21" ry="24" fill="#142937" stroke="#a7b9ad" stroke-width="6"/><circle cx="2" cy="266" r="10" fill="#668c96"/>
+<path d="M70 232L105 232" stroke="#d0bd8d" stroke-width="5"/>
+</g>
+<rect width="950" height="640" fill="url(#shade)"/>
+<text x="75" y="86" fill="#d7b77b" font-family="Arial,sans-serif" font-size="19" font-weight="700" letter-spacing="5">ALT AFRIKANER  /  INVESTIGATIONS</text><path d="M75 118H620" stroke="#c6a361" stroke-width="2" opacity=".7"/>
+<text x="75" y="247" fill="#fff8eb" font-family="Georgia,serif" font-size="100" font-weight="700">ROOIVALK</text>
+<text x="77" y="329" fill="#e6c48c" font-family="Georgia,serif" font-size="57" font-style="italic">THE IRAN CONNECTION</text>
+<path d="M77 367H190" stroke="#a51924" stroke-width="8"/>
+<text x="78" y="421" fill="#eee5d4" font-family="Arial,sans-serif" font-size="21" letter-spacing="3">MTN  /  DENEL  /  THE CONTRACT TRAIL</text>
+<path d="M76 565H629" stroke="#c5a258" opacity=".55"/><text x="77" y="600" fill="#c8ccce" font-family="Arial,sans-serif" font-size="15" letter-spacing="2">INVESTIGATIVE FEATURE  •  ILLUSTRATIVE ARTWORK</text><path d="M0 636H1600" stroke="#c5a258" stroke-width="8"/>
+</svg>
