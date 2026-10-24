@@ -26,3 +26,7 @@ Serious documented governance harm merits scrutiny, but a retrospective trend, m
 ## Preservation and validation
 
 Five focused editorial timeline replacements including two clarification headings; original JS, SVG, images, media, IDs and article routes deliberately unchanged and checked by source-contract script. Whole-file Git blob **`8f890b391a032546535623b3e4c3e638d8738c4d`** pinned. Browser/mobile accessibility and full source certification remain **OPEN**.
+
+## Follow-up: prominent comparison dashboard reconciliation
+
+The 1986 homicide comparison panel still carried the unsupported global "World's Highest" label after the first correction to the timeline. Its main label and explanation have now been brought into line with the reviewed Dommisse journal abstract and marked **UNVERIFIED** pending an international historical homicide-rate table. The modern-period crime claims are not thereby independently certified. No SVG, script, media or interactive dataset changed. Reviewed whole-file blob: `a79c55acf9d4339530f7a5707e7bc27b416f7510`. Full claim audit still OPEN.
