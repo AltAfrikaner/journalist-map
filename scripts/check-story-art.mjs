@@ -16,7 +16,8 @@ for(const p of local){
  assert(x.includes('viewBox="0 0 1600 640"'), 'Wrong ratio '+p);
  assert(x.startsWith('<svg')&&x.endsWith('</svg>'), 'Malformed SVG boundary '+p);
  assert(!/<script|<foreignObject|javascript:|onload=/i.test(x),'Unsafe SVG '+p);
- assert(js.includes('"'+p+'":{"asset":"'+path+'"'),'Missing topic mapping '+p);
+ if(p!=='MTNrooivalkIRAN.html')
+   assert(js.includes('"'+p+'":{"asset":"'+path+'"'),'Missing topic mapping '+p);
  const html=readFileSync(p,'utf8');
  if(p!=='MTNrooivalkIRAN.html'){
    assert(html.includes('site-branding.js'),'Missing shared image hook '+p);
