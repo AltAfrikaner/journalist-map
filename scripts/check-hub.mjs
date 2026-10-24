@@ -35,17 +35,20 @@ assert(html.includes('https://altafrikaner.com/'),'Canonical custom domain missi
 assert.equal((html.match(/<details\b/g)||[]).length,(html.match(/<\/details>/g)||[]).length,'Disclosure element must close');
 
 /* Publication departments must remain independent. */
+const heroPos=html.indexOf('<section class="hero"');
 const investigationPos=html.indexOf('id="investigations"');
 const featuredPos=html.indexOf('id="featured"');
 const articlesPos=html.indexOf('id="articles"');
 const footerPos=html.indexOf('id="site-information"');
-assert(featuredPos>0&&investigationPos>featuredPos&&articlesPos>investigationPos&&footerPos>articlesPos,
- 'Investigations and articles must be separate, with research before the editorial department');
+assert(heroPos>0&&articlesPos>heroPos&&featuredPos>articlesPos&&investigationPos>featuredPos&&footerPos>investigationPos,
+ 'Homepage order must be hero, top editorial feature, spotlight, investigation archive, then footer');
+assert(/<footer id="site-information">\s*<div class="footer-topline">/.test(html),
+ 'Homepage footer opener must be valid and wrap its contents');
 assert.equal((html.match(/id="articles"/g)||[]).length,1,'Single Articles & Opinion department');
 assert(html.includes('href="articles/index.html"'),'Missing independent articles index');
 assert(html.includes('class="aa-articles-department"'),'Missing editorial department visual container');
 assert(html.includes('class="aa-article-feature"'),'Missing article feature');
-assert(!html.slice(investigationPos,articlesPos).includes('tom-eaton-trojan-horse.html'),
+assert(!html.slice(investigationPos,footerPos).includes('tom-eaton-trojan-horse.html'),
  'Opinion article must not be mixed into investigation archive');
 const rail=readFileSync('assets/hub-departments.css','utf8');
 assert(rail.includes('.hero-rail .rail-story')&&rail.includes('text-decoration: none'),
