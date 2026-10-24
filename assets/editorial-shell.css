@@ -118,3 +118,21 @@ body.aa-editorial-article .aa-copy :is(pre,table){max-width:100%;overflow-x:auto
  .aa-editorial-bar,.aa-editorial-drawer{background:Canvas;color:CanvasText}
  .aa-editorial-bar :is(a,button),.aa-editorial-drawer :is(a,button){color:LinkText}
 }
+
+
+/* Shared publication masthead: use the same menu across all articles.
+   Retain each page's original header as a no-JavaScript fallback. */
+body.aa-editorial-site.aa-editorial-article > header,
+body.aa-editorial-site:has(.aa-editorial-archive-nav) > header{
+  display:none;
+}
+body.aa-editorial-site:has(.aa-editorial-archive-nav) > .hero{
+  padding-top:clamp(45px,5vw,75px);
+}
+body.aa-editorial-site:has(.aa-editorial-archive-nav) .wrap{
+  min-width:0;
+}
+body.aa-editorial-site:has(.aa-editorial-archive-nav) .card img{
+  max-width:100%;
+  object-fit:contain;
+}
