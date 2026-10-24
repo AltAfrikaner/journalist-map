@@ -25,3 +25,13 @@ Date: 24 October 2026. Page: `wef.html`. Status: **targeted corrections committe
 
 ## Preservation
 No article URL change; original JavaScript, SVG, image tags/payloads, interactive graph nodes and element IDs retained byte-for-byte. `scripts/check-dossiers.mjs` pins the exact `7befe749...` (main) to `3b2427c2...` (reviewed) HTML blob pair while keeping independent media comparisons. No external repository changed.
+
+
+## Follow-up: 1990 Davos/Cape Town historical-location correction (same day)
+
+**Critical correction:** The live timeline asserted that President F.W. de Klerk announced the unbanning of the ANC at Davos on 2 February 1990. This is demonstrably false: he announced it **while opening Parliament in Cape Town**. Replaced the timeline title, lead and explanatory paragraph, keeping the 1992 Davos meeting explicitly separate and preserving the legitimate investigative question about WEF's later influence.
+
+- **Contemporaneous primary record:** South African Government, [2 February 1990 parliamentary opening address](https://www.gov.za/news/address-state-president-mr-fw-de-klerk-dms-opening-second-session-ninth-parliament-republic). It recites rescission of the bans on the ANC, SACP and PAC and pending Mandela release, and identifies Cape Town Parliament as the venue.
+- **Independent confirmation (then contemporaneous):** [Washington Post, 2 February 1990](https://www.washingtonpost.com/archive/politics/1990/02/03/s-africa-lifts-ban-on-anti-apartheid-groups/f30c4f6b-ce68-406a-96f4-b22ab8ff7f22/); [Cambridge University Press historical account](https://www.cambridge.org/core/books/abs/place-of-thorns/unbanning-of-the-anc-political-violence-and-civic-politics-19901995/505D6A37A01673DFB67D2458D4A71A44).
+- **Red team:** A retrospective claim of 1992 WEF matchmaking cannot be retrojected into an untrue location for the separate 1990 speech; a purported 1990 Sicre trip and 40 kg anecdote also requires contemporaneous corroboration before using it to allege directing the parliamentary announcement.
+- **Protected:** UI timeline wrappers, JS onclick handlers, SVG, imagery, IDs and all article URLs unchanged; only visible text in three existing timeline divs revised. *Still not a full claims audit.*

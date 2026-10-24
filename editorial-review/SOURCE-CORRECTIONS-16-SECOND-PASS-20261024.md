@@ -28,3 +28,11 @@ The strongest pro-Afrikaner criticism concerns the constitutionality, proportion
 
 ## Preservation
 Page URL, JS, SVG, images and IDs unchanged. Original vs reviewed Git blobs pinned in the dossier preservation CI (`d2b073998...` -> `a6d741080...`), retaining byte-level media and section guards. External repositories untouched.
+
+
+## Follow-up: top-line metric and institutional-silence consistency correction (same day)
+
+Six display-text corrections align the existing data cards and comparison panel with the independently qualified body research. The totals **324, 122+ and 145** are explicitly presented as the [IRR's Index of Race Law](https://racelaw.co.za/) counts, not independently adjudicated or UN-certified facts; the IRR itself says nine operative Acts have since been deracialised and acknowledges classification and constitutional enforceability limits. The unattributed high-visibility **US$100M+ UN partnership** statistic was removed from the top card and qualified in the UNDP comparison item: the original [UNDP 2024 report](https://www.undp.org/south-africa/publications/annual-report-2024) and [GEF country portfolio](https://www.thegef.org/projects-operations/country-profiles/south-africa) do not establish a single recipient-level UNDP cash transfer of that amount. The Smuts founding paragraph no longer contradicts the already documented CERD 2016/2023 reviews with a claim of total UN silence.
+
+- **Red team:** Civil-society indexing may be useful evidence of legislative volume, but counting an operative deracialised Act is not proof of current racial application. Multicountry GEF financing is not a disbursement to an identified government recipient, and institutional partnership need not equal approval of all domestic rules.
+- **Protected:** Original graphic and scripts untouched; only HTML text in visible statistic cards, comparison panel and founding narrative adjusted. All SVG, JS, image tags, IDs and paths byte-identical. Detailed individual laws, UN funding beneficiaries and committee decisions still **UNVERIFIED**.
