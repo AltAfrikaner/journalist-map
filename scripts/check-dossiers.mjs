@@ -212,7 +212,7 @@ for(const f of batch16){
   if(current===approvedEditorial[0]){
     const mainBlob=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
     assert(['303d26d3687f4e004f929559b86b30eb8b0e1947',approvedEditorial[0]].includes(mainBlob),'Unreviewed Rooivalk editorial baseline');
-    for(const [label,re] of [['scripts',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],['SVG',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],['images',/<img\\b[^>]*>/gi],['IDs',/\\bid=["'][^"']+["']/g]]){
+    for(const [label,re] of [['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],['images',/<img\b[^>]*>/gi],['IDs',/\bid=["'][^"']+["']/g]]){
       const items=x=>[...x.matchAll(re)].map(m=>m[0]);
       assert.deepEqual(items(now),items(base),'Rooivalk '+label+' changed');
     }
