@@ -15,3 +15,7 @@
 ## Preservation and outstanding evidence
 
 Retains explicit pro-Afrikaner scrutiny of uneven international standards, without asserting baseless legal equivalence. HTML text only; all original JS, SVG, embedded images, scripts, IDs, canvas and article URLs are preserved by static comparison. Existing responsive viewport and semantic links retained. Desktop/mobile browser interaction checks and complete resolution-index searches remain outstanding. IRR law counts and application, named personnel's alleged coordinated intent, individual employer sanctions and causal unemployment claims remain **UNVERIFIED** and require source-by-source review.
+
+## In-page coherence follow-up
+
+The previous side-by-side UN contrast displayed categorical **0 resolutions**, **0 sanctions**, **0 formal statements** and a large **0 Resolutions** statistic even though a 2023 CERD review was documented elsewhere. These HTML text labels now distinguish documented treaty scrutiny from the still-**UNVERIFIED** exhaustive resolution count. No SVG or original dataset changed.

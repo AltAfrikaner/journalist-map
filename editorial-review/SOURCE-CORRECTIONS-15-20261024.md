@@ -15,3 +15,7 @@
 ## Guardrails, tests and residual certification
 
 The article's pro-Afrikaner perspective on institutional accountability, unelected influence and transition costs is retained. Changes concern **text only**; the review checks original script blocks, SVGs, images, canvas, IDs, readable paragraphs and responsive viewport. No numeric 3D/graph data, media, original article URLs or interactive code modified. Browser-level focus/hover and 320px/mobile layouts need further examination. JETP binding lender agreements, participant intent, causal network edges and project-level financing are **not certified**.
+
+## In-page coherence follow-up
+
+The key-term description of CSIR also repeated the unsupported 2021 *first centre installed* assertion. It now distinguishes CSIR's documented collaboration in UP's September 2025 SACIT launch from a separate WEF-member centre, which remains **UNVERIFIED**. This is a text-only correction, not a modification to interactive records.

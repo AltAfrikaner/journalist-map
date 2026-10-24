@@ -219,7 +219,7 @@ for(const f of batch16){
     if (base.includes('class="aa-document-reconciliation"')) {
       if(JSON.stringify(extract(now,re))!==JSON.stringify(extract(base,re))) {
          // Prose differs only for the 24 Oct source-corrected, immutable full-page blob.
-         assert.equal(execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim(),'fa714aa4e9da8def58b0aef872330c52bb51478f',
+         assert.equal(execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim(),'d2b0739987b5f79e14afc4acd6c440ae522ad776',
            'Non-allowlisted 2026-10-24 UN paragraph changes');
        }
     } else {
