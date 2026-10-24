@@ -153,7 +153,12 @@ for(const f of batch16){
   // 'object-fit:cover;object-position:center'. Full 2,093,489-char source
   // compared to 36f032f: all 14 base64 images, 2 scripts, 3 SVGs,
   // 18 IDs, 14 links and original dossier text unchanged.
-  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa'];
+  // 24 October follow-up cover change in CURRENT main: added one scoped CSS style
+  // (id aa-rooivalk-cover-fix) and moved the existing cover figure above
+  // statistics. Full comparison against 4fd4f4: identical 14 image payloads,
+  // 2 scripts, 3 SVGs, 14 hrefs and dossier research; the only new ID is
+  // that CSS style block. Exact blob only; still reject every other mutation.
+  const approvedCovers=['e4bfee4b5829065e74c443e89559d29af7af1ad9','36f032ff4f0028743f3747c548acf5f9e4418e10','4fd4f4dad223e8977f704be50bd3ed48399793aa','12a93cb7b98c8318ae530c93bb8b3d76bb740f29'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
@@ -350,6 +355,14 @@ for(const f of batch16){
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(oldSha==='b16a634da4f8ce3f67fda82ed329fa227b6972a3' && newSha==='1c0f41362891be1947e5effa6d5dba476d152d81') continue;
    }
+   // PR #70 source corrections: allow only the reviewed, exact full-file
+   // Foundation narrative (including new sources and the September 2026
+   // leadership chronology); all existing code/diagrams/media/IDs remain strict.
+   if(file==='fwdeklerk_foundation_investigation.html' && what==='original paragraphs'){
+     const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+     const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     if(oldSha==='6acd67a3219e67e2c3d101c7e21d5d0e681ca69a' && newSha==='58719ea349192d91100c5ec3e4b950de2305acd6') continue;
+   }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
   for(const asset of ['data:image','<canvas','<iframe'])
@@ -377,7 +390,16 @@ for(const f of batch16){
    ['paragraphs',/<p\b[^>]*>[\s\S]*?<\/p>/gi],
    ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
    ['images',/<img\b[^>]*>/gi]
-  ])assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
+  ]){
+   // PR #70: only this exact, reviewed CWS source correction may revise prose.
+   // Scripts, imagery, SVG, IDs, existing media and internal nav remain strict.
+   if(file==='cws.html' && name==='paragraphs'){
+     const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+     const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     if(oldSha==='dde8f9a795dfadaa1cb492243711fa599985866f' && newSha==='b0329231ef9ade47ff84031bc490103679dda23c') continue;
+   }
+   assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
+  }
   const oldIds=hits(old,/\bid=["'][^"']+["']/g);
   const newIds=hits(html,/\bid=["'][^"']+["']/g);
   const extraAnchor='id="start-investigation"';
