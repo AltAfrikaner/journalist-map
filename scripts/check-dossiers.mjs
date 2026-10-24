@@ -153,6 +153,10 @@ for(const f of batch16){
   assert([original,...approvedCovers].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
   if(current===original)assert.equal(now,base,'Original restored Rooivalk dossier drift');
+  // One separately approved cover replaced a caption paragraph and repositioned
+  // an image tag, so old block-by-block comparisons would falsely reject it.
+  // Full Git blob identity above is stronger and prohibits ALL other changes.
+  continue;
  }
 
  // 23 Oct 2026 case-specific claim corrections to investigation #17.
