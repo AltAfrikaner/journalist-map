@@ -378,8 +378,10 @@ for(const f of batch16){
       // blobs are permitted, with original JS/SVG/image/ID checks below intact.
       const reviewed={
        // Third-pass edits are pinned from exact current main blobs; no open-ended exception.
-       'splc.html':['371a1f833de617faf13268bdc61c545e31484882','a3ae685a73417ab455a91ab260cd6d4cd8f36b7c'],
-       'adl.html':['716389a78f7246257edc28c89fd75fbaca0f2220','c612925fe3970490083fc2205f29ec18cfd1b1d3']
+       // Fourth-pass amounts/chronology and comparison-framework corrections approved against exact 25 Oct main.
+       // Each case still compares scripts, SVG, images, IDs and embedded-media counts to main.
+       'splc.html':['a3ae685a73417ab455a91ab260cd6d4cd8f36b7c','7acd4f57a505f5d61afa77c9e781d02bb0b66463'],
+       'adl.html':['c612925fe3970490083fc2205f29ec18cfd1b1d3','1b2a8e447248501429ff8e436081db8f7c3ea30a']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
