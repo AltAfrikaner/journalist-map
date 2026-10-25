@@ -528,6 +528,13 @@ for(const f of batch16){
        'real411.html':['752476a07ea9723d694987ea55a46613b535cdee','bcc442a6853c1fefe885a59e2e624841d17b1b61']
      };
      if(before===thirdPass[file][0] && after===thirdPass[file][1]) continue;
+     // 25 Oct fourth source pass: narrowly allow two exact content identities.
+     // All nonparagraph scripts, SVG, images, IDs, and media remain protected.
+     const fourthPass={
+       'omidyar.html':['c0e58e9c42cd3d5aa72cd5fd343a3819973efa58','e110d7ab9a5c7daf6b12c831bc430e3aaac9ff09'],
+       'real411.html':['bcc442a6853c1fefe885a59e2e624841d17b1b61','55b28388465388bfb0ca833bb8e4f49c7a9112e2']
+     };
+     if(before===fourthPass[file][0] && after===fourthPass[file][1]) continue;
    }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
