@@ -438,6 +438,10 @@ for(const f of batch16){
      // 25 Oct third pass: original paragraph/source assertions corrected, full reviewed file hash pinned.
      // Existing JS, SVGs, images, IDs and embedded data still compare strictly to main.
      if(oldSha==='8893cea1519dbb80b5d63666c7e71025964f8437' && newSha==='dfccfbe82f484c81454258f7c940ed451d47315d') continue;
+     // 25 Oct fourth pass: court chronology/constitutional asymmetry corrections.
+     // Scope: narrative only; SVG, JS, images, element IDs remain under strict checks.
+     // Source: editorial-review/SOURCE-CORRECTIONS-24-FOURTH-PASS-20261025.md
+     if(oldSha==='dfccfbe82f484c81454258f7c940ed451d47315d' && newSha==='8234745580f8d11b825974775436b23b219d07db') continue;
      if(oldSha==='b16a634da4f8ce3f67fda82ed329fa227b6972a3' && newSha==='1c0f41362891be1947e5effa6d5dba476d152d81') continue;
    }
    // PR #70 source corrections: allow only the reviewed, exact full-file
