@@ -14,3 +14,6 @@ Public HIV grants, NED media assistance and fact-checking partnerships are real 
 
 ## Preservation
 Original inline/external script tags and bodies, SVG blocks, image tags, element IDs, embedded media and existing hrefs compared bytewise before commit. No altered graph dataset, JavaScript, art or URLs; no Rooivalk edit. This source pass does not imply full certification.
+
+## Same-day follow-up: residual 2017 ownership label (25 October 2026)
+A post-merge review found a contradictory **visible `OSF owned` card chip** and 2017 timeline title saying **“OSF Acquires M&G via MDIF”** even though the nearby corrected paragraph distinguished MDIF as the 2017 shareholder. Corrected both, with the exact **12 Dec 2017 MDIF announcement** and **30 Oct 2024 MDIF disposal**. Primary: [MDIF 2017 statement](https://www.mdif.org/news/mdif-majority-stake-mail-guardian/), [MDIF 2024 sale statement](https://www.mdif.org/news/mdif-exits-south-africas-mail-guardian/); independent recipient account: [Mail & Guardian owner history](https://mg.co.za/about-us/). OSF's specific direct beneficial ownership or control is **UNVERIFIED**. The existing map itself, and all code, SVGs, images, IDs and prior links are unchanged. Remaining donors, grants, edges and financial figures are not certified.
