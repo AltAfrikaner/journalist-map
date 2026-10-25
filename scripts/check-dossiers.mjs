@@ -199,7 +199,9 @@ for(const f of batch16){
   // 25 Oct primary-source corrections: Apache lineage, separate South African
   // Turkcell delict claim from US ATA suits, and qualify speculative penalties.
   // Only this exact full blob is authorised after lossless 1.7MB round-trip check.
-  const approvedEditorial=['652dab0ceab3eafdb48b603ccc0aa8f832b1d3b6'];
+  // Third-pass 25 Oct 2026: add exact independently round-tripped blob after
+  // one procedural chronology paragraph; all JS/SVG/images/IDs unchanged.
+  const approvedEditorial=['652dab0ceab3eafdb48b603ccc0aa8f832b1d3b6','79c93657371ee799d564c07ed5e400bd90ba2690'];
   const current=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
   assert([original,...approvedCovers,...approvedEditorial].includes(current),'Unreviewed/missing Rooivalk dossier; exact hash guard failed');
   // Current user-authored cover swaps exactly one embedded 348KB JPEG for a remote PNG.
@@ -209,9 +211,9 @@ for(const f of batch16){
      assert.equal((now.match(/data:image\//g)||[]).length,14,'Unreviewed embedded assets in remote-cover dossier');
      assert(now.includes('https://d2ol7oe51mr4n9.cloudfront.net/user_39LyNd3yWOiGeUhnS3CdfDw25su/0e814109-6230-401e-83bb-520d2a5dd424.png'),'Remote cover reference disappeared');
    } else assert(Buffer.byteLength(now,'utf8')>2090000,'Rooivalk dossier truncated or zero sized');
-  if(current===approvedEditorial[0]){
+  if(approvedEditorial.includes(current)){
     const mainBlob=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
-    assert(['303d26d3687f4e004f929559b86b30eb8b0e1947',approvedEditorial[0]].includes(mainBlob),'Unreviewed Rooivalk editorial baseline');
+    assert(['303d26d3687f4e004f929559b86b30eb8b0e1947',...approvedEditorial].includes(mainBlob),'Unreviewed Rooivalk editorial baseline');
     for(const [label,re] of [['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],['images',/<img\b[^>]*>/gi],['IDs',/\bid=["'][^"']+["']/g]]){
       const items=x=>[...x.matchAll(re)].map(m=>m[0]);
       // Compare the October source correction to its immediate reviewed main,
@@ -244,7 +246,8 @@ for(const f of batch16){
    if(liveBlob!==baselineBlob) {
      assert(
        (baselineBlob==='d0b6862a2217e9ad2253950955672710165cd958' && liveBlob==='c4c0f0a6788d30f87b9da323531ec7a5134264ad') ||
-       (baselineBlob==='c4c0f0a6788d30f87b9da323531ec7a5134264ad' && liveBlob==='5b67748e4f3d4bd3cae9fccc34903ad6406da5d8'),
+       (baselineBlob==='c4c0f0a6788d30f87b9da323531ec7a5134264ad' && liveBlob==='5b67748e4f3d4bd3cae9fccc34903ad6406da5d8') ||
+       (baselineBlob==='5b67748e4f3d4bd3cae9fccc34903ad6406da5d8' && liveBlob==='c8f7009f465cc5f070f78eafe66fde8ea2bd948a'),
        'Mbalula must match one specifically approved complete-file correction');
    }
    continue;
