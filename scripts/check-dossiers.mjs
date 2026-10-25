@@ -115,7 +115,7 @@ for(const f of nextBatch){
       // The original reviewed page and the merged corrected version are the only accepted bases.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510'].includes(baseSha),'Unexpected #14 main baseline');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773'].includes(baseSha),'Unexpected #14 main baseline');
       assert.equal(liveSha,'8c6e2816291ba6179ece4015ed92b7de7cbd0773','Unexpected #14 third-pass prose; see SOURCE-CORRECTIONS-14-THIRD-PASS-20261025.md');
       continue;
     }
