@@ -329,13 +329,13 @@ for(const f of batch16){
   ['interactive IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
    if(category==='original paragraphs' && now!==old) {
-     // Approved 25 Oct third-pass #19 corrections. Match BOTH complete blob hashes
+     // Approved 25 Oct fourth-pass #19 correction. Match BOTH complete blob hashes
      // instead of allowing arbitrary prose edits or weakening any graphic guard.
      // See editorial-review/SOURCE-CORRECTIONS-19-20-20261023.md.
      const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
      const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-     assert.equal(originalHash,'c35bb073c86fe151d357fe676c285a0449bf8a95','Unexpected #19 main baseline for 25 Oct third-pass review');
-     assert.equal(revisedHash,'03f329dbd7c9e2c42dc109a6ca68e39543c2459e','Unreviewed #19 third-pass source/content change');
+     assert.equal(originalHash,'03f329dbd7c9e2c42dc109a6ca68e39543c2459e','Unexpected #19 main baseline for 25 Oct fourth-pass review');
+     assert.equal(revisedHash,'2a70f188e9668b3f2ec3c50e4e493e7d273c7908','Unreviewed #19 fourth-pass source/content change');
    } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  }
  for(const sig of ['<canvas','data:image','<iframe'])
@@ -386,12 +386,12 @@ for(const f of batch16){
       assert.equal(before,reviewed[file][0],'Unexpected baseline before editorial corrections: '+file);
       assert.equal(after,reviewed[file][1],'Unreviewed content change: '+file);
      } else if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
-      // Exact whole-file allowance for 25 Oct third-pass audit after PR #64; leave other
+      // Exact whole-file allowance for 25 Oct fourth-pass audit; leave other
       // sections and all remaining script/SVG/image/ID checks strictly intact.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
-      assert.equal(originalHash,'94c8cb37cb1dd6f11156094435a99ece5920c46f','Unexpected #20 main baseline for 25 Oct third-pass review');
-      assert.equal(revisedHash,'eb91908e6661ccedf7912193bd4a8c2f395d60b2','Unreviewed #20 third-pass source/content change');
+      assert.equal(originalHash,'eb91908e6661ccedf7912193bd4a8c2f395d60b2','Unexpected #20 main baseline for 25 Oct fourth-pass review');
+      assert.equal(revisedHash,'299495b1d207bef8624c9b169bc7fa61c49c0f20','Unreviewed #20 fourth-pass source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
