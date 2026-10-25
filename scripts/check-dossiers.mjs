@@ -456,6 +456,8 @@ for(const f of batch16){
      // 25 Oct third pass: independently sourced board/hiring/tenure corrections. Exact full-file blob only.
      // Script, SVG, image, ID and embedded-data checks below still compare against origin/main.
      if(oldSha==='7f197efb884375f87ec7db114e7b698c274aa8fc' && newSha==='75525f9c16df9f8377b7794c7f5862d5aa59d7a7') continue;
+      // 25 Oct fourth pass: exact reviewed legislation/tenure/motive corrections, graphics and scripts pinned.
+      if(oldSha==='75525f9c16df9f8377b7794c7f5862d5aa59d7a7' && newSha==='6687d1ef157947e4ecb8ee9bae47d91c586fa7e3') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -496,6 +498,8 @@ for(const f of batch16){
      // 25 Oct third pass: sourced CWS quotation, independent church governance, funding and RSC roles.
      // Exception is this exact reviewed full-file blob pair; all other research-artifact guards remain active.
      if(oldSha==='19a3864d963117c17a21f2f3bd2d3232e4b14d20' && newSha==='4eba7bf483658b02b288485b99c651d3e5111c7e') continue;
+      // 25 Oct fourth pass: exact reviewed RSC/NCC/FEMA correction, graphic and media integrity unchanged.
+      if(oldSha==='4eba7bf483658b02b288485b99c651d3e5111c7e' && newSha==='e22c5ec7ddaa374d9ff3ebede1f03100c484b215') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
