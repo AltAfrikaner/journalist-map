@@ -1,5 +1,5 @@
 # Investigation 05 — third-pass primary-record correction and red-team note
-**25 October 2026** · `sixstage.html` · original main blob `62393b123ee1d34b95de596ce250717571832c2d` → revised blob `de4aff8cc8bca819f2961e43be1d38e9903fa62f`. **Release disposition: OPEN — not a full 29-article certification.**
+**25 October 2026** · `sixstage.html` · original main blob `62393b123ee1d34b95de596ce250717571832c2d` → revised blob `e880812cf1056cd0f2c14ad1f6a5ea80564ff61f`. **Release disposition: OPEN — not a full 29-article certification.**
 
 ## Six substantive, source-linked corrections
 1. **Current job and grant recipient.** The older stage 1 conflated Stellenbosch/UCT affiliations and treated a reported **R4.5m IDRC** award as established. [CINIA staff](https://cinia.africa/about-us/) lists Herman Wasserman as Stellenbosch Journalism chair and CINIA director; [Stellenbosch University's 26 January 2026 announcement](https://www.su.ac.za/en/faculties/arts/departments/journalism/news/grant-over-r20-million-cinia) documents a *grant award exceeding R20m* for international research. It does not show funds transferred to Meta, a named fact-checker, or affected farmers. The separate R4.5m figure and quoted farm-page classification are **UNVERIFIED**.
