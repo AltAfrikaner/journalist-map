@@ -9,3 +9,7 @@
 5. **Susan Rosenberg:** Replaced inaccurate shorthand "terrorism conviction" and 740-lb sentencing assertion with criminal counts and sentence described in [1985 federal court judgement, *Rosenberg v. Meese*](https://law.justia.com/cases/federal/district-courts/FSupp/622/1451/2396059/). The documented 58-year sentence concerned conspiracy/weapons/explosives/identity counts, not an adjudication of every attack allegedly committed by the network or proof she directed BLM grants. Her historical association and fiscal-sponsor connection retained as matters for investigation.
 
 **Still OPEN:** 1928 Comintern-to-ANC-to-West chain, 1990 NEC denominator, SACP quotation provenance, each NGO/board/financial edge, direct editorial or platform control, every original dataset and diagram allegation, real mobile/desktop testing, accessible focus/control testing, and public CDN freshness. No script, SVG, image, embedded dataset, ID, route or existing href was removed or modified.
+
+## CI integrity follow-up
+
+The project test `scripts/check-dossiers.mjs` uses an exact full-file blob assertion for each of these previously edited articles. After an initial failed CI run on the old hash, its two expected **reviewed** Git hashes were updated solely to `communists.html: 7ba0b567cb167a8e3cb56cb02212a3a152843c99` and `ancliberation.html: 8c6e2816291ba6179ece4015ed92b7de7cbd0773`. The independent baseline allowlists and byte-for-byte JavaScript, SVG, embedded-image, element-ID and media guards remain unchanged. No article script was edited.

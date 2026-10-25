@@ -9,3 +9,7 @@
 5. **Life Esidimeni attribution:** Preserved the documented **144 deaths after state-directed transfers**, but replaced categorical "killed by policy" with more careful wording distinguishing deaths, systemic findings and individual criminal culpability.
 
 **Still OPEN:** source-by-source figures for suicides, crime, youth QLFS, child development, sewage plants, water budgets, water-authority criminal dockets; original commentary's causal comparison to apartheid; alleged platform moderation; SVG and chart evidence, mobile/browser and public CDN verification. 9 scoped prose/statistics replacements, no changes to original scripts, SVGs, media, embedded datasets, element IDs, CSS or existing article URLs.
+
+## CI integrity follow-up
+
+The project test `scripts/check-dossiers.mjs` uses an exact full-file blob assertion for each of these previously edited articles. After an initial failed CI run on the old hash, its two expected **reviewed** Git hashes were updated solely to `communists.html: 7ba0b567cb167a8e3cb56cb02212a3a152843c99` and `ancliberation.html: 8c6e2816291ba6179ece4015ed92b7de7cbd0773`. The independent baseline allowlists and byte-for-byte JavaScript, SVG, embedded-image, element-ID and media guards remain unchanged. No article script was edited.
