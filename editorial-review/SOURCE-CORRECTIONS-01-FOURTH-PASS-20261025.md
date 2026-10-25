@@ -32,6 +32,9 @@ Date: 25 October 2026. Base main: `7a53859e7785aab8fe6640bc9a8e78a6822b5faf`. Sc
 ### Final internal consistency sweep
 A final review of the *current* article removed the additional contradictory board-card claim of 'never reported', the leftover Dakar-produced-three-institutions finding, an overreaching academic pipeline claim and the implication that journal editorship conferred content-moderation authority. It re-labelled the historical flowchart header as a hypothesis; SVG graphics themselves remain unchanged.
 
+## CI guard reconciliation — 25 October 2026
+The original `scripts/check-story-pairs.mjs` check rejected the *unchanged* 1,747,532-byte Rooivalk dossier because it still allowed only earlier exact Git hashes. Added only the previously reviewed intact blob `652dab0ceab3eafdb48b603ccc0aa8f832b1d3b6` to the approved **remote-cover** set; did not modify the Rooivalk page. Retained the explicit minimum-size guard (>1,740,000 bytes), 14 inline evidence-image count, checked remote-cover URL and strict hash rejection of other variants. This corrects outdated CI expectations without widening acceptance to arbitrary content.
+
 ## Integrity/release status
 The original five scripts, three SVGs, three image elements, every ID and original href have been compared byte-for-byte and retained; the story URL, user viewpoints, 3D dataset, interactive labels, original historic map and artwork are not modified. New inline documentary links and a legible warning near the dated SVG were added. Text-only HTML change leaves section count intact. This does **not** certify the source reliability of any original map edge or visual label. Static GitHub CI, mobile/browser contrast, original donor-year ledger checks, and Pages CDN freshness remain separately required.
 
