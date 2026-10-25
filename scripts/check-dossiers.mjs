@@ -444,6 +444,9 @@ for(const f of batch16){
      if(oldSha==='6acd67a3219e67e2c3d101c7e21d5d0e681ca69a' && newSha==='58719ea349192d91100c5ec3e4b950de2305acd6') continue;
      // PR #88 second pass: exact original-to-reviewed prose only.
      if(oldSha==='58719ea349192d91100c5ec3e4b950de2305acd6' && newSha==='7f197efb884375f87ec7db114e7b698c274aa8fc') continue;
+     // 25 Oct third pass: independently sourced board/hiring/tenure corrections. Exact full-file blob only.
+     // Script, SVG, image, ID and embedded-data checks below still compare against origin/main.
+     if(oldSha==='7f197efb884375f87ec7db114e7b698c274aa8fc' && newSha==='75525f9c16df9f8377b7794c7f5862d5aa59d7a7') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -481,6 +484,9 @@ for(const f of batch16){
      if(oldSha==='dde8f9a795dfadaa1cb492243711fa599985866f' && newSha==='b0329231ef9ade47ff84031bc490103679dda23c') continue;
      // PR #88 second pass: exact immigration-law prose correction only.
      if(oldSha==='b0329231ef9ade47ff84031bc490103679dda23c' && newSha==='19a3864d963117c17a21f2f3bd2d3232e4b14d20') continue;
+     // 25 Oct third pass: sourced CWS quotation, independent church governance, funding and RSC roles.
+     // Exception is this exact reviewed full-file blob pair; all other research-artifact guards remain active.
+     if(oldSha==='19a3864d963117c17a21f2f3bd2d3232e4b14d20' && newSha==='4eba7bf483658b02b288485b99c651d3e5111c7e') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
