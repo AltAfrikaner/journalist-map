@@ -29,6 +29,9 @@ Date: 25 October 2026. Base main: `7a53859e7785aab8fe6640bc9a8e78a6822b5faf`. Sc
 - Stellenbosch ESAT press history: https://esat.sun.ac.za/index.php/Vrye_Weekblad
 - Outside report on CINIA grant: https://www.suidkaapforum.com/News/Article/National-News/maties-gets-major-grant-for-research-to-promote-online-truth-202509010244
 
+### Final internal consistency sweep
+A final review of the *current* article removed the additional contradictory board-card claim of 'never reported', the leftover Dakar-produced-three-institutions finding, an overreaching academic pipeline claim and the implication that journal editorship conferred content-moderation authority. It re-labelled the historical flowchart header as a hypothesis; SVG graphics themselves remain unchanged.
+
 ## Integrity/release status
 The original five scripts, three SVGs, three image elements, every ID and original href have been compared byte-for-byte and retained; the story URL, user viewpoints, 3D dataset, interactive labels, original historic map and artwork are not modified. New inline documentary links and a legible warning near the dated SVG were added. Text-only HTML change leaves section count intact. This does **not** certify the source reliability of any original map edge or visual label. Static GitHub CI, mobile/browser contrast, original donor-year ledger checks, and Pages CDN freshness remain separately required.
 
