@@ -54,7 +54,8 @@ const rooivalkFull=new Set([
 ]);
 const rooivalkRemote=new Set([
  '78ed6a7b7af2461465ca3e19f50f9b0a3af0249b',
- '303d26d3687f4e004f929559b86b30eb8b0e1947'
+ '303d26d3687f4e004f929559b86b30eb8b0e1947',
+ '652dab0ceab3eafdb48b603ccc0aa8f832b1d3b6' // Exact reviewed current dossier; remote-cover size and media guards still apply.
 ]);
 assert(rooivalkFull.has(rooivalkHash)||rooivalkRemote.has(rooivalkHash),
  'Unknown, zero-sized or truncated Rooivalk dossier: exact reviewed Git identity required');
