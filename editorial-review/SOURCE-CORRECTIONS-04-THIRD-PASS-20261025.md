@@ -1,0 +1,38 @@
+# Investigation #04 — IFCN: third-pass funding, causation and timeline review
+**Date:** 25 October 2026  
+**Source baseline:** main at `4413bacd244dd746ef9a18cbb43708ba848de96f`  
+**Status:** scoped review, **OPEN for full claim-level release certification**.
+
+## Actual corrections to published article
+
+1. **Missing “three billion affected users” denominator.** A hero statistic was presented as a counted population impacted by IFCN decisions without a case registry or analysis. It now reads **N/A / Affected-user count: UNVERIFIED**. Similarly, the formerly categorical “private club controls what three billion people read” conclusion now recognises private accreditation influence but no established count of actual affected people.
+2. **USAID vs NED recipients and instruments.** Two article blocks asserted that USAID funding had been proven to finance a worldwide Facebook suppression mechanism. Poynter's **6 April 2026** IFCN survey of 141 organisations in 71 countries reports an *industry-wide contraction* after USAID cuts; it cannot identify any case-specific direction of IFCN or Meta. A Poynter **24 July 2015** founding announcement instead specifically names a **$75,000 National Endowment for Democracy (NED)** grant and a separate **$225,000 Omidyar** contribution. NED, USAID, a State Department subgrant and a commercial moderation contract must not be silently conflated.
+3. **Wasserman/Africa Check project documented; suppression chain not.** Africa Check's **March 2022** brief records a media-literacy study by Herman Wasserman and Dani Madrid-Morales for classroom use under an Africa Check project supported by **US Embassy Pretoria**. Namibia Fact Check separately described that project and the study authors independently discussed the educational goals. The previous assertion that one professor dictated Africa Check farm-attack ratings through IFCN to Meta, *resulting* in suppression, is **UNVERIFIED**. A real research commission is not proof of its adoption as a hidden editorial or ranking instruction.
+4. **Meta revenue and operational chronology.** FactCheck.org's **$162,800 Meta funding for FY ending 30 June 2024** is recipient-specific; it should not be projected onto South African fact-checkers. Meta announced its US transition in January 2025, but **new US third-party fact-check labels stopped 7 April 2025**, and Meta described continuation elsewhere pending regional transitions. An assertion of exactly 115 active countries in October 2026 is **UNVERIFIED**. Poynter's April 2026 survey's 45.5% to 34.3% comparison is a *respondent-average* share, not the Africa Check budget.
+5. **OSF accounting bases.** Poynter publicly announced **$300,000 from OSF** and **$1m from Omidyar** for IFCN in June 2017. An alternative Media Research Center claim of **$492,000 across 2016–20** still requires grant-ID/recipient-year reconciliation; OSF participation in Africa Check's disclosed pooled funding does **not** establish the previously asserted **12% of its 2025–26 income**.
+6. **Other US funding figures.** A purported **$275,219 State Department/World Learning subgrant**, **$737,400 PPP amount** and Voice of America contracts remain **UNVERIFIED against original underlying recipient records**. Categorical claim that any such funds directed fact-check verdicts was removed.
+7. **Complaints-report headline vs body.** The old heading claimed the annual transparency report had “stopped,” contradicting the article's own description of a published 2024 IFCN *applications/certification* report. New heading distinguishes the outstanding specific *complaints disclosure* question from published annual applications data.
+8. **Irish fact-check diplomacy inference.** Cuban embassies, Ireland's ICJ intervention and a concert are independent context, not evidence of editorial influence upon The Journal. The story may still criticise the underlying fact-check's evidential sufficiency and complaints procedure; alleged coordination is **UNVERIFIED**.
+
+## Primary records and separate corroborating streams
+
+- Original **Poynter 24 July 2015 press notice**, NED $75,000 / Omidyar $225,000: https://www.poynter.org/reporting-editing/2015/poynter-institute-to-build-a-fact-checking/
+- **Poynter's 29 June 2017 institutional grant disclosure**, OSF $300,000 / Omidyar $1 million: https://www.prnewswire.com/news-releases/13-million-in-grants-from-omidyar-network-open-society-foundations-will-expand-poynters-international-fact-checking-network-300481553.html
+- **IFCN report, 6 April 2026**, 141 organisations / 71 countries and funding trends: https://www.poynter.org/ifcn/2026/state-fact-checkers-2025/
+- **FactCheck.org recipient financial disclosures**, fiscal 2024 funding: https://www.factcheck.org/our-funding/
+- **Meta first-party policy implementation, 7 April 2025 US switch**: https://about.fb.com/news/2025/03/testing-begins-community-notes-facebook-instagram-threads/
+- **Africa Check primary research listing, March 2022**, Wasserman and Madrid-Morales: https://africacheck.org/node/11894
+- **Separate Namibian newsroom assessment** of Africa Check-commissioned study / US Embassy funding: https://namibiafactcheck.org.na/news-item/interesting-african-studies-on-disinformation-and-media-literacy/
+- **Authors' first-person discussion of educational purpose**, Polity/Conversation: https://www.polity.org.za/article/media-literacy-education-in-south-africa-can-help-combat-fake-news---heres-whats-needed-2022-06-30
+- **Africa Check current funder-partner disclosures**: https://africacheck.org/who-we-are/partners
+- **Further funding timeline, NOT changed in visual**, Nov 2022 $13.2m Google/YouTube grant commitment and competitive start in 2023: https://www.poynter.org/fact-checking/2022/google-and-youtube-partner-with-poynters-international-fact-checking-network-on-13-2-million-grant-for-the-global-fact-checking-community/
+
+## Red-team finding
+
+**Best defensible critical argument:** Professional accreditor membership and dependence on philanthropists, government grants and platforms can generate conflicts or create barriers to appeal when a platform uses external verdicts. Documentary governance and allocation records warrant scrutiny, particularly for Afrikaner-interest material. **Best competing explanation:** Grants, board overlaps and commissioned educational research are ordinary features of nonprofit collaboration and do not establish donor editorial instructions, universal suppression or covert state control. The available evidence supports documented relations but not the original causal assertions. Do not inflate first-party institutional press releases into independent proof; instead combine with distinct recipient disclosures and third-party investigative coverage.
+
+## Still UNVERIFIED before release
+
+All current IFCN board memberships/ballots, every grant and donor cumulative denominator, 2026 country-by-country platform operations, recipient-year NED/USAID/State/World Learning records, PPP loans, 2016–20 OSF totals, all network-graph assertions, real Meta action notices against Afrikaner/rural-security posts, Cuba electricity and hospital records, specific complaints outcomes, historical 3D/SVG labels, keyboard/mobile accessibility and visitor CDN freshness.
+
+**Preservation:** Exactly ten scoped editorial replacements (narrative, heading, hero number, funding cards and conclusion). Pre/post comparison verified identical original `<script>`, `<svg>`, `<img>`, media tags and all element IDs, with no existing URL removed. No datasets or JavaScript changed. Rooivalk dossier untouched.
