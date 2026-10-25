@@ -507,6 +507,14 @@ for(const f of batch16){
        'real411.html':['e60e0ee1ea7adb6dbc23904e6ab0fb799c0d015e','752476a07ea9723d694987ea55a46613b535cdee']
      };
      if(before===secondPass[file][0] && after===secondPass[file][1]) continue;
+     // 25 Oct third pass: two exact baseline-to-reviewed journalism corrections.
+     // This allowance is for paragraphs only; scripts/SVG/images/IDs/media still
+     // compare byte-for-byte against origin/main in the same loop.
+     const thirdPass={
+       'omidyar.html':['c0d57f55dcf1e3c3bf57c7377da615c715cc3ad3','c0e58e9c42cd3d5aa72cd5fd343a3819973efa58'],
+       'real411.html':['752476a07ea9723d694987ea55a46613b535cdee','bcc442a6853c1fefe885a59e2e624841d17b1b61']
+     };
+     if(before===thirdPass[file][0] && after===thirdPass[file][1]) continue;
    }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
