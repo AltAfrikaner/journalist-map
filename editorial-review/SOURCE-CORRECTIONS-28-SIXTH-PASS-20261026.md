@@ -1,0 +1,19 @@
+# Investigation 28 — Real411 sixth evidence pass (26 October 2026)
+**Baseline:** main `fad8bc25546828f8ed23252c113e188cb6303cc7`; before blob `55b28388465388bfb0ca833bb8e4f49c7a9112e2`. **Status: OPEN, not release-certified.** HTML narrative and visible source register corrected only; scripts, SVGs, media, IDs, styles and existing URLs preserved.
+
+## Corrections and evidence
+| Published location | Before | Reviewed correction |
+|---|---|---|
+| Complaint outcome card | **"IEC tells the platform (Meta / Google / TikTok)"** implied a fixed referral and omitted Microsoft. | IEC **may** refer a reviewed complaint; partner technology companies named October 2026 are **Google, Meta, Microsoft and TikTok**, and apply their own rules. An IEC/Real411 referral is **not automatically a takedown order**. Signed platform-by-platform escalation terms **UNVERIFIED**. |
+| 2024 reviewer evidence list | Presented 2024 operator op-ed as unqualified **VERIFIED** statement that any three volunteers presently claim complaints. | Original 5 May **2024** Daily Maverick piece is authored by MMA staff William Bird and Thandi Smith; it documents **what the operators said then**, including 30+ volunteers, optional assignment and Wits training. No independent 2026 roster/selection audit was supplied. Evidence verdict now **2024 SELF-REPORT; 2026 UNVERIFIED**. Moxii's Sept 2026 statement separately describes three reviewers then a lawyer, not the allocation algorithm. |
+| Titles and homepage teaser | Several titles still said **Meta, Google and TikTok**, despite the October reporting of a fourth platform. | Added Microsoft to the HTML page title/hero and used **"Four Digital Platforms"** in two homepage teaser titles to prevent a stale three-platform inventory. Historical earlier-three discussion preserved as dated history. |
+
+## Two-source verification
+1. **Primary government record:** [SAnews/IEC, 20 October 2026](https://www.sanews.gov.za/index.php/south-africa/iec-enters-partnership-counter-disinformation) — IEC partnership with four technology companies and separately Moxii Africa; process, autonomy and election-code distinctions.
+2. **Independent contemporary reporting:** [SABC News, 19 October 2026](https://www.sabcnews.com/sabcnews/iec-partners-with-digital-platforms-to-fight-disinformation/); [East Coast Radio, 20 October 2026](https://www.ecr.co.za/news/news/iec-partners-to-tackle-election-disinformation/) — confirmed partner inventory and IEC statement.
+3. **Interested 2024 first-person source:** [Bird & Smith, Daily Maverick, 5 May 2024](https://www.dailymaverick.co.za/article/2024-05-05-2024-electionstackling-misinformation-disinformation/) — the 30+ volunteer/pick-up process described by MMA at that time, **not independent proof** of present appointment/conflicts.
+4. **Interested 2026 first-party source:** [Moxii Africa, 10 September 2026](https://moxiiafrica.org/blog/how-real411-stays-independent-and-who-decides) — three reviewers plus lawyer and appeals; current assignment/oversight audit remains outstanding.
+5. **Independent recent development:** [The Media Online, October 2026](https://themediaonline.co.za/2026/10/real411-brings-legal-muscle-to-the-fight-against-election-disinformation/) describes Bowmans pro-bono trained reviewers; does **not** establish complete case-allocation statistics.
+
+## Red-team / remaining tests
+An IEC partnership or faster notification is not proof of political censorship. Conversely, operator assertions of impartiality do not settle case-level bias. **UNVERIFIED:** completed signed agreements and annexes, 2026 reviewer roster and actual allocation rules, full submitted-to-decision-to-platform outcome denominator, appeal reversals, complaints by viewpoint, and funding restrictions specific to Real411. Existing diagrams, graph and media were deliberately not silently rewritten. Full desktop/mobile a11y, visual/browser and live CDN checks remain OPEN.
