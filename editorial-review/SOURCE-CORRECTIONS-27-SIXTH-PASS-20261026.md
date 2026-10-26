@@ -1,0 +1,19 @@
+# Investigation 27 — Omidyar sixth evidence pass (26 October 2026)
+**Baseline:** main `fad8bc25546828f8ed23252c113e188cb6303cc7`; before blob `e110d7ab9a5c7daf6b12c831bc430e3aaac9ff09`. **Status: OPEN, not release-certified.** The existing source archive, embedded diagrams, tables, data, media, JS, SVG and source hyperlinks remain intact.
+
+## Corrections and evidence
+| Published location | Before | Reviewed correction |
+|---|---|---|
+| Section 04 OSF/OGP comparison | Said the Open Government Partnership's **2022 budget** included about **$1.4m OSF and $600k Luminate** as 2022 receipts. | **UNVERIFIED for 2022 cash.** OGP's 2022 annual report names both among donors but reports a **single $4,130,400 total** of foundation-grant receipts, not those donor-specific cash amounts. Its separately published grants database gives grant periods, including multi-year OSF/Luminate awards. Old figures cannot be recovered as 2022 cash from the cited annual report. |
+| Section 06 pooled capital claim | Said **every** major Omidyar programme involved pooled vehicles; alleged deliberate concealment as fact. | Qualified to documented collaborative examples. Institutional co-membership proves neither coordinated instructions nor every-programme coverage. Pooling as a way to diffuse public scrutiny is identified as **editorial inference** requiring grant conditions and decisions. |
+| Public/private comparison | Unqualified **"No FOIA"** beside private philanthropy. | Federal FOIA generally does not apply to internal private organisational files, but **agency-held** documents may be requestable, subject to exemptions. The absolute wording was misleading. |
+
+## Primary records and cross-checks
+1. **Primary recipient 2022 financial statement:** [OGP 2022 annual report](https://www.opengovpartnership.org/ogp-2022-annual-report/) — $4,130,400 aggregate foundation-grant actual revenue, named 2022 donor roster without year-specific amounts.
+2. **Separate grant-period register:** [OGP transparency/financial information](https://www.opengovpartnership.org/about/transparency-financial-information/) — Luminate 2022–2024 $1m and OSF 2020–2022 $5.5m are **multi-year entries**, not one-calendar-year revenue.
+3. **Independent compilation of US donor grants:** [philanthropy.org, OGP Secretariat grant record](https://philanthropy.org/990/who-funds/811867464/open-government-partnership-secretariat) — multi-year IRS-based donor-grant perspective, not an audit of 2022 OGP receipts.
+4. **Independent organisation evidence:** [TAI Collaborative organisational member account](https://taicollaborative.org/introducing-the-trust-accountability-and-inclusion-tai-collaborative-formerly-known-as-the-transparency-and-accountability-initiative) — overlapping foundation participation.
+5. **Primary federal legal guidance:** [US Department of Justice, About the FOIA](https://www.justice.gov/oip/about-foia) and [FOIA.gov](https://www.foia.gov/) — federal agency records versus private organisations.
+
+## Counterinterpretation and outstanding tests
+Co-funding can reflect independent investment in similar public-benefit objectives; it does not, without instructions or decisions, establish inappropriate coordinated control. The site's pro-Afrikaner question about accountability, donor influence and public transparency remains valid, but requires recipient contracts, audited year-specific payment ledgers, individual network-edge provenance and case-specific decisions. **UNVERIFIED:** claimed 2022 individual cash amounts, donor-to-content direction, programme-universality, political motive behind pooling and all unreviewed graph edges. No graphs or original research objects were modified. Full grant/claim audit, accessible desktop/mobile browser checks, link health, and visitor-facing Pages freshness remain OPEN.

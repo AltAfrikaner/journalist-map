@@ -562,6 +562,14 @@ for(const f of batch16){
        'real411.html':['bcc442a6853c1fefe885a59e2e624841d17b1b61','55b28388465388bfb0ca833bb8e4f49c7a9112e2']
      };
      if(before===fourthPass[file][0] && after===fourthPass[file][1]) continue;
+     // 26 Oct sixth pass: narrowly reviewed year-denominator/FOIA/IEC-referral
+     // prose changes. These exact Git blobs alone may differ from current main;
+     // scripts, SVG, images, IDs and media comparisons below remain mandatory.
+     const sixthPass={
+       'omidyar.html':['e110d7ab9a5c7daf6b12c831bc430e3aaac9ff09','0f3527760ca3f1651e70904c5dd25c97db4ff584'],
+       'real411.html':['55b28388465388bfb0ca833bb8e4f49c7a9112e2','521bc9f303016fa915b5159e82ba63a8c070f268']
+     };
+     if(before===sixthPass[file][0] && after===sixthPass[file][1]) continue;
    }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
