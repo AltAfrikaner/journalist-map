@@ -54,7 +54,8 @@ if(process.argv.includes('--enforce-evidence-notes')){
   assert(report&&report.narrativeWordsApprox>=1500,'Insufficient substantive narrative in '+file+': '+report?.narrativeWordsApprox);
  }
  const roster=readFileSync('44afrikaners.html','utf8');
- assert(roster.includes('Tied to One of 5 Universities'),'University roster/count contradiction remains');
+ assert(roster.includes('University Affiliation Count UNVERIFIED'),'University figure must remain explicitly unverified');
+ assert(roster.includes('Media Career Count UNVERIFIED'),'Media-career figure must remain explicitly unverified');
  assert(roster.includes('UNVERIFIED SECTOR BREAKDOWN'),'Missing chart arithmetic audit notice');
 }
 /* Keep dated case updates conspicuous and evidence-linked. */
