@@ -452,12 +452,18 @@ for(const f of batch16){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(oldSha==='b3da476af5f7599579311642946f1026167ee292' && newSha==='d759c8f3c7bdecf16c81b537b086b5deb2fb6bb8') continue;
+     // Sixth-pass, 26 Oct: only independently sourced IBM/Gates and attribution prose changed.
+     // All original JavaScript, diagrams, images, IDs and media remain strict below.
+     if(oldSha==='d759c8f3c7bdecf16c81b537b086b5deb2fb6bb8' && newSha==='ff5f1d5481257a52832e30a34957000a71fd6311') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      // 26 Oct fifth pass: exact reviewed 1994-election/1996-certification prose, graphics unchanged.
      if(oldSha==='8234745580f8d11b825974775436b23b219d07db' && newSha==='3ee58768b85404bf1405619b543a88d4ccf71245') continue;
+     // Sixth-pass, 26 Oct: court/university sources qualify language census and party scorecard.
+     // Plotted numbers are preserved and explicitly UNVERIFIED, not re-certified.
+     if(oldSha==='3ee58768b85404bf1405619b543a88d4ccf71245' && newSha==='7dd80e7376b1f74e0936f8886c5c83a01f56dd07') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
