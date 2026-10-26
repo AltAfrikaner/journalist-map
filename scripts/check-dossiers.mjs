@@ -111,14 +111,14 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
     if (f==='ancliberation.html' && label==='paragraphs') {
-      // Exact 26 Oct fourth-pass whole-file hash. Existing image/SVG/JS/ID guards remain active.
+      // Fifth-pass evidence corrections (26 Oct), exact whole-file hash; image/SVG/JS/ID guards remain active.
       // The original reviewed page and merged corrected version are exact accepted bases.
       // PR #128 advanced origin/main to 09439db6 after this allowlist was authored;
       // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'09439db6582fb8e6e25380f37c25667a782293e5','Unexpected #14 fourth-pass prose; see SOURCE-CORRECTIONS-14-FOURTH-PASS-20261026.md');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a'].includes(baseSha),'Unexpected #14 main baseline');
+      assert.equal(liveSha,'7b5f239723980b8ddf43326a34476e0fdece8b3a','Unexpected #14 fifth-pass prose; see SOURCE-CORRECTIONS-14-FIFTH-PASS-20261026.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -133,9 +133,9 @@ for(const f of nextBatch){
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
-      // Fourth-pass 26 Oct 2026 source audit: exact reviewed blob; see fourth-pass source log.
+      // Fifth-pass 26 Oct 2026 source audit: exact reviewed blob; see fifth-pass source log.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='63285c9fe21697423238a705d8da7fa96e2322a1';
+      const reviewed='2c4c84d9f94624220d4a8e3945bb1914dac5ef26';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
