@@ -112,10 +112,12 @@ for(const f of nextBatch){
  ]) {
     if (f==='ancliberation.html' && label==='paragraphs') {
       // Exact 26 Oct fourth-pass whole-file hash. Existing image/SVG/JS/ID guards remain active.
-      // The original reviewed page and the merged corrected version are the only accepted bases.
+      // The original reviewed page and merged corrected version are exact accepted bases.
+      // PR #128 advanced origin/main to 09439db6 after this allowlist was authored;
+      // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773'].includes(baseSha),'Unexpected #14 main baseline');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5'].includes(baseSha),'Unexpected #14 main baseline');
       assert.equal(liveSha,'09439db6582fb8e6e25380f37c25667a782293e5','Unexpected #14 fourth-pass prose; see SOURCE-CORRECTIONS-14-FOURTH-PASS-20261026.md');
       continue;
     }
@@ -262,6 +264,14 @@ for(const f of batch16){
   ['section IDs',/\bid=["'][^"']+["']/g]
  ]) {
    if (f === 'un.html' && category === 'paragraphs') {
+     // Fourth-pass #16: pin the entire reviewed article to the exact main/head
+     // blobs. The following script/SVG/image/ID comparisons remain mandatory.
+     const publishedUn=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
+     const reviewedUn=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
+     if(publishedUn==='96cfa249c4925565b66766d42f3d5629406412ec' &&
+        reviewedUn==='60da85e9c0cba016e0e41dd21f4beafbbe05df22') {
+       assert.equal(extract(now,re).length,extract(base,re).length,'#16 paragraph count changed');
+     } else {
     // Once PR #61 is merged the corrected UN source note is already in main.
     // Treat that published baseline as immutable; only exercise the older
     // three-paragraph normalization on a main without the published note.
@@ -301,6 +311,7 @@ for(const f of batch16){
     }
     assert.deepEqual(extract(normalized,re),extract(base,re),'Non-allowlisted original paragraph changed in '+f);
     }
+    } // exact fourth-pass #16 or legacy reviewed paragraph guard
    } else assert.deepEqual(extract(now,re),extract(base,re),'Original '+category+' changed in '+f);
   }
  for(const sig of ['data:image','<canvas','<iframe'])
