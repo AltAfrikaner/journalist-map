@@ -479,6 +479,9 @@ for(const f of batch16){
      if(oldSha==='7f197efb884375f87ec7db114e7b698c274aa8fc' && newSha==='75525f9c16df9f8377b7794c7f5862d5aa59d7a7') continue;
       // 25 Oct fourth pass: exact reviewed legislation/tenure/motive corrections, graphics and scripts pinned.
       if(oldSha==='75525f9c16df9f8377b7794c7f5862d5aa59d7a7' && newSha==='6687d1ef157947e4ecb8ee9bae47d91c586fa7e3') continue;
+      // 26 Oct fifth pass: exact source-corrected #25 prose; SVG, JS, images and IDs still strict below.
+      // editorial-review/SOURCE-CORRECTIONS-25-FIFTH-PASS-20261026.md
+      if(oldSha==='6687d1ef157947e4ecb8ee9bae47d91c586fa7e3' && newSha==='28ee3462eabdacad2e3e6cffc12ea1ac2f5e17b6') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -521,6 +524,9 @@ for(const f of batch16){
      if(oldSha==='19a3864d963117c17a21f2f3bd2d3232e4b14d20' && newSha==='4eba7bf483658b02b288485b99c651d3e5111c7e') continue;
       // 25 Oct fourth pass: exact reviewed RSC/NCC/FEMA correction, graphic and media integrity unchanged.
       if(oldSha==='4eba7bf483658b02b288485b99c651d3e5111c7e' && newSha==='e22c5ec7ddaa374d9ff3ebede1f03100c484b215') continue;
+      // 26 Oct fifth pass: exact court/board/source-corrected #26 prose; nonparagraph artifacts remain strictly checked.
+      // editorial-review/SOURCE-CORRECTIONS-26-FIFTH-PASS-20261026.md
+      if(oldSha==='e22c5ec7ddaa374d9ff3ebede1f03100c484b215' && newSha==='7f84acde05c18fa95e449c13b3d5f318c35d35a2') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
