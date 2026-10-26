@@ -1,0 +1,36 @@
+name: Import premium Soros cover
+on:
+  push:
+    paths: ['.github/workflows/import-soros-cover.yml']
+permissions:
+  contents: write
+jobs:
+  import-cover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download and validate image
+        env:
+          COVER_URL: "https://dnznrvs05pmza.cloudfront.net/gemini/gemini-3-pro-image/images/fe90b8e0-d005-406c-9b22-7fc2d29905a1/cf611561-ed1a-47c8-a64f-a1a66ed29b2e/Ultra_realistic_premium_investigative_journalism_editorial_p.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMzAzNzk5MjRjNjUzY2Q0YyIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MzIxODg1Mn0.F5Xxo57TnZLDjZE1ZirdNbb9tQ3cK8hAvYRkwW18VdA"
+        run: |
+          set -euo pipefail
+          mkdir -p assets/covers-2026
+          curl --fail --location --retry 3 --silent --show-error "$COVER_URL" -o /tmp/soros-cover.png
+          file /tmp/soros-cover.png
+          python3 - <<'PY'
+          from PIL import Image
+          im=Image.open('/tmp/soros-cover.png').convert('RGB')
+          assert im.width >= 1500 and im.height >= 800
+          im.save('assets/covers-2026/osf-funded-orgs.jpg',quality=90,optimize=True,subsampling=0)
+          PY
+      - name: Commit image and remove temporary importer
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/import-soros-cover.yml
+          git add assets/covers-2026/osf-funded-orgs.jpg
+          git commit -m "art: premium Soros Network investigation cover"
+          git push
