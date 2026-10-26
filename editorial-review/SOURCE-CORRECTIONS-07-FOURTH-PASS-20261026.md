@@ -1,0 +1,17 @@
+# Investigation #07 — IOL / Independent Media: fourth evidence pass (26 October 2026)
+
+**Release status: OPEN.** This targeted factual review supplements `SOURCE-CORRECTIONS-07-THIRD-PASS-20261025.md`. It does not certify the article or its charts.
+
+## Changes and sources
+
+1. **Pretoria News chronology corrected in publication roster, case card and 2021 timeline.** An earlier version tied the 2021 Tembisa 10 controversy to immediate resignation and permanent closure, omitting the intervening record. The decuplets claim was published in June **2021**; the Public Protector's **December 2022** closing report found the alleged births unsubstantiated and did not uphold the hospital-related misconduct allegations. The editor disputed that finding; Independent Media reported his resignation effective **1 February 2023**. The paper **ceased as a standalone print title on 15 May 2023**, becoming part of *The Star*, and Independent Media **announced its standalone return in March 2025**. These are separate events, and the causal assertion that the story single-handedly caused closure remains **UNVERIFIED**.
+2. **Scope of Public Protector's finding corrected.** The official finding is lack of substantiation for a birth and associated state misconduct, not a criminal verdict proving a publisher knowingly fabricated a story. Reporting quality and editorial accountability may still be criticised; claimed donation solicitation and categorical absence of any apology require independently checked primary records and are **UNVERIFIED** here.
+3. **Original 2021/2023/2025 primary and independent evidence:** [Public Protector closing report, original PDF](https://www.pprotect.org/sites/default/files/legislation_report/Closing%20Report%20-%20Tsotetsi%20-%20Steve%20Biko%20Hospital.pdf); [News24's independent report of official findings, 31 Dec 2022](https://www.news24.com/southafrica/news/tembisa-10-public-protector-finds-claims-mom-gave-birth-to-decuplets-unsubstantiated-20221231); [original publisher notice, 12 May 2023](https://iol.co.za/pretoria-news/news/2023-05-12-dawn-of-a-new-era/); [independent 12 May 2023 Bizcommunity report](https://www.bizcommunity.com/Article/196/90/238330.html); [publisher, 7 March 2025 relaunch](https://iol.co.za/sundayindependent/news/2025-03-07-a-bold-new-era-for-independent-media/); [Independent Media editor departure notice, 6 Feb 2023](https://iol.co.za/pretoria-news/news/2023-02-06-kennedy-mudzuli-now-acting-editor-as-mahasha-rampedi-leaves-pretoria-news/); [editor's dissent published by The Citizen, 5 Jan 2023](https://www.citizen.co.za/news/piet-rampedi-tembisa-decuplets-january-2023/).
+
+## Red-team / remaining release blockers
+
+The publisher's March 2025 announcement does **not** independently prove uninterrupted publication through October 2026; current print status remains **UNVERIFIED** pending circulations and masthead records. Neither the 2022 finding nor the 2023 restructuring by itself proves an orchestrated suppression or a story-driven shuttering. Need actual 2026 CIPC/licence/ownership records, PIC and financial evidence, court-amendment copy, signed newspaper editorial instructions, donation and apology source audit, data-map provenance, browser/mobile accessibility and public CDN verification.
+
+## Change integrity
+
+Changed only three HTML prose/status passages. Existing script contents, SVG, media, images, IDs and every pre-existing hyperlink retained. Protected Rooivalk not touched.
