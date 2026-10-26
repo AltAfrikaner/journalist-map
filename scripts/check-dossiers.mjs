@@ -127,6 +127,10 @@ for(const f of nextBatch){
       const original=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const revised=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       if(original==='7befe749783a46805cbc53e5fb2fb743b45803f6' && revised==='3b2427c20bb2593b23b7fdaa465152fb83be6a8b') continue;
+      // 26 Oct fifth-pass WEF: only the exact-reviewed biography, 1992 timeline,
+      // and source-attribution correction may change a source paragraph.
+      // Scripts, graphics, images and IDs are still checked below against main.
+      if(original==='e115b2c3f4d9f2306ce9e5bf27c04c5e2bfa9256' && revised==='172c8e30f82f89a954c9bf7d5f9b1f0501d9b322') continue;
       assert.deepEqual(extract(now,re),extract(base,re),'Non-allowlisted WEF prose changed');
       continue;
     }

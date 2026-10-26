@@ -1,0 +1,16 @@
+# Investigation #16 — Employment Equity Act statutory-language correction and red-team review
+
+Date: 26 October 2026. File: `un.html`. Original main blob: `60da85e9c0cba016e0e41dd21f4beafbbe05df22`. Reviewed corrected blob: `2a5b59e01178da0f763e74ff51ba1b8e31c0815a`. **OPEN — not release-certified.**
+
+## Claim-level corrections
+1. **Incorrect claim of express statutory incorporation.** The 1998 timeline declared that the Employment Equity Act “reincorporates” the Population Registration Act's racial categories **“by reference”** as if it contains that cross-reference. Section 1 of the Employment Equity Act defines “black people” to mean Africans, Coloureds and Indians, and “designated groups” additionally includes women and disabled people subject to eligibility conditions. The Act does **not expressly cross-reference or reinstate** the repealed Population Registration Act. The timeline text now makes this distinction and dates phased commencement to **1999**.
+2. **Separate the IRR critique from enacted statute.** The IRR argues these inherited descriptors lack a complete contemporary test for individual race classification; that is a legitimate criticism distinct from proof that the 1950 statute was legislatively reinstated. The original attributed IRR quotation elsewhere in the article remains verbatim and attributed. The updated timeline includes this counterpoint and labels case-level effects **UNVERIFIED**. The policy's affirmative-action purpose and ongoing constitutional dispute remain visible.
+
+## Sources and contrary records
+- **Primary SA government record of the 1998 Act and May/August/December 1999 commencements:** https://www.gov.za/documents/employment-equity-act
+- **Consolidated section 1 and sections 2/6:** https://lawlibrary.org.za/akn/za/act/1998/55/eng@2025-01-01 — the statute itself, distinct from political commentary.
+- **Independent Reuters report, 6 May 2025:** https://www.reuters.com/sustainability/south-africas-da-party-challenges-new-racial-equity-law-court-2025-05-06/ — documents the DA's legal challenge, the government's opposing justification and distinct workplace and B-BBEE mechanisms.
+- **IRR 2017 legislative submission:** https://irr.org.za/reports/submissions-on-proposed-legislation/irr-submission-on-regulation-of-agri-land-holdings-bill-b-2017-17-may-2017 — highlights what the group considers missing from the classification definition. The criticism is not proof of an express statutory cross-reference.
+
+## Red-team and preservation
+Racial classification in employment rules can reasonably raise minority-rights and equality questions; there is no need to claim that repealed 1950 registration legislation was directly incorporated to debate them. Correct statutory source hierarchy matters. Remaining **UNVERIFIED**: impact on particular applicants, discriminatory targeting/relief in completed court cases, the 324/122+/145 IRR law index methodology, treaty-body responsiveness to particular submissions, UN agency contractual funding, graph/data assertions and visitor-facing deployment freshness. The original Martin van Staden and SAHRC quotations, SVG, images, JS, IDs and all existing hyperlinks are preserved. Added three statute/report links only. Static checks conducted; real desktop/mobile/browser and accessibility signoff remain OPEN.
