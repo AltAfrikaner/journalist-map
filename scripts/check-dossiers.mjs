@@ -111,12 +111,12 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
     if (f==='ancliberation.html' && label==='paragraphs') {
-      // Exact 25 Oct third-pass whole-file hash. Existing image/SVG/JS/ID guards remain active.
+      // Exact 26 Oct fourth-pass whole-file hash. Existing image/SVG/JS/ID guards remain active.
       // The original reviewed page and the merged corrected version are the only accepted bases.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'8c6e2816291ba6179ece4015ed92b7de7cbd0773','Unexpected #14 third-pass prose; see SOURCE-CORRECTIONS-14-THIRD-PASS-20261025.md');
+      assert.equal(liveSha,'09439db6582fb8e6e25380f37c25667a782293e5','Unexpected #14 fourth-pass prose; see SOURCE-CORRECTIONS-14-FOURTH-PASS-20261026.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -131,9 +131,9 @@ for(const f of nextBatch){
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
-      // Third-pass 25 Oct 2026 source audit: exact reviewed blob; see third-pass source log.
+      // Fourth-pass 26 Oct 2026 source audit: exact reviewed blob; see fourth-pass source log.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='7ba0b567cb167a8e3cb56cb02212a3a152843c99';
+      const reviewed='63285c9fe21697423238a705d8da7fa96e2322a1';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
