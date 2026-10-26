@@ -439,9 +439,18 @@ for(const f of batch16){
    // 24 Oct 2026 source review: permit only the exact approved, full-file
    // constitution.html correction against its reviewed original. Every script,
    // diagram, image and ID still requires byte-for-byte preservation.
+   // 26 Oct fifth pass: exact reviewed Wits date/source/causal-claim corrections.
+   // Independent JS, SVG, images, IDs, and media comparisons remain strict.
+   if(file==='wits.html' && what==='original paragraphs'){
+     const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+     const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     if(oldSha==='b3da476af5f7599579311642946f1026167ee292' && newSha==='d759c8f3c7bdecf16c81b537b086b5deb2fb6bb8') continue;
+   }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const newSha=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     // 26 Oct fifth pass: exact reviewed 1994-election/1996-certification prose, graphics unchanged.
+     if(oldSha==='8234745580f8d11b825974775436b23b219d07db' && newSha==='3ee58768b85404bf1405619b543a88d4ccf71245') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
