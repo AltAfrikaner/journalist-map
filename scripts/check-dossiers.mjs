@@ -386,14 +386,14 @@ for(const f of batch16){
    ['element IDs',/\bid=["'][^"']+["']/g]
   ]) {
     if(['splc.html','adl.html'].includes(file) && label==='paragraphs' && now!==old){
-      // 25 October third-pass corrections. Only exact reviewed full
+      // 26 October fifth-pass corrections. Only exact reviewed full
       // blobs are permitted, with original JS/SVG/image/ID checks below intact.
       const reviewed={
        // Third-pass edits are pinned from exact current main blobs; no open-ended exception.
        // Fourth-pass amounts/chronology and comparison-framework corrections approved against exact 25 Oct main.
        // Each case still compares scripts, SVG, images, IDs and embedded-media counts to main.
-       'splc.html':['a3ae685a73417ab455a91ab260cd6d4cd8f36b7c','7acd4f57a505f5d61afa77c9e781d02bb0b66463'],
-       'adl.html':['c612925fe3970490083fc2205f29ec18cfd1b1d3','1b2a8e447248501429ff8e436081db8f7c3ea30a']
+       'splc.html':['7acd4f57a505f5d61afa77c9e781d02bb0b66463','4da8e88cdff8671a317d19c07221c159d4cb90c5'],
+       'adl.html':['1b2a8e447248501429ff8e436081db8f7c3ea30a','b727e9459c1ee68ef9f2fb68351d124a93fd3e38']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
