@@ -1,0 +1,17 @@
+# Seventh-pass documentary/red-team review — investigation #09: USAID-to-Newsroom
+
+**Date:** 27 October 2026. **Baseline `main`:** `e52fe6c3b9960dc8cbd0a72dd410ec6bcf171fc9`. **Status:** OPEN / NOT evidence-certified.
+
+## Contradiction resolved: archived financing relationship is not a current publisher payment
+
+**Prior article error:** Although the dated 27 October document check correctly explained the publisher change, the newsroom **convergence card still said “NED funds The Continent via Adamela Trust” in present tense**. A casual reader would reasonably mistake historical institutional support for a verified payment to the current publisher. Existing nearby financial ownership statements about MDIF were separately historical.
+
+**Primary documentary record:** [Mail & Guardian's issue 40 announcement dated 6 March 2021](https://mg.co.za/2021-03-05-the-continent-issue-40-march-6-2021/) explicitly says The Continent **was published by Adamela Trust in partnership with M&G**. A [2022 issue notice](https://mg.co.za/2022-06-13-the-continent-issue-87-june-4-2022/) corroborates the historical relationship. [The Continent's current English About page](https://www.thecontinent.org/about) now names **All Protocol Observed**, a registered South African nonprofit, as publisher.
+
+**Independent/countervailing records:** [Adamela Trust's own site](https://www.adamela.org/) describes itself as incubator and **former** publisher, and [Wits Centre for Journalism, *State of the Newsroom 2025*, p. 32](https://journalism.co.za/wp-content/uploads/2025/12/State-of-the-Newsroom-2025.pdf) independently records earlier NED support to Adamela. The [French-language About page](https://www.thecontinent.org/fr/about) still preserves the old publisher attribution. This conflicting text is not evidence of concealment; current chronology needs corporate records.
+
+**Changes:** Added the dated March 2021 primary M&G notice beside the current-publisher record. Corrected the visible convergence card to **historical NED support to Adamela**, 2021–22 publisher, and explicitly named current publisher All Protocol Observed. The inferred present payment/direct editorial control was downgraded to **UNVERIFIED**. Preserved critical scrutiny of donor priorities, funding transparency and outside agenda-setting, without asserting a donor directive not in the records.
+
+**Outstanding gates:** Current recipient-year NED award IDs, transfer date and agreements between Adamela/All Protocol Observed, beneficial ownership, direct and indirect grants, 2023 regional USAID award decision/outlays, each graph arrow, and primary communications instructing particular editors remain **UNVERIFIED**. Conflicting translations and NED institutional support do not prove covert editorial orders. Desktop/mobile browser, keyboard/screen-reader, and independently uncached Pages tests remain OPEN.
+
+**Integrity:** Full original article Git blob `224764181fb8dd52cbe6080383e95d1b5673128a`; narrowly revised article blob `51d004fbe96df0ff71d0d9819861d76c35ada842`. Scripts, SVG, images and element IDs were byte-compared and unchanged; previously existing hyperlinks, illustration, infographic, article URL and media preserved. 31 homepage entries: 29 local, 2 external; `citizenintel/kalahari` and `citizenintel/AAIT` pull:true/push:false on this run, untouched/read-only. Protected Rooivalk blob `79c93657371ee799d564c07ed5e400bd90ba2690` untouched. CI/merge/deployment must be checked independently after PR creation.
