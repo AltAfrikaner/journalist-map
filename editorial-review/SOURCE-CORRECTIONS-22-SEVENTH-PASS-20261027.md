@@ -1,0 +1,24 @@
+# Investigation #22 — ADL seventh-pass California court/provenance and silence-claim review
+Date: 27 October 2026 | Status: **OPEN — not release certified** | Source baseline: `b520ed4592587ce8f9cfa6c37c9bc4db3cdc715e` | Reviewed target: `16a66a64bcf5a30f9155444dfc5ea9dee393c4c5`
+
+## Primary and independent evidence
+1. **15 November 1993 stipulated judgment** in the San Francisco district attorney's action, original document (primary record, 16 pages, does not establish liability): https://www.israellobby.org/adl-ca/11151993_Settlement_Agreement.pdf
+2. California Court of Appeal, **16 November 1998**, *Anti-Defamation League of B'nai B'rith v. Superior Court*, 67 Cal.App.4th 1072 (primary judgment; journalist protection is qualified, foreign-government disclosure not journalism): https://law.justia.com/cases/california/court-of-appeal/4th/67/1072.html
+3. **Washington Post, 16 November 1993**, independent contemporaneous reporting, distinguishes no wrongdoing admission, permanent injunction, up to $25,000 training and up to $50,000 reward scheme: https://www.washingtonpost.com/archive/politics/1993/11/16/anti-defamation-league-settles-monitoring-case/2eeb01f7-3146-4513-9bca-63259b505cc0/
+4. **San Francisco Chronicle, 23 February 2002**, independently reports a **separate** $178,000 privacy-case settlement for three remaining plaintiffs, distinct from November 1993: https://www.sfgate.com/news/article/jewish-defense-group-settles-s-f-spying-suit-2870238.php
+5. ADL, **2018 public article** on the white-genocide narrative, cited for actual institutional framing and distinguished from denial of murders: https://www.adl.org/resources/article/racist-obsession-south-african-white-genocide
+
+## Corrected claims, with limits
+- Replaced a categorical declaration that **ADL publicly responded to nothing** about Afrikaner legal concerns; this requires a complete dated corpus, private engagement cannot be excluded, so **UNVERIFIED**. Distinguished ADL, SAJBD and South African Jewish Report as separate organisational/editorial entities. Replaced a misleading 2026-unqualified pull quote with a dated editorial clarification, not a claimed historical quotation.
+- Replaced unsupported assertion that the ADL was itself an **established paid intelligence contractor to Pretoria**. California records document investigation of Roy Bullock and allegations of disclosures; direct institutional payment/instruction chain **UNVERIFIED**. The documented prosecution facts are not erased by that distinction.
+- In Hani segment, qualified unverified original file dates, transfer and the asserted ten-day surveillance-to-assassination interval; no reviewed judicial finding links the two; avoided an absolute statement that no investigation ever occurred.
+- Reconciled **three separate legal events**: Nov 1993 **stipulated injunction without trial or admitted liability**; Nov 1998 **qualified journalist privilege and discovery remand**; Feb 2002 **reported separate $178,000 private settlement**. Clarified that the alleged $25,000 "settlement" in 1993 was an **up-to-$25,000 training commitment**, not a fine or damages judgment. The 1998 court did not determine final civil liability.
+- The material thesis that all ADL decisions are determined by Israeli strategic interests is now explicitly an **UNVERIFIED editorial inference**, preserving the independent scrutiny of Afrikaner concerns.
+
+## Red-team limits / release gate
+- A civil settlement without admission does not erase the substantial contemporaneous investigative record; equally, litigation allegations do not establish institutional criminal conspiracy.
+- The indexed graph includes numerous disputed funding, influence and personal claims. **No JS graph text, dataset, SVG, image, media, ID, previous links or URL was changed**. All interactive network assertions require standalone verification and contextual warnings; a prose correction does not certify the graph.
+- Remaining: original private civil court pleadings and case records for the 2002 settlement, comprehensive dated ADL response corpus, original Hani transmission records, graph grants and links, reader-accessible keyboard/mobile/contrast and live CDN check.
+
+## Integrity
+Original Git blob `b520ed4592587ce8f9cfa6c37c9bc4db3cdc715e`; reviewed blob `16a66a64bcf5a30f9155444dfc5ea9dee393c4c5`. Exact-hash transition pinned in `scripts/check-dossiers.mjs` alongside unchanged script/SVG/image/ID integrity checks. **OPEN**.
