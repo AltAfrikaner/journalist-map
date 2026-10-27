@@ -1,0 +1,15 @@
+# Investigation #08 — USAID / NED South Africa: seventh evidence and financial-denominator review (27 October 2026)
+
+**Status: OPEN — national funding denominators newly sourced; South African recipient-by-recipient claim verification still incomplete.** Branch base `798dd1d20ecbeb96ea031203e2b7075e595c4fb1`; previous NED statutory and USAID OIG corrections retained.
+
+## Findings and corrections
+
+1. **National 2025–26 discontinuity needed a correctly defined denominator.** The [US Government Accountability Office report GAO-26-108607, released 30 September 2026 (primary federal audit)](https://www.gao.gov/products/gao-26-108607) states that approximately **6,780 of 7,510** USAID awards active on or after January 2025 were terminated by March 2026 (approximately 90%). Roughly **730** remained active and came under State Department management. This further undermines a description of an unchanged 2026 USAID-backed newsroom chain.
+2. **US$79.1bn / US$52.1bn are not new payments or proof of savings.** GAO's two amounts concern **historical cumulative obligations**, from awards originating from 2015 onwards, attached respectively to terminated and still-active award populations. They are not additive 2026 flows, South Africa-only grant payments, cash recovered, direct journalist salaries or demonstrated editorial-control funds. GAO reports incomplete State data and missing documented decision guidelines. The article explicitly prohibits those inferences and marks individual media/graph connections **UNVERIFIED**.
+3. **Independent OIG/Reuters snapshot cannot be summed with GAO's later snapshot.** [Reuters, 27 July 2026](https://www.investing.com/news/world-news/watchdog-finds-staffing-guidance-gaps-in-transfer-of-usaid-programs-4815109) reports the State Department OIG's **1,504-award / US$51.5bn** Green List transfer snapshot associated with 2025. It is a different date, reporting population and concept from GAO's March 2026 active count/US$52.1bn. No inferred duplication or missing millions should be asserted without matched award identifiers. Also distinguished USAID Southern Africa's **51 asset-bearing terminated awards** audited in April 2026 from national-level cancellation counts.
+
+## Red-team and open release gates
+
+A collapse in funding and weak transition oversight are real public-accountability issues; they do not establish a post-2025 covert media command system or that any named reporter received US government money. Required before certification: SA award-ID list, exact obligated/disbursed/terminated amounts, signed recipient agreements, media editorial workplans and post-level instruction evidence, historic CIA/ICA programme continuity, independent validation of each 3D node/edge, and real browser/mobile/keyboard checks.
+
+**Preservation:** Two source-linked explanatory paragraphs inserted into the existing evidence-context section, with no deletions or changes to scripts, SVGs, network data, media elements, IDs or previous links. Rooivalk protected blob untouched. The 31-card / 29-local / 2 external inventory persists; Kalahari and AAIT remain read-only and unmodified.
