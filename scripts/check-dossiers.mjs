@@ -507,6 +507,8 @@ for(const f of batch16){
       // 27 Oct sixth pass: independently sourced farm-stat denominators, 2026 rights data and bilateral grant framing.
       // Complete-file identity is pinned; JS/SVG/images/IDs and main-link preservation remain strict.
       if(oldSha==='28ee3462eabdacad2e3e6cffc12ea1ac2f5e17b6' && newSha==='343ac8f283505f29e1daafb0a052f4d86655c1c7') continue;
+      // 27 Oct seventh pass #25: uniquely reviewed 2025 statement, 2026 argument and Goodwill dates; artifact guards unchanged.
+      if(oldSha==='343ac8f283505f29e1daafb0a052f4d86655c1c7' && newSha==='660ea355a39e5ebf1df8053fdb235ba4ae2e13f2') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -555,6 +557,8 @@ for(const f of batch16){
       // 27 Oct sixth pass: delegation dates, CMEP signatories, membership-versus-direction caveats.
       // Complete-file identity is pinned; no general prose bypass, media or JS exceptions.
       if(oldSha==='7f84acde05c18fa95e449c13b3d5f318c35d35a2' && newSha==='8574d069562be11d6bb3125bbbe92ff187d675d1') continue;
+      // 27 Oct seventh pass #26: fixed recipient allocation and independent RSC funding provenance; no media/JS bypass.
+      if(oldSha==='8574d069562be11d6bb3125bbbe92ff187d675d1' && newSha==='4e1793059cc64093ca0ee6d144487467efbfa0b3') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
