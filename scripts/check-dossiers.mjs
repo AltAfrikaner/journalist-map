@@ -111,14 +111,14 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
     if (f==='ancliberation.html' && label==='paragraphs') {
-      // Sixth-pass evidence corrections (27 Oct), exact whole-file hash; a single dated Gini SVG text correction is allowlisted below. All other media/JS/IDs remain guarded.
+      // Seventh-pass evidence corrections (27 Oct), exact whole-file hash; prior dated Gini SVG text correction remains the only SVG exception. All other media/JS/IDs remain guarded.
       // The original reviewed page and merged corrected version are exact accepted bases.
       // PR #128 advanced origin/main to 09439db6 after this allowlist was authored;
       // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'c19ddf8c60a3104f239d802c82d177f941930b24','Unexpected #14 sixth-pass prose; see SOURCE-CORRECTIONS-14-SIXTH-PASS-20261027.md');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647'].includes(baseSha),'Unexpected #14 main baseline');
+      assert.equal(liveSha,'5ec5d2114b113e1990c1d2909c8219ba0fd93647','Unexpected #14 seventh-pass Cuba accounting correction; see SOURCE-CORRECTIONS-14-SEVENTH-PASS-20261027.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -137,9 +137,9 @@ for(const f of nextBatch){
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
-      // Sixth-pass 27 Oct 2026 treaty-source audit: only this reviewed article blob is permitted; all interactive assets remain guarded.
+      // Seventh-pass 27 Oct 2026 alliance/BLM sourcing: only this reviewed article blob is permitted; all interactive assets remain guarded.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='14ca9d4d9ef87131dfcd4c47be1ccdd7fd2f8f6b';
+      const reviewed='63ca6e11a79ddaba705571f9147a1ffb76ec1f78';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
