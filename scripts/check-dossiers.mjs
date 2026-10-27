@@ -111,14 +111,14 @@ for(const f of nextBatch){
    ['element IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
     if (f==='ancliberation.html' && label==='paragraphs') {
-      // Fifth-pass evidence corrections (26 Oct), exact whole-file hash; image/SVG/JS/ID guards remain active.
+      // Sixth-pass evidence corrections (27 Oct), exact whole-file hash; a single dated Gini SVG text correction is allowlisted below. All other media/JS/IDs remain guarded.
       // The original reviewed page and merged corrected version are exact accepted bases.
       // PR #128 advanced origin/main to 09439db6 after this allowlist was authored;
       // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'7b5f239723980b8ddf43326a34476e0fdece8b3a','Unexpected #14 fifth-pass prose; see SOURCE-CORRECTIONS-14-FIFTH-PASS-20261026.md');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24'].includes(baseSha),'Unexpected #14 main baseline');
+      assert.equal(liveSha,'c19ddf8c60a3104f239d802c82d177f941930b24','Unexpected #14 sixth-pass prose; see SOURCE-CORRECTIONS-14-SIXTH-PASS-20261027.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -137,9 +137,9 @@ for(const f of nextBatch){
     // Only the exact peer-reviewed investigation 13 article may differ in prose.
     // Scripts, SVG, IDs, images and media still compare byte-for-byte to main.
     if(f==='communists.html' && label==='paragraphs') {
-      // Fifth-pass 26 Oct 2026 source audit: exact reviewed blob; see fifth-pass source log.
+      // Sixth-pass 27 Oct 2026 treaty-source audit: only this reviewed article blob is permitted; all interactive assets remain guarded.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='2c4c84d9f94624220d4a8e3945bb1914dac5ef26';
+      const reviewed='14ca9d4d9ef87131dfcd4c47be1ccdd7fd2f8f6b';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
@@ -151,10 +151,14 @@ for(const f of nextBatch){
       // Future PRs compare against a main baseline that may already contain the correction.
       const before='<text x="560" y="145" font-size="10" fill="#999">62.2% Youth</text>';
       const after='<text x="560" y="145" font-size="10" fill="#999">62.4% Youth</text>';
+      // 27 Oct 2026: documented single SVG Gini label correction, from historic 63.0 shorthand to World Bank 2022 value 54.1. No graphic/data changes.
+      const oldGini='<text x="570" y="420" font-size="10" fill="#999">Gini 63.0</text>';
+      const newGini='<text x="570" y="420" font-size="10" fill="#999">Gini 54.1</text>';
       const currentBlocks=extract(now,re);
+      assert.equal(currentBlocks.filter(block=>block.includes(newGini)).length,1,'Missing single verified Gini SVG text correction');
       assert.equal(currentBlocks.filter(block=>block.includes(after)).length,1,'Missing single corrected QLFS SVG label');
       assert.equal(currentBlocks.filter(block=>block.includes(before)).length,0,'Stale QLFS SVG label');
-      assert.deepEqual(currentBlocks,baselineBlocks.map(block=>block.replace(before,after)),'Unexpected SVG change beyond verified QLFS text correction in '+f);
+      assert.deepEqual(currentBlocks,baselineBlocks.map(block=>block.replace(before,after).replace(oldGini,newGini)),'Unexpected SVG change beyond verified QLFS/Gini text corrections in '+f);
     } else {
       assert.deepEqual(extract(now,re),baselineBlocks,'Changed original '+label+' in '+f);
     }
