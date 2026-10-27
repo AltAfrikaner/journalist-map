@@ -16,5 +16,8 @@
 - Best response to overreach: AFP independently repeated the key 2018 checks, and later New York criminal allegations cannot be transposed automatically to Port Elizabeth. **UNVERIFIED:** any operational misconduct or country-wide clandestine command relationship; any Meta penalty resulting from this particular Africa Check rating.
 - Preserve distinctive concern for Afrikaans/Afrikaner readers about investigative standards and accountability, but do not imply intent to suppress without case-specific evidence.
 
+## Publication chronology follow-up
+A post-merge presentation check found that the **23 November AFP** paragraph had been inserted immediately after **13 November**, ahead of the existing **16 November diplomatic reply**. A scoped follow-up orders the visible narrative **13 → 16 → 23 November** without modifying evidence or scripts. This corrects reading order only; the original sources and conclusions remain unchanged.
+
 ## Preservation and release
 One prose paragraph and two source links inserted; all pre-existing references, article paths, scripts, SVG, media/image tags, element IDs and interactive data unchanged. Source chronology rechecked and link syntax/viewport assessed statically. **OPEN:** entire farm-statistics dataset, grant recipient payments, all network edges, case-level Meta notices and appeals, actual mobile/keyboard browser testing and public CDN freshness.
