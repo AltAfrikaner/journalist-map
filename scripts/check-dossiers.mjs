@@ -589,6 +589,15 @@ for(const f of batch16){
        'real411.html':['55b28388465388bfb0ca833bb8e4f49c7a9112e2','521bc9f303016fa915b5159e82ba63a8c070f268']
      };
      if(before===sixthPass[file][0] && after===sixthPass[file][1]) continue;
+     // 27 Oct seventh source pass: Omidyar Group-vs-Network denominator and
+     // independently reported IEC final-signature/complaint-count nuance.
+     // No generic prose bypass: ONLY the exact reviewed Git blobs below,
+     // while scripts, SVGs, images, IDs and embedded media remain strict.
+     const seventhPass={
+       'omidyar.html':['0f3527760ca3f1651e70904c5dd25c97db4ff584','8c9cbbf02622fc1b6c0d1d85fdf92065c33afe95'],
+       'real411.html':['521bc9f303016fa915b5159e82ba63a8c070f268','6763c273bc5f9bcf2fe4d0236fb09166a04ef881']
+     };
+     if(before===seventhPass[file][0] && after===seventhPass[file][1]) continue;
    }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
