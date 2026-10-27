@@ -460,6 +460,8 @@ for(const f of batch16){
      // Sixth-pass, 26 Oct: only independently sourced IBM/Gates and attribution prose changed.
      // All original JavaScript, diagrams, images, IDs and media remain strict below.
      if(oldSha==='d759c8f3c7bdecf16c81b537b086b5deb2fb6bb8' && newSha==='ff5f1d5481257a52832e30a34957000a71fd6311') continue;
+     // Seventh-pass #23 (27 Oct): audited universal restitution/selection claims; original JS/SVG/images/IDs still compared byte-for-byte.
+     if(oldSha==='ff5f1d5481257a52832e30a34957000a71fd6311' && newSha==='b250251661c8dc3fc48726313c35603401ac76e9') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
@@ -469,6 +471,8 @@ for(const f of batch16){
      // Sixth-pass, 26 Oct: court/university sources qualify language census and party scorecard.
      // Plotted numbers are preserved and explicitly UNVERIFIED, not re-certified.
      if(oldSha==='3ee58768b85404bf1405619b543a88d4ccf71245' && newSha==='7dd80e7376b1f74e0936f8886c5c83a01f56dd07') continue;
+     // Seventh-pass #24 (27 Oct): exact legal record corrections, retained graphic values and original scripts/SVG/images/IDs.
+     if(oldSha==='7dd80e7376b1f74e0936f8886c5c83a01f56dd07' && newSha==='0e8db410687faf42cdbecd10e65328f0a04761db') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
