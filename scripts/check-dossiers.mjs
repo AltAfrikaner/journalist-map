@@ -495,6 +495,9 @@ for(const f of batch16){
       // 26 Oct fifth pass: exact source-corrected #25 prose; SVG, JS, images and IDs still strict below.
       // editorial-review/SOURCE-CORRECTIONS-25-FIFTH-PASS-20261026.md
       if(oldSha==='6687d1ef157947e4ecb8ee9bae47d91c586fa7e3' && newSha==='28ee3462eabdacad2e3e6cffc12ea1ac2f5e17b6') continue;
+      // 27 Oct sixth pass: independently sourced farm-stat denominators, 2026 rights data and bilateral grant framing.
+      // Complete-file identity is pinned; JS/SVG/images/IDs and main-link preservation remain strict.
+      if(oldSha==='28ee3462eabdacad2e3e6cffc12ea1ac2f5e17b6' && newSha==='343ac8f283505f29e1daafb0a052f4d86655c1c7') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -540,6 +543,9 @@ for(const f of batch16){
       // 26 Oct fifth pass: exact court/board/source-corrected #26 prose; nonparagraph artifacts remain strictly checked.
       // editorial-review/SOURCE-CORRECTIONS-26-FIFTH-PASS-20261026.md
       if(oldSha==='e22c5ec7ddaa374d9ff3ebede1f03100c484b215' && newSha==='7f84acde05c18fa95e449c13b3d5f318c35d35a2') continue;
+      // 27 Oct sixth pass: delegation dates, CMEP signatories, membership-versus-direction caveats.
+      // Complete-file identity is pinned; no general prose bypass, media or JS exceptions.
+      if(oldSha==='7f84acde05c18fa95e449c13b3d5f318c35d35a2' && newSha==='8574d069562be11d6bb3125bbbe92ff187d675d1') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
