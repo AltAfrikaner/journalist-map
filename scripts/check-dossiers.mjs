@@ -693,4 +693,39 @@ for (const file of ['sixstage.html','metasuppression.html']) {
   assert.equal(i,prior.length,'Existing source/article link removed or reordered in '+file);
 }
 
+/* 27 October claim-level pass, investigations 01–02: exact reviewed blobs.
+ * Source/attribution wording may change; 3D research code and media cannot.
+ * On PR CI origin/main is the reviewed starting point; after merge it is the
+ * exact revised blob. No blanket exemption for new or unreviewed changes.
+ */
+for(const [file,approved] of Object.entries({
+  'osf.html':{before:'fa6088e954d92254ec3ff7a858af018241f44a88',after:'454c8c4fb0db95a2ffa8f6d4e4cae6eb4c401bd9'},
+  'sa_journalists.html':{before:'6fae1462bac7c08ab3b7375a4b775d2064b5e8cf',after:'b82a286371d1eb6ffb18e09e018871e9868ec7dc'}
+})){
+ const live=readFileSync(file,'utf8');
+ const base=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
+ const oldBlob=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+ const newBlob=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+ assert([approved.before,approved.after].includes(oldBlob),'Unexpected main baseline for '+file);
+ assert.equal(newBlob,approved.after,'Unreviewed full-page editorial content in '+file);
+ assert(Buffer.byteLength(live,'utf8')>200000,'Potentially truncated 3D dossier '+file);
+ const pieces=(html,re)=>[...html.matchAll(re)].map(x=>x[0]);
+ for(const [kind,re] of [
+   ['JS',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],
+   ['SVG',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],
+   ['CSS',/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi],
+   ['images',/<img\\b[^>]*>/gi],
+   ['IDs',/\\bid=[\"'][^\"']+[\"']/g]
+ ])assert.deepEqual(pieces(live,re),pieces(base,re),'Protected '+kind+' modified: '+file);
+ for(const sig of ['data:image','<canvas','<iframe','<video','<source'])assert.equal(
+   live.split(sig).length,base.split(sig).length,'Embedded asset count changed '+file+' '+sig
+ );
+ const hrefs=html=>[...html.matchAll(/\\bhref=[\"']([^\"']+)[\"']/gi)].map(m=>m[1]);
+ const original=hrefs(base);let seen=0;
+ for(const h of hrefs(live))if(h===original[seen])seen++;
+ assert.equal(seen,original.length,'Existing original hyperlinks removed or reordered in '+file);
+}
+assert(readFileSync('osf.html','utf8').includes('The original UCT award and payment register remains'),'#01 primary chronological correction missing');
+assert(readFileSync('sa_journalists.html','utf8').includes('Al Jazeera end date'),'#02 disputed career chronology missing');
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
