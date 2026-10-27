@@ -22,3 +22,6 @@ Date: 27 October 2026 | Status: **OPEN — not release certified** | Source base
 
 ## Integrity
 Original Git blob `09854509483e375cb085c9eb3d9ea6559a4482bb`; reviewed blob `629d17efed388e019ef45d8a01b8d64e47ce0552`. `scripts/check-dossiers.mjs` pins this exact two-hash transition; the script/SVG/image/ID guards still compare to origin/main. **OPEN**.
+
+## Live-page consistency addendum — 27 October 2026
+Corrected an English article in the phrase `an 31 August 2026 federal court order` to `a 31 August 2026 federal court order` without altering date, sources or legal meaning. No JS, SVG, data, images, IDs, or links changed. All release gates remain OPEN.
