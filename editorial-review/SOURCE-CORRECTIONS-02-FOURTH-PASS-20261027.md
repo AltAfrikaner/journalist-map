@@ -1,0 +1,17 @@
+# Investigation 02 — Fourth evidence pass (27 October 2026)
+
+Base main commit: `e8598fa04555af9a61035283059282438295af10`; original `sa_journalists.html` blob `6fae1462bac7c08ab3b7375a4b775d2064b5e8cf`. Target: source-led scrutiny of the seven-person SABC career claim, *not* a rewrite of the 3D network. **OPEN — not release-certified.**
+
+## Claim-level corrections and documentary evidence
+1. **Lerato Mbele: documented non-direct career chronology.** The [World Bank speaker biography](https://envivo.bancomundial.org/es/experts/l/lerato-mbele) reports SABC entry **1999**, a CNBC Africa position **2007**, and BBC entry **2012**. The independently published [7 November 2020 ITIC presenter biography](https://itic.uk/lerato-mbele/) independently repeats that sequence. This validates an international career path **through an intermediate employer**, not a direct SABC-to-BBC transfer, employer-wide recruitment system or shared editorial direction.
+2. **Redi Tlhabi: multiple periods and conflicting endpoint.** A [United Nations 2024 speaker biography](https://www.un.org/osaa/en/ads2024/hlpd/bio/redi-tlhabi) specifies SABC **2002–05 and 2015–17** and Al Jazeera **2012–15**. Her [management agency's published professional biography](https://www.levelupma.co.za/redi-tlhabi) agrees that she worked at Al Jazeera but gives **2012–14**. Without contemporaneous personnel/contracts, the exact closing year is **UNVERIFIED**. The successive and returning engagements contradict treating the seven-name list as a single linear “transfer” pipeline.
+3. **Sherwin Bryce-Pease remains a documented SABC correspondent in November 2025.** The prior article correctly cited [South African government reporting](https://www.sanews.gov.za/south-africa/sabc-journalists-win-gold-outstanding-un-coverage); retained that contrary evidence. The examples cannot be tallied as seven international transfers.
+4. **Footer's blanket sourced-claims guarantee corrected.** The old statement that *all claims* were already sourced contradicted both the main text's outstanding verifications and the editorial ledger. The footer now distinguishes individually corroborated careers from the remaining unverified payroll, linguistic, personnel and network-graph claims.
+
+## Red-team evaluation
+The World Bank and conference speaker accounts agree on Mbele's chronology but both are biographical reproductions, not original employment contracts. The UN and agency accounts conflict at Tlhabi's Al Jazeera end date; neither demonstrates donor or newsroom instructions. A charted association does not demonstrate covert political coordination, home language or the exclusion of Afrikaner perspectives. Those questions still merit testing against editor interviews, full correspondent rosters, publication samples and voluntary language disclosures.
+
+## Preservation and remaining release hold
+All original HTML script and SVG blocks, stylesheet blocks, media references and element identifiers were preserved byte-for-byte. No person or network node was added/removed. Existing visualised graph edges remain research hypotheses rather than certified employment/censorship chains.
+
+**OPEN:** dated verified records for remaining journalists, each of 61 illustrated graph links, 28-person language and employment sample methodology, 23 outlet scope, donor-to-individual payment evidence, reproducible editorial source-diversity analysis, mobile/accessibility testing and public CDN freshness.
