@@ -611,6 +611,14 @@ for(const f of batch16){
        'real411.html':['521bc9f303016fa915b5159e82ba63a8c070f268','6763c273bc5f9bcf2fe4d0236fb09166a04ef881']
      };
      if(before===seventhPass[file][0] && after===seventhPass[file][1]) continue;
+     // 27 Oct eighth pass: TAI observer-status distinction and Real411 legal duty
+     // reconciliation. Exact current-main-to-reviewed article blob pair only;
+     // scripts, original SVG, images, IDs and media still require identity.
+     const eighthPass={
+       'omidyar.html':['8c9cbbf02622fc1b6c0d1d85fdf92065c33afe95','1e2c8f39a754d7858df55163541314d68103c217'],
+       'real411.html':['6763c273bc5f9bcf2fe4d0236fb09166a04ef881','a2b77d438f51830e1341288a0d41c072b5525b1a']
+     };
+     if(before===eighthPass[file][0] && after===eighthPass[file][1]) continue;
    }
    assert.deepEqual(hits(html,re),hits(old,re),'Changed original '+name+' in '+file);
   }
