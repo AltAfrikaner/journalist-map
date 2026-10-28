@@ -601,6 +601,9 @@ for(const f of batch16){
      const currentBase=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const currentPage=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(currentBase===tenthPass[file][0] && currentPage===tenthPass[file][1]) continue;
+     // Post-publication paragraph consistency correction after the new primary
+     // framework became linkable. Only this exact Real411 blob pair may advance.
+     if(file==='real411.html' && currentBase==='db13845b4cf33595171a7df1d677612445763840' && currentPage==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e') continue;
      const reviewed={
        'omidyar.html':['936a6d1fdfde18ed4d54684b2a552a5681034e16','689886df68bab56b446e30d712bdf455ea6ee0bd'],
        'real411.html':['9c0114d38045eb42720a228779f516f737301922','e60e0ee1ea7adb6dbc23904e6ab0fb799c0d015e']
@@ -808,7 +811,8 @@ for (const [page, before, after] of [
  if(base!==now){
   // The prior historical ninth-pass guard still applies, but its published
   // Real411 page is now the reviewed baseline for this exact tenth pass.
-  if(base==='ef227de770e6489b886d6ef1a18a2a543878a4d6' && now==='db13845b4cf33595171a7df1d677612445763840'){
+  if((base==='ef227de770e6489b886d6ef1a18a2a543878a4d6' && now==='db13845b4cf33595171a7df1d677612445763840') ||
+     (base==='db13845b4cf33595171a7df1d677612445763840' && now==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e')){
     // Specific new framework-text review; preservation checks remain active.
   } else {
     assert.equal(base,'8c32c5970205f3041825450209f61025b26a26fb','Unexpected Real411 publication-label baseline');
