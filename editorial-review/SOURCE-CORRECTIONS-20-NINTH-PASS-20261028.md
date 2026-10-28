@@ -21,3 +21,5 @@
 - Browser/mobile/keyboard/screen-reader and public-CDN freshness testing still pending; substantive release **OPEN**.
 
 **Full-file Git blob:** `e4e8a8e4d6cde83a89ee4d520a788ba940aa8772` → `8e451d6c2ef4c0950c197ad2ef347c202dd5778e`.
+
+**CI reconciliation:** `scripts/check-dossiers.mjs` retains full-file, scripts, SVG, image, media and ID preservation assertions. Its two stale eighth-pass exact baseline/output hashes were updated to match the documented ninth-pass original and revised Git blobs; no check was removed or bypassed.
