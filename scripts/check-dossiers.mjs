@@ -851,3 +851,38 @@ for (const [file, before, reviewed] of [
   assert.equal(n,previous.length,'Previously published link removed/reordered: '+file);
  }
 }
+
+
+/* 28 October 2026 ninth-pass #03-04: dated Meta/Africa Check appeal
+ * routes and independent Oversight Board context. Only exact reviewed
+ * prose+source-link additions are allowed. No original links or visual
+ * data, SVG, media, JS, CSS, IDs or URLs may be changed.
+ */
+for(const [page,baseline,reviewed] of [
+ ['africacheck.html','2647f994f6cd3c23bb966c2bd245e441ade85d8f','050015feee680ec5fc305d1422fc55dbaedbebfb'],
+ ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4']
+]){
+ const main=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+ const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+ assert([baseline,reviewed].includes(main),'Unreviewed appeal-review main baseline: '+page);
+ assert.equal(live,reviewed,'Unreviewed appeal-review article blob: '+page);
+ const html=readFileSync(page,'utf8');
+ assert(Buffer.byteLength(html,'utf8')>50000,'Truncated appeal-review dossier: '+page);
+ if(main===baseline){
+  const prior=execFileSync('git',['show','origin/main:'+page],{encoding:'utf8',maxBuffer:16*1024*1024});
+  const get=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
+  for(const [label,re] of [
+   ['scripts',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],
+   ['SVG',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],
+   ['images',/<img\\b[^>]*>/gi],
+   ['styles',/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi],
+   ['IDs',/\\bid=["'][^"']+["']/gi],
+   ['media',/<iframe\\b[^>]*>[\\s\\S]*?<\\/iframe>/gi]
+  ]) assert.deepEqual(get(html,re),get(prior,re),'Appeal-review '+label+' changed: '+page);
+  const oldHrefs=get(prior,/\\bhref=["'][^"']+["']/gi),newHrefs=get(html,/\\bhref=["'][^"']+["']/gi);
+  let n=0;for(const href of newHrefs)if(href===oldHrefs[n])n++;
+  assert.equal(n,oldHrefs.length,'Earlier cited article links lost or reordered: '+page);
+  for(const tag of ['<canvas','<video','data:image','<source'])
+   assert.equal(html.split(tag).length,prior.split(tag).length,'Media drift: '+page+' '+tag);
+ }
+}
