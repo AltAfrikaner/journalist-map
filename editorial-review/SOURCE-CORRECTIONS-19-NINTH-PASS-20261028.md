@@ -20,3 +20,5 @@
 - Full mobile, keyboard, screen-reader and uncached visitor-facing URL checks remain required. This research pass is not a licence to certify the legacy graph.
 
 **Full-file Git blob:** `4fb5361bc30e1360c13bace647d17969e1f80a4b` → `c4543b52137205a207a807c96e5716e61f9cc52e`.
+
+**CI reconciliation:** `scripts/check-dossiers.mjs` retains full-file, scripts, SVG, image, media and ID preservation assertions. Its two stale eighth-pass exact baseline/output hashes were updated to match the documented ninth-pass original and revised Git blobs; no check was removed or bypassed.
