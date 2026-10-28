@@ -329,3 +329,30 @@ body.aa-premium--funding-atlas section:not(.hero) :is(.usaid-note,.cf-box,.stack
 body.aa-premium--funding-atlas :is(.cf-box,.stacked-box,.usaid-note) :is(code,pre){
  color:#203448!important;overflow-wrap:anywhere;white-space:pre-wrap;
 }
+
+/* Omidyar: ivory paper must never inherit the earlier dark-theme cream text.
+   The primer had an inline pale text colour, overriding its redesigned panel. */
+body.aa-premium--omidyar main #primer{
+ background:#fffdf9!important;color:#263749!important;
+}
+body.aa-premium--omidyar main #primer > div:not(.dark-panel):not(.entity-card),
+body.aa-premium--omidyar main #primer > div:not(.dark-panel):not(.entity-card) p,
+body.aa-premium--omidyar main #primer > div:not(.dark-panel):not(.entity-card) li{
+ color:#263749!important;font-size:clamp(16px,1.25vw,18px)!important;
+ line-height:1.78!important;
+}
+body.aa-premium--omidyar main #primer .section-eyebrow,
+body.aa-premium--omidyar main #primer p strong[style*="color:var(--gold)"]{
+ color:#8b271b!important;
+}
+body.aa-premium--omidyar main #primer p strong:not([style*="color:var(--gold)"]){
+ color:#172b44!important;
+}
+body.aa-premium--omidyar main #primer a{color:#802029!important;text-decoration:underline!important;text-underline-offset:3px}
+body.aa-premium--omidyar main #primer a:visited{color:#66345f!important}
+body.aa-premium--omidyar main #primer a:focus-visible{outline:3px solid #ad651a!important;outline-offset:3px}
+body.aa-premium--omidyar .wrap > aside#toc a{color:#33485d!important}
+body.aa-premium--omidyar .wrap > aside#toc a:hover{color:#812029!important}
+/* All ivory dossier cards: subtle metadata and captions require legible ink. */
+body.aa-premium--omidyar main .section:not(.dark-section)
+ > :is(p,.intro,.section-eyebrow,small){color:#354657!important}

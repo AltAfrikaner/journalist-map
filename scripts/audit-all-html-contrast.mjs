@@ -14,6 +14,13 @@ for(const path of paths){
  report.push({path:rel,bytes:statSync(path).size,potential_light_text_rules:lightText,potential_light_backdrops:lightBackdrop,has_contrast_layer:explicitContrast});
 }
 assert(paths.length>=40,'Unexpectedly small HTML inventory; check the repo checkout');
+const omidyar=readFileSync(join(root,'omidyar.html'),'utf8');
+const contrastCSS=readFileSync(join(root,'assets/investigation-contrast.css'),'utf8');
+assert(omidyar.includes('id="primer"'),'Omidyar primer missing');
+assert(contrastCSS.includes('body.aa-premium--omidyar main #primer'),'Omidyar contrast regression: primer not explicitly scoped');
+assert(contrastCSS.includes('color:#263749!important'),'Omidyar primer text not secured against pale inline text');
+assert(contrastCSS.includes('body.aa-premium--omidyar main #primer a'),'Omidyar primer links need an explicit high contrast colour');
+
 const target=readFileSync(join(root,'assets/investigation-contrast.css'),'utf8');
 for(const token of ['body.aa-premium--funding-atlas .usaid-note','body.aa-premium--funding-atlas .cf-box','body.aa-premium--funding-atlas .stacked-box','body.aa-premium--funding-atlas section:not(.hero) > .section-inner > p[style*="color:rgba(244,240,232"]']){
  assert(target.includes(token),'Missing audited contrast override: '+token);

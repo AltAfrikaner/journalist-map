@@ -4,6 +4,7 @@ on:
     paths:
       - 'assets/investigation-contrast.css'
       - 'osf-funded-orgs.html'
+      - 'omidyar.html'
       - 'scripts/check-funding-contrast.mjs'
       - 'scripts/audit-all-html-contrast.mjs'
       - '.github/workflows/investigation-contrast.yml'
@@ -12,6 +13,8 @@ on:
     paths:
       - 'assets/investigation-contrast.css'
       - 'osf-funded-orgs.html'
+      - 'omidyar.html'
+      - 'scripts/audit-all-html-contrast.mjs'
 jobs:
   contrast:
     runs-on: ubuntu-latest
