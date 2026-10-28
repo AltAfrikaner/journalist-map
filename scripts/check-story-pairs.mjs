@@ -19,7 +19,8 @@ for(const [page,anchor] of pages){
  const slug=page.slice(0,-5);
  const html=readFileSync(page,'utf8');
  const cover='assets/story-art/'+slug+'.svg';
- const inside='assets/story-art/'+slug+'-inside.svg';
+ // #02's published inside illustration is a reviewed premium JPEG, not the older unused SVG.
+ const inside=page==='sa_journalists.html'?'assets/articles/sa-journalists-network-premium.jpg':'assets/story-art/'+slug+'-inside.svg';
  assert(html.includes('href="'+cover+'"'),'Cover preload absent: '+page);
  assert(html.includes('site-branding.js'),'Shared renderer missing: '+page);
  assert(brand.includes("'"+page+"':{after:'"+anchor+"'"),'Incorrect inside placement: '+page);
@@ -29,6 +30,11 @@ for(const [page,anchor] of pages){
  for(const [type,p,ratio] of [['cover',cover,'viewBox="0 0 1600 640"'],['inside',inside,'viewBox="0 0 1600 900"']]){
   assert(existsSync(p),type+' image missing '+page);
   assert(statSync(p).size>3800,'Insufficient detail in '+p);
+  if(type==='inside' && page==='sa_journalists.html'){
+   assert.equal(statSync(p).size,414557,'Journalist premium inside artwork changed size');
+   assert.equal(execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim(),'fd12ecdaeb619a0b9242fe0de9f989f000f53484','Journalist premium inside artwork changed hash');
+   continue;
+  }
   const s=readFileSync(p,'utf8');
   assert(s.startsWith('<svg ') && s.trimEnd().endsWith('</svg>'),'Malformed SVG '+p);
   assert(s.includes(ratio),'Wrong SVG size '+p);
