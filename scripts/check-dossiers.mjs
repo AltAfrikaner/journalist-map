@@ -823,11 +823,14 @@ for (const [file, original, reviewed] of [
 /* 28 Oct 2026: independent source audit for earliest homepage-order #01-02.
  * These exact full-file transitions are permitted for STATIC evidence paragraphs
  * only. Keep every old link, JS/3D node and edge, SVG, CSS, image and ID.
- * Require the published reviewed hash, even after the PR merges to main.
+ * Require the exact published reviewed hash, even after this PR merges.
+ * Concurrent main commit 5647e9c removed an unsourced outlet-count canvas
+ * and its dedicated renderer; it did not modify this #09-10 PR's articles.
+ * Pin only that resulting published #02 whole-file blob, not a blanket bypass.
  */
 for (const [file, before, reviewed] of [
  ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73'],
- ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', 'e66209a1214806743b382550526a484948d2a71e']
+ ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', '2178715f549ed82f4b1a09b22a1fb47acdeee88c']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
