@@ -21,3 +21,7 @@ No original scripts, SVGs, 3D datasets, images, media, IDs, existing URLs or hre
 ## Outstanding
 
 1959 organising committee minutes and individual resource contributions, later network directorship records, CWS primary processing contracts, case-level outcomes, complete diagram edges, mobile/keyboard/screen-reader/browser tests and independent Pages/CDN parity. **OPEN — no release sign-off.**
+
+## Publication-consistency reconciliation (same day, subsequent PR)
+
+The first editorial correction left three other visible HTML labels in conflict with the newly supported historical chronology: an abbreviation box dated AAM from **1959** rather than its 1960 formal name; a network entry overstating a single person's founding title; and a network description asserting an ongoing **CPGB–Anglican alliance** had built the AAM in 1959 and directly continued into a modern coalition. Text labels now distinguish **1959 Boycott Movement → 1960 AAM**, Huddleston's historical activist/presidential role, and unproven institutional continuity. The last proposition is **UNVERIFIED**. No diagram geometry, nodes/edges as stored in JS/3D/SVG, source links, images, IDs, media or scripts were altered. Old visible HTML blob `4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385` → `9891efe6865816e1327d3cb06006153c4d2fd83a`. All further graph connections remain subject to individual source review.
