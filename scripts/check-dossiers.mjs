@@ -826,11 +826,12 @@ for (const [file, original, reviewed] of [
  * Require the exact published reviewed hash, even after this PR merges.
  * Concurrent main commit 5647e9c removed an unsourced outlet-count canvas
  * and its dedicated renderer; it did not modify this #09-10 PR's articles.
- * Pin only that resulting published #02 whole-file blob, not a blanket bypass.
+ * Follow-up main commit 2723f28 moved the intact evidence section/nav above the footer.
+ * Its exact resulting published #02 file blob 36d677bfe91785b9b469ba225c4d3c4d9cdf9877 is pinned, not a blanket bypass.
  */
 for (const [file, before, reviewed] of [
  ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73'],
- ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', '2178715f549ed82f4b1a09b22a1fb47acdeee88c']
+ ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', '36d677bfe91785b9b469ba225c4d3c4d9cdf9877']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
@@ -935,4 +936,19 @@ for(const [page,older,reviewed] of [
  const liveFile=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
  assert([older,reviewed].includes(mainFile),'Unexpected #09-10 main file baseline: '+page);
  assert.equal(liveFile,reviewed,'Unreviewed #09-10 source/media file change: '+page);
+}
+
+
+/* 28 Oct ninth-pass #11–12: allow ONLY the dated, source-reviewed HTML
+ * revisions. Main must be the old reviewed baseline or the exact newly
+ * published revision; all original scripts, SVGs, images, IDs and media
+ * continue to be compared against origin/main in the preamble above. */
+for (const [page, prior, reviewed] of [
+  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18'],
+  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', '9392d8b3bf8afb2c8a0095c020374574050c7763']
+]) {
+  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+  const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+  assert([prior,reviewed].includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
+  assert.equal(live,reviewed,'Unexpected #11–12 prose/source hash: '+page);
 }
