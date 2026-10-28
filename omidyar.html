@@ -462,6 +462,32 @@ body.aa-premium--omidyar main #primer .aa-primer-readable p strong[style*="color
 body.aa-premium--omidyar main #primer .aa-primer-readable a{color:#7b1825!important;text-decoration:underline!important}
 body.aa-premium--omidyar main #primer .aa-primer-readable a:visited{color:#64355a!important}
 </style>
+
+<style id="aa-omidyar-limits-and-network-readability">
+body.aa-premium--omidyar main #limits .limits{
+ background:#f5f1e8!important;color:#22354a!important;
+ border:1px solid #baa57f!important;border-top:4px solid #8b271b!important;
+}
+body.aa-premium--omidyar main #limits .limits h3{color:#80202a!important;font-weight:700!important}
+body.aa-premium--omidyar main #limits .limits li,
+body.aa-premium--omidyar main #limits .limits li :is(span,em,strong,a){
+ color:#26394b!important;opacity:1!important;visibility:visible!important
+}
+body.aa-premium--omidyar main #limits .limits li::before{color:#8b271b!important}
+body.aa-premium--omidyar main #limits .limits a{color:#7b1b29!important;text-decoration:underline!important}
+body.aa-premium--omidyar #map-wrap{height:760px;border:2px solid #a98958}
+body.aa-premium--omidyar #map-legend{
+ font-size:12px!important;letter-spacing:0!important;line-height:1.5!important;
+ background:#0c192b!important;color:#fff5e6!important;max-width:250px!important
+}
+body.aa-premium--omidyar #map-legend .legend-title{font-size:11px!important;color:#f3ca7d!important}
+body.aa-premium--omidyar #map-controls{font-size:11px!important;color:#f4cb80!important}
+body.aa-premium--omidyar #node-info{background:#0c192b!important;color:#fff5e6!important}
+@media(max-width:650px){
+ body.aa-premium--omidyar #map-wrap{height:610px}
+ body.aa-premium--omidyar #map-legend{top:8px;left:8px;padding:9px!important;max-width:150px!important;font-size:10px!important}
+}
+</style>
 </head>
 <body class="aa-premium aa-premium--omidyar">
 <a class="aa-editorial-skip" href="#primer">Skip to investigation</a>
@@ -1988,7 +2014,7 @@ document.querySelectorAll('.tab').forEach(function(t){
   var scene=new THREE.Scene();
   scene.fog=new THREE.Fog(0x0F1A2E,70,200);
   var camera=new THREE.PerspectiveCamera(52,canvas.clientWidth/canvas.clientHeight,0.1,500);
-  camera.position.set(0,12,95);
+  camera.position.set(0,10,125);
   var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   renderer.setSize(canvas.clientWidth,canvas.clientHeight);
@@ -2096,35 +2122,22 @@ document.querySelectorAll('.tab').forEach(function(t){
 
   // ─── Build canvas-texture sprite labels (always-visible bold names) ───
   function makeLabel(text,color){
-    var pad=14;
-    var canvas=document.createElement('canvas');
-    var ctx=canvas.getContext('2d');
-    // High DPI base font measurement
-    var fontSize=52;
-    ctx.font='700 '+fontSize+"px 'Source Sans 3', 'Segoe UI', system-ui, sans-serif";
-    // Measure to size canvas
-    var metrics=ctx.measureText(text);
-    var w=Math.ceil(metrics.width)+pad*2;
-    var h=fontSize+pad*2;
-    canvas.width=w;canvas.height=h;
-    // Re-apply font after resize
-    ctx.font='700 '+fontSize+"px 'Source Sans 3', 'Segoe UI', system-ui, sans-serif";
-    ctx.textBaseline='middle';
-    ctx.textAlign='center';
-    // Subtle dark stroke for legibility against any background
-    ctx.lineWidth=8;
-    ctx.strokeStyle='rgba(15,26,46,0.92)';
-    ctx.strokeText(text,w/2,h/2);
-    // White/light fill
-    ctx.fillStyle='#F5F1E8';
-    ctx.fillText(text,w/2,h/2);
-    var tex=new THREE.CanvasTexture(canvas);
-    tex.needsUpdate=true;
-    var mat=new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,depthWrite:false});
-    var sprite=new THREE.Sprite(mat);
-    // Scale relative to canvas aspect. World units.
-    var worldH=2.6; // label height in world space
-    sprite.scale.set(worldH*(w/h),worldH,1);
+    var padX=24,padY=16,fontSize=42;
+    var cv=document.createElement('canvas'),ctx=cv.getContext('2d');
+    ctx.font='700 '+fontSize+'px Source Sans 3, Arial, sans-serif';
+    var width=Math.max(160,Math.ceil(ctx.measureText(text).width)+padX*2);
+    cv.width=width*2;cv.height=88*2;
+    ctx.scale(2,2);
+    ctx.fillStyle='rgba(8,17,32,.88)';
+    ctx.beginPath();ctx.roundRect(1,1,width-2,86,12);ctx.fill();
+    ctx.strokeStyle='rgba(210,174,112,.85)';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fffdf4';ctx.font='700 '+fontSize+'px Source Sans 3, Arial, sans-serif';
+    ctx.textBaseline='middle';ctx.textAlign='center';ctx.fillText(text,width/2,43);
+    var texture=new THREE.CanvasTexture(cv);
+    texture.minFilter=THREE.LinearFilter;
+    var material=new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false,depthWrite:false});
+    var sprite=new THREE.Sprite(material);
+    var height=3.5;sprite.scale.set(height*(width/88),height,1);
     sprite.renderOrder=999;
     return sprite;
   }
@@ -2146,8 +2159,8 @@ document.querySelectorAll('.tab').forEach(function(t){
 
     // Sprite label above the sphere
     var lbl=makeLabel(n.n,catHex[n.c]||'#F5F1E8');
-    lbl.position.set(n.p[0],n.p[1]+n.s+1.9,n.p[2]);
-    lbl.userData={nodeIdx:idx,baseOffset:n.s+1.9,nx:n.p[0],ny:n.p[1],nz:n.p[2]};
+    lbl.position.set(n.p[0],n.p[1]+n.s+3.3,n.p[2]);
+    lbl.userData={nodeIdx:idx,baseOffset:n.s+3.3,nx:n.p[0],ny:n.p[1],nz:n.p[2]};
     group.add(lbl);
     labels.push(lbl);
   });
