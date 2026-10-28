@@ -117,7 +117,7 @@ for(const f of nextBatch){
       // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647'].includes(baseSha),'Unexpected #14 main baseline');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9'].includes(baseSha),'Unexpected #14 main baseline');
       assert.equal(liveSha,'1d37fd561fbbf52a8b2dc7209245d66380cf39a9','Unexpected #14 eighth-pass homicide/Esidimeni correction; see SOURCE-CORRECTIONS-14-EIGHTH-PASS-20261028.md');
       continue;
     }
@@ -131,6 +131,7 @@ for(const f of nextBatch){
       // and source-attribution correction may change a source paragraph.
       // Scripts, graphics, images and IDs are still checked below against main.
       if(original==='e115b2c3f4d9f2306ce9e5bf27c04c5e2bfa9256' && revised==='172c8e30f82f89a954c9bf7d5f9b1f0501d9b322') continue;
+      if(original==='22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5' && revised==='26289507aa321beeebf176447a6f35da96b94430') continue; // #15 eighth-pass exact source-reviewed whole-file transition
       assert.deepEqual(extract(now,re),extract(base,re),'Non-allowlisted WEF prose changed');
       continue;
     }
@@ -293,8 +294,10 @@ for(const f of batch16){
          // the pre-change main blob. All JS/SVG/images/IDs still compare to main.
          const oldSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
          const newSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-         assert.equal(oldSha,'d2b0739987b5f79e14afc4acd6c440ae522ad776','Unexpected UN main baseline');
-         assert.equal(newSha,'a6d7410805225b6f1b2e3b7e946630e4f248c9ed','Non-allowlisted 2026-10-24 UN paragraph changes');
+         if (!(oldSha==='3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a' && newSha==='75efd423ea1e45e085c918351ef0a69fcde26e41')) {
+           assert.equal(oldSha,'d2b0739987b5f79e14afc4acd6c440ae522ad776','Unexpected UN main baseline');
+           assert.equal(newSha,'a6d7410805225b6f1b2e3b7e946630e4f248c9ed','Non-allowlisted UN paragraph changes');
+         } // #16 eighth-pass exact SHA; other media/script/ID checks still run
        }
     } else {
     // Explicit exception for exactly three verified primary-record corrections.
@@ -809,14 +812,14 @@ console.log('Dossier checks passed: editorial links and research visualisation a
  * script/SVG/image/ID/media checks above still run for both investigations.
  * The 1.748 MB Rooivalk archival dossier and its strict hash guards are untouched.
  */
-for (const [file, original, reviewed] of [
-  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5'],
-  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a'],
+for (const [file, original, previous, reviewed] of [
+  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5', '26289507aa321beeebf176447a6f35da96b94430'],
+  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a', '75efd423ea1e45e085c918351ef0a69fcde26e41'],
 ]) {
   const baseline = execFileSync('git', ['rev-parse', 'origin/main:' + file], {encoding:'utf8'}).trim();
   const actual = execFileSync('git', ['hash-object', file], {encoding:'utf8'}).trim();
-  assert([original, reviewed].includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
-  assert.equal(actual, reviewed, 'Unreviewed #15-16 article blob: ' + file);
+  assert([original, previous, reviewed].includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
+  assert.equal(actual, reviewed, 'Unreviewed #15-16 eighth-pass article blob: ' + file);
 }
 
 
