@@ -118,7 +118,7 @@ for(const f of nextBatch){
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'5ec5d2114b113e1990c1d2909c8219ba0fd93647','Unexpected #14 seventh-pass Cuba accounting correction; see SOURCE-CORRECTIONS-14-SEVENTH-PASS-20261027.md');
+      assert.equal(liveSha,'1d37fd561fbbf52a8b2dc7209245d66380cf39a9','Unexpected #14 eighth-pass homicide/Esidimeni correction; see SOURCE-CORRECTIONS-14-EIGHTH-PASS-20261028.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -139,7 +139,7 @@ for(const f of nextBatch){
     if(f==='communists.html' && label==='paragraphs') {
       // Seventh-pass 27 Oct 2026 alliance/BLM sourcing: only this reviewed article blob is permitted; all interactive assets remain guarded.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='63ca6e11a79ddaba705571f9147a1ffb76ec1f78';
+      const reviewed='62f7cfbdf6977f09527f2c9cf06a376aebbda27d';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
