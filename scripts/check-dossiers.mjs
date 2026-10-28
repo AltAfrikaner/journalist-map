@@ -703,10 +703,23 @@ for(const f of batch16){
  ];
  const approvedRowPair=oldHash==='b3bab0b910e94c1f67d2bda3996e1cabc057d11c'
   && newHash==='bb1ede2fd5151a1d4b12345274d5c7868a065c6f';
+ const latestRowPair=oldHash==='f00799bcb79ebf6b250040d0c1324b16a5e9a1f0' && newHash==='4a1b051a96471bb03408e57aa8b9d53d2ae97c33';
+ const latestRows=[
+  ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$500K joint 2017 + ongoing","2012–present","YES","VERIFIED"],',
+   '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],'],
+  ['  [35,"littlefish","littlefish.africa","FinTech Company (for-profit)","Flourish Ventures","$9.5M Series A (2026)","2024–2026","No","VERIFIED"],',
+   '  [35,"littlefish","littlefish.africa","FinTech Company (for-profit)","Flourish Ventures","$9.5M syndicate Series A (2026); Flourish share UNVERIFIED","2024–2026","No","VERIFIED"],']
+ ];
  let expectedAtlas=atlasData(old);
  if(approvedRowPair){
   for(const [before,after] of auditedRows){
    assert.equal(expectedAtlas.split(before).length,2,'Atlas baseline row missing '+before.slice(0,35));
+   expectedAtlas=expectedAtlas.replace(before,after);
+  }
+ }
+ if(latestRowPair){
+  for(const [before,after] of latestRows){
+   assert.equal(expectedAtlas.split(before).length,2,'Atlas #29 eleventh-pass baseline row missing');
    expectedAtlas=expectedAtlas.replace(before,after);
   }
  }
@@ -720,9 +733,9 @@ for(const f of batch16){
   ['original IDs',/\bid=["'][^"']+["']/g]
  ]){
   if(label==='original filter scripts' && reviewedChange)continue;
-  if(label==='original filter scripts' && approvedRowPair){
+  if(label==='original filter scripts' && (approvedRowPair||latestRowPair)){
    const restored=take(now,re).map(block=>{
-    for(const [before,after] of auditedRows){
+    for(const [before,after] of (approvedRowPair?auditedRows:latestRows)){
      assert.equal(block.split(after).length===2 || !block.includes(after),true,'Repeated edited row');
      block=block.replace(after,before);
     }
@@ -735,7 +748,7 @@ for(const f of batch16){
  }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
- if(reviewedChange || approvedRowPair){
+ if(reviewedChange || approvedRowPair || latestRowPair){
   const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
   assert(body,'Inline directory renderer missing');
   const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
@@ -748,7 +761,7 @@ for(const f of batch16){
   assert.equal((omid.match(/<tr data-name=/g)||[]).length,35,'Omidyar 35-row directory broken');
   for(const s of ['href="https://issafrica.org"','data-sector="research / think tank"','data-track="osf-d"','<td class="org-sector">Research / Think Tank</td>','<td class="org-amount">$5.1M / 7 grants</td>'])
    assert(osf.includes(s),'OSF mapping/link error: '+s);
-  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="luminate (formerly omidyar network)"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">$500K joint 2017 + ongoing</td>'])
+  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="luminate (formerly omidyar network)"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+(latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
    assert(omid.includes(s),'Omidyar mapping/link error: '+s);
   assert(!osf.includes('href="https://N/A"')&&!omid.includes('href="https://Archived"'),'Bad archival links');
   assert(!omid.includes('<td class="org-status">YES</td>'),'Incorrect status column mapping');
