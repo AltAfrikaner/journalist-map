@@ -839,14 +839,14 @@ for (const [file, before, reviewed] of [
  if(fromMain!==reviewed){
   const take=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
   for(const [kind,re] of [
-   ['script and 3D nodes',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],
-   ['SVG and charts',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],
-   ['images',/<img\\b[^>]*>/gi],
-   ['CSS',/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi],
-   ['element IDs',/\\bid=["'][^"']+["']/gi],
-   ['embedded media',/<iframe\\b[^>]*>[\\s\\S]*?<\\/iframe>/gi]
+   ['script and 3D nodes',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['SVG and charts',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['images',/<img\b[^>]*>/gi],
+   ['CSS',/<style\b[^>]*>[\s\S]*?<\/style>/gi],
+   ['element IDs',/\bid=["'][^"']+["']/gi],
+   ['embedded media',/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi]
   ]) assert.deepEqual(take(published,re),take(original,re),'Editorial #01-02 altered '+kind+': '+file);
-  const previous=take(original,/\\bhref=["'][^"']+["']/gi), now=take(published,/\\bhref=["'][^"']+["']/gi);
+  const previous=take(original,/\bhref=["'][^"']+["']/gi), now=take(published,/\bhref=["'][^"']+["']/gi);
   let n=0;for(const href of now) if(href===previous[n]) n++;
   assert.equal(n,previous.length,'Previously published link removed/reordered: '+file);
  }
