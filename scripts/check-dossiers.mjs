@@ -818,3 +818,36 @@ for (const [file, original, reviewed] of [
   assert([original, reviewed].includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
   assert.equal(actual, reviewed, 'Unreviewed #15-16 article blob: ' + file);
 }
+
+
+/* 28 Oct 2026: independent source audit for earliest homepage-order #01-02.
+ * These exact full-file transitions are permitted for STATIC evidence paragraphs
+ * only. Keep every old link, JS/3D node and edge, SVG, CSS, image and ID.
+ * Require the published reviewed hash, even after the PR merges to main.
+ */
+for (const [file, before, reviewed] of [
+ ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73'],
+ ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', 'e66209a1214806743b382550526a484948d2a71e']
+]) {
+ const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+ const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+ assert([before,reviewed].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
+ assert.equal(current,reviewed,'Unreviewed #01-02 source change: '+file);
+ const original=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
+ const published=readFileSync(file,'utf8');
+ assert(Buffer.byteLength(published,'utf8')>100_000,'Editorial #01-02 investigation truncated: '+file);
+ if(fromMain!==reviewed){
+  const take=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
+  for(const [kind,re] of [
+   ['script and 3D nodes',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['SVG and charts',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['images',/<img\b[^>]*>/gi],
+   ['CSS',/<style\b[^>]*>[\s\S]*?<\/style>/gi],
+   ['element IDs',/\bid=["'][^"']+["']/gi],
+   ['embedded media',/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi]
+  ]) assert.deepEqual(take(published,re),take(original,re),'Editorial #01-02 altered '+kind+': '+file);
+  const previous=take(original,/\bhref=["'][^"']+["']/gi), now=take(published,/\bhref=["'][^"']+["']/gi);
+  let n=0;for(const href of now) if(href===previous[n]) n++;
+  assert.equal(n,previous.length,'Previously published link removed/reordered: '+file);
+ }
+}
