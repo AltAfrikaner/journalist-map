@@ -19,6 +19,7 @@ jobs:
           mkdir -p assets/covers-2026
           curl --fail --location --retry 3 --silent --show-error "$COVER_URL" -o /tmp/soros-cover.png
           file /tmp/soros-cover.png
+          python3 -m pip install --quiet pillow
           python3 - <<'PY'
           from PIL import Image
           im=Image.open('/tmp/soros-cover.png').convert('RGB')
