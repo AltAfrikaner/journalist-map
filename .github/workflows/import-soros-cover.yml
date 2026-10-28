@@ -34,3 +34,5 @@ jobs:
           git add assets/covers-2026/osf-funded-orgs.jpg
           git commit -m "art: premium Soros Network investigation cover"
           git push
+
+# Trigger import of previously produced premium Soros photographic image for homepage feature.
