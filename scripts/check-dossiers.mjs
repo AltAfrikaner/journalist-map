@@ -745,6 +745,18 @@ for (const [page, before, after] of [
  }
 }
 
+
+/* 28 October #28 publication heading: an IEC official report is not a
+ * separately audited complaint database. Guard exactly this text-only patch. */
+{
+ const p='real411.html';
+ const base=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
+ const now=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
+ if(base!==now){
+  assert.equal(base,'8c32c5970205f3041825450209f61025b26a26fb','Unexpected Real411 publication-label baseline');
+  assert.equal(now,'ef227de770e6489b886d6ef1a18a2a543878a4d6','Unexpected Real411 publication-label source');
+ }
+}
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
 
 
