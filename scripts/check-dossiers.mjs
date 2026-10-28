@@ -715,3 +715,19 @@ for (const file of ['sixstage.html','metasuppression.html']) {
 }
 
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
+
+
+/* 28 October 2026: evidence-led #15–16 corrections pinned to complete Git blobs.
+ * Only the exact independently reviewed source text is accepted. Existing
+ * script/SVG/image/ID/media checks above still run for both investigations.
+ * The 1.748 MB Rooivalk archival dossier and its strict hash guards are untouched.
+ */
+for (const [file, original, reviewed] of [
+  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5'],
+  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a'],
+]) {
+  const baseline = execFileSync('git', ['rev-parse', 'origin/main:' + file], {encoding:'utf8'}).trim();
+  const actual = execFileSync('git', ['hash-object', file], {encoding:'utf8'}).trim();
+  assert([original, reviewed].includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
+  assert.equal(actual, reviewed, 'Unreviewed #15-16 article blob: ' + file);
+}
