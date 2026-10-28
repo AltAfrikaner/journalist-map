@@ -826,7 +826,8 @@ for (const [file, original, reviewed] of [
  * Require the exact published reviewed hash, even after this PR merges.
  * Concurrent main commit 5647e9c removed an unsourced outlet-count canvas
  * and its dedicated renderer; it did not modify this #09-10 PR's articles.
- * Follow-up main commit 2723f28 moved the intact evidence section/nav above the footer.\n * Its exact resulting published #02 file blob 36d677bfe91785b9b469ba225c4d3c4d9cdf9877 is pinned, not a blanket bypass.
+ * Follow-up main commit 2723f28 moved the intact evidence section/nav above the footer.
+ * Its exact resulting published #02 file blob 36d677bfe91785b9b469ba225c4d3c4d9cdf9877 is pinned, not a blanket bypass.
  */
 for (const [file, before, reviewed] of [
  ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73'],
