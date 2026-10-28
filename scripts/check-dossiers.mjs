@@ -739,10 +739,12 @@ for (const [page, before, after] of [
 ]) {
  const baseline=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- if (baseline!==current) {
-  assert.equal(baseline,before,'Unexpected ninth-pass baseline for '+page);
+ if (baseline===before && current!==baseline) {
   assert.equal(current,after,'Unreviewed ninth-pass file change: '+page);
  }
+ // Once the ninth-pass publication has merged, this historical guard no
+ // longer tests future changes against the older main blob. Subsequent
+ // revisions have their own strict exact-blob guard below.
 }
 
 
