@@ -759,6 +759,19 @@ for (const [page, before, after] of [
   assert.equal(now,'ef227de770e6489b886d6ef1a18a2a543878a4d6','Unexpected Real411 publication-label source');
  }
 }
+
+/* 28 October ninth-pass Omidyar card: correct wrongly stated 2024 Kenya raid to
+ * 16 December 2025 South African enforcement using Home Affairs and Reuters.
+ * Exact reviewed whole-file transition only. */
+{
+ const p='omidyar.html';
+ const before=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
+ const current=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
+ if(before!==current){
+  assert.equal(before,'cebfd1a60f1e4154f6831c4e676abeb79c894d43','Unexpected Omidyar raid-date main baseline');
+  assert.equal(current,'07b8433a4b12d2ff0473a65823b252de92895b69','Unreviewed Omidyar raid correction');
+ }
+}
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
 
 
