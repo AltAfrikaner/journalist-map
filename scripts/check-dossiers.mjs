@@ -872,14 +872,14 @@ for(const [page,baseline,reviewed] of [
   const prior=execFileSync('git',['show','origin/main:'+page],{encoding:'utf8',maxBuffer:16*1024*1024});
   const get=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
   for(const [label,re] of [
-   ['scripts',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],
-   ['SVG',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],
-   ['images',/<img\\b[^>]*>/gi],
-   ['styles',/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi],
-   ['IDs',/\\bid=["'][^"']+["']/gi],
-   ['media',/<iframe\\b[^>]*>[\\s\\S]*?<\\/iframe>/gi]
+   ['scripts',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['images',/<img\b[^>]*>/gi],
+   ['styles',/<style\b[^>]*>[\s\S]*?<\/style>/gi],
+   ['IDs',/\bid=["'][^"']+["']/gi],
+   ['media',/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi]
   ]) assert.deepEqual(get(html,re),get(prior,re),'Appeal-review '+label+' changed: '+page);
-  const oldHrefs=get(prior,/\\bhref=["'][^"']+["']/gi),newHrefs=get(html,/\\bhref=["'][^"']+["']/gi);
+  const oldHrefs=get(prior,/\bhref=["'][^"']+["']/gi),newHrefs=get(html,/\bhref=["'][^"']+["']/gi);
   let n=0;for(const href of newHrefs)if(href===oldHrefs[n])n++;
   assert.equal(n,oldHrefs.length,'Earlier cited article links lost or reordered: '+page);
   for(const tag of ['<canvas','<video','data:image','<source'])
