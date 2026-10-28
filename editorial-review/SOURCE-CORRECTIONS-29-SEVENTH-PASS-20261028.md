@@ -1,0 +1,30 @@
+# Investigation #29 — seventh-pass displayed-row provenance reconciliation
+
+**28 October 2026 ·** `osf-funded-orgs.html` · homepage entry **#31** · local investigation **#29**. Base main `d142bb6b4ad86f12fb0d193a80e6e640304b7c66`. Article original Git blob `b3bab0b910e94c1f67d2bda3996e1cabc057d11c`; reviewed Git blob `bb1ede2fd5151a1d4b12345274d5c7868a065c6f`. **OPEN — not fully evidence-certified**.
+
+## Why this round was needed
+
+Previous passes explained two clear discrepancies in prose but left the *filterable, visible data tuples* unchanged. That produced a conflict between the article's cautions and the table a reader actually uses. This review corrects **only rows 53 and 71** and records the deliberate, narrow inline data change. The original data are recoverable through the pinned base blob and this changelog. It does **not** reclassify the remaining legacy "VERIFIED" tags as independently certified findings.
+
+| Row | Before (visible legacy label) | Verified records | Displayed correction | Unresolved |
+| --- | --- | --- | --- | --- |
+| 53 — ProBono.Org | `CF R2M + OSF R800K–R1.3M (same year)` merged two incompatible fiscal-year values. | The **2018** recipient report p. 38 shows Constitutionalism Fund **R2,000,000 grant** and OSF-SA NPC **R1,303,288 donation**. The **2019** recipient report p. 43 shows CF **R1,500,000 grant** and an **R800,000 Open Society Foundation grant**, with the 2018 amounts shown separately as comparators. | Printed two dated pairs, **FY2018** and **FY2019**, rather than one synthetic “same year” range; retained the source's grant/donation distinction. | Contract conditions, bank-transfer dates, cash-versus-income classification and political/editorial instructions **UNVERIFIED**. Two recipient records corroborate the date-specific values, but are not independent third-party audits of donor direction. |
+| 71 — OSF-SA | `R1 billion+ / $238M official (1993–2023)` applied a 1993 founding date to the later investment total, hiding two distinct reporting denominators. | OSF's **27 November 2018** 25-year anniversary release said **over R1 billion** invested in its then-25-year history. Its **March 2025** retrospective (printed p. 30, PDF p. 17) says **US$238,635,789 invested in South Africa 1997–2023**, **excluding the original US$15 million endowment**. | Dated the older R1bn report and the 1997–2023 US-dollar retrospective separately, with the explicit seed-endowment exclusion. | The total represents OSF's self-reported investment, **not** an individually documented grant received by OSF-SA or the sum of this directory. Independent annual reconciliation of that total **UNVERIFIED**. Do not convert different currencies or add the endowment without a method. |
+
+## Sources and adversarial provenance
+
+1. **Primary recipient:** [ProBono.Org, 2018 annual report, printed p. 38](https://www.probono.org.za/wp-content/uploads/2019/10/ANNUAL-REPORT-2018-LowRes-Final.pdf), reviewed in its year-end grant/donation table.
+2. **Separate primary recipient period:** [ProBono.Org, 2019 annual report, printed p. 43](https://www.probono.org.za/wp-content/uploads/2021/09/Probono-Annrep-2019-final.pdf), containing 2019 and 2018 comparator columns.
+3. **Primary funder 2018:** [Open Society Foundations, 25-year South Africa release, 27 November 2018](https://www.opensocietyfoundations.org/newsroom/open-society-foundations-celebrate-25-years-south-africa).
+4. **Separate primary funder retrospective:** [Open Society Foundations, 30 Years of OSF-SA, March 2025, printed p. 30](https://www.opensocietyfoundations.org/uploads/569f1000-68d9-4346-9a75-eca92d5f2b94/30-years-of-osf-south-africa-20250310.pdf).
+5. **Independent organisational corroboration, not an audit of aggregate:** [Wikipedia, Open Society Foundation for South Africa](https://en.wikipedia.org/wiki/Open_Society_Foundation_for_South_Africa) describes the foundation's 1993 establishment. The official retrospective itself also dates foundation establishment to April 1993 (PDF p. 3). This is not independent confirmation of the US$238.6m total.
+
+**Red team:** A reader could mistake the 2018 OSF-SA donation for a grant or treat the 2019 R800,000 as part of the 2018 R2m pair. Both readings are contradicted by recipient tables. A reader could also include the US$15m seed amount in the later reported investment total or date the US$238.6m to 1993; the 2025 report expressly rules those readings out. Documentation of grant selection authority is legitimate; recipient finance statements alone do not establish donor-directed litigation, censorship or a coordinated anti-Afrikaner instruction chain.
+
+## Preservation and release gate
+
+Exactly two previously unreviewed *data-label tuples* were edited in the original inline directory array after verification, with **no changes to entry counts, organisation identities, sector labels, tracking codes, statuses, JS renderer logic, filters, array ordering, 3D/SVG data, stylesheet, media, images, element IDs, original URLs or pre-existing href order**. The single article paragraph update and source additions explain why the displayed data changed. `scripts/check-dossiers.mjs` has a strict baseline/new-blob pair that allows **only these two byte-exact data-row substitutions** in the directory and compares the remainder of all scripts. No generic JS exemption was introduced.
+
+Still to resolve: all other row-level donor/recipient legal-entity, award-date, assurance, currency and double-counting issues; row 44/69 2016 duplicate pair; data provenance for the linked historical PDF; browser/mobile/filter/keyboard/screen-reader accessibility; exact-head CI, deployment and uncached public-content parity. Protected `MTNrooivalkIRAN.html` was not touched; the **31 homepage / 29 local / two CitizenIntel external read-only** baseline is a separate mandatory gate.
+
+**External repositories:** `citizenintel/kalahari` and `citizenintel/AAIT` checked 28 October 2026: `pull:true, push:false`. No writes or certification attempted. Both still need original record, media, accessibility and publication audits.
