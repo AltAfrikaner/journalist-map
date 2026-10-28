@@ -900,3 +900,43 @@ for(const [p,oldBlob,newBlob] of [
  assert([oldBlob,newBlob].includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
  assert.equal(actual,newBlob,'Unreviewed #05-06 source change: '+p);
 }
+
+
+/* 28 October 2026: tenth/eighth pass #07-08 approved source-only changes.
+ * Complete-file blob identities are pinned, not a blanket permission to edit
+ * research graphs, artwork, source scripts or original links.
+ */
+for(const [file,baseline,reviewed] of [
+ ['iol.html','92a124776128173390d304cc4bd1b250f33c783c','65088d3b78afd21ca61a44d4dba29e3c2df26d20'],
+ ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e']
+]){
+ const published=readFileSync(file,'utf8');
+ const baseHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+ const publishedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+ assert([baseline,reviewed].includes(baseHash),'Unreviewed #07-08 main baseline: '+file);
+ assert.equal(publishedHash,reviewed,'Unreviewed #07-08 dossier source or asset: '+file);
+ assert(Buffer.byteLength(published,'utf8')>=130_000,'Truncated #07-08 investigation: '+file);
+ if(baseHash===baseline){
+  const original=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
+  const fragments=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
+  for(const [type,re] of [
+   ['JS',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
+   ['SVG',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],
+   ['img',/<img\b[^>]*>/gi],
+   ['CSS',/<style\b[^>]*>[\s\S]*?<\/style>/gi],
+   ['IDs',/\bid=["'][^"']+["']/gi],
+   ['iframe',/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi]
+  ]) assert.deepEqual(fragments(published,re),fragments(original),'#07-08 altered '+type+': '+file);
+  const older=fragments(original,/\bhref=["'][^"']+["']/gi);
+  const fresh=fragments(published,/\bhref=["'][^"']+["']/gi);
+  let i=0;for(const h of fresh)if(h===older[i])i++;
+  assert.equal(i,older.length,'#07-08 earlier links removed or reordered: '+file);
+  for(const signature of ['data:image','<video','<canvas','<source','<audio'])
+   assert.equal(published.split(signature).length,original.split(signature).length,'#07-08 embedded media count drift: '+file+' '+signature);
+ }
+}
+{
+ const dossier='MTNrooivalkIRAN.html';
+ assert.equal(execFileSync('git',['hash-object',dossier],{encoding:'utf8'}).trim(),'79c93657371ee799d564c07ed5e400bd90ba2690','Protected Rooivalk full file differs from restored baseline');
+ assert.equal(Buffer.byteLength(readFileSync(dossier,'utf8'),'utf8'),1748071,'Protected Rooivalk page empty or overwritten');
+}
