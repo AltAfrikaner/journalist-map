@@ -886,13 +886,13 @@ for (const [file, before, reviewed, latest] of [
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
- const published=latest||reviewed;
- assert([before,reviewed,published].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
- assert.equal(current,published,'Unreviewed #01-02 source change: '+file);
+ const reviewedBlob=latest||reviewed;
+ assert([before,reviewed,reviewedBlob].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
+ assert.equal(current,reviewedBlob,'Unreviewed #01-02 source change: '+file);
  const original=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
  const published=readFileSync(file,'utf8');
  assert(Buffer.byteLength(published,'utf8')>100_000,'Editorial #01-02 investigation truncated: '+file);
- if(fromMain!==published){
+ if(fromMain!==reviewedBlob){
   const take=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
   for(const [kind,re] of [
    ['script and 3D nodes',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
