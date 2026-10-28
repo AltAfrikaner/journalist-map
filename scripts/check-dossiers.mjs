@@ -518,6 +518,8 @@ for(const f of batch16){
       if(oldSha==='343ac8f283505f29e1daafb0a052f4d86655c1c7' && newSha==='660ea355a39e5ebf1df8053fdb235ba4ae2e13f2') continue;
       // 28 Oct eighth pass #25: exact evidence-checked IRR race-law denominators and historical mission framing.
       if(oldSha==='660ea355a39e5ebf1df8053fdb235ba4ae2e13f2' && newSha==='287109369921fad18dfd193bae52ef0de53fa66f') continue;
+      // 28 October visual-text consistency pass #25, scoped infographic HTML text only.
+      if(oldSha==='287109369921fad18dfd193bae52ef0de53fa66f' && newSha==='ac2ec0866058fc26799a73f31de2f21757e3d385') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -570,6 +572,8 @@ for(const f of batch16){
       if(oldSha==='8574d069562be11d6bb3125bbbe92ff187d675d1' && newSha==='4e1793059cc64093ca0ee6d144487467efbfa0b3') continue;
       // 28 Oct eighth pass #26: exact source-led 1959 boycott versus April 1960 AAM founding chronology.
       if(oldSha==='4e1793059cc64093ca0ee6d144487467efbfa0b3' && newSha==='4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385') continue;
+      // 28 October visual-text consistency pass #26, scoped HTML node copy only; no underlying graph changed.
+      if(oldSha==='4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385' && newSha==='9891efe6865816e1327d3cb06006153c4d2fd83a') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:

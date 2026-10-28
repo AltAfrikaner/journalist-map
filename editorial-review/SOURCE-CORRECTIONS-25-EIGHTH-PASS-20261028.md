@@ -19,3 +19,7 @@ No scripts, SVGs, 3D datasets, image tags, IDs, embedded media, existing URLs or
 ## Red team / outstanding
 
 Supporters of the Index can fairly argue that race remains legally relevant to significant post-1994 measures; critics can fairly contest whether historical, deracialised or constitutionally permitted redress statutes belong in a count used to imply current racial harm. Resolve through an independently reproducible legislative coding appendix, statute-by-statute commencement/status and court treatment. Still need Foundation board minutes, German grant/contract records, full 2024–26 position census, chart-edge provenance and desktop/mobile/keyboard/screen-reader/CDN parity. **OPEN — no editorial release sign-off.**
+
+## Publication-consistency reconciliation (same day, subsequent PR)
+
+The primary paragraph correction left the static `info-grid` displaying the obsolete **118 laws enacted since 1994** figure. This is materially inconsistent with the dated IRR Index source. The static HTML display number is now **122 Acts adopted since 1994 (June 2025 Index)** and its accompanying label identifies the disputed statutory-coding methodology, not court findings. Old visible HTML blob `287109369921fad18dfd193bae52ef0de53fa66f` → `ac2ec0866058fc26799a73f31de2f21757e3d385`. Underlying JavaScript, SVG, 3D datasets, images, media, IDs, CSS and original hyperlinks were preserved exactly. This is not a full audit of the Foundation's numerical widgets.
