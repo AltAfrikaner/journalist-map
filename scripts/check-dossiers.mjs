@@ -886,3 +886,17 @@ for(const [page,baseline,reviewed] of [
    assert.equal(html.split(tag).length,prior.split(tag).length,'Media drift: '+page+' '+tag);
  }
 }
+
+
+/* 28 October 2026 ninth-pass #05-06 election-referral claim audit.
+ * Exact reviewed text additions, not a blanket relaxation of the protected
+ * JS/SVG/media/link preservation checks above. */
+for(const [p,oldBlob,newBlob] of [
+ ['sixstage.html','cf20f9f0e22267a1b676b1509480499f06d176e5','a92b414c0cd029764a77d1e2bc374e72a01c20c6'],
+ ['metasuppression.html','4b247b11c6e59cbc8fc6164b932b8d771d7c1d12','3702a2fbd84fe8c7edd72cdccf6a5701226ed930'],
+]){
+ const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
+ const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
+ assert([oldBlob,newBlob].includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
+ assert.equal(actual,newBlob,'Unreviewed #05-06 source change: '+p);
+}
