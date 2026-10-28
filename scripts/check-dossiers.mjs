@@ -470,6 +470,8 @@ for(const f of batch16){
      // Eighth-pass #23 (28 Oct): ARUA 2015 founding-16 versus 2026 roster-23 correction; exact HTML blob only.
      // All pre-existing inline scripts, SVGs, images, IDs and media remain byte-for-byte guarded below.
      if(oldSha==='b250251661c8dc3fc48726313c35603401ac76e9' && newSha==='d0be0f12f5bfe5a20051f54363ac4009dad05227') continue;
+     // Ninth pass: exact donor-year reconciliation; JS/SVG/images/IDs separately guarded.
+     if(oldSha==='d0be0f12f5bfe5a20051f54363ac4009dad05227' && newSha==='dd9c1e7bf6426dd5f1a19cba1ad377335ec8f71d') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
@@ -484,6 +486,8 @@ for(const f of batch16){
      // Eighth-pass #24 (28 Oct): May first-draft vote, October amended text and 13-row/14-category caution.
      // Preserve original charts, code, diagrams and identifiers; only the exact reviewed prose blob qualifies.
      if(oldSha==='0e8db410687faf42cdbecd10e65328f0a04761db' && newSha==='684d676c724da3dbe79437675f98ebc37cb9081a') continue;
+     // Ninth pass: exact NP roll-call/1996 s235 claims; JS/SVG/images/IDs separately guarded.
+     if(oldSha==='684d676c724da3dbe79437675f98ebc37cb9081a' && newSha==='9c153fc50fe763b90b5d150524f7d844d6f4c738') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
