@@ -463,6 +463,9 @@ for(const f of batch16){
      if(oldSha==='d759c8f3c7bdecf16c81b537b086b5deb2fb6bb8' && newSha==='ff5f1d5481257a52832e30a34957000a71fd6311') continue;
      // Seventh-pass #23 (27 Oct): audited universal restitution/selection claims; original JS/SVG/images/IDs still compared byte-for-byte.
      if(oldSha==='ff5f1d5481257a52832e30a34957000a71fd6311' && newSha==='b250251661c8dc3fc48726313c35603401ac76e9') continue;
+     // Eighth-pass #23 (28 Oct): ARUA 2015 founding-16 versus 2026 roster-23 correction; exact HTML blob only.
+     // All pre-existing inline scripts, SVGs, images, IDs and media remain byte-for-byte guarded below.
+     if(oldSha==='b250251661c8dc3fc48726313c35603401ac76e9' && newSha==='d0be0f12f5bfe5a20051f54363ac4009dad05227') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
@@ -474,6 +477,9 @@ for(const f of batch16){
      if(oldSha==='3ee58768b85404bf1405619b543a88d4ccf71245' && newSha==='7dd80e7376b1f74e0936f8886c5c83a01f56dd07') continue;
      // Seventh-pass #24 (27 Oct): exact legal record corrections, retained graphic values and original scripts/SVG/images/IDs.
      if(oldSha==='7dd80e7376b1f74e0936f8886c5c83a01f56dd07' && newSha==='0e8db410687faf42cdbecd10e65328f0a04761db') continue;
+     // Eighth-pass #24 (28 Oct): May first-draft vote, October amended text and 13-row/14-category caution.
+     // Preserve original charts, code, diagrams and identifiers; only the exact reviewed prose blob qualifies.
+     if(oldSha==='0e8db410687faf42cdbecd10e65328f0a04761db' && newSha==='684d676c724da3dbe79437675f98ebc37cb9081a') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
