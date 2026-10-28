@@ -729,6 +729,22 @@ for (const file of ['sixstage.html','metasuppression.html']) {
   assert.equal(i,prior.length,'Existing source/article link removed or reordered in '+file);
 }
 
+/* 28 October ninth-pass: only these reviewed full-blob prose/table/update
+ * pairs may change on a PR. Protected media/JS/SVG/IDs and URLs remain under
+ * the strict original checks above. Main after merge remains unchanged.
+ */
+for (const [page, before, after] of [
+ ['omidyar.html', '1e2c8f39a754d7858df55163541314d68103c217', 'cebfd1a60f1e4154f6831c4e676abeb79c894d43'],
+ ['real411.html', 'a2b77d438f51830e1341288a0d41c072b5525b1a', '8c32c5970205f3041825450209f61025b26a26fb'],
+]) {
+ const baseline=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+ const current=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+ if (baseline!==current) {
+  assert.equal(baseline,before,'Unexpected ninth-pass baseline for '+page);
+  assert.equal(current,after,'Unreviewed ninth-pass file change: '+page);
+ }
+}
+
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
 
 
