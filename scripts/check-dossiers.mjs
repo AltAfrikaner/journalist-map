@@ -353,13 +353,13 @@ for(const f of batch16){
   ['interactive IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
    if(category==='original paragraphs' && now!==old) {
-     // Approved 27 Oct EIGHTH-pass #19 source corrections. Match BOTH complete blob hashes
+     // Approved 28 Oct NINTH-pass #19 source correction, exact reviewed files. Match BOTH complete blob hashes
      // instead of allowing arbitrary prose edits or weakening any graphic guard.
-     // See editorial-review/SOURCE-CORRECTIONS-19-EIGHTH-PASS-20261027.md.
+     // See editorial-review/SOURCE-CORRECTIONS-19-NINTH-PASS-20261028.md.
      const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
      const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-     assert.equal(originalHash,'b73750889a9452954f7fee07b73fafc6ac57170a','Unexpected #19 main baseline for 27 Oct eighth-pass review');
-     assert.equal(revisedHash,'4fb5361bc30e1360c13bace647d17969e1f80a4b','Unreviewed #19 eighth-pass source/content change');
+     assert.equal(originalHash,'4fb5361bc30e1360c13bace647d17969e1f80a4b','Unexpected #19 main baseline for 28 Oct ninth-pass review');
+     assert.equal(revisedHash,'c4543b52137205a207a807c96e5716e61f9cc52e','Unreviewed #19 ninth-pass source/content change');
    } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  }
  for(const sig of ['<canvas','data:image','<iframe'])
@@ -412,13 +412,13 @@ for(const f of batch16){
       assert.equal(before,reviewed[file][0],'Unexpected baseline before editorial corrections: '+file);
       assert.equal(after,reviewed[file][1],'Unreviewed content change: '+file);
      } else if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
-      // Exact whole-file allowance for 27 Oct EIGHTH-pass audit; leave other
+      // Exact whole-file allowance for 28 Oct NINTH-pass audit; leave other
       // sections and all remaining script/SVG/image/ID checks strictly intact.
-       // See editorial-review/SOURCE-CORRECTIONS-20-EIGHTH-PASS-20261027.md.
+       // See editorial-review/SOURCE-CORRECTIONS-20-NINTH-PASS-20261028.md.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
-      assert.equal(originalHash,'10cb7753341e218f52e4037891e0921202aaa907','Unexpected #20 main baseline for 27 Oct eighth-pass review');
-      assert.equal(revisedHash,'e4e8a8e4d6cde83a89ee4d520a788ba940aa8772','Unreviewed #20 eighth-pass source/content change');
+      assert.equal(originalHash,'e4e8a8e4d6cde83a89ee4d520a788ba940aa8772','Unexpected #20 main baseline for 28 Oct ninth-pass review');
+      assert.equal(revisedHash,'8e451d6c2ef4c0950c197ad2ef347c202dd5778e','Unreviewed #20 ninth-pass source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
