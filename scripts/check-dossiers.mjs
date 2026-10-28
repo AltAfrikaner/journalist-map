@@ -667,7 +667,25 @@ for(const f of batch16){
  // exact Git blob pair may differ; original 73+35 source tuples must be identical.
  function atlasData(h){const a=h.indexOf('const OSF_ORGS = [');const b=h.indexOf('// ── RENDER',a);
   assert(a>=0&&b>a,'Atlas data anchors missing');return h.slice(a,b)}
- assert.equal(atlasData(now),atlasData(old),'Funding atlas grant data changed');
+ // Seventh-pass: exactly two documented legacy directory labels were reconciled.
+ // The full article blob pair must match; all 106 other row tuples, JS renderer,
+ // media and historic links retain their original bytes.
+ const auditedRows=[
+  ['  [53,"ProBono.Org","probono.org.za","Legal / Access to Justice","Johannesburg / CT","STACKED","CF R2M + OSF R800K–R1.3M (same year)","VERIFIED"],',
+   '  [53,"ProBono.Org","probono.org.za","Legal / Access to Justice","Johannesburg / CT","STACKED","FY2018: CF R2m + OSF-SA donation R1.303m; FY2019: CF R1.5m + OSF grant R0.8m","VERIFIED"],'],
+  ['  [71,"Open Society Foundation for SA (OSF-SA)","osf.org.za","Philanthropy","Cape Town","OSF-D","R1 billion+ / $238M official (1993–2023)","VERIFIED"],',
+   '  [71,"Open Society Foundation for SA (OSF-SA)","osf.org.za","Philanthropy","Cape Town","OSF-D",">R1bn reported in 2018; US$238,635,789 SA investment (1997–2023), excluding US$15m seed endowment","VERIFIED"],']
+ ];
+ const approvedRowPair=oldHash==='b3bab0b910e94c1f67d2bda3996e1cabc057d11c'
+  && newHash==='bb1ede2fd5151a1d4b12345274d5c7868a065c6f';
+ let expectedAtlas=atlasData(old);
+ if(approvedRowPair){
+  for(const [before,after] of auditedRows){
+   assert.equal(expectedAtlas.split(before).length,2,'Atlas baseline row missing '+before.slice(0,35));
+   expectedAtlas=expectedAtlas.replace(before,after);
+  }
+ }
+ assert.equal(atlasData(now),expectedAtlas,'Unexpected funding atlas grant-data change');
  const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
   ['original table data',/<table\b[^>]*>[\s\S]*?<\/table>/gi],
@@ -677,11 +695,22 @@ for(const f of batch16){
   ['original IDs',/\bid=["'][^"']+["']/g]
  ]){
   if(label==='original filter scripts' && reviewedChange)continue;
+  if(label==='original filter scripts' && approvedRowPair){
+   const restored=take(now,re).map(block=>{
+    for(const [before,after] of auditedRows){
+     assert.equal(block.split(after).length===2 || !block.includes(after),true,'Repeated edited row');
+     block=block.replace(after,before);
+    }
+    return block;
+   });
+   assert.deepEqual(restored,take(old,re),'Unapproved funding atlas script change');
+   continue;
+  }
   assert.deepEqual(take(now,re),take(old,re),'Changed '+label+' in '+file);
  }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
- if(reviewedChange){
+ if(reviewedChange || approvedRowPair){
   const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
   assert(body,'Inline directory renderer missing');
   const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
