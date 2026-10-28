@@ -528,6 +528,8 @@ for(const f of batch16){
       if(oldSha==='660ea355a39e5ebf1df8053fdb235ba4ae2e13f2' && newSha==='287109369921fad18dfd193bae52ef0de53fa66f') continue;
       // 28 October visual-text consistency pass #25, scoped infographic HTML text only.
       if(oldSha==='287109369921fad18dfd193bae52ef0de53fa66f' && newSha==='ac2ec0866058fc26799a73f31de2f21757e3d385') continue;
+       // 28 Oct ninth pass: audited bilateral commitment/infographic text, exact current-main blob; preserve all scripts, SVG, original images, IDs, links.
+       if(oldSha==='ac2ec0866058fc26799a73f31de2f21757e3d385' && newSha==='5d5e11482b05ce1ced514f9d59954fd3a39c961c') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -582,6 +584,8 @@ for(const f of batch16){
       if(oldSha==='4e1793059cc64093ca0ee6d144487467efbfa0b3' && newSha==='4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385') continue;
       // 28 October visual-text consistency pass #26, scoped HTML node copy only; no underlying graph changed.
       if(oldSha==='4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385' && newSha==='9891efe6865816e1327d3cb06006153c4d2fd83a') continue;
+       // 28 Oct ninth pass: FY2025 government grant denominator, pay/assets and visible dashboard correction; exact reviewed blob, original imagery/JS/SVG still checked.
+       if(oldSha==='9891efe6865816e1327d3cb06006153c4d2fd83a' && newSha==='4358ee7e1f4856343663828b8dc5404e6da05498') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
