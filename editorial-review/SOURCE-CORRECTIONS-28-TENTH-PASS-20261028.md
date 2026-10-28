@@ -10,3 +10,6 @@ The [operator-hosted 10-page PDF](https://elections.real411.org.za/downloads/iec
 
 ## Preservation / release hold
 Narrow textual clarification and source citations only. No JavaScript, SVG, 3D data, media, images, CSS, IDs, article URLs or earlier links modified. Exact full-file hashes CI-protected. Need separately authenticated signature and annexes, public complaint-to-platform case ledger, rejection/appeal rates, outcome breakdown, full keyboard/screen-reader/mobile-browser testing and independently verified CDN content parity. **OPEN — NOT RELEASE-CERTIFIED**.
+
+## Same-day publication consistency follow-up
+Independent public retrieval after the first tenth-pass Pages deployment revealed a leftover footer claiming no publicly reviewable framework existed, contradicting the now source-linked PDF above. Corrected that sole stale evidence-status callout to distinguish the **published non-binding framework** from the still-**UNVERIFIED executed signed counterpart** and actual service-level/outcome measures. The original external links, source PDF, script, SVG, diagrams, images, media, IDs and route remain unchanged. Exact Git blob `db13845b4cf33595171a7df1d677612445763840` → `24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e`. Pages/CDN parity and desktop/mobile assistive testing remain independent gates; investigation **OPEN**.
