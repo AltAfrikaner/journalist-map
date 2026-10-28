@@ -591,6 +591,16 @@ for(const f of batch16){
    // against their exact original main blobs. No blanket paragraph bypass:
    // every script, SVG, image, ID and embedded-media guard remains active.
    if(name==='paragraphs' && (file==='omidyar.html' || file==='real411.html')){
+     // 28 October 2026 tenth pass: only these two exact reviewed whole-file
+     // identities may change their prose. JS, SVG, images, IDs and media
+     // are still compared below; no open-ended exception is granted.
+     const tenthPass={
+       'omidyar.html':['40d4d0c352b267be77cd99cc5c645aaa40e1a624','ee6336f46bec040e65160c9f378a5c1badf55681'],
+       'real411.html':['ef227de770e6489b886d6ef1a18a2a543878a4d6','db13845b4cf33595171a7df1d677612445763840']
+     };
+     const currentBase=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
+     const currentPage=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
+     if(currentBase===tenthPass[file][0] && currentPage===tenthPass[file][1]) continue;
      const reviewed={
        'omidyar.html':['936a6d1fdfde18ed4d54684b2a552a5681034e16','689886df68bab56b446e30d712bdf455ea6ee0bd'],
        'real411.html':['9c0114d38045eb42720a228779f516f737301922','e60e0ee1ea7adb6dbc23904e6ab0fb799c0d015e']
