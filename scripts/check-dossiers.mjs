@@ -739,12 +739,26 @@ for (const [page, before, after] of [
 ]) {
  const baseline=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- if (baseline!==current) {
-  assert.equal(baseline,before,'Unexpected ninth-pass baseline for '+page);
+ if (baseline===before && current!==baseline) {
   assert.equal(current,after,'Unreviewed ninth-pass file change: '+page);
  }
+ // Once the ninth-pass publication has merged, this historical guard no
+ // longer tests future changes against the older main blob. Subsequent
+ // revisions have their own strict exact-blob guard below.
 }
 
+
+/* 28 October #28 publication heading: an IEC official report is not a
+ * separately audited complaint database. Guard exactly this text-only patch. */
+{
+ const p='real411.html';
+ const base=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
+ const now=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
+ if(base!==now){
+  assert.equal(base,'8c32c5970205f3041825450209f61025b26a26fb','Unexpected Real411 publication-label baseline');
+  assert.equal(now,'ef227de770e6489b886d6ef1a18a2a543878a4d6','Unexpected Real411 publication-label source');
+ }
+}
 console.log('Dossier checks passed: editorial links and research visualisation anchors intact.');
 
 
