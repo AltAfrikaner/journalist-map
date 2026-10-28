@@ -919,3 +919,17 @@ for(const [page,oldBlob,approved] of [
 assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding:'utf8'}).trim(),
  '79c93657371ee799d564c07ed5e400bd90ba2690',
  'Protected Rooivalk dossier content changed');
+
+
+/* 28 Oct 2026: #09–10 sourced document-level revisions, strictly full-blob-pinned.
+ * Original scripts, SVG, images, media and element IDs must still compare to
+ * origin/main under the existing preamble checks. Rooivalk remains protected. */
+for(const [page,older,reviewed] of [
+ ['usaidtonewsroom.html','51d004fbe96df0ff71d0d9819861d76c35ada842','cbd0274f4fccedd067187f0236cb99e3d13c0cf6'],
+ ['mtn.html','542c982f4cbc2908d4e265f03c554a4cffd060c5','8871a2077e8b36a41e0a202dee867dd1ed573b4b']
+]) {
+ const mainFile=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+ const liveFile=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+ assert([older,reviewed].includes(mainFile),'Unexpected #09-10 main file baseline: '+page);
+ assert.equal(liveFile,reviewed,'Unreviewed #09-10 source/media file change: '+page);
+}
