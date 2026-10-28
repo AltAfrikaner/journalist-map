@@ -1,0 +1,16 @@
+# Investigation #08 — USAID and NED: eighth-pass funding-basis correction (28 October 2026)
+
+**Status: OPEN — a visible but undated headline funding amount has been replaced with a documented FY2026 congressional allocation.** Exact branch base `533b9fb422eedfe43396ad9ea453255a3501c478`.
+
+## Findings / precise changes
+
+1. **The page formerly described “$362M — NED Annual Budget” without specifying a financial year or whether it meant revenues, appropriations or approved grants.** The [14 January 2026 U.S. Congressional Record, pp. H765 and H859 (PDF pp. 44 and 138)](https://www.congress.gov/119/crec/2026/01/14/172/10/CREC-2026-01-14.pdf) expressly includes **US$315,000,000 for the National Endowment for Democracy** in the FY2026 congressional agreement; of that **US$210,316,000** is allocated in the traditional and customary manner, including core institutes, and **US$104,684,000** for democracy programmes. The page's headline now says **$315M — FY2026 congressional NED allocation (not grants paid)** and the appended reader-facing context states the exact split and source. This does **not** claim a $315m transfer to South Africa or individual journalists.
+2. **Different independent records use different measures and years.** NED's [FY2024 annual report](https://www.ned.org/national-endowment-for-democracy-2024-annual-report/) reports **US$286 million in grant approvals across 1,905 projects worldwide**, FY2024. That is neither a 2026 annual budget nor an FY2026 treasury disbursement. The article now distinguishes congressional authorization/appropriation amounts, project grant approvals, obligations, cash payments and award-level receipts. A named South African newsroom's grant and any downstream editorial order remain **UNVERIFIED** without award IDs and transfer evidence.
+
+**Red team:** $315m is a bill/agreement text observed on 14 January 2026, not independently reconciled final-year outturn. Do not claim funds were all disbursed, fully available, unimpeded by later administration action, allocated to South Africa or approved for a particular news story. Annual-report totals are institutionally reported, not a direct audit of all local grant effects. Check final enacted legislation and agency apportionment records before elevating the headline to cash expenditure.
+
+## Integrity and remaining work
+
+The original `usaid.html` Git blob is `a131989af882e7ce447b0b8c66076808c050b80c` and revised full Git blob is `a001b02f7057afe2f845fe05b739ee23fa44c03e`. Only top visible funding label and a sourced evidence note change. No original scripts, 3D node/edge dataset, SVG, CSS, images, media, IDs, article URL or prior links edited. Existing nationwide 2026 GAO, earlier OIG and source-denominator findings are retained. Protected Rooivalk remains the original nonempty archived blob, untouched.
+
+**Still OPEN:** matched South Africa-specific award and payment statements, historical continuity, funding-to-editor-instruction evidence and independent node-level provenance, and full browser/mobile/keyboard/screen-reader/accessibility and public CDN checks. Homepage inventory unchanged: 31 homepage entries / 29 local / 2 external read-only. Both `citizenintel/kalahari` and `citizenintel/AAIT` checked pull:true, push:false; no changes attempted.

@@ -900,3 +900,22 @@ for(const [p,oldBlob,newBlob] of [
  assert([oldBlob,newBlob].includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
  assert.equal(actual,newBlob,'Unreviewed #05-06 source change: '+p);
 }
+
+
+/* 28 Oct 2026: #07–08 source-only reviews, whole-blob identity pinned.
+ * Earlier in this test, their original JS, SVG, images, element IDs and
+ * visual-component counts are independently compared with current main.
+ * This short identity gate rejects all other changed content or media.
+ */
+for(const [page,oldBlob,approved] of [
+ ['iol.html','92a124776128173390d304cc4bd1b250f33c783c','65088d3b78afd21ca61a44d4dba29e3c2df26d20'],
+ ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e']
+]){
+ const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+ const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+ assert([oldBlob,approved].includes(fromMain),'Unknown #07–08 main baseline: '+page);
+ assert.equal(actual,approved,'Unreviewed #07–08 article source/data change: '+page);
+}
+assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding:'utf8'}).trim(),
+ '79c93657371ee799d564c07ed5e400bd90ba2690',
+ 'Protected Rooivalk dossier content changed');
