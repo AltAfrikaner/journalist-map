@@ -53,7 +53,7 @@
  'use strict';
  const details={
   'osf.html':{after:'#board',asset:'assets/story-art/osf-inside.svg',subject:'institutional funding records and organisational links'},
-  'sa_journalists.html':{after:'#patterns',asset:'assets/story-art/sa_journalists-inside.svg',subject:'newsrooms, journalism and professional affiliations'},
+  'sa_journalists.html':{after:'#patterns',asset:'assets/articles/sa-journalists-network-premium.jpg',subject:'newsrooms, journalism and professional affiliations'},
   'africacheck.html':{after:'#funding',asset:'assets/story-art/africacheck-inside.svg',subject:'verification methods and the evaluation of public claims'},
   'ifcn.html':{after:'#guild',asset:'assets/story-art/ifcn-inside.svg',subject:'international standards and certification'},
   'sixstage.html':{after:'.pipeline',asset:'assets/story-art/sixstage-inside.svg',subject:'six separate stages of an information workflow'}
