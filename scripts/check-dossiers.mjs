@@ -880,18 +880,19 @@ for (const [file, original, previous, reviewed] of [
  * Follow-up main commit 2723f28 moved the intact evidence section/nav above the footer.
  * Its exact resulting published #02 file blob 36d677bfe91785b9b469ba225c4d3c4d9cdf9877 is pinned, not a blanket bypass.
  */
-for (const [file, before, reviewed] of [
- ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73'],
+for (const [file, before, reviewed, latest] of [
+ ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73', '17439298b99f908153fac50492ef4c0157a21e0b'],
  ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', '36d677bfe91785b9b469ba225c4d3c4d9cdf9877']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
- assert([before,reviewed].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
- assert.equal(current,reviewed,'Unreviewed #01-02 source change: '+file);
+ const published=latest||reviewed;
+ assert([before,reviewed,published].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
+ assert.equal(current,published,'Unreviewed #01-02 source change: '+file);
  const original=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
  const published=readFileSync(file,'utf8');
  assert(Buffer.byteLength(published,'utf8')>100_000,'Editorial #01-02 investigation truncated: '+file);
- if(fromMain!==reviewed){
+ if(fromMain!==published){
   const take=(html,re)=>[...html.matchAll(re)].map(m=>m[0]);
   for(const [kind,re] of [
    ['script and 3D nodes',/<script\b[^>]*>[\s\S]*?<\/script>/gi],
