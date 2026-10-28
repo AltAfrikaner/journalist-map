@@ -516,6 +516,8 @@ for(const f of batch16){
       if(oldSha==='28ee3462eabdacad2e3e6cffc12ea1ac2f5e17b6' && newSha==='343ac8f283505f29e1daafb0a052f4d86655c1c7') continue;
       // 27 Oct seventh pass #25: uniquely reviewed 2025 statement, 2026 argument and Goodwill dates; artifact guards unchanged.
       if(oldSha==='343ac8f283505f29e1daafb0a052f4d86655c1c7' && newSha==='660ea355a39e5ebf1df8053fdb235ba4ae2e13f2') continue;
+      // 28 Oct eighth pass #25: exact evidence-checked IRR race-law denominators and historical mission framing.
+      if(oldSha==='660ea355a39e5ebf1df8053fdb235ba4ae2e13f2' && newSha==='287109369921fad18dfd193bae52ef0de53fa66f') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -566,6 +568,8 @@ for(const f of batch16){
       if(oldSha==='7f84acde05c18fa95e449c13b3d5f318c35d35a2' && newSha==='8574d069562be11d6bb3125bbbe92ff187d675d1') continue;
       // 27 Oct seventh pass #26: fixed recipient allocation and independent RSC funding provenance; no media/JS bypass.
       if(oldSha==='8574d069562be11d6bb3125bbbe92ff187d675d1' && newSha==='4e1793059cc64093ca0ee6d144487467efbfa0b3') continue;
+      // 28 Oct eighth pass #26: exact source-led 1959 boycott versus April 1960 AAM founding chronology.
+      if(oldSha==='4e1793059cc64093ca0ee6d144487467efbfa0b3' && newSha==='4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
