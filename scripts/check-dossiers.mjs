@@ -363,7 +363,7 @@ for(const f of batch16){
      const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
      const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
      assert.equal(originalHash,'c4543b52137205a207a807c96e5716e61f9cc52e','Unexpected #19 main baseline for 28 Oct tenth-pass review');
-     assert.equal(revisedHash,'ca9a8cb5680bd930e289e3faba2f18f3bd6bc203','Unreviewed #19 tenth-pass source/content change');
+     assert.equal(revisedHash,'159e7fd15165275acb56df3b040006e2439d48c9','Unreviewed #19 tenth-pass source/content change');
    } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  }
  for(const sig of ['<canvas','data:image','<iframe'])

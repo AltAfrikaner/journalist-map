@@ -16,4 +16,4 @@ The 44-item/43-unique-name claim remains anchored to the original signatory stat
 
 **Preservation:** existing scripts, 3D node/edge datasets, SVGs, stylesheets, images, media, IDs and original href sequence remain unchanged; only two visible prose passages were edited and two supporting source links were added.
 
-**Exact Git blobs:** `c4543b52137205a207a807c96e5716e61f9cc52e` → `ca9a8cb5680bd930e289e3faba2f18f3bd6bc203`. CI keeps the exact file-hash gate and separate scripts/SVG/images/IDs/embedded-asset comparisons.
+**Exact Git blobs:** `c4543b52137205a207a807c96e5716e61f9cc52e` → `159e7fd15165275acb56df3b040006e2439d48c9`. CI keeps the exact file-hash gate and separate scripts/SVG/images/IDs/embedded-asset comparisons.
