@@ -283,11 +283,15 @@ footer{background:var(--navy-deep);border-top:2px solid var(--gold);padding:48px
 <!-- INFOGRAPHIC: THE NUMBERS -->
 <section id="numbers" style="border-top:1px solid var(--border)">
   <div class="container">
-    <span class="section-label reveal">By The Numbers</span>
+    <span class="section-label reveal">Evidence and reach</span>
     <h2 class="reveal">Who Writes About South Africa for <em>the World</em></h2>
     <p class="reveal" style="margin-bottom:36px">The <a href="https://www.fcasa.org/contact-us" target="_blank" rel="noopener noreferrer">Foreign Correspondents' Association of Southern Africa</a> distinguishes resident foreign-correspondent members from associate members. Its published eligibility rules do not supply a verified current count of 240-plus practicing reporters, so the previously reported number remains <strong>UNVERIFIED</strong>. Association membership should not be mistaken for a complete census of international journalism in the region.</p>
-    <div class="infographic reveal" id="ig1">
-      <canvas id="igCanvas" width="860" height="420" style="width:100%;max-width:860px;margin:0 auto;display:block"></canvas>
+    <div class="reveal" id="ig1" role="region" aria-labelledby="method-note-title" style="max-width:900px;margin:0 auto;padding:clamp(22px,3vw,34px);border:1px solid #c9bda8;border-left:5px solid #8b271b;background:#f9f5ed;color:#172338;box-shadow:0 8px 28px rgba(20,30,45,.05)">
+      <span style="display:block;font:700 11px/1.4 'JetBrains Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:#8b271b;margin-bottom:12px">Evidence and methodology</span>
+      <h3 id="method-note-title" style="font:700 clamp(24px,3vw,32px)/1.2 'Playfair Display',Georgia,serif;color:#172338;margin:0 0 15px">What the correspondent network can establish</h3>
+      <p style="font-size:16px;line-height:1.7;color:#374252;margin:0 0 14px">This investigation identifies selected reporting careers, editorial relationships, professional affiliations and public institutional links. It is <strong>not</strong> a complete or current census of journalists covering South Africa.</p>
+      <p style="font-size:16px;line-height:1.7;color:#374252;margin:0 0 14px">An earlier version displayed outlet-specific bars labelled CNN 4, BBC 3, NYT 3, Al Jazeera 4, Reuters 2 and smaller counts for other organisations. Those numbers were not accompanied by a reproducible, date-specific roster establishing inclusion rules, unique individuals and current employer status. They have therefore been withdrawn rather than presented as verified data.</p>
+      <p style="font-size:16px;line-height:1.7;color:#374252;margin:0"><strong>UNVERIFIED:</strong> the size of the current foreign-correspondent population, outlet-by-outlet headcounts, Afrikaans-language capability and any causal relationship between an individual's affiliations and editorial coverage. IFCN is a standards network, not a news outlet, and must not be counted as one.</p>
     </div>
     <div class="pattern-grid" style="margin-top:36px">
       <div class="pattern reveal">
@@ -776,117 +780,6 @@ window.addEventListener("resize",()=>{
 </script>
 
 <script>
-/* Infographic: Bar chart */
-(function(){
-const igc=document.getElementById("igCanvas");
-if(!igc)return;
-const ctx=igc.getContext("2d");
-const dp=Math.min(devicePixelRatio,2);
-const W=860,H=420;
-igc.width=W*dp;igc.height=H*dp;
-ctx.scale(dp,dp);
-
-const data=[
-  {label:"CNN",value:4,color:"#cc0000"},
-  {label:"BBC",value:3,color:"#b31919"},
-  {label:"NYT",value:3,color:"#1a1a2e"},
-  {label:"Al Jazeera",value:4,color:"#c89010"},
-  {label:"Reuters",value:2,color:"#ff8c00"},
-  {label:"AP",value:1,color:"#cc0000"},
-  {label:"CGTN",value:1,color:"#c41e3a"},
-  {label:"Guardian",value:1,color:"#005689"},
-  {label:"AFP",value:1,color:"#0055a4"},
-  {label:"WaPo",value:1,color:"#231f20"},
-  {label:"ITV",value:1,color:"#003366"},
-  {label:"IFCN",value:2,color:"#1f7a45"},
-];
-
-const maxVal=Math.max(...data.map(d=>d.value));
-const barW=48,gap=18,startX=60,chartH=280,baseY=340;
-let animated=false;
-let progress=0;
-
-function drawChart(){
-  ctx.clearRect(0,0,W,H);
-  // Title
-  ctx.fillStyle="rgba(244,240,232,0.7)";
-  ctx.font="500 11px 'JetBrains Mono',monospace";
-  ctx.textAlign="left";
-  ctx.fillText("SA-CONNECTED JOURNALISTS PER INTERNATIONAL OUTLET",startX,28);
-  // Subtitle
-  ctx.fillStyle="rgba(244,240,232,0.3)";
-  ctx.font="400 10px 'Source Sans 3',sans-serif";
-  ctx.fillText("Documented positions as at May 2026. Includes current and recent correspondents, bureau chiefs, anchors.",startX,46);
-
-  // Y axis
-  ctx.strokeStyle="rgba(197,162,88,0.15)";
-  ctx.lineWidth=0.5;
-  for(let i=0;i<=maxVal;i++){
-    const y=baseY-(i/maxVal)*chartH;
-    ctx.beginPath();ctx.moveTo(startX-5,y);ctx.lineTo(startX+data.length*(barW+gap),y);ctx.stroke();
-    ctx.fillStyle="rgba(244,240,232,0.3)";ctx.font="400 10px 'JetBrains Mono',monospace";ctx.textAlign="right";
-    ctx.fillText(i.toString(),startX-10,y+4);
-  }
-
-  // Bars
-  const p=Math.min(progress,1);
-  data.forEach((d,i)=>{
-    const x=startX+i*(barW+gap);
-    const h=(d.value/maxVal)*chartH*p;
-    const y=baseY-h;
-    // Bar
-    ctx.fillStyle=d.color;
-    ctx.globalAlpha=0.85;
-    ctx.fillRect(x,y,barW,h);
-    // Glow
-    ctx.globalAlpha=0.15;
-    ctx.fillRect(x-2,y-2,barW+4,h+4);
-    ctx.globalAlpha=1;
-    // Value
-    if(p>0.8){
-      ctx.fillStyle="rgba(244,240,232,0.9)";ctx.font="bold 13px 'JetBrains Mono',monospace";ctx.textAlign="center";
-      ctx.fillText(d.value.toString(),x+barW/2,y-8);
-    }
-    // Label
-    ctx.save();ctx.translate(x+barW/2,baseY+14);ctx.rotate(Math.PI/4);
-    ctx.fillStyle="rgba(244,240,232,0.5)";ctx.font="400 10px 'Source Sans 3',sans-serif";ctx.textAlign="left";
-    ctx.fillText(d.label,0,0);ctx.restore();
-  });
-
-  // Afrikaans box
-  if(p>0.9){
-    const bx=startX+data.length*(barW+gap)+20;
-    ctx.fillStyle="rgba(139,0,0,0.15)";
-    ctx.fillRect(bx,baseY-chartH,130,chartH);
-    ctx.strokeStyle="rgba(139,0,0,0.4)";ctx.lineWidth=1;
-    ctx.strokeRect(bx,baseY-chartH,130,chartH);
-    ctx.fillStyle="#8B0000";ctx.font="bold 36px 'Playfair Display',serif";ctx.textAlign="center";
-    ctx.fillText("?",bx+65,baseY-chartH/2+12);
-    ctx.fillStyle="rgba(244,240,232,0.5)";ctx.font="500 9px 'JetBrains Mono',monospace";
-    ctx.fillText("LANGUAGE",bx+65,baseY-chartH/2+34);
-    ctx.fillText("UNVERIFIED",bx+65,baseY-chartH/2+48);
-  }
-}
-
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting&&!animated){
-      animated=true;
-      let start=null;
-      function animate(ts){
-        if(!start)start=ts;
-        progress=(ts-start)/1200;
-        drawChart();
-        if(progress<1.2)requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-    }
-  });
-},{threshold:0.3});
-observer.observe(igc);
-drawChart();
-})();
-
 /* Scroll reveal */
 const reveals=document.querySelectorAll('.reveal');
 const io=new IntersectionObserver((entries)=>{
