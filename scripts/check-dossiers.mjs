@@ -949,14 +949,14 @@ for (const [file, before, reviewed, latest, newest] of [
  * prose+source-link additions are allowed. No original links or visual
  * data, SVG, media, JS, CSS, IDs or URLs may be changed.
  */
-for(const [page,baseline,reviewed,published,latestApproved] of [
+for(const [page,baseline,reviewed,published,latestApproved,finalReviewed] of [
  ['africacheck.html','2647f994f6cd3c23bb966c2bd245e441ade85d8f','050015feee680ec5fc305d1422fc55dbaedbebfb','330f6eb917e3d5204c723be1750989f851a04554','4a9502508accd15a09d494b8475d7b2e7055e792'],
- ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','df9419a5d8425fe1cc3d717f56901c8d862ad26e']
+ ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','df9419a5d8425fe1cc3d717f56901c8d862ad26e','b4590228056362fdedcd7806bb2b9571940d11f4']
 ]){
  const main=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([baseline,reviewed,published,latestApproved].includes(main),'Unreviewed appeal-review main baseline: '+page);
- assert.equal(live,latestApproved||published,'Unreviewed appeal-review article blob: '+page);
+ assert([baseline,reviewed,published,latestApproved,finalReviewed].filter(Boolean).includes(main),'Unreviewed appeal-review main baseline: '+page);
+ assert.equal(live,finalReviewed||latestApproved||published,'Unreviewed appeal-review article blob: '+page);
  const html=readFileSync(page,'utf8');
  assert(Buffer.byteLength(html,'utf8')>50000,'Truncated appeal-review dossier: '+page);
  if(main!==published){
@@ -982,14 +982,14 @@ for(const [page,baseline,reviewed,published,latestApproved] of [
 /* 29 October 2026 tenth-pass #05-06 exact public-framework source audit.
  * Exact reviewed text additions, not a blanket relaxation of the protected
  * JS/SVG/media/link preservation checks above. */
-for(const [p,oldBlob,newBlob] of [
- ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4'],
+for(const [p,oldBlob,newBlob,eleventhReviewed] of [
+ ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924'],
  ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57'],
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
- assert([oldBlob,newBlob].includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
- assert.equal(actual,newBlob,'Unreviewed #05-06 source change: '+p);
+ assert([oldBlob,newBlob,eleventhReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
+ assert.equal(actual,eleventhReviewed||newBlob,'Unreviewed #05-06 source change: '+p);
 }
 
 
