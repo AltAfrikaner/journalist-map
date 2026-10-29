@@ -1000,7 +1000,7 @@ for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed] of [
  */
 for(const [page,oldBlob,approved,newApproved,twelfthApproved] of [
  ['iol.html','92a124776128173390d304cc4bd1b250f33c783c','65088d3b78afd21ca61a44d4dba29e3c2df26d20','2dab107ba527b6735d740bc239cb91de730df5ff','52e299facabf903515f160f2771ea6160201b33c'],
- ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e','38887e0f500267b97dfb56b933fd4163fa7567cb']
+ ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e','38887e0f500267b97dfb56b933fd4163fa7567cb','d0ce26bd81e8a509adb3275676c705449110ea05']
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
@@ -1015,14 +1015,14 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
 /* 28 Oct 2026: #09–10 sourced document-level revisions, strictly full-blob-pinned.
  * Original scripts, SVG, images, media and element IDs must still compare to
  * origin/main under the existing preamble checks. Rooivalk remains protected. */
-for(const [page,older,reviewed] of [
- ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64'],
+for(const [page,older,reviewed,newest] of [
+ ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64','82d06b2377d2207b2d92071334db7f3b8838c742'],
  ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4b','c35e8d22adac1290958a5f13529206f5e0f8bd16']
 ]) {
  const mainFile=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const liveFile=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([older,reviewed].includes(mainFile),'Unexpected #09-10 main file baseline: '+page);
- assert.equal(liveFile,reviewed,'Unreviewed #09-10 source/media file change: '+page);
+ assert([older,reviewed,newest].filter(Boolean).includes(mainFile),'Unexpected #09-10 main file baseline: '+page);
+ assert.equal(liveFile,page==='usaidtonewsroom.html'?newest:reviewed,'Unreviewed #09-10 source/media file change: '+page);
 }
 
 
