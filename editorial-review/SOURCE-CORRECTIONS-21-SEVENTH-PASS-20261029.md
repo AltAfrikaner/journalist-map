@@ -1,0 +1,13 @@
+# SPLC — seventh-pass evidence and contradiction reconciliation (29 October 2026)
+
+**Investigation #21 · `splc.html` · OPEN, NOT RELEASE-CERTIFIED.** Began from exact current main `b09fde27a1cd44073fe9e3e83493d6c98d68a127`; prior six passes including the 26 October log remain intact. This pass changed visible editorial text only.
+
+## Verified correction and scope
+
+1. **Material FY2023/FY2024 contradiction:** the financial-loop annotation incorrectly described approximately **$822 million** as FY2023 total assets. Original FY2024 **SPLC Inc. Form 990, Part X, line 16** reports **$822,198,315 total assets**; the FY2023 return reports **$749,083,798**. FY2024 Schedule D separately identifies approximately **$738.4 million endowment**. The earlier article header and fiscal note already reflected FY2024; this pass repaired the inconsistent legacy annotation. These are asset balances, not donations to extremists, offshore cash disbursements, or a legal conclusion. The consolidated audit has a different reporting perimeter. See [IRS-derived Form 990 reproduced by ProPublica](https://projects.propublica.org/nonprofits/organizations/630598743), the [SPLC first-party audited consolidated financial statements](https://www.splcenter.org/wp-content/uploads/2025/05/2024-splc-audited-financial-statements.pdf) and [independent CharityWatch FY2024 methodology](https://blog.charitywatch.org/federal-scrutiny-of-southern-poverty-law-center-raises-questions-for-donors/). Distinguish first-party audit and filed single-entity return.
+2. **Map verification disclaimer:** the published caption formerly said **all** connections were documented and verified, yet its own overview states 53 nodes/105 edges while the embedded map says 40 nodes/55 edges. The caption now discloses the tally conflict and marks the complete node/edge audit **UNVERIFIED**. Embedded WebGL, datasets and labels were not edited.
+3. **Footer certainty:** replaced the unsupported blanket claim that all assertions were verified with a precise caveat for still-UNVERIFIED archival/media claims.
+
+## Adversarial checks / unfinished evidence
+
+There is no verified causal allocation of the FY2016–FY2017 fundraising change to Charlottesville, nor a transaction-level reconciliation of an asserted $57 million transfer. Court charges and SPLC denials remain separate; no guilt conclusion follows from an indictment. The node/edge register, media corpus, original awards, court docket, desktop/mobile browser behaviour, keyboard and screen-reader operation, and uncached visitor-facing CDN parity remain **OPEN**. No original scripts, CSS, SVG, pictures, audio/video, element IDs, media sources or existing hyperlink order changed.
