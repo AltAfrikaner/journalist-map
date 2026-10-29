@@ -360,13 +360,13 @@ for(const f of batch16){
   ['interactive IDs',/\bid=['"][^'"]+['"]/g]
  ]) {
    if(category==='original paragraphs' && now!==old) {
-     // Approved 28 Oct TENTH-pass #19 source correction, exact reviewed files. Match BOTH complete blob hashes
+     // Approved 29 Oct ELEVENTH-pass #19 source correction, exact reviewed files. Match BOTH complete blob hashes
      // instead of allowing arbitrary prose edits or weakening any graphic guard.
-     // See editorial-review/SOURCE-CORRECTIONS-19-TENTH-PASS-20261028.md.
+     // See editorial-review/SOURCE-CORRECTIONS-19-ELEVENTH-PASS-20261029.md.
      const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
      const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-     assert.equal(originalHash,'c4543b52137205a207a807c96e5716e61f9cc52e','Unexpected #19 main baseline for 28 Oct tenth-pass review');
-     assert.equal(revisedHash,'159e7fd15165275acb56df3b040006e2439d48c9','Unreviewed #19 tenth-pass source/content change');
+     assert.equal(originalHash,'159e7fd15165275acb56df3b040006e2439d48c9','Unexpected #19 main baseline for 29 Oct eleventh-pass review');
+     assert.equal(revisedHash,'c2b7b045bb40828ed29c2a9801c8157ecc9beb26','Unreviewed #19 tenth-pass source/content change');
    } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  }
  for(const sig of ['<canvas','data:image','<iframe'])
@@ -419,13 +419,13 @@ for(const f of batch16){
       assert.equal(before,reviewed[file][0],'Unexpected baseline before editorial corrections: '+file);
       assert.equal(after,reviewed[file][1],'Unreviewed content change: '+file);
      } else if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
-      // Exact whole-file allowance for 28 Oct TENTH-pass audit; leave other
+      // Exact whole-file allowance for 29 Oct ELEVENTH-pass audit; leave other
       // sections and all remaining script/SVG/image/ID checks strictly intact.
-       // See editorial-review/SOURCE-CORRECTIONS-20-TENTH-PASS-20261028.md.
+       // See editorial-review/SOURCE-CORRECTIONS-20-ELEVENTH-PASS-20261029.md.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
-      assert.equal(originalHash,'8e451d6c2ef4c0950c197ad2ef347c202dd5778e','Unexpected #20 main baseline for 28 Oct tenth-pass review');
-      assert.equal(revisedHash,'8fe523f274b7fc19cc70305119fbd74fe90bb198','Unreviewed #20 tenth-pass source/content change');
+      assert.equal(originalHash,'8fe523f274b7fc19cc70305119fbd74fe90bb198','Unexpected #20 main baseline for 29 Oct eleventh-pass review');
+      assert.equal(revisedHash,'a9286397f9a5f794096b84a065c2380c2ff0c363','Unreviewed #20 eleventh-pass source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
