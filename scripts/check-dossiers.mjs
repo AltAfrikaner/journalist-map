@@ -944,12 +944,12 @@ for(const [page,baseline,reviewed,published] of [
 }
 
 
-/* 28 October 2026 ninth-pass #05-06 election-referral claim audit.
+/* 29 October 2026 tenth-pass #05-06 exact public-framework source audit.
  * Exact reviewed text additions, not a blanket relaxation of the protected
  * JS/SVG/media/link preservation checks above. */
 for(const [p,oldBlob,newBlob] of [
- ['sixstage.html','cf20f9f0e22267a1b676b1509480499f06d176e5','a92b414c0cd029764a77d1e2bc374e72a01c20c6'],
- ['metasuppression.html','4b247b11c6e59cbc8fc6164b932b8d771d7c1d12','3702a2fbd84fe8c7edd72cdccf6a5701226ed930'],
+ ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4'],
+ ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57'],
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
