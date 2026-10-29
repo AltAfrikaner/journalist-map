@@ -422,13 +422,13 @@ for(const f of batch16){
       assert.equal(before,reviewed[file][0],'Unexpected baseline before editorial corrections: '+file);
       assert.equal(after,reviewed[file][1],'Unreviewed content change: '+file);
      } else if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
-      // Exact whole-file allowance for 29 Oct ELEVENTH-pass audit; leave other
-      // sections and all remaining script/SVG/image/ID checks strictly intact.
-       // See editorial-review/SOURCE-CORRECTIONS-20-ELEVENTH-PASS-20261029.md.
+      // Exact whole-file allowance for 29 Oct TWELFTH-pass primary-bill, allegations and media-claim audit.
+      // Non-article script/SVG/image/ID/media checks remain unchanged.
+      // See editorial-review/SOURCE-CORRECTIONS-20-TWELFTH-PASS-20261029.md.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
-      assert.equal(originalHash,'8fe523f274b7fc19cc70305119fbd74fe90bb198','Unexpected #20 main baseline for 29 Oct eleventh-pass review');
-      assert.equal(revisedHash,'a9286397f9a5f794096b84a065c2380c2ff0c363','Unreviewed #20 eleventh-pass source/content change');
+      assert.equal(originalHash,'a9286397f9a5f794096b84a065c2380c2ff0c363','Unexpected #20 main baseline for 29 Oct twelfth-pass review');
+      assert.equal(revisedHash,'70eb6da03627e25964867b7dc11ca232eef58572','Unreviewed #20 twelfth-pass source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
