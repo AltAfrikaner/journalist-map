@@ -141,7 +141,7 @@ for(const f of nextBatch){
     if(f==='communists.html' && label==='paragraphs') {
       // Ninth-pass 29 Oct 2026 flag-designer provenance and political-symbolism sourcing: only this reviewed article blob is permitted; assets remain guarded.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='56c8474dbbdf643fd17d63d2b170d316437c3f6d';
+      const reviewed='ed4b624962e9c3036bd0f007d18bcaf04f6f035b';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
@@ -1026,13 +1026,14 @@ for(const [page,older,reviewed,newest] of [
 }
 
 
+/* 29 Oct eleventh-pass #12 / tenth-pass #13: reviewed exact SHA guards updated; prior full immutable scripts/SVG/ID comparisons retained. */
 /* 28 Oct ninth-pass #11–12: allow ONLY the dated, source-reviewed HTML
  * revisions. Main must be the old reviewed baseline or the exact newly
  * published revision; all original scripts, SVGs, images, IDs and media
  * continue to be compared against origin/main in the preamble above. */
 for (const [page, prior, reviewed, intermediate, earlier] of [
   ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', '3a48587c5da793887f503c5d2c23578a44b1a7c3', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1'],
-  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', 'd1b6f7cbf02251d5e353945555f835154cb2ffef', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763']
+  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', '8b3eb33ab171d6b6737cf4a0f5f4eb8d6a995413', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763']
 ]) {
   const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
   const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
