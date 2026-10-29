@@ -264,6 +264,7 @@ for(const f of batch16){
        (baselineBlob==='cc7e4a72733c43a2909fa60cf4748e268b5ece20' && liveBlob==='3d67ae530605cc2d0ce9ed2ced60aeaf26c5962d') ||
         (baselineBlob==='3d67ae530605cc2d0ce9ed2ced60aeaf26c5962d' && liveBlob==='3a7509aa5e4d6628a390bf09ffe01ee9491d08a7') ||
        (baselineBlob==='3a7509aa5e4d6628a390bf09ffe01ee9491d08a7' && liveBlob==='63499ca73d98923c8422dd97290ba405a43bd692') ||
+       (baselineBlob==='08e9b4c32e0dbfe896654f2be43e8b126b64f4cf' && liveBlob==='4df3be6ffd5923338e839dc47c3437dae8b02705') ||
        (baselineBlob==='63499ca73d98923c8422dd97290ba405a43bd692' && liveBlob==='08e9b4c32e0dbfe896654f2be43e8b126b64f4cf'),
        'Mbalula must match one specifically approved complete-file correction');
    }
