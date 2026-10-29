@@ -981,8 +981,8 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  * Original scripts, SVG, images, media and element IDs must still compare to
  * origin/main under the existing preamble checks. Rooivalk remains protected. */
 for(const [page,older,reviewed] of [
- ['usaidtonewsroom.html','51d004fbe96df0ff71d0d9819861d76c35ada842','cbd0274f4fccedd067187f0236cb99e3d13c0cf6'],
- ['mtn.html','542c982f4cbc2908d4e265f03c554a4cffd060c5','8871a2077e8b36a41e0a202dee867dd1ed573b4b']
+ ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64'],
+ ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4b','c35e8d22adac1290958a5f13529206f5e0f8bd16']
 ]) {
  const mainFile=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const liveFile=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
