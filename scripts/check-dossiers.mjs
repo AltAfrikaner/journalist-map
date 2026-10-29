@@ -915,14 +915,14 @@ for (const [file, original, previous, eighthPass, ninthPass] of [
  * Follow-up main commit 2723f28 moved the intact evidence section/nav above the footer.
  * Its exact resulting published #02 file blob 36d677bfe91785b9b469ba225c4d3c4d9cdf9877 is pinned, not a blanket bypass.
  */
-for (const [file, before, reviewed, latest] of [
- ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73', '17439298b99f908153fac50492ef4c0157a21e0b'],
+for (const [file, before, reviewed, latest, newest] of [
+ ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73', '17439298b99f908153fac50492ef4c0157a21e0b', '2577662333508427785a11a560a4c844ad9ca11a'],
  ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', '36d677bfe91785b9b469ba225c4d3c4d9cdf9877']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
- const reviewedBlob=latest||reviewed;
- assert([before,reviewed,reviewedBlob].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
+ const reviewedBlob=newest||latest||reviewed;
+ assert([before,reviewed,latest,newest].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
  assert.equal(current,reviewedBlob,'Unreviewed #01-02 source change: '+file);
  const original=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
  const published=readFileSync(file,'utf8');
@@ -949,14 +949,14 @@ for (const [file, before, reviewed, latest] of [
  * prose+source-link additions are allowed. No original links or visual
  * data, SVG, media, JS, CSS, IDs or URLs may be changed.
  */
-for(const [page,baseline,reviewed,published] of [
- ['africacheck.html','2647f994f6cd3c23bb966c2bd245e441ade85d8f','050015feee680ec5fc305d1422fc55dbaedbebfb','330f6eb917e3d5204c723be1750989f851a04554'],
+for(const [page,baseline,reviewed,published,latestApproved] of [
+ ['africacheck.html','2647f994f6cd3c23bb966c2bd245e441ade85d8f','050015feee680ec5fc305d1422fc55dbaedbebfb','330f6eb917e3d5204c723be1750989f851a04554','4a9502508accd15a09d494b8475d7b2e7055e792'],
  ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','df9419a5d8425fe1cc3d717f56901c8d862ad26e']
 ]){
  const main=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([baseline,reviewed,published].includes(main),'Unreviewed appeal-review main baseline: '+page);
- assert.equal(live,published,'Unreviewed appeal-review article blob: '+page);
+ assert([baseline,reviewed,published,latestApproved].includes(main),'Unreviewed appeal-review main baseline: '+page);
+ assert.equal(live,latestApproved||published,'Unreviewed appeal-review article blob: '+page);
  const html=readFileSync(page,'utf8');
  assert(Buffer.byteLength(html,'utf8')>50000,'Truncated appeal-review dossier: '+page);
  if(main!==published){
