@@ -117,7 +117,7 @@ for(const f of nextBatch){
       // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9','4c8ffae2709710d91093ac914423b01038155695'].includes(baseSha),'Unexpected #14 main baseline');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9','4c8ffae2709710d91093ac914423b01038155695','c3c94209cac187efb11424e4882de19f715e1aa7'].includes(baseSha),'Unexpected #14 main baseline');
       assert.equal(liveSha,'c3c94209cac187efb11424e4882de19f715e1aa7','Unexpected #14 tenth-pass WHO country-rate / Dommisse bibliography correction; see SOURCE-CORRECTIONS-14-TENTH-PASS-20261029.md');
       continue;
     }
@@ -266,6 +266,7 @@ for(const f of batch16){
         (baselineBlob==='3d67ae530605cc2d0ce9ed2ced60aeaf26c5962d' && liveBlob==='3a7509aa5e4d6628a390bf09ffe01ee9491d08a7') ||
        (baselineBlob==='3a7509aa5e4d6628a390bf09ffe01ee9491d08a7' && liveBlob==='63499ca73d98923c8422dd97290ba405a43bd692') ||
        (baselineBlob==='08e9b4c32e0dbfe896654f2be43e8b126b64f4cf' && liveBlob==='4df3be6ffd5923338e839dc47c3437dae8b02705') ||
+       (baselineBlob==='4df3be6ffd5923338e839dc47c3437dae8b02705' && liveBlob==='22292665de386f5931948a95b4c295baf5ae8e92') ||
        (baselineBlob==='63499ca73d98923c8422dd97290ba405a43bd692' && liveBlob==='08e9b4c32e0dbfe896654f2be43e8b126b64f4cf'),
        'Mbalula must match one specifically approved complete-file correction');
    }
@@ -299,7 +300,8 @@ for(const f of batch16){
          const oldSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
          const newSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
          if (!(oldSha==='3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a' && newSha==='75efd423ea1e45e085c918351ef0a69fcde26e41') &&
-             !(oldSha==='75efd423ea1e45e085c918351ef0a69fcde26e41' && newSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a')) {
+             !(oldSha==='75efd423ea1e45e085c918351ef0a69fcde26e41' && newSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a') &&
+             !(oldSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a' && newSha==='75019eaeda6837528b38f8840565d2d40af74e9f')) {
            assert.equal(oldSha,'d2b0739987b5f79e14afc4acd6c440ae522ad776','Unexpected UN main baseline');
            assert.equal(newSha,'a6d7410805225b6f1b2e3b7e946630e4f248c9ed','Non-allowlisted UN paragraph changes');
          } // #16 eighth-pass exact SHA; other media/script/ID checks still run
@@ -896,14 +898,14 @@ console.log('Dossier checks passed: editorial links and research visualisation a
  * script/SVG/image/ID/media checks above still run for both investigations.
  * The 1.748 MB Rooivalk archival dossier and its strict hash guards are untouched.
  */
-for (const [file, original, previous, eighthPass, ninthPass, tenthPass] of [
+for (const [file, original, previous, eighthPass, ninthPass, tenthPass, eleventhPass] of [
   ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5', '26289507aa321beeebf176447a6f35da96b94430', 'c0b4de8df352490e144744b06c50e0170963472a', 'cbaf876f61ae5c774295bd0b2c07bcb345bd5b20'],
-  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a', '75efd423ea1e45e085c918351ef0a69fcde26e41', '7dae8fb85a5959a04e2db46987f0d2a49ef0d49a'],
+  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a', '75efd423ea1e45e085c918351ef0a69fcde26e41', '7dae8fb85a5959a04e2db46987f0d2a49ef0d49a', '75019eaeda6837528b38f8840565d2d40af74e9f'],
 ]) {
   const baseline = execFileSync('git', ['rev-parse', 'origin/main:' + file], {encoding:'utf8'}).trim();
   const actual = execFileSync('git', ['hash-object', file], {encoding:'utf8'}).trim();
-  assert([original, previous, eighthPass, ninthPass, tenthPass].includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
-  assert.equal(actual, tenthPass || ninthPass, 'Unreviewed #15-16 reviewed article blob: ' + file);
+  assert([original, previous, eighthPass, ninthPass, tenthPass, eleventhPass].filter(Boolean).includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
+  assert.equal(actual, eleventhPass || tenthPass || ninthPass, 'Unreviewed #15-16 reviewed article blob: ' + file);
 }
 
 
