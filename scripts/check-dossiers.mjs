@@ -482,6 +482,8 @@ for(const f of batch16){
      if(oldSha==='dd9c1e7bf6426dd5f1a19cba1ad377335ec8f71d' && newSha==='a294d1d2c00bbf40a2a4f5d371c55b3ebfa50004') continue;
      // Eleventh-pass 29 Oct #23: 2019 Africa Check chair vs independent 2025 former-chair biography; pipeline percentages flagged UNVERIFIED. No data/visual/JS changes.
      if(oldSha==='a294d1d2c00bbf40a2a4f5d371c55b3ebfa50004' && newSha==='d879f7cd48034625636b3cd28bccfe832a13c2b9') continue;
+     // Same-day 29 Oct #23 follow-up: remove remaining stale present-tense chairman attribution in beneficiary panel, exact reviewed blob only.
+     if(oldSha==='d879f7cd48034625636b3cd28bccfe832a13c2b9' && newSha==='9e8c65c3e1811507817d0bd868370eb7cabf0ed5') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
