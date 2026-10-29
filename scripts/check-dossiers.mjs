@@ -480,6 +480,8 @@ for(const f of batch16){
      if(oldSha==='d0be0f12f5bfe5a20051f54363ac4009dad05227' && newSha==='dd9c1e7bf6426dd5f1a19cba1ad377335ec8f71d') continue;
      // Tenth pass #23: verified Africa Check trust/host distinction, scoped source-audit prose only.
      if(oldSha==='dd9c1e7bf6426dd5f1a19cba1ad377335ec8f71d' && newSha==='a294d1d2c00bbf40a2a4f5d371c55b3ebfa50004') continue;
+     // Eleventh-pass 29 Oct #23: 2019 Africa Check chair vs independent 2025 former-chair biography; pipeline percentages flagged UNVERIFIED. No data/visual/JS changes.
+     if(oldSha==='a294d1d2c00bbf40a2a4f5d371c55b3ebfa50004' && newSha==='d879f7cd48034625636b3cd28bccfe832a13c2b9') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
@@ -498,6 +500,8 @@ for(const f of batch16){
      if(oldSha==='684d676c724da3dbe79437675f98ebc37cb9081a' && newSha==='9c153fc50fe763b90b5d150524f7d844d6f4c738') continue;
      // Tenth pass #24: judicially checked prose/labels; original graphics and data still immutable.
      if(oldSha==='9c153fc50fe763b90b5d150524f7d844d6f4c738' && newSha==='1f340bacc8f53a504a93b780054e32aa4a3ec108') continue;
+     // Eleventh-pass 29 Oct #24: Census 2022 8.2% Coloured / 2.7% Indian-Asian / 51.5% women, false fixed employment comparator removed; all original scripts/SVG/images/IDs kept.
+     if(oldSha==='1f340bacc8f53a504a93b780054e32aa4a3ec108' && newSha==='39d7744d77d32246c0df9786dba67ba5e90cc900') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
