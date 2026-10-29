@@ -1017,7 +1017,7 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  * origin/main under the existing preamble checks. Rooivalk remains protected. */
 for(const [page,older,reviewed,newest] of [
  ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64','82d06b2377d2207b2d92071334db7f3b8838c742'],
- ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4b','c35e8d22adac1290958a5f13529206f5e0f8bd16']
+ ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4b','0a59e26fe3d61444d2bf299831898f11df3d8e74','c35e8d22adac1290958a5f13529206f5e0f8bd16']
 ]) {
  const mainFile=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const liveFile=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
@@ -1031,7 +1031,7 @@ for(const [page,older,reviewed,newest] of [
  * published revision; all original scripts, SVGs, images, IDs and media
  * continue to be compared against origin/main in the preamble above. */
 for (const [page, prior, reviewed, intermediate, earlier] of [
-  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18'],
+  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', '3a48587c5da793887f503c5d2c23578a44b1a7c3', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1'],
   ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', 'd1b6f7cbf02251d5e353945555f835154cb2ffef', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763']
 ]) {
   const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
