@@ -719,6 +719,13 @@ for(const f of batch16){
  const approvedRowPair=oldHash==='b3bab0b910e94c1f67d2bda3996e1cabc057d11c'
   && newHash==='bb1ede2fd5151a1d4b12345274d5c7868a065c6f';
  const latestRowPair=oldHash==='f00799bcb79ebf6b250040d0c1324b16a5e9a1f0' && newHash==='4a1b051a96471bb03408e57aa8b9d53d2ae97c33';
+ const oct29RowPair=oldHash==='4a1b051a96471bb03408e57aa8b9d53d2ae97c33' && newHash==='fe11a0902c453a16748f31d7896b06297d57bba4';
+ const oct29Rows=[
+  ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],',
+   '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Omidyar Network (2014); ONFI (2016)","Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED","2014 announcement; Jan-2016 award","YES","VERIFIED"],'],
+  ['  [8,"Livity Africa","livity.co.za","Youth Media / Civic Tech","Luminate","$720,664 total","2013–2015","No","VERIFIED"],',
+   '  [8,"Livity Africa","livity.co.za","Youth Media / Civic Tech","Omidyar Network Fund (pre-2018 Luminate)","$534,616 Mar-2015 ONFI grant; expended by 2018; $720,664 legacy total UNVERIFIED","Mar-2015 grant; 2018 filing","No","VERIFIED"],']
+ ];
  const latestRows=[
   ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$500K joint 2017 + ongoing","2012–present","YES","VERIFIED"],',
    '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],'],
@@ -738,6 +745,12 @@ for(const f of batch16){
    expectedAtlas=expectedAtlas.replace(before,after);
   }
  }
+ if(oct29RowPair){
+  for(const [before,after] of oct29Rows){
+   assert.equal(expectedAtlas.split(before).length,2,'Atlas #29 October 29 baseline row missing');
+   expectedAtlas=expectedAtlas.replace(before,after);
+  }
+ }
  assert.equal(atlasData(now),expectedAtlas,'Unexpected funding atlas grant-data change');
  const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
@@ -748,9 +761,9 @@ for(const f of batch16){
   ['original IDs',/\bid=["'][^"']+["']/g]
  ]){
   if(label==='original filter scripts' && reviewedChange)continue;
-  if(label==='original filter scripts' && (approvedRowPair||latestRowPair)){
+  if(label==='original filter scripts' && (approvedRowPair||latestRowPair||oct29RowPair)){
    const restored=take(now,re).map(block=>{
-    for(const [before,after] of (approvedRowPair?auditedRows:latestRows)){
+    for(const [before,after] of (approvedRowPair?auditedRows:latestRowPair?latestRows:oct29Rows)){
      assert.equal(block.split(after).length===2 || !block.includes(after),true,'Repeated edited row');
      block=block.replace(after,before);
     }
@@ -763,7 +776,7 @@ for(const f of batch16){
  }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
- if(reviewedChange || approvedRowPair || latestRowPair){
+ if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair){
   const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
   assert(body,'Inline directory renderer missing');
   const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
@@ -776,8 +789,12 @@ for(const f of batch16){
   assert.equal((omid.match(/<tr data-name=/g)||[]).length,35,'Omidyar 35-row directory broken');
   for(const s of ['href="https://issafrica.org"','data-sector="research / think tank"','data-track="osf-d"','<td class="org-sector">Research / Think Tank</td>','<td class="org-amount">$5.1M / 7 grants</td>'])
    assert(osf.includes(s),'OSF mapping/link error: '+s);
-  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="luminate (formerly omidyar network)"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+(latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
+  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+(oct29RowPair?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+(oct29RowPair?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
    assert(omid.includes(s),'Omidyar mapping/link error: '+s);
+  if(oct29RowPair){
+   assert(omid.includes('<td class="org-amount">$534,616 Mar-2015 ONFI grant; expended by 2018; $720,664 legacy total UNVERIFIED</td>'),'Livity 2015 grant classification lost');
+   assert(omid.includes('data-track="omidyar network fund (pre-2018 luminate)"'),'Livity historical grantmaker lost');
+  }
   assert(!osf.includes('href="https://N/A"')&&!omid.includes('href="https://Archived"'),'Bad archival links');
   assert(!omid.includes('<td class="org-status">YES</td>'),'Incorrect status column mapping');
   assert(now.includes('aria-label="Search OSF organisations"')&&now.includes('aria-label="Search Omidyar organisations"'),'Atlas search input labels missing');
