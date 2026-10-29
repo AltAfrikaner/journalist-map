@@ -612,6 +612,10 @@ for(const f of batch16){
      const currentBase=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
      const currentPage=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
      if(currentBase===tenthPass[file][0] && currentPage===tenthPass[file][1]) continue;
+     // 29 October eleventh-pass: exact independent-source reviewed two-file update.
+     // No images, JS, CSS, SVG, data, IDs or original links may change.
+     if(file==='omidyar.html' && currentBase==='ee6336f46bec040e65160c9f378a5c1badf55681' && currentPage==='913570501ad4be74b9754c507d9abc21b9dd3226') continue;
+     if(file==='real411.html' && currentBase==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e' && currentPage==='86510720ad226cc55c02265afd0e48329e973392') continue;
      // Post-publication paragraph consistency correction after the new primary
      // framework became linkable. Only this exact Real411 blob pair may advance.
      if(file==='real411.html' && currentBase==='db13845b4cf33595171a7df1d677612445763840' && currentPage==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e') continue;
@@ -835,7 +839,8 @@ for (const [page, before, after] of [
  if(base!==now){
   // The prior historical ninth-pass guard still applies, but its published
   // Real411 page is now the reviewed baseline for this exact tenth pass.
-  if((base==='ef227de770e6489b886d6ef1a18a2a543878a4d6' && now==='db13845b4cf33595171a7df1d677612445763840') ||
+  if((base==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e' && now==='86510720ad226cc55c02265afd0e48329e973392') ||
+     (base==='ef227de770e6489b886d6ef1a18a2a543878a4d6' && now==='db13845b4cf33595171a7df1d677612445763840') ||
      (base==='db13845b4cf33595171a7df1d677612445763840' && now==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e')){
     // Specific new framework-text review; preservation checks remain active.
   } else {
@@ -855,7 +860,9 @@ for (const [page, before, after] of [
  if(before!==current){
   // Reconcile with the already-published raid-date follow-up: only the new
   // exact tenth-pass article blob may advance that known baseline.
-  if(before==='40d4d0c352b267be77cd99cc5c645aaa40e1a624' && current==='ee6336f46bec040e65160c9f378a5c1badf55681'){
+  if(before==='ee6336f46bec040e65160c9f378a5c1badf55681' && current==='913570501ad4be74b9754c507d9abc21b9dd3226'){
+    // 2023 consortium roles and IRAP unfunded status, sourced against the State Department and IRAP.
+  } else if(before==='40d4d0c352b267be77cd99cc5c645aaa40e1a624' && current==='ee6336f46bec040e65160c9f378a5c1badf55681'){
     // Validated Pacito filing dates; all original media/data guards still run.
   } else {
     assert.equal(before,'cebfd1a60f1e4154f6831c4e676abeb79c894d43','Unexpected Omidyar raid-date main baseline');
