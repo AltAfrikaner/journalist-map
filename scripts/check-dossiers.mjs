@@ -982,14 +982,14 @@ for(const [page,baseline,reviewed,published,latestApproved,finalReviewed] of [
 /* 29 October 2026 tenth-pass #05-06 exact public-framework source audit.
  * Exact reviewed text additions, not a blanket relaxation of the protected
  * JS/SVG/media/link preservation checks above. */
-for(const [p,oldBlob,newBlob,eleventhReviewed] of [
+for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed] of [
  ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924'],
- ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57'],
+ ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57',null,'f4170886781b2cf2bec82d368377ed143ad695f6'],
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
- assert([oldBlob,newBlob,eleventhReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
- assert.equal(actual,eleventhReviewed||newBlob,'Unreviewed #05-06 source change: '+p);
+ assert([oldBlob,newBlob,eleventhReviewed,twelfthReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
+ assert.equal(actual,twelfthReviewed||eleventhReviewed||newBlob,'Unreviewed #05-06 source change: '+p);
 }
 
 
@@ -998,14 +998,14 @@ for(const [p,oldBlob,newBlob,eleventhReviewed] of [
  * visual-component counts are independently compared with current main.
  * This short identity gate rejects all other changed content or media.
  */
-for(const [page,oldBlob,approved,newApproved] of [
- ['iol.html','92a124776128173390d304cc4bd1b250f33c783c','65088d3b78afd21ca61a44d4dba29e3c2df26d20','2dab107ba527b6735d740bc239cb91de730df5ff'],
+for(const [page,oldBlob,approved,newApproved,twelfthApproved] of [
+ ['iol.html','92a124776128173390d304cc4bd1b250f33c783c','65088d3b78afd21ca61a44d4dba29e3c2df26d20','2dab107ba527b6735d740bc239cb91de730df5ff','52e299facabf903515f160f2771ea6160201b33c'],
  ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e','38887e0f500267b97dfb56b933fd4163fa7567cb']
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([oldBlob,approved,newApproved].includes(fromMain),'Unknown #07–08 main baseline: '+page);
- assert.equal(actual,newApproved,'Unreviewed #07–08 article source/data change: '+page);
+ assert([oldBlob,approved,newApproved,twelfthApproved].filter(Boolean).includes(fromMain),'Unknown #07–08 main baseline: '+page);
+ assert.equal(actual,twelfthApproved||newApproved,'Unreviewed #07–08 article source/data change: '+page);
 }
 assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding:'utf8'}).trim(),
  '79c93657371ee799d564c07ed5e400bd90ba2690',
