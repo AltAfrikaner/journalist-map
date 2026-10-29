@@ -13,3 +13,7 @@
 ## Outstanding
 
 Current trustee/chair registry, audited 2026 funder allocations and independent grant-to-payment chain; all original funding diagram nodes/edges, substantive remaining allegations, responsive browser/keyboard/screen-reader audits and independent live-CDN content parity. Source URLs added without removing any historical hyperlinks; scripts, SVG, 3D, images, CSS, media and element IDs remain byte-identical to baseline.
+
+## Same-day post-merge reconciliation
+
+A second independently placed “Academic careers” beneficiary card still said **“Harber: chairs Africa Check”** after the main prose correction. That surviving present-tense assertion is now qualified as historical 2019 chair, **former chair in a 2025 biography**, with the actual 2026 board chair **UNVERIFIED**; undocumented contemporaneous Taco Kuiper and GIJN roles are no longer asserted as current verified appointments. The 81,780 citation number remains UNVERIFIED. This scoped follow-up has original Wits HTML blob `d879f7cd48034625636b3cd28bccfe832a13c2b9` and revised blob `9e8c65c3e1811507817d0bd868370eb7cabf0ed5`; JS/SVG/CSS/images/media/IDs/historical links unchanged. This is not release certification.
