@@ -537,6 +537,8 @@ for(const f of batch16){
       if(oldSha==='287109369921fad18dfd193bae52ef0de53fa66f' && newSha==='ac2ec0866058fc26799a73f31de2f21757e3d385') continue;
        // 28 Oct ninth pass: audited bilateral commitment/infographic text, exact current-main blob; preserve all scripts, SVG, original images, IDs, links.
        if(oldSha==='ac2ec0866058fc26799a73f31de2f21757e3d385' && newSha==='5d5e11482b05ce1ced514f9d59954fd3a39c961c') continue;
+       // Tenth pass #25: dated board-resignation/oversight chronology only. No JS, SVG, media or IDs changed.
+       if(oldSha==='5d5e11482b05ce1ced514f9d59954fd3a39c961c' && newSha==='4f6a1444a0f8234bae57678a518fecebcac3172f') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -593,6 +595,8 @@ for(const f of batch16){
       if(oldSha==='4f37632b4e9c264efbd5e5c1a1b1eb8ed6921385' && newSha==='9891efe6865816e1327d3cb06006153c4d2fd83a') continue;
        // 28 Oct ninth pass: FY2025 government grant denominator, pay/assets and visible dashboard correction; exact reviewed blob, original imagery/JS/SVG still checked.
        if(oldSha==='9891efe6865816e1327d3cb06006153c4d2fd83a' && newSha==='4358ee7e1f4856343663828b8dc5404e6da05498') continue;
+       // Tenth pass #26: exact prose corrections to raid location, financial scope and staffing allegations only.
+       if(oldSha==='4358ee7e1f4856343663828b8dc5404e6da05498' && newSha==='ed22c452fa7ec8024926735dfdada05fd5b8fb40') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
