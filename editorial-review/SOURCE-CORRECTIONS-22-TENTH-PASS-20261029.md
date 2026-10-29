@@ -10,6 +10,6 @@ Second, the categorical assertion of no ADL government-accountability statement 
 
 Third, the comparison of a US State Department report to ADL policy asserted a verified **$1.4 million 2024 ADL lobbying total** and SAJBD briefing “through” ADL, even though the page's own introductory note marks that amount **UNVERIFIED**. The correction requires original expenditure filings and specific entity-level briefing records rather than implying the two separate organisations have one reporting chain.
 
-**Exact file provenance:** Git blob before `12da94ea7026bde90e8693d3f9dc491e433d99e1`; after `98d20709b01827310a5c1aa6f800d7452bbb4b5d`. Three visible paragraphs changed; no original JavaScript, CSS, SVG/3D graph, media, image tags, IDs or existing hyperlink changed. The protected Rooivalk dossier and two CitizenIntel external repositories were not edited.
+**Exact file provenance:** Git blob before `12da94ea7026bde90e8693d3f9dc491e433d99e1`; after `6960d353be4e4685d25e6425cecc29329eed24c9`. Three visible paragraphs changed; no original JavaScript, CSS, SVG/3D graph, media, image tags, IDs or existing hyperlink changed. The protected Rooivalk dossier and two CitizenIntel external repositories were not edited.
 
 **Still OPEN:** full organisational right of reply and ADL response archive, tax/lobbying filings, privacy-case underlying transactions, graph and media provenance, real mobile/keyboard/screen-reader tests and independent CDN live-content parity. Criticism of unequal advocacy remains opinion until supported by comparable dated case and response records.
