@@ -414,8 +414,8 @@ for(const f of batch16){
        // Exact previous main blobs are required; no open-ended or wildcard exception.
        // Seventh-pass revisions are each tied to a dated per-file source-correction log.
        // Other checks still compare scripts, SVG, images, IDs and embedded media to main.
-       'splc.html':['0814980d1cf114eb23cce58f454a3c9528194f3f','bc1935e6190fd34ba0b1b000a08032f6f5da1541'],
-       'adl.html':['12da94ea7026bde90e8693d3f9dc491e433d99e1','98d20709b01827310a5c1aa6f800d7452bbb4b5d']
+       'splc.html':['0814980d1cf114eb23cce58f454a3c9528194f3f','4ac43eecc6ab5ec6f7fc588531bf91001dd60202'],
+       'adl.html':['12da94ea7026bde90e8693d3f9dc491e433d99e1','6960d353be4e4685d25e6425cecc29329eed24c9']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
