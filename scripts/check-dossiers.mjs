@@ -1054,17 +1054,18 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  'Protected Rooivalk dossier content changed');
 
 
-/* 28 Oct 2026: #09–10 sourced document-level revisions, strictly full-blob-pinned.
- * Original scripts, SVG, images, media and element IDs must still compare to
- * origin/main under the existing preamble checks. Rooivalk remains protected. */
-for(const [page,older,reviewed,newest] of [
- ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64','82d06b2377d2207b2d92071334db7f3b8838c742'],
- ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4b','0a59e26fe3d61444d2bf299831898f11df3d8e74','c35e8d22adac1290958a5f13529206f5e0f8bd16']
+/* 30 October 2026: strict approved #09–10 eleventh-pass exact HTML blobs.
+ * Baseline must be one of the historically reviewed files and the PR source
+ * must equal the new reviewed blob. JS, SVG, image, media and element ID
+ * preservation gates precede this block; Rooivalk is separately pinned. */
+for(const [page,older,reviewed,previousMain,approved] of [
+ ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64','82d06b2377d2207b2d92071334db7f3b8838c742','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff'],
+ ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4','c35e8d22adac1290958a5f13529206f5e0f8bd16','0a59e26fe3d61444d2bf299831898f11df3d8e74','71bf244f7bcd6cb73b22be1319d8336452bdd705']
 ]) {
- const mainFile=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
- const liveFile=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([older,reviewed,newest].filter(Boolean).includes(mainFile),'Unexpected #09-10 main file baseline: '+page);
- assert.equal(liveFile,page==='usaidtonewsroom.html'?newest:reviewed,'Unreviewed #09-10 source/media file change: '+page);
+ const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
+ const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
+ assert([older,reviewed,previousMain,approved].includes(fromMain),'Unexpected #09-10 main baseline: '+page);
+ assert.equal(actual,approved,'Unreviewed #09-10 article source/media change: '+page);
 }
 
 
