@@ -646,6 +646,9 @@ for(const f of batch16){
      // 30 October thirteenth-pass #27: funding denominator and ancestry attribution; script graph unchanged.
      if(file==='omidyar.html' && currentBase==='c7802f1da6850a758f5e402346e339bd90294d9b' && currentPage==='c47a965f68430fe7542fdd3229dd5d41404a93ff') continue;
      if(file==='real411.html' && currentBase==='86510720ad226cc55c02265afd0e48329e973392' && currentPage==='d15918058c497c85390d1d0d3d59fe3969151b07') continue;
+     // 30 October thirteenth-pass: FES/MMA archived study versus unverified 2026 Real411 grants.
+     // Paragraphs only, exact main-to-reviewed blob; JS, SVG, images and IDs remain strict.
+     if(file==='real411.html' && currentBase==='d15918058c497c85390d1d0d3d59fe3969151b07' && currentPage==='5d90afcc70cbee09074b9dd703e44ad97aae97b6') continue;
      // Post-publication paragraph consistency correction after the new primary
      // framework became linkable. Only this exact Real411 blob pair may advance.
      if(file==='real411.html' && currentBase==='db13845b4cf33595171a7df1d677612445763840' && currentPage==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e') continue;
@@ -754,6 +757,11 @@ for(const f of batch16){
  // UCT Children's Institute 2016 income statement. EXACT reviewed blob only.
  const oct30ChildLawPair=oldHash==='fe11a0902c453a16748f31d7896b06297d57bba4'
   && newHash==='9b080e46ffaf6e70490ae2e6b994a860493c28e0';
+ // 30 Oct fourteenth-pass: the CF 2015–2025 programme span versus
+ // recipient's 2026 funder listing. Source prose only; 108 data rows and
+ // scripts/graphics/source URLs are identical to current main.
+ const oct30LifecyclePair=oldHash==='9b080e46ffaf6e70490ae2e6b994a860493c28e0'
+  && newHash==='6d68a023f85faf30649a7db18535a88ebf95f5c2';
  const oct29Rows=[
   ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],',
    '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Omidyar Network (2014); ONFI (2016)","Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED","2014 announcement; Jan-2016 award","YES","VERIFIED"],'],
@@ -822,7 +830,7 @@ for(const f of batch16){
  }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
- if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair || oct30ChildLawPair){
+ if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair || oct30ChildLawPair || oct30LifecyclePair){
   const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
   assert(body,'Inline directory renderer missing');
   const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
@@ -835,13 +843,13 @@ for(const f of batch16){
   assert.equal((omid.match(/<tr data-name=/g)||[]).length,35,'Omidyar 35-row directory broken');
   for(const s of ['href="https://issafrica.org"','data-sector="research / think tank"','data-track="osf-d"','<td class="org-sector">Research / Think Tank</td>','<td class="org-amount">$5.1M / 7 grants</td>'])
    assert(osf.includes(s),'OSF mapping/link error: '+s);
-  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+((oct29RowPair||oct30ChildLawPair)?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+((oct29RowPair||oct30ChildLawPair)?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
+  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+((oct29RowPair||oct30ChildLawPair||oct30LifecyclePair)?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+((oct29RowPair||oct30ChildLawPair||oct30LifecyclePair)?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
    assert(omid.includes(s),'Omidyar mapping/link error: '+s);
-  if(oct29RowPair||oct30ChildLawPair){
+  if(oct29RowPair||oct30ChildLawPair||oct30LifecyclePair){
    assert(omid.includes('<td class="org-amount">$534,616 Mar-2015 ONFI grant; expended by 2018; $720,664 legacy total UNVERIFIED</td>'),'Livity 2015 grant classification lost');
    assert(omid.includes('data-track="omidyar network fund (pre-2018 luminate)"'),'Livity historical grantmaker lost');
   }
-  if(oct30ChildLawPair){
+  if(oct30ChildLawPair||oct30LifecyclePair){
    assert(now.includes(oct30ChildLawRows[0][1]) && now.includes(oct30ChildLawRows[1][1]),'Child-law legal entity/verification statuses changed');
    assert(osf.includes('<td class="org-amount">2016 CF R700K + OSF R750K pair absent from UCT Institute grant schedule; UNVERIFIED</td>'),'UCT misattributed legacy amount reintroduced');
    assert(osf.includes('<td class="org-amount">2016: CF R700K + OSF R750K; 2019: CF R1.5M + OSF R850K (annual reports)</td>'),'UP original-report donor income missing');
@@ -907,7 +915,8 @@ for (const [page, before, after] of [
  if(base!==now){
   // The prior historical ninth-pass guard still applies, but its published
   // Real411 page is now the reviewed baseline for this exact tenth pass.
-  if((base==='86510720ad226cc55c02265afd0e48329e973392' && now==='d15918058c497c85390d1d0d3d59fe3969151b07') ||
+  if((base==='d15918058c497c85390d1d0d3d59fe3969151b07' && now==='5d90afcc70cbee09074b9dd703e44ad97aae97b6') ||
+     (base==='86510720ad226cc55c02265afd0e48329e973392' && now==='d15918058c497c85390d1d0d3d59fe3969151b07') ||
      (base==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e' && now==='86510720ad226cc55c02265afd0e48329e973392') ||
      (base==='ef227de770e6489b886d6ef1a18a2a543878a4d6' && now==='db13845b4cf33595171a7df1d677612445763840') ||
      (base==='db13845b4cf33595171a7df1d677612445763840' && now==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e')){
