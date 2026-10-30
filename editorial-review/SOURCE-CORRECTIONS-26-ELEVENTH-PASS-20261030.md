@@ -1,0 +1,16 @@
+# Local investigation #26 — eleventh-pass evidence log (30 October 2026)
+
+**Release status: OPEN / NOT CERTIFIED.** Scoped to the “ANC government” network-summary card in `cws.html`. Baseline main `0a6abf29bb350692ea4257b288b8d03258493bb3`; original whole-file Git blob `ed22c452fa7ec8024926735dfdada05fd5b8fb40`; corrected Git blob `a45d94bba3b60b187117e79d7369fb3fd6378210`.
+
+## Claim-level evidence and correction
+1. **An overreaching command-chain assertion.** The original card asserted that “Pandor, Chikane, and Makgoba all hold ANC-aligned institutional positions” and that “Rasool's expulsion activated the Makgoba ecclesiastical channel.” These statements compressed official government roles, church advocacy and speculative causation into one asserted political mechanism. Membership or contact does not itself show instruction or coordination. The graph is not independent proof.
+2. **Primary evidence of advocacy.** Archbishop Thabo Makgoba's [original letter dated/received 14 May 2025 and published by the Episcopal Church on 15 May 2025](https://www.episcopalchurch.org/source/public-affairs/letter-from-archbishop-thabo-makgoba-of-cape-town-to-presiding-bishop-sean-rowe-2/) thanked Sean Rowe for his stance declining preferential resettlement of white Afrikaners and contested the US programme's rationale. This establishes a disclosed church leader's advocacy and correspondence, **not** ANC direction or a decision made by Church World Service.
+3. **Independent contemporaneous cross-check.** [Religion News Service, 15 May 2025](https://religionnews.com/2025/05/15/presiding-bishop-of-south-africa-thanks-episcopal-leader-for-declining-to-resettle-white-afrikaners/) independently reports this public exchange. It does not supply a government instruction or identify an affected individual refugee case.
+4. **Revised disclosure.** The card now distinguishes Pandor's government responsibility, Chikane's distinct history and Makgoba's office as Anglican Archbishop of Cape Town. Historical CWS–SACC funding and an ANC-related archival folder remain described as investigable leads, **not** evidence of operational direction. Claims that Rasool's expulsion activated the communication, that CWS received instructions, or that named Afrikaner applicants were affected remain **UNVERIFIED**.
+
+## Adversarial test, preservation, outstanding evidence
+A competing interpretation is that church leaders held their own genuine policy and theological positions, even when those positions aligned with government advocacy. The evidence does not rule out coordination but cannot presume it. The change preserves the pro-Afrikaner scrutiny of family-level refugee processing and equal access.
+
+One HTML narrative card and heading changed; existing scripts, styles, SVG/3D data, media/images, IDs, routes and original href ordering are unchanged. Two source links added; full-file correction requires exact SHA in dossier CI.
+
+**Outstanding:** government/diocesan direction documents if alleged, CWS award conditions, internal decision records, individual application outcomes, rights of reply, verification of each displayed graph edge and financial diagram, desktop/mobile/keyboard/screen-reader testing, and uncached public-CDN parity.
