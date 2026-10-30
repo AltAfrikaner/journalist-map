@@ -1113,7 +1113,7 @@ for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, p
 ]) {
   const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
   const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-  assert([prior,reviewed,intermediate,earlier,previouslyPublished,previousMain,...(page='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
+  assert([prior,reviewed,intermediate,earlier,previouslyPublished,previousMain,...(page==='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
   assert.equal(live,reviewed,'Unexpected #11–12 prose/source hash: '+page);
 }
 
