@@ -1074,12 +1074,16 @@ for(const [page,older,reviewed,previousMain,approved] of [
  * revisions. Main must be the old reviewed baseline or the exact newly
  * published revision; all original scripts, SVGs, images, IDs and media
  * continue to be compared against origin/main in the preamble above. */
-for (const [page, prior, reviewed, intermediate, earlier] of [
-  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', '3a48587c5da793887f503c5d2c23578a44b1a7c3', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1'],
-  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', '8b3eb33ab171d6b6737cf4a0f5f4eb8d6a995413', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763']
+/* 30 Oct twelfth pass #11–12: independently researched chronology and attribution corrections.
+ * Preserve all old published Git blob baselines but accept only the two new
+ * exact reviewed article hashes; media, JS, SVG, CSS, image and IDs are
+ * independently compared against the parent main tree above. */
+for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished] of [
+  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', '4aa3ab608fc4908bbc37b174aaaee6f57380cbe4', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1', '3a48587c5da793887f503c5d2c23578a44b1a7c3'],
+  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', 'ca584a46709d9d3922a6bdcffbd9e2f01bb8a0fc', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763', '8b3eb33ab171d6b6737cf4a0f5f4eb8d6a995413']
 ]) {
   const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
   const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-  assert([prior,reviewed,intermediate,earlier,...(page==='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
+  assert([prior,reviewed,intermediate,earlier,previouslyPublished,...(page==='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
   assert.equal(live,reviewed,'Unexpected #11–12 prose/source hash: '+page);
 }
