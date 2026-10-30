@@ -1,0 +1,14 @@
+# #23 Wits — twelfth-pass Jacobin Foundation fiscal evidence reconciliation (30 October 2026)
+
+**Base:** main `966fa750d24fff9a4a5c3a02aa15fc07cd1bc593`; article blob `9e8c65c3e1811507817d0bd868370eb7cabf0ed5` → `449d7c32250b903b463f8c3b620112f5f6a6145e`. **OPEN / NOT RELEASE-CERTIFIED.**
+
+## Original records and independent validation
+
+- **Original historical announcement:** On **8 December 2016**, [Africa Is a Country itself announced its Jacobin partnership](https://africasacountry.com/2016/12/africa-is-a-country-joins-jacobin). It explicitly requested US tax-deductible donations online or by cheque to “Jacobin Foundation,” 388 Atlantic Avenue, Brooklyn, with “Africa Is a Country” in the memo line. This supports a historical donor-routing arrangement, not an amount spent on particular editorial positions.
+- **Original publisher statement:** In its [23 March 2018 site relaunch](https://africasacountry.com/2018/03/check-out-our-new-clothes), Africa Is a Country described Jacobin Foundation as its publisher. [Jacobin's separate May 2018 editorial](https://jacobin.com/2018/05/socialism-in-our-time) independently described relaunching Africa Is a Country. These institutional acknowledgments supersede a legacy assertion that even the partnership's existence was wholly UNVERIFIED.
+- **Identified legal recipient:** [ProPublica's IRS-derived Nonprofit Explorer](https://projects.propublica.org/nonprofits/organizations/464332395), independently corroborated by [Charity Navigator](https://www.charitynavigator.org/ein/464332395), identifies Jacobin Foundation Ltd, EIN **46-4332395**, as a Brooklyn-based 501(c)(3). The **FY2024 Form 990** reports foundation-wide **$4,135,382 revenue**, **$4,205,647 expenses**, **$4,234,837 assets** and **$2,930,710 liabilities** (the 2024 tax return was filed **17 November 2025**). These are not Africa Is a Country-only figures.
+- **Boundary:** Neither a publisher relationship nor a tax-exempt legal entity proves a 2026 flow of a particular OSF, Rosa Luxemburg Stiftung or Wits grant to a specific editor. The amount, restrictions, ultimate payee and Wits instructions remain **UNVERIFIED** pending itemised filings, contracts and payment records. Journalistic and scholarly links must not be transformed into a claim of command or corruption without source-by-source evidence.
+
+## Preservation and outstanding release work
+
+Only the visible historic NGO-vehicle card has been reconciled. All original inline JavaScript, SVG, 3D data, graphics/images, CSS, IDs and existing href order remain unchanged; source links were added. The surrounding funding diagram, Progressive International and Africa Is a Country relationships, grant totals and institutional causality remain **OPEN** for full source-graph verification. Real device/mobile/keyboard/screen-reader and independent public-site parity under issue #234 remain outstanding. No release certification is implied.

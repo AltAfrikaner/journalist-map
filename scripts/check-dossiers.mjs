@@ -418,7 +418,7 @@ for(const f of batch16){
        // Seventh-pass revisions are each tied to a dated per-file source-correction log.
        // Other checks still compare scripts, SVG, images, IDs and embedded media to main.
        'splc.html':['4ac43eecc6ab5ec6f7fc588531bf91001dd60202','28364508e88d43b7f96c89f788458e2a7e8fd635'],
-       'adl.html':['12da94ea7026bde90e8693d3f9dc491e433d99e1','6960d353be4e4685d25e6425cecc29329eed24c9']
+       'adl.html':['6960d353be4e4685d25e6425cecc29329eed24c9','c8af3f19d8923a91c18f9acb03c59d3ff0ba5ba0']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
@@ -487,6 +487,8 @@ for(const f of batch16){
      if(oldSha==='a294d1d2c00bbf40a2a4f5d371c55b3ebfa50004' && newSha==='d879f7cd48034625636b3cd28bccfe832a13c2b9') continue;
      // Same-day 29 Oct #23 follow-up: remove remaining stale present-tense chairman attribution in beneficiary panel, exact reviewed blob only.
      if(oldSha==='d879f7cd48034625636b3cd28bccfe832a13c2b9' && newSha==='9e8c65c3e1811507817d0bd868370eb7cabf0ed5') continue;
+     // 30 Oct twelfth pass: original AIAC/Jacobin fiscal-sponsor chronology and IRS tax entity; static data/JS/SVG/images/IDs preserved.
+     if(oldSha==='9e8c65c3e1811507817d0bd868370eb7cabf0ed5' && newSha==='449d7c32250b903b463f8c3b620112f5f6a6145e') continue;
    }
    if(file==='constitution.html' && what==='original paragraphs'){
      const oldSha=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
