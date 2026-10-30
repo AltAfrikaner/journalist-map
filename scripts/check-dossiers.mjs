@@ -117,7 +117,7 @@ for(const f of nextBatch){
       // recognise only that byte-identical reviewed blob, never arbitrary #14 changes.
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
-      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9','4c8ffae2709710d91093ac914423b01038155695','c3c94209cac187efb11424e4882de19f715e1aa7'].includes(baseSha),'Unexpected #14 main baseline');
+      assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9','4c8ffae2709710d91093ac914423b01038155695','c3c94209cac187efb11424e4882de19f715e1aa7','4799ab31bb2ff57c2f4a46bea1949b40a7488ba8'].includes(baseSha),'Unexpected #14 main baseline');
       assert.equal(liveSha,'4799ab31bb2ff57c2f4a46bea1949b40a7488ba8','Unexpected #14 eleventh-pass 2025 Green Drop wastewater correction; see SOURCE-CORRECTIONS-14-ELEVENTH-PASS-20261030.md');
       continue;
     }
@@ -134,6 +134,7 @@ for(const f of nextBatch){
       if(original==='22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5' && revised==='26289507aa321beeebf176447a6f35da96b94430') continue; // #15 eighth-pass historical transition
       if(original==='26289507aa321beeebf176447a6f35da96b94430' && revised==='c0b4de8df352490e144744b06c50e0170963472a') continue; // #15 ninth pass
       if(original==='c0b4de8df352490e144744b06c50e0170963472a' && revised==='cbaf876f61ae5c774295bd0b2c07bcb345bd5b20') continue; // #15 tenth-pass USGS reserves correction, exact blob only
+       if(original==='cbaf876f61ae5c774295bd0b2c07bcb345bd5b20' && revised==='5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1') continue; // 30 Oct twelfth-pass YGL correction; scripts/SVG/media/IDs still immutable
       assert.deepEqual(extract(now,re),extract(base,re),'Non-allowlisted WEF prose changed');
       continue;
     }
@@ -301,7 +302,8 @@ for(const f of batch16){
          const newSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
          if (!(oldSha==='3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a' && newSha==='75efd423ea1e45e085c918351ef0a69fcde26e41') &&
              !(oldSha==='75efd423ea1e45e085c918351ef0a69fcde26e41' && newSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a') &&
-             !(oldSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a' && newSha==='75019eaeda6837528b38f8840565d2d40af74e9f')) {
+             !(oldSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a' && newSha==='75019eaeda6837528b38f8840565d2d40af74e9f') &&
+              !(oldSha==='75019eaeda6837528b38f8840565d2d40af74e9f' && newSha==='ba29c060309c865582b2be2b7bc11cb4ac4c8779')) {
            assert.equal(oldSha,'d2b0739987b5f79e14afc4acd6c440ae522ad776','Unexpected UN main baseline');
            assert.equal(newSha,'a6d7410805225b6f1b2e3b7e946630e4f248c9ed','Non-allowlisted UN paragraph changes');
          } // #16 eighth-pass exact SHA; other media/script/ID checks still run
