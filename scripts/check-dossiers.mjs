@@ -509,6 +509,8 @@ for(const f of batch16){
      if(oldSha==='9c153fc50fe763b90b5d150524f7d844d6f4c738' && newSha==='1f340bacc8f53a504a93b780054e32aa4a3ec108') continue;
      // Eleventh-pass 29 Oct #24: Census 2022 8.2% Coloured / 2.7% Indian-Asian / 51.5% women, false fixed employment comparator removed; all original scripts/SVG/images/IDs kept.
      if(oldSha==='1f340bacc8f53a504a93b780054e32aa4a3ec108' && newSha==='39d7744d77d32246c0df9786dba67ba5e90cc900') continue;
+     // 30 Oct fourteenth-pass #24: dated official GDP series and UNVERIFIED demographic-scorecard rubric; exact reviewed full blob only. Original JS/SVG/images/IDs remain strictly compared.
+     if(oldSha==='39d7744d77d32246c0df9786dba67ba5e90cc900' && newSha==='f86219a6f6d2cacad0170fed2b3f0b27944efe72') continue;
      // 24 October second-pass legal-source reconciliation: this exact baseline
      // and full reviewed blob only. Original scripts/SVGs/images/IDs remain
      // independently and byte-for-byte compared in the same test loop.
@@ -555,6 +557,8 @@ for(const f of batch16){
        if(oldSha==='5d5e11482b05ce1ced514f9d59954fd3a39c961c' && newSha==='4f6a1444a0f8234bae57678a518fecebcac3172f') continue;
         // 30 Oct eleventh pass #25: primary statement and independent cross-check replace an unauthenticated attributed pull quote; every script/SVG/media/ID guard still applies.
         if(oldSha==='4f6a1444a0f8234bae57678a518fecebcac3172f' && newSha==='6289d0902f4857853aec5c95bbde7a8ff50d894b') continue;
+        // 30 Oct twelfth-pass #25: primary IEC Gazette + independent contemporaneous correction versus categorical mission-change claim; exact full-file hash, separate visual/data guards.
+        if(oldSha==='6289d0902f4857853aec5c95bbde7a8ff50d894b' && newSha==='1a0700c4a80fcb41ae67253a13e5138763210bb1') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
