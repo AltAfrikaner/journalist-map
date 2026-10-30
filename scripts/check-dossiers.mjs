@@ -1023,14 +1023,14 @@ for(const [page,baseline,reviewed,published,latestApproved,finalReviewed] of [
 /* 29 October 2026 tenth-pass #05-06 exact public-framework source audit.
  * Exact reviewed text additions, not a blanket relaxation of the protected
  * JS/SVG/media/link preservation checks above. */
-for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed] of [
- ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924'],
- ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57',null,'f4170886781b2cf2bec82d368377ed143ad695f6'],
+for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed] of [
+ ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924',null,'c2f5a13f0122dcc1f843b489ed87f33637d3c2ad'],
+ ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57',null,'f4170886781b2cf2bec82d368377ed143ad695f6','b9a091c1de7b20590f52bf148e6bb94d30b9f417'],
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
- assert([oldBlob,newBlob,eleventhReviewed,twelfthReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
- assert.equal(actual,twelfthReviewed||eleventhReviewed||newBlob,'Unreviewed #05-06 source change: '+p);
+ assert([oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
+ assert.equal(actual,thirteenthReviewed||twelfthReviewed||eleventhReviewed||newBlob,'Unreviewed #05-06 source change: '+p);
 }
 
 
