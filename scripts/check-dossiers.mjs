@@ -619,6 +619,8 @@ for(const f of batch16){
        if(oldSha==='4358ee7e1f4856343663828b8dc5404e6da05498' && newSha==='ed22c452fa7ec8024926735dfdada05fd5b8fb40') continue;
         // 30 Oct eleventh pass #26: official bishop letter versus independent reporting; government-command assertion qualified with exact source-checked blob.
         if(oldSha==='ed22c452fa7ec8024926735dfdada05fd5b8fb40' && newSha==='a45d94bba3b60b187117e79d7369fb3fd6378210') continue;
+        // 30 October twelfth-pass #26: only the verified order-scope and 7 March distinction.
+        if(oldSha==='a45d94bba3b60b187117e79d7369fb3fd6378210' && newSha==='a22fc5d45a13bac1ac3bbb0ff392574c5e899290') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
@@ -641,6 +643,8 @@ for(const f of batch16){
      // 30 Oct twelfth pass: coalition-vs-IEC instrument separation and
      // original HTML diagram labels corrected; JS, CSS, SVG, imagery and IDs unchanged.
      if(file==='omidyar.html' && currentBase==='913570501ad4be74b9754c507d9abc21b9dd3226' && currentPage==='c7802f1da6850a758f5e402346e339bd90294d9b') continue;
+     // 30 October thirteenth-pass #27: funding denominator and ancestry attribution; script graph unchanged.
+     if(file==='omidyar.html' && currentBase==='c7802f1da6850a758f5e402346e339bd90294d9b' && currentPage==='c47a965f68430fe7542fdd3229dd5d41404a93ff') continue;
      if(file==='real411.html' && currentBase==='86510720ad226cc55c02265afd0e48329e973392' && currentPage==='d15918058c497c85390d1d0d3d59fe3969151b07') continue;
      // Post-publication paragraph consistency correction after the new primary
      // framework became linkable. Only this exact Real411 blob pair may advance.
@@ -925,7 +929,9 @@ for (const [page, before, after] of [
  if(before!==current){
   // Reconcile with the already-published raid-date follow-up: only the new
   // exact tenth-pass article blob may advance that known baseline.
-  if(before==='913570501ad4be74b9754c507d9abc21b9dd3226' && current==='c7802f1da6850a758f5e402346e339bd90294d9b'){
+  if(before==='c7802f1da6850a758f5e402346e339bd90294d9b' && current==='c47a965f68430fe7542fdd3229dd5d41404a93ff'){
+    // 30 Oct thirteenth-pass funding and provenance correction, exact blob only.
+  } else if(before==='913570501ad4be74b9754c507d9abc21b9dd3226' && current==='c7802f1da6850a758f5e402346e339bd90294d9b'){
     // 30 Oct twelfth-pass PIIE/IEC distinction and source-linked entity correction.
   } else if(before==='ee6336f46bec040e65160c9f378a5c1badf55681' && current==='913570501ad4be74b9754c507d9abc21b9dd3226'){
     // 2023 consortium roles and IRAP unfunded status, sourced against the State Department and IRAP.
