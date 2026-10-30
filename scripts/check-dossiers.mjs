@@ -548,6 +548,8 @@ for(const f of batch16){
        if(oldSha==='ac2ec0866058fc26799a73f31de2f21757e3d385' && newSha==='5d5e11482b05ce1ced514f9d59954fd3a39c961c') continue;
        // Tenth pass #25: dated board-resignation/oversight chronology only. No JS, SVG, media or IDs changed.
        if(oldSha==='5d5e11482b05ce1ced514f9d59954fd3a39c961c' && newSha==='4f6a1444a0f8234bae57678a518fecebcac3172f') continue;
+        // 30 Oct eleventh pass #25: primary statement and independent cross-check replace an unauthenticated attributed pull quote; every script/SVG/media/ID guard still applies.
+        if(oldSha==='4f6a1444a0f8234bae57678a518fecebcac3172f' && newSha==='6289d0902f4857853aec5c95bbde7a8ff50d894b') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -606,6 +608,8 @@ for(const f of batch16){
        if(oldSha==='9891efe6865816e1327d3cb06006153c4d2fd83a' && newSha==='4358ee7e1f4856343663828b8dc5404e6da05498') continue;
        // Tenth pass #26: exact prose corrections to raid location, financial scope and staffing allegations only.
        if(oldSha==='4358ee7e1f4856343663828b8dc5404e6da05498' && newSha==='ed22c452fa7ec8024926735dfdada05fd5b8fb40') continue;
+        // 30 Oct eleventh pass #26: official bishop letter versus independent reporting; government-command assertion qualified with exact source-checked blob.
+        if(oldSha==='ed22c452fa7ec8024926735dfdada05fd5b8fb40' && newSha==='a45d94bba3b60b187117e79d7369fb3fd6378210') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
