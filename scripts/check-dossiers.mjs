@@ -411,13 +411,13 @@ for(const f of batch16){
    ['element IDs',/\bid=["'][^"']+["']/g]
   ]) {
     if(['splc.html','adl.html'].includes(file) && label==='paragraphs' && now!==old){
-      // 29 October seventh-pass reconciliation of fiscal-year and California-court evidence. Only exact reviewed full
+      // 30 October further source reconciliation for FY2025 filing; only exact reviewed full
       // blobs are permitted, with original JS/SVG/image/ID checks below intact.
       const reviewed={
        // Exact previous main blobs are required; no open-ended or wildcard exception.
        // Seventh-pass revisions are each tied to a dated per-file source-correction log.
        // Other checks still compare scripts, SVG, images, IDs and embedded media to main.
-       'splc.html':['0814980d1cf114eb23cce58f454a3c9528194f3f','4ac43eecc6ab5ec6f7fc588531bf91001dd60202'],
+       'splc.html':['4ac43eecc6ab5ec6f7fc588531bf91001dd60202','28364508e88d43b7f96c89f788458e2a7e8fd635'],
        'adl.html':['12da94ea7026bde90e8693d3f9dc491e433d99e1','6960d353be4e4685d25e6425cecc29329eed24c9']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
@@ -425,13 +425,13 @@ for(const f of batch16){
       assert.equal(before,reviewed[file][0],'Unexpected baseline before editorial corrections: '+file);
       assert.equal(after,reviewed[file][1],'Unreviewed content change: '+file);
      } else if(file==='mbalula_network.html' && label==='paragraphs' && now!==old) {
-      // Exact whole-file allowance for 29 Oct TWELFTH-pass primary-bill, allegations and media-claim audit.
+      // Exact whole-file allowance for 30 Oct THIRTEENTH-pass TRC/Soviet/SVR source-graded audit.
       // Non-article script/SVG/image/ID/media checks remain unchanged.
-      // See editorial-review/SOURCE-CORRECTIONS-20-TWELFTH-PASS-20261029.md.
+      // See editorial-review/SOURCE-CORRECTIONS-20-THIRTEENTH-PASS-20261030.md.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
-      assert.equal(originalHash,'a9286397f9a5f794096b84a065c2380c2ff0c363','Unexpected #20 main baseline for 29 Oct twelfth-pass review');
-      assert.equal(revisedHash,'70eb6da03627e25964867b7dc11ca232eef58572','Unreviewed #20 twelfth-pass source/content change');
+      assert.equal(originalHash,'70eb6da03627e25964867b7dc11ca232eef58572','Unexpected #20 main baseline for 30 Oct thirteenth-pass review');
+      assert.equal(revisedHash,'4dc936b6bffec9c4efdd25173ead03cbc10e6e15','Unreviewed #20 thirteenth-pass source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
