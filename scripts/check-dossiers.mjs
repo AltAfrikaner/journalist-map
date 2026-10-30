@@ -277,11 +277,11 @@ for(const f of batch16){
    // 30 Oct 2026 #17: the source correction is prose-only; compare original embedded assets.
    if(baselineBlob==='d2cb131b833dedd789e7edb10d33ebb0927e414b' && liveBlob==='3662fe3f00bf881045ac564ef0b81f811faca65f') {
      const oldText=execFileSync('git',['show','origin/main:'+f],{encoding:'utf8',maxBuffer:16*1024*1024});
-     for(const [label,re] of [['script',/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi],['svg',/<svg\\b[^>]*>[\\s\\S]*?<\\/svg>/gi],['img',/<img\\b[^>]*>/gi],['style',/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi],['id',/\\bid=[\"'][^\"']+[\"']/gi]]) {
+     for(const [label,re] of [['script',/<script\b[^>]*>[\s\S]*?<\/script>/gi],['svg',/<svg\b[^>]*>[\s\S]*?<\/svg>/gi],['img',/<img\b[^>]*>/gi],['style',/<style\b[^>]*>[\s\S]*?<\/style>/gi],['id',/\bid=[\"'][^\"']+[\"']/gi]]) {
        const items=s=>[...s.matchAll(re)].map(m=>m[0]);
        assert.deepEqual(items(now),items(oldText),'#17 preserved '+label+' changed');
      }
-     const links=s=>[...s.matchAll(/<a\\b[^>]*href=[\"'][^\"']+[\"'][^>]*>/gi)].map(m=>m[0]);
+     const links=s=>[...s.matchAll(/<a\b[^>]*href=[\"'][^\"']+[\"'][^>]*>/gi)].map(m=>m[0]);
      const before=links(oldText), after=links(now);let i=0;
      for(const link of after)if(link===before[i])i++;
      assert.equal(i,before.length,'#17 existing link order modified');
