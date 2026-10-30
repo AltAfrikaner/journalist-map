@@ -386,8 +386,8 @@ for(const f of batch16){
      // See editorial-review/SOURCE-CORRECTIONS-19-ELEVENTH-PASS-20261029.md.
      const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
      const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-     assert.equal(originalHash,'c2b7b045bb40828ed29c2a9801c8157ecc9beb26','Unexpected #19 main baseline for 30 Oct twelfth-pass review');
-     assert.equal(revisedHash,'2d935611559bfcad0fef0c517e7cca8843790359','Unreviewed #19 twelfth-pass source/content change');
+     assert.equal(originalHash,'2d935611559bfcad0fef0c517e7cca8843790359','Unexpected #19 main baseline for 30 Oct thirteenth-pass review');
+     assert.equal(revisedHash,'53c3c557027f82322361bfc1e8c8c3f7c5885434','Unreviewed #19 thirteenth-pass source/content change');
    } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  }
  for(const sig of ['<canvas','data:image','<iframe'])
@@ -445,8 +445,8 @@ for(const f of batch16){
       // See editorial-review/SOURCE-CORRECTIONS-20-THIRTEENTH-PASS-20261030.md.
       const originalHash=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const revisedHash=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
-      assert.equal(originalHash,'70eb6da03627e25964867b7dc11ca232eef58572','Unexpected #20 main baseline for 30 Oct thirteenth-pass review');
-      assert.equal(revisedHash,'4dc936b6bffec9c4efdd25173ead03cbc10e6e15','Unreviewed #20 thirteenth-pass source/content change');
+      assert.equal(originalHash,'4dc936b6bffec9c4efdd25173ead03cbc10e6e15','Unexpected #20 main baseline for 30 Oct fourteenth-pass review');
+      assert.equal(revisedHash,'01d7ce111a6218a2b7cfddbf8701d3c53c12aae5','Unreviewed #20 fourteenth-pass source/content change');
     } else assert.deepEqual(extract(now,re),extract(old,re),'Modified original '+label+' in '+file);
   }
   for(const s of ['data:image','<canvas','<iframe'])
