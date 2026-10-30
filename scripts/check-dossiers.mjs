@@ -737,11 +737,21 @@ for(const f of batch16){
   && newHash==='bb1ede2fd5151a1d4b12345274d5c7868a065c6f';
  const latestRowPair=oldHash==='f00799bcb79ebf6b250040d0c1324b16a5e9a1f0' && newHash==='4a1b051a96471bb03408e57aa8b9d53d2ae97c33';
  const oct29RowPair=oldHash==='4a1b051a96471bb03408e57aa8b9d53d2ae97c33' && newHash==='fe11a0902c453a16748f31d7896b06297d57bba4';
+ // 30 Oct: UP Centre for Child Law original 2016/2019 income tables versus
+ // UCT Children's Institute 2016 income statement. EXACT reviewed blob only.
+ const oct30ChildLawPair=oldHash==='fe11a0902c453a16748f31d7896b06297d57bba4'
+  && newHash==='9b080e46ffaf6e70490ae2e6b994a860493c28e0';
  const oct29Rows=[
   ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],',
    '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Omidyar Network (2014); ONFI (2016)","Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED","2014 announcement; Jan-2016 award","YES","VERIFIED"],'],
   ['  [8,"Livity Africa","livity.co.za","Youth Media / Civic Tech","Luminate","$720,664 total","2013–2015","No","VERIFIED"],',
    '  [8,"Livity Africa","livity.co.za","Youth Media / Civic Tech","Omidyar Network Fund (pre-2018 Luminate)","$534,616 Mar-2015 ONFI grant; expended by 2018; $720,664 legacy total UNVERIFIED","Mar-2015 grant; 2018 filing","No","VERIFIED"],']
+ ];
+ const oct30ChildLawRows=[
+  ['  [44,"Children\'s Institute (UCT)","ci.uct.ac.za","Research / Child Rights","Cape Town","STACKED","CF R700K + OSF R750K (2016 simultaneously)","HISTORICAL VERIFIED"],',
+   '  [44,"Children\'s Institute (UCT)","ci.uct.ac.za","Research / Child Rights","Cape Town","STACKED","2016 CF R700K + OSF R750K pair absent from UCT Institute grant schedule; UNVERIFIED","UNVERIFIED"],'],
+  ['  [69,"Centre for Child Law (CCL)","centreforchildlaw.co.za","Legal / Academic","Pretoria (UP)","STACKED","CF R700K + OSF R750K (2016 simultaneously)","VERIFIED"],',
+   '  [69,"Centre for Child Law (CCL)","centreforchildlaw.co.za","Legal / Academic","Pretoria (UP)","STACKED","2016: CF R700K + OSF R750K; 2019: CF R1.5M + OSF R850K (annual reports)","VERIFIED"],']
  ];
  const latestRows=[
   ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$500K joint 2017 + ongoing","2012–present","YES","VERIFIED"],',
@@ -768,6 +778,12 @@ for(const f of batch16){
    expectedAtlas=expectedAtlas.replace(before,after);
   }
  }
+ if(oct30ChildLawPair){
+  for(const [before,after] of oct30ChildLawRows){
+   assert.equal(expectedAtlas.split(before).length,2,'Atlas #29 child-law original row missing');
+   expectedAtlas=expectedAtlas.replace(before,after);
+  }
+ }
  assert.equal(atlasData(now),expectedAtlas,'Unexpected funding atlas grant-data change');
  const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
@@ -778,9 +794,9 @@ for(const f of batch16){
   ['original IDs',/\bid=["'][^"']+["']/g]
  ]){
   if(label==='original filter scripts' && reviewedChange)continue;
-  if(label==='original filter scripts' && (approvedRowPair||latestRowPair||oct29RowPair)){
+  if(label==='original filter scripts' && (approvedRowPair||latestRowPair||oct29RowPair||oct30ChildLawPair)){
    const restored=take(now,re).map(block=>{
-    for(const [before,after] of (approvedRowPair?auditedRows:latestRowPair?latestRows:oct29Rows)){
+    for(const [before,after] of (oct30ChildLawPair?oct30ChildLawRows:approvedRowPair?auditedRows:latestRowPair?latestRows:oct29Rows)){
      assert.equal(block.split(after).length===2 || !block.includes(after),true,'Repeated edited row');
      block=block.replace(after,before);
     }
@@ -793,7 +809,7 @@ for(const f of batch16){
  }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
- if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair){
+ if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair || oct30ChildLawPair){
   const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
   assert(body,'Inline directory renderer missing');
   const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
@@ -806,11 +822,16 @@ for(const f of batch16){
   assert.equal((omid.match(/<tr data-name=/g)||[]).length,35,'Omidyar 35-row directory broken');
   for(const s of ['href="https://issafrica.org"','data-sector="research / think tank"','data-track="osf-d"','<td class="org-sector">Research / Think Tank</td>','<td class="org-amount">$5.1M / 7 grants</td>'])
    assert(osf.includes(s),'OSF mapping/link error: '+s);
-  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+(oct29RowPair?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+(oct29RowPair?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
+  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+((oct29RowPair||oct30ChildLawPair)?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+((oct29RowPair||oct30ChildLawPair)?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
    assert(omid.includes(s),'Omidyar mapping/link error: '+s);
-  if(oct29RowPair){
+  if(oct29RowPair||oct30ChildLawPair){
    assert(omid.includes('<td class="org-amount">$534,616 Mar-2015 ONFI grant; expended by 2018; $720,664 legacy total UNVERIFIED</td>'),'Livity 2015 grant classification lost');
    assert(omid.includes('data-track="omidyar network fund (pre-2018 luminate)"'),'Livity historical grantmaker lost');
+  }
+  if(oct30ChildLawPair){
+   assert(now.includes(oct30ChildLawRows[0][1]) && now.includes(oct30ChildLawRows[1][1]),'Child-law legal entity/verification statuses changed');
+   assert(osf.includes('<td class="org-amount">2016 CF R700K + OSF R750K pair absent from UCT Institute grant schedule; UNVERIFIED</td>'),'UCT misattributed legacy amount reintroduced');
+   assert(osf.includes('<td class="org-amount">2016: CF R700K + OSF R750K; 2019: CF R1.5M + OSF R850K (annual reports)</td>'),'UP original-report donor income missing');
   }
   assert(!osf.includes('href="https://N/A"')&&!omid.includes('href="https://Archived"'),'Bad archival links');
   assert(!omid.includes('<td class="org-status">YES</td>'),'Incorrect status column mapping');
