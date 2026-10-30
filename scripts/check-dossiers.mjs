@@ -1083,18 +1083,18 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  'Protected Rooivalk dossier content changed');
 
 
-/* 30 October 2026: strict approved #09–10 eleventh-pass exact HTML blobs.
- * Baseline must be one of the historically reviewed files and the PR source
- * must equal the new reviewed blob. JS, SVG, image, media and element ID
- * preservation gates precede this block; Rooivalk is separately pinned. */
-for(const [page,older,reviewed,previousMain,approved] of [
- ['usaidtonewsroom.html','cbd0274f4fccedd067187f0236cb99e3d13c0cf6','6ff375ff8b2a0b9646991da069e4df05b7e22a64','82d06b2377d2207b2d92071334db7f3b8838c742','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff'],
- ['mtn.html','8871a2077e8b36a41e0a202dee867dd1ed573b4','c35e8d22adac1290958a5f13529206f5e0f8bd16','0a59e26fe3d61444d2bf299831898f11df3d8e74','71bf244f7bcd6cb73b22be1319d8336452bdd705']
+/* 30 October 2026: #09–10 twelfth-pass exact approved HTML blobs.
+ * Both prior main and new main are explicitly allowed as PR baselines.
+ * Whole-file identity rejects all other changes; earlier checks separately
+ * guard JS/SVG/media/IDs/historic link order. Rooivalk pinned below. */
+for(const [page,priorApproved,newApproved] of [
+ ['usaidtonewsroom.html','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff','ef09793df658e12fac744960a2e4d09daf012f34'],
+ ['mtn.html','71bf244f7bcd6cb73b22be1319d8336452bdd705','6d2eb0547cb5cdb5b000445032b1d7488da4b2db']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([older,reviewed,previousMain,approved].includes(fromMain),'Unexpected #09-10 main baseline: '+page);
- assert.equal(actual,approved,'Unreviewed #09-10 article source/media change: '+page);
+ assert([priorApproved,newApproved].includes(fromMain),'Unexpected #09-10 main baseline: '+page);
+ assert.equal(actual,newApproved,'Unreviewed #09-10 article source/media change: '+page);
 }
 
 
