@@ -1040,14 +1040,14 @@ for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed
  * visual-component counts are independently compared with current main.
  * This short identity gate rejects all other changed content or media.
  */
-for(const [page,oldBlob,approved,newApproved,twelfthApproved,latestReviewed] of [
+for(const [page,oldBlob,approved,newApproved,twelfthApproved,latestReviewed,newestReviewed] of [
  ['iol.html','92a124776128173390d304cc4bd1b250f33c783c','65088d3b78afd21ca61a44d4dba29e3c2df26d20','2dab107ba527b6735d740bc239cb91de730df5ff','52e299facabf903515f160f2771ea6160201b33c','6987710cf3b5b3ef2d974b9a131bb9453c9fad35'],
- ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e','38887e0f500267b97dfb56b933fd4163fa7567cb','d0ce26bd81e8a509adb3275676c705449110ea05','b432e50e9fa207528b35b24142823ba59171156c']
+ ['usaid.html','a131989af882e7ce447b0b8c66076808c050b80c','a001b02f7057afe2f845fe05b739ee23fa44c03e','38887e0f500267b97dfb56b933fd4163fa7567cb','d0ce26bd81e8a509adb3275676c705449110ea05','85072587a0c2ab2a89a1516a08af1f9b3994f146','b432e50e9fa207528b35b24142823ba59171156c']
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([oldBlob,approved,newApproved,twelfthApproved,latestReviewed].filter(Boolean).includes(fromMain),'Unknown #07–08 main baseline: '+page);
- assert.equal(actual,latestReviewed||twelfthApproved||newApproved,'Unreviewed #07–08 article source/data change: '+page);
+ assert([oldBlob,approved,newApproved,twelfthApproved,latestReviewed,newestReviewed].filter(Boolean).includes(fromMain),'Unknown #07–08 main baseline: '+page);
+ assert.equal(actual,newestReviewed||latestReviewed||twelfthApproved||newApproved,'Unreviewed #07–08 article source/data change: '+page);
 }
 assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding:'utf8'}).trim(),
  '79c93657371ee799d564c07ed5e400bd90ba2690',
