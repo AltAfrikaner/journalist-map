@@ -135,6 +135,7 @@ for(const f of nextBatch){
       if(original==='26289507aa321beeebf176447a6f35da96b94430' && revised==='c0b4de8df352490e144744b06c50e0170963472a') continue; // #15 ninth pass
       if(original==='c0b4de8df352490e144744b06c50e0170963472a' && revised==='cbaf876f61ae5c774295bd0b2c07bcb345bd5b20') continue; // #15 tenth-pass USGS reserves correction, exact blob only
        if(original==='cbaf876f61ae5c774295bd0b2c07bcb345bd5b20' && revised==='5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1') continue; // 30 Oct twelfth-pass YGL correction; scripts/SVG/media/IDs still immutable
+      if(original==='5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1' && revised==='b8b7ed1fe56a53dfadb70f194b62f7ccdfdf9aae') continue; // 30 Oct thirteenth-pass primary annual 973 partners and reported revenue; scripts/SVG/media/IDs unchanged
       assert.deepEqual(extract(now,re),extract(base,re),'Non-allowlisted WEF prose changed');
       continue;
     }
@@ -304,7 +305,8 @@ for(const f of batch16){
          if (!(oldSha==='3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a' && newSha==='75efd423ea1e45e085c918351ef0a69fcde26e41') &&
              !(oldSha==='75efd423ea1e45e085c918351ef0a69fcde26e41' && newSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a') &&
              !(oldSha==='7dae8fb85a5959a04e2db46987f0d2a49ef0d49a' && newSha==='75019eaeda6837528b38f8840565d2d40af74e9f') &&
-              !(oldSha==='75019eaeda6837528b38f8840565d2d40af74e9f' && newSha==='ba29c060309c865582b2be2b7bc11cb4ac4c8779')) {
+              !(oldSha==='75019eaeda6837528b38f8840565d2d40af74e9f' && newSha==='ba29c060309c865582b2be2b7bc11cb4ac4c8779') &&
+              !(oldSha==='ba29c060309c865582b2be2b7bc11cb4ac4c8779' && newSha==='d4dc5f254e3279f6f9db89cfb61ad27a70a29bbf')) {
            assert.equal(oldSha,'d2b0739987b5f79e14afc4acd6c440ae522ad776','Unexpected UN main baseline');
            assert.equal(newSha,'a6d7410805225b6f1b2e3b7e946630e4f248c9ed','Non-allowlisted UN paragraph changes');
          } // #16 eighth-pass exact SHA; other media/script/ID checks still run
@@ -960,14 +962,14 @@ console.log('Dossier checks passed: editorial links and research visualisation a
  * script/SVG/image/ID/media checks above still run for both investigations.
  * The 1.748 MB Rooivalk archival dossier and its strict hash guards are untouched.
  */
-for (const [file, original, previous, eighthPass, ninthPass, tenthPass, eleventhPass, twelfthPass] of [
-  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5', '26289507aa321beeebf176447a6f35da96b94430', 'c0b4de8df352490e144744b06c50e0170963472a', 'cbaf876f61ae5c774295bd0b2c07bcb345bd5b20', '5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1'],
-  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a', '75efd423ea1e45e085c918351ef0a69fcde26e41', '7dae8fb85a5959a04e2db46987f0d2a49ef0d49a', '75019eaeda6837528b38f8840565d2d40af74e9f', 'ba29c060309c865582b2be2b7bc11cb4ac4c8779'],
+for (const [file, original, previous, eighthPass, ninthPass, tenthPass, eleventhPass, twelfthPass, thirteenthPass] of [
+  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5', '26289507aa321beeebf176447a6f35da96b94430', 'c0b4de8df352490e144744b06c50e0170963472a', 'cbaf876f61ae5c774295bd0b2c07bcb345bd5b20', '5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1', 'b8b7ed1fe56a53dfadb70f194b62f7ccdfdf9aae'],
+  ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a', '75efd423ea1e45e085c918351ef0a69fcde26e41', '7dae8fb85a5959a04e2db46987f0d2a49ef0d49a', '75019eaeda6837528b38f8840565d2d40af74e9f', 'ba29c060309c865582b2be2b7bc11cb4ac4c8779', 'd4dc5f254e3279f6f9db89cfb61ad27a70a29bbf'],
 ]) {
   const baseline = execFileSync('git', ['rev-parse', 'origin/main:' + file], {encoding:'utf8'}).trim();
   const actual = execFileSync('git', ['hash-object', file], {encoding:'utf8'}).trim();
-  assert([original, previous, eighthPass, ninthPass, tenthPass, eleventhPass, twelfthPass].filter(Boolean).includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
-  assert.equal(actual, twelfthPass || eleventhPass || tenthPass || ninthPass, 'Unreviewed #15-16 reviewed article blob: ' + file);
+  assert([original, previous, eighthPass, ninthPass, tenthPass, eleventhPass, twelfthPass, thirteenthPass].filter(Boolean).includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
+  assert.equal(actual, thirteenthPass, 'Unreviewed #15-16 reviewed article blob: ' + file);
 }
 
 
@@ -1130,4 +1132,16 @@ for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, p
  assert(mot.includes('PIC 15.17%'),'Missing FY2025 Sanlam comparator');
  assert(mot.includes('31 December 2025'),'Missing FY2025 shareholding date');
  assert(mot.includes('PIC 14.75%'),'Historic FY2024 comparator must be retained as dated');
+}
+
+/* 30 October 2026 thirteenth pass, two independently cross-checked facts.
+ * These textual assertions supplement the exact Git blob and immutable media guards.
+ */
+{
+ const wef = readFileSync('wef.html','utf8');
+ const un = readFileSync('un.html','utf8');
+ assert(wef.includes('973 global partners') && wef.includes('CHF 297.7 million') && wef.includes('CHF 461.3 million'),'Missing dated WEF partnership/revenue provenance');
+ assert(wef.includes('1,000 businesses paid as much as CHF 600,000') && wef.includes('UNVERIFIED'),'Unproven WEF per-partner fee not flagged');
+ assert(un.includes('21 August') && un.includes('27 August 2026') && un.includes('roughly 50,000'),'Missing 2026 CERD early-warning decision/date evidence');
+ assert(un.includes('not an independently audited national victim register'),'CERD incident-count attribution lost');
 }
