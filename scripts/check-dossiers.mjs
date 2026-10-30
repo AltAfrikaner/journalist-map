@@ -118,7 +118,7 @@ for(const f of nextBatch){
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9','4c8ffae2709710d91093ac914423b01038155695','c3c94209cac187efb11424e4882de19f715e1aa7'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'c3c94209cac187efb11424e4882de19f715e1aa7','Unexpected #14 tenth-pass WHO country-rate / Dommisse bibliography correction; see SOURCE-CORRECTIONS-14-TENTH-PASS-20261029.md');
+      assert.equal(liveSha,'4799ab31bb2ff57c2f4a46bea1949b40a7488ba8','Unexpected #14 eleventh-pass 2025 Green Drop wastewater correction; see SOURCE-CORRECTIONS-14-ELEVENTH-PASS-20261030.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -142,7 +142,7 @@ for(const f of nextBatch){
     if(f==='communists.html' && label==='paragraphs') {
       // Ninth-pass 29 Oct 2026 flag-designer provenance and political-symbolism sourcing: only this reviewed article blob is permitted; assets remain guarded.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='ed4b624962e9c3036bd0f007d18bcaf04f6f035b';
+      const reviewed='0f521badb4dfb89232144a732501650363777a30';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
       continue;
