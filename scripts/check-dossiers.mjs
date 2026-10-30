@@ -268,6 +268,7 @@ for(const f of batch16){
        (baselineBlob==='3a7509aa5e4d6628a390bf09ffe01ee9491d08a7' && liveBlob==='63499ca73d98923c8422dd97290ba405a43bd692') ||
        (baselineBlob==='08e9b4c32e0dbfe896654f2be43e8b126b64f4cf' && liveBlob==='4df3be6ffd5923338e839dc47c3437dae8b02705') ||
        (baselineBlob==='4df3be6ffd5923338e839dc47c3437dae8b02705' && liveBlob==='22292665de386f5931948a95b4c295baf5ae8e92') ||
+       (baselineBlob==='22292665de386f5931948a95b4c295baf5ae8e92' && liveBlob==='d2cb131b833dedd789e7edb10d33ebb0927e414b') ||
        (baselineBlob==='63499ca73d98923c8422dd97290ba405a43bd692' && liveBlob==='08e9b4c32e0dbfe896654f2be43e8b126b64f4cf'),
        'Mbalula must match one specifically approved complete-file correction');
    }
@@ -370,8 +371,8 @@ for(const f of batch16){
      // See editorial-review/SOURCE-CORRECTIONS-19-ELEVENTH-PASS-20261029.md.
      const originalHash=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
      const revisedHash=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-     assert.equal(originalHash,'159e7fd15165275acb56df3b040006e2439d48c9','Unexpected #19 main baseline for 29 Oct eleventh-pass review');
-     assert.equal(revisedHash,'c2b7b045bb40828ed29c2a9801c8157ecc9beb26','Unreviewed #19 tenth-pass source/content change');
+     assert.equal(originalHash,'c2b7b045bb40828ed29c2a9801c8157ecc9beb26','Unexpected #19 main baseline for 30 Oct twelfth-pass review');
+     assert.equal(revisedHash,'2d935611559bfcad0fef0c517e7cca8843790359','Unreviewed #19 twelfth-pass source/content change');
    } else assert.deepEqual(extract(now,re),extract(old,re),'Changed '+category+' in investigation 19');
  }
  for(const sig of ['<canvas','data:image','<iframe'])
