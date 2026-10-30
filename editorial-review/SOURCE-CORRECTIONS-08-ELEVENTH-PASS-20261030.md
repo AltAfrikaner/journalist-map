@@ -1,0 +1,15 @@
+# Investigation #08 — USAID: eleventh-pass administrative-capacity audit (30 October 2026)
+
+**OPEN — NOT RELEASE-CERTIFIED.** This documents what changed in the actual US government award-administration structure before interpreting the legacy interactive funding map as current political influence.
+
+## Independent verification
+
+- **GAO primary record, 30 September 2026:** [GAO-26-108607](https://www.gao.gov/products/gao-26-108607) reports USAID's worldwide workforce fell from approximately **13,600 in January 2025** to **241 in April 2026**. It separately states that USAID ceased administering foreign assistance awards **1 July 2025**, with active awards now administered by the State Department. The 241 figure is **April 2026**, not April 2025. The award terminations and prior obligations reported by GAO are historical financial aggregates; neither salary counts nor award obligations alone establish the recipient of a particular South African grant.
+- **Independent administrative review, 27 July 2026:** [Reuters reporting on the State inspector general's separate transfer review](https://www.reuters.com/legal/government/watchdog-finds-staffing-guidance-gaps-transfer-usaid-programs-2026-07-27/) described staffing shortfalls, unreliable data systems and delayed transition guidance. The GAO review has a later reporting cutoff and must **not** be added to the State OIG's earlier 1,504-award population.
+- **Inference boundary:** The existing 3D graph contains historical organisations and relationships. Neither audit shows that the same USAID offices could issue commands to South African editors in October 2026, nor that any named journalist was paid or a platform removed a report. Specific contracts, dates, award numbers, disbursements and newsroom communications remain **UNVERIFIED**.
+
+## Change scope and safeguards
+
+One clearly sourced paragraph inserted ahead of the existing dated GAO-versus-Reuters denominator reconciliation. No original JS, SVG, network nodes, edges, CSS, imagery, IDs, scripts or historical links were changed; two cited source links added. Existing funding-map warnings and original per-claim records remain intact. Exact file blobs: `d0ce26bd81e8a509adb3275676c705449110ea05` → `85072587a0c2ab2a89a1516a08af1f9b3994f146`. Protected Rooivalk unchanged.
+
+Open requirements: identify actual grant recipients and payments, check unresolved graph descriptions and dates, browser/mobile/keyboard/screen-reader review, and prove public-site text parity independently (issue #234). #08 remains **OPEN / NOT RELEASE-CERTIFIED**.
