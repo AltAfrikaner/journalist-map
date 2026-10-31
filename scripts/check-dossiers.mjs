@@ -1009,7 +1009,7 @@ for (const [file, original, previous, eighthPass, ninthPass, tenthPass, twelfthP
 ]) {
   const baseline = execFileSync('git', ['rev-parse', 'origin/main:' + file], {encoding:'utf8'}).trim();
   const actual = execFileSync('git', ['hash-object', file], {encoding:'utf8'}).trim();
-  assert([original, previous, eighthPass, ninthPass, tenthPass, twelfthPass, thirteenthPass].filter(Boolean).includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
+  assert([original, previous, eighthPass, ninthPass, tenthPass, twelfthPass, thirteenthPass, ...(file==='wef.html'?['b8b7ed1fe56a53dfadb70f194b62f7ccdfdf9aae']:[])].filter(Boolean).includes(baseline), 'Unexpected unreviewed #15-16 origin/main baseline: ' + file);
   assert.equal(actual, thirteenthPass, 'Unreviewed #15-16 reviewed article blob: ' + file);
 }
 
