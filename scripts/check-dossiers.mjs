@@ -664,10 +664,14 @@ for(const f of batch16){
      if(file==='omidyar.html' && currentBase==='913570501ad4be74b9754c507d9abc21b9dd3226' && currentPage==='c7802f1da6850a758f5e402346e339bd90294d9b') continue;
      // 30 October thirteenth-pass #27: funding denominator and ancestry attribution; script graph unchanged.
      if(file==='omidyar.html' && currentBase==='c7802f1da6850a758f5e402346e339bd90294d9b' && currentPage==='c47a965f68430fe7542fdd3229dd5d41404a93ff') continue;
+      // 31 Oct fourteenth-pass #27: six-priority-country programme denominator and anti-conflation correction.
+      if(file==='omidyar.html' && currentBase==='c47a965f68430fe7542fdd3229dd5d41404a93ff' && currentPage==='6fd34bcb359e9ef871905436a798a1ec5aba3128') continue;
      if(file==='real411.html' && currentBase==='86510720ad226cc55c02265afd0e48329e973392' && currentPage==='d15918058c497c85390d1d0d3d59fe3969151b07') continue;
      // 30 October thirteenth-pass: FES/MMA archived study versus unverified 2026 Real411 grants.
      // Paragraphs only, exact main-to-reviewed blob; JS, SVG, images and IDs remain strict.
      if(file==='real411.html' && currentBase==='d15918058c497c85390d1d0d3d59fe3969151b07' && currentPage==='5d90afcc70cbee09074b9dd703e44ad97aae97b6') continue;
+      // 31 Oct fourteenth-pass #28: IEC election-code scope, not blanket portal authority.
+      if(file==='real411.html' && currentBase==='5d90afcc70cbee09074b9dd703e44ad97aae97b6' && currentPage==='83f62b82b532ec502f436023cfaed844909ea39b') continue;
      // Post-publication paragraph consistency correction after the new primary
      // framework became linkable. Only this exact Real411 blob pair may advance.
      if(file==='real411.html' && currentBase==='db13845b4cf33595171a7df1d677612445763840' && currentPage==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e') continue;
@@ -934,7 +938,8 @@ for (const [page, before, after] of [
  if(base!==now){
   // The prior historical ninth-pass guard still applies, but its published
   // Real411 page is now the reviewed baseline for this exact tenth pass.
-  if((base==='d15918058c497c85390d1d0d3d59fe3969151b07' && now==='5d90afcc70cbee09074b9dd703e44ad97aae97b6') ||
+  if((base==='5d90afcc70cbee09074b9dd703e44ad97aae97b6' && now==='83f62b82b532ec502f436023cfaed844909ea39b') ||
+      (base==='d15918058c497c85390d1d0d3d59fe3969151b07' && now==='5d90afcc70cbee09074b9dd703e44ad97aae97b6') ||
      (base==='86510720ad226cc55c02265afd0e48329e973392' && now==='d15918058c497c85390d1d0d3d59fe3969151b07') ||
      (base==='24ade4e9d713c78a3eed4074fddf6ac9f24b5a0e' && now==='86510720ad226cc55c02265afd0e48329e973392') ||
      (base==='ef227de770e6489b886d6ef1a18a2a543878a4d6' && now==='db13845b4cf33595171a7df1d677612445763840') ||
@@ -957,7 +962,9 @@ for (const [page, before, after] of [
  if(before!==current){
   // Reconcile with the already-published raid-date follow-up: only the new
   // exact tenth-pass article blob may advance that known baseline.
-  if(before==='c7802f1da6850a758f5e402346e339bd90294d9b' && current==='c47a965f68430fe7542fdd3229dd5d41404a93ff'){
+  if(before==='c47a965f68430fe7542fdd3229dd5d41404a93ff' && current==='6fd34bcb359e9ef871905436a798a1ec5aba3128'){
+     // 31 Oct fourteenth-pass MAVC six priority countries and programme-wide denominator, exact reviewed blob.
+   } else if(before==='c7802f1da6850a758f5e402346e339bd90294d9b' && current==='c47a965f68430fe7542fdd3229dd5d41404a93ff'){
     // 30 Oct thirteenth-pass funding and provenance correction, exact blob only.
   } else if(before==='913570501ad4be74b9754c507d9abc21b9dd3226' && current==='c7802f1da6850a758f5e402346e339bd90294d9b'){
     // 30 Oct twelfth-pass PIIE/IEC distinction and source-linked entity correction.
