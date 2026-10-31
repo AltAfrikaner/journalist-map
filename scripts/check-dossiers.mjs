@@ -426,14 +426,14 @@ for(const f of batch16){
    ['element IDs',/\bid=["'][^"']+["']/g]
   ]) {
     if(['splc.html','adl.html'].includes(file) && label==='paragraphs' && now!==old){
-      // 30 October further source reconciliation for FY2025 filing; only exact reviewed full
+      // 31 October source-led correction for 2019 chronology and donor/JLens claims; only exact reviewed full
       // blobs are permitted, with original JS/SVG/image/ID checks below intact.
       const reviewed={
        // Exact previous main blobs are required; no open-ended or wildcard exception.
-       // Seventh-pass revisions are each tied to a dated per-file source-correction log.
+       // Each revised article is tied to its dated 31 October per-file evidence changelog.
        // Other checks still compare scripts, SVG, images, IDs and embedded media to main.
-       'splc.html':['4ac43eecc6ab5ec6f7fc588531bf91001dd60202','28364508e88d43b7f96c89f788458e2a7e8fd635'],
-       'adl.html':['6960d353be4e4685d25e6425cecc29329eed24c9','c8af3f19d8923a91c18f9acb03c59d3ff0ba5ba0']
+       'splc.html':['28364508e88d43b7f96c89f788458e2a7e8fd635','5a372a8b07a11bb5edd263cbb667151606e59e6a'],
+       'adl.html':['c8af3f19d8923a91c18f9acb03c59d3ff0ba5ba0','f71777aa66f823520f45c3bfca8019cf5a36b00c']
       };
       const before=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
       const after=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
