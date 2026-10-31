@@ -1137,7 +1137,7 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  * guard JS/SVG/media/IDs/historic link order. Rooivalk pinned below. */
 for(const [page,priorApproved,newApproved,thirteenthReviewed] of [
  ['usaidtonewsroom.html','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff','ef09793df658e12fac744960a2e4d09daf012f34','b2727e68fe652931f57d7c79bf144b4a6ca06964'],
- ['mtn.html','71bf244f7bcd6cb73b22be1319d8336452bdd705','6d2eb0547cb5cdb5b000445032b1d7488da4b2db']
+ ['mtn.html','71bf244f7bcd6cb73b22be1319d8336452bdd705','6d2eb0547cb5cdb5b000445032b1d7488da4b2db','44866c7dc03f72c0f027a76014364642044235b3']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
@@ -1155,14 +1155,14 @@ for(const [page,priorApproved,newApproved,thirteenthReviewed] of [
  * Preserve all old published Git blob baselines but accept only the two new
  * exact reviewed article hashes; media, JS, SVG, CSS, image and IDs are
  * independently compared against the parent main tree above. */
-for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, previousMain] of [
-  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', 'e4abcec8732b68316d7ff3c7f516c81951d47b71', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1', '3a48587c5da793887f503c5d2c23578a44b1a7c3', '4aa3ab608fc4908bbc37b174aaaee6f57380cbe4'],
+for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, previousMain, fourteenthReviewed] of [
+  ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', 'e4abcec8732b68316d7ff3c7f516c81951d47b71', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1', '3a48587c5da793887f503c5d2c23578a44b1a7c3', '4aa3ab608fc4908bbc37b174aaaee6f57380cbe4', 'ba16fad1d56eeb51cf195013f1434817fdb45bbb'],
   ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', 'b3f09e4906480e50f5eeb98410f2f30c76e952ff', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763', '8b3eb33ab171d6b6737cf4a0f5f4eb8d6a995413', 'ca584a46709d9d3922a6bdcffbd9e2f01bb8a0fc']
 ]) {
   const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
   const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
   assert([prior,reviewed,intermediate,earlier,previouslyPublished,previousMain,...(page==='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
-  assert.equal(live,reviewed,'Unexpected #11–12 prose/source hash: '+page);
+  assert.equal(live,fourteenthReviewed||reviewed,'Unexpected #11–12 source-reviewed prose hash: '+page);
 }
 
 /* 30 Oct 2026 thirteenth-pass: the Senate grant denominator and Sanlam's
@@ -1198,4 +1198,15 @@ for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, p
   const b=readFileSync('usaidtonewsroom.html','utf8');
   assert(a.includes('two open recommendations, $0 questioned costs')&&a.includes('regional mission for Southern Africa')&&a.includes('UNVERIFIED'),'Regional OIG audit denomination/uncertainty changed');
   assert(b.includes('MVA-APS-001')&&b.includes('both Internews and USAID')&&b.includes('50 first-round independent-media grants')&&b.includes('UNVERIFIED'),'MVA APS approval/ceilings evidence changed');
+}
+
+/* 31 Oct #10/#11 verified, minimal editorial changes. Exact hashes are in the
+ * whitelist above; these assertions also guard against rollback of the
+ * conditional Irancell dilution and refuted universal export chronology. */
+{
+ const mtn=readFileSync('mtn.html','utf8');
+ const proto=readFileSync('prototypenation.html','utf8');
+ assert(mtn.includes('POTENTIAL PUBLIC FLOAT IS NOT AN EXECUTED SHARE TRANSFER') && mtn.includes('38.7%') && mtn.includes('actual completion'), 'Missing #10 conditional float disclaimer');
+ assert(proto.includes('27 June 1986') && proto.includes('2 July 1964') && proto.includes('South Africa&#39;s Employment Equity Act was enacted in 1998'), 'Missing #11 primary law chronology');
+ assert(!proto.includes('South Africa built each of these frameworks first'), 'Disproved universal policy priority statement reintroduced');
 }
