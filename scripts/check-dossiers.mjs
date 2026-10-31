@@ -574,6 +574,8 @@ for(const f of batch16){
         if(oldSha==='4f6a1444a0f8234bae57678a518fecebcac3172f' && newSha==='6289d0902f4857853aec5c95bbde7a8ff50d894b') continue;
         // 30 Oct twelfth-pass #25: primary IEC Gazette + independent contemporaneous correction versus categorical mission-change claim; exact full-file hash, separate visual/data guards.
         if(oldSha==='6289d0902f4857853aec5c95bbde7a8ff50d894b' && newSha==='1a0700c4a80fcb41ae67253a13e5138763210bb1') continue;
+        // 31 Oct #25 thirteenth-pass: amended-language commencement and first-party implementation recommendations, independently checked; exact blob only.
+        if(oldSha==='1a0700c4a80fcb41ae67253a13e5138763210bb1' && newSha==='f414e0e0c4ac761493b19b80915a0ff1d8d10b93') continue;
    }
    assert.deepEqual(extract(now,re),extract(base,re),'Changed '+what+' in '+file);
   }
@@ -636,6 +638,8 @@ for(const f of batch16){
         if(oldSha==='ed22c452fa7ec8024926735dfdada05fd5b8fb40' && newSha==='a45d94bba3b60b187117e79d7369fb3fd6378210') continue;
         // 30 October twelfth-pass #26: only the verified order-scope and 7 March distinction.
         if(oldSha==='a45d94bba3b60b187117e79d7369fb3fd6378210' && newSha==='a22fc5d45a13bac1ac3bbb0ff392574c5e899290') continue;
+        // 31 Oct #26 thirteenth-pass: self-identification vs home-language census denominator; exact blob only.
+        if(oldSha==='a22fc5d45a13bac1ac3bbb0ff392574c5e899290' && newSha==='d749dd1fc669c06f659405cb87a39054c5d967e2') continue;
    }
    // PR #72: strictly permit the two reviewed source-qualification revisions
    // against their exact original main blobs. No blanket paragraph bypass:
