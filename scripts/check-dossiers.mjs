@@ -1057,7 +1057,7 @@ for (const [file, before, reviewed, latest, newest, newlyReviewed] of [
  */
 for(const [page,baseline,reviewed,published,latestApproved,finalReviewed,oct31Reviewed,oct31Next] of [
  ['africacheck.html','2647f994f6cd3c23bb966c2bd245e441ade85d8f','050015feee680ec5fc305d1422fc55dbaedbebfb','330f6eb917e3d5204c723be1750989f851a04554','4a9502508accd15a09d494b8475d7b2e7055e792','7db2b01964d36cf9855adcc9dd438b46b6b2b116','d7b937f42ea87f70231f28502af4ded18860caef'],
- ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','b4590228056362fdedcd7806bb2b9571940d11f4','debeee6b6163720bd1b4ea09ad7cfcc3cf9d502c',null,'6ad63c5f41196086e6489c1c60670b55dee6986c']
+ ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','df9419a5d8425fe1cc3d717f56901c8d862ad26e','b4590228056362fdedcd7806bb2b9571940d11f4','debeee6b6163720bd1b4ea09ad7cfcc3cf9d502c',null,'6ad63c5f41196086e6489c1c60670b55dee6986c']
 ]){
  const main=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
