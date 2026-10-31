@@ -1135,7 +1135,7 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  * Both prior main and new main are explicitly allowed as PR baselines.
  * Whole-file identity rejects all other changes; earlier checks separately
  * guard JS/SVG/media/IDs/historic link order. Rooivalk pinned below. */
-for(const [page,priorApproved,newApproved] of [
+for(const [page,priorApproved,newApproved,thirteenthReviewed] of [
  ['usaidtonewsroom.html','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff','ef09793df658e12fac744960a2e4d09daf012f34','b2727e68fe652931f57d7c79bf144b4a6ca06964'],
  ['mtn.html','71bf244f7bcd6cb73b22be1319d8336452bdd705','6d2eb0547cb5cdb5b000445032b1d7488da4b2db']
 ]) {
