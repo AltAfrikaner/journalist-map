@@ -118,7 +118,7 @@ for(const f of nextBatch){
       const baseSha=execFileSync('git',['rev-parse','origin/main:'+f],{encoding:'utf8'}).trim();
       const liveSha=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert(['1678d15c9f337422df63d52e3d1cc273aace258b','8f890b391a032546535623b3e4c3e638d8738c4d','a79c55acf9d4339530f7a5707e7bc27b416f7510','8c6e2816291ba6179ece4015ed92b7de7cbd0773','09439db6582fb8e6e25380f37c25667a782293e5','7b5f239723980b8ddf43326a34476e0fdece8b3a','c19ddf8c60a3104f239d802c82d177f941930b24','5ec5d2114b113e1990c1d2909c8219ba0fd93647','1d37fd561fbbf52a8b2dc7209245d66380cf39a9','4c8ffae2709710d91093ac914423b01038155695','c3c94209cac187efb11424e4882de19f715e1aa7','4799ab31bb2ff57c2f4a46bea1949b40a7488ba8','dd58b2f637ba3c2b98f077042ca48ec3fe629943'].includes(baseSha),'Unexpected #14 main baseline');
-      assert.equal(liveSha,'dd58b2f637ba3c2b98f077042ca48ec3fe629943','Unexpected #14 twelfth-pass matched-quarter homicide correction; see SOURCE-CORRECTIONS-14-TWELFTH-PASS-20261030.md');
+      assert.equal(liveSha,'636214bfeda8b06f4b024bba8925d0f12a5ffc34','Unexpected #14 thirteenth-pass AGSA audit correction; see SOURCE-CORRECTIONS-14-THIRTEENTH-PASS-20261031.md');
       continue;
     }
     if (f==='wef.html' && label==='paragraphs') {
@@ -136,6 +136,7 @@ for(const f of nextBatch){
       if(original==='c0b4de8df352490e144744b06c50e0170963472a' && revised==='cbaf876f61ae5c774295bd0b2c07bcb345bd5b20') continue; // #15 tenth-pass USGS reserves correction, exact blob only
        if(original==='cbaf876f61ae5c774295bd0b2c07bcb345bd5b20' && revised==='5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1') continue; // 30 Oct twelfth-pass YGL correction; scripts/SVG/media/IDs still immutable
       if(original==='5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1' && revised==='b8b7ed1fe56a53dfadb70f194b62f7ccdfdf9aae') continue; // 30 Oct thirteenth-pass primary annual 973 partners and reported revenue; scripts/SVG/media/IDs unchanged
+      if(original==='b8b7ed1fe56a53dfadb70f194b62f7ccdfdf9aae' && revised==='acecf4d23408f3affa77e2070de4ac606a36132b') continue; // 31 Oct fourteenth-pass 2002 NEPAD original + independent signatory conflict; JS/SVG/media/IDs unchanged
       assert.deepEqual(extract(now,re),extract(base,re),'Non-allowlisted WEF prose changed');
       continue;
     }
@@ -1003,7 +1004,7 @@ console.log('Dossier checks passed: editorial links and research visualisation a
  * The 1.748 MB Rooivalk archival dossier and its strict hash guards are untouched.
  */
 for (const [file, original, previous, eighthPass, ninthPass, tenthPass, twelfthPass, thirteenthPass] of [
-  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5', '26289507aa321beeebf176447a6f35da96b94430', 'c0b4de8df352490e144744b06c50e0170963472a', 'cbaf876f61ae5c774295bd0b2c07bcb345bd5b20', '5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1', 'b8b7ed1fe56a53dfadb70f194b62f7ccdfdf9aae'],
+  ['wef.html', 'c8ff4ad303a6a19f874401b6ad558e8d6b5bd132', '22f5f4c13f081b0d34fbe7b2bc9d771a2c582ec5', '26289507aa321beeebf176447a6f35da96b94430', 'c0b4de8df352490e144744b06c50e0170963472a', 'cbaf876f61ae5c774295bd0b2c07bcb345bd5b20', '5a03f4cecf6112fa62959e11fdcbc0b4e76a66d1', 'acecf4d23408f3affa77e2070de4ac606a36132b'],
   ['un.html', 'fd247e3b983b3ec18354be65cfa1cbd94eb61481', '3fd62bbb5a2467c345c76dd77c9eb0ad6df5d38a', '75efd423ea1e45e085c918351ef0a69fcde26e41', '7dae8fb85a5959a04e2db46987f0d2a49ef0d49a', '75019eaeda6837528b38f8840565d2d40af74e9f', 'ba29c060309c865582b2be2b7bc11cb4ac4c8779', 'd4dc5f254e3279f6f9db89cfb61ad27a70a29bbf'],
 ]) {
   const baseline = execFileSync('git', ['rev-parse', 'origin/main:' + file], {encoding:'utf8'}).trim();
@@ -1215,4 +1216,12 @@ for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, p
  assert(mtn.includes('POTENTIAL PUBLIC FLOAT IS NOT AN EXECUTED SHARE TRANSFER') && mtn.includes('38.7%') && mtn.includes('actual completion'), 'Missing #10 conditional float disclaimer');
  assert(proto.includes('27 June 1986') && proto.includes('2 July 1964') && proto.includes('South Africa&#39;s Employment Equity Act was enacted in 1998'), 'Missing #11 primary law chronology');
  assert(!proto.includes('South Africa built each of these frameworks first'), 'Disproved universal policy priority statement reintroduced');
+}
+
+/* 31 October 2026 source-level guard: municipal audit denominator and conflicting NEPAD signatory totals. */
+{
+ const lib=readFileSync('ancliberation.html','utf8');
+ const wef=readFileSync('wef.html','utf8');
+ assert(lib.includes('R40.14B') && lib.includes('R145.21 billion') && lib.includes('2024/25') && !lib.includes('R25.7B</div>') && lib.includes('UNVERIFIED'),'AGSA 2024/25 source or uncertainty regressed');
+ assert(wef.includes('more than 200') && wef.includes('more than <strong>170') && wef.includes('a definitive common count is <strong>UNVERIFIED') && !wef.includes('effectively captured the process of African ownership'),'Unverified NEPAD numerical/capture assertion regressed');
 }
