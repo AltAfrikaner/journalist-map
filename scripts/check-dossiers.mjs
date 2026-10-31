@@ -1135,17 +1135,21 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  * Both prior main and new main are explicitly allowed as PR baselines.
  * Whole-file identity rejects all other changes; earlier checks separately
  * guard JS/SVG/media/IDs/historic link order. Rooivalk pinned below. */
-for(const [page,priorApproved,newApproved,thirteenthReviewed] of [
+for(const [page,priorApproved,newApproved,thirteenthReviewed,latestPublished] of [
  ['usaidtonewsroom.html','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff','ef09793df658e12fac744960a2e4d09daf012f34','b2727e68fe652931f57d7c79bf144b4a6ca06964'],
  ['mtn.html','71bf244f7bcd6cb73b22be1319d8336452bdd705','6d2eb0547cb5cdb5b000445032b1d7488da4b2db','44866c7dc03f72c0f027a76014364642044235b3']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([priorApproved,newApproved].includes(fromMain),'Unexpected #09-10 main baseline: '+page);
+ assert([priorApproved,newApproved,thirteenthReviewed,latestPublished].filter(Boolean).includes(fromMain),'Unexpected #09-10 main baseline: '+page);
  assert.equal(actual,thirteenthReviewed||newApproved,'Unreviewed #09-10 article source/media change: '+page);
 }
 
 
+
+/* Prior PR #267 moved #09 to the reviewed thirteenth-pass hash on main.
+ * The permitted PR-base whitelist must include that published main blob,
+ * while the exact PR head still must match the approved current blob. */
 /* 29 Oct eleventh-pass #12 / tenth-pass #13: reviewed exact SHA guards updated; prior full immutable scripts/SVG/ID comparisons retained. */
 /* 28 Oct ninth-pass #11–12: allow ONLY the dated, source-reviewed HTML
  * revisions. Main must be the old reviewed baseline or the exact newly
