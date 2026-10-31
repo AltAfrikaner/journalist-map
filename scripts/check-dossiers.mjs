@@ -144,9 +144,10 @@ for(const f of nextBatch){
     if(f==='communists.html' && label==='paragraphs') {
       // Twelfth-pass 30 Oct 2026 SACP electoral autonomy sourced to first-party resolution and independent reporting; only this reviewed article blob is permitted; assets remain guarded.
       // Independent checks below still compare scripts, SVG, IDs and image tags to main.
-      const reviewed='b0ed58d353a557afbafc89e4b53fa2517643fd24';
+      const reviewed='cb8e4c7efcd25acd73a8b8b12ea8d5e0e572c1c3';
       const actual=execFileSync('git',['hash-object',f],{encoding:'utf8'}).trim();
       assert.equal(actual,reviewed,'Unexpected communists.html prose; update source log and reviewed hash');
+       assert(now.includes('2026 manifesto and election-timing check')&&now.includes('4 November 2026'),'October 2026 SACP manifesto/source check lost');
       continue;
     }
     const baselineBlocks=extract(base,re);
@@ -1161,12 +1162,12 @@ for(const [page,priorApproved,newApproved,thirteenthReviewed,latestPublished] of
  * independently compared against the parent main tree above. */
 for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, previousMain, fourteenthReviewed] of [
   ['prototypenation.html', '53747bb6d21311522bc91e30f9fa79fb08707052', 'e4abcec8732b68316d7ff3c7f516c81951d47b71', '9978f3f04e0ab99dbf8c67a8e5083cde4643db18', 'a3ad26202b441ed506a381abd2acdb1f2117c5b1', '3a48587c5da793887f503c5d2c23578a44b1a7c3', '4aa3ab608fc4908bbc37b174aaaee6f57380cbe4', 'ba16fad1d56eeb51cf195013f1434817fdb45bbb'],
-  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', 'b3f09e4906480e50f5eeb98410f2f30c76e952ff', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763', '8b3eb33ab171d6b6737cf4a0f5f4eb8d6a995413', 'ca584a46709d9d3922a6bdcffbd9e2f01bb8a0fc']
+  ['motsepe.html', '4ea65ecb1f9207da703516e88e1136b2264e6205', 'b3f09e4906480e50f5eeb98410f2f30c76e952ff', 'e7e6f3aec39c3090c2027dbed2acf236c54eb104', '9392d8b3bf8afb2c8a0095c020374574050c7763', '8b3eb33ab171d6b6737cf4a0f5f4eb8d6a995413', 'ca584a46709d9d3922a6bdcffbd9e2f01bb8a0fc', 'da75e458bc21d573ff7010c9f00c94e0a7f40a28']
 ]) {
   const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
   const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
-  assert([prior,reviewed,intermediate,earlier,previouslyPublished,previousMain,...(page==='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
-  assert.equal(live,fourteenthReviewed||reviewed,'Unexpected #11–12 source-reviewed prose hash: '+page);
+  assert([prior,reviewed,intermediate,earlier,previouslyPublished,previousMain,fourteenthReviewed,...(page==='motsepe.html'?['d1b6f7cbf02251d5e353945555f835154cb2ffef']:[])].filter(Boolean).includes(fromMain),'Unknown #11–12 source-review main baseline: '+page);
+  assert.equal(live,page==='motsepe.html'?'da75e458bc21d573ff7010c9f00c94e0a7f40a28':(fourteenthReviewed||reviewed),'Unexpected #11–12 source-reviewed prose hash: '+page);
 }
 
 /* 30 Oct 2026 thirteenth-pass: the Senate grant denominator and Sanlam's
@@ -1182,6 +1183,7 @@ for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, p
  assert(mot.includes('PIC 15.17%'),'Missing FY2025 Sanlam comparator');
  assert(mot.includes('31 December 2025'),'Missing FY2025 shareholding date');
  assert(mot.includes('PIC 14.75%'),'Historic FY2024 comparator must be retained as dated');
+ assert(mot.includes('draft Integrated Resource Plan (IRP) 2018')&&mot.includes('final IRP 2019')&&mot.includes('UNVERIFIED'),'Radebe/IRP chronology and evidence boundary regressed');
 }
 
 /* 30 October 2026 thirteenth pass, two independently cross-checked facts.
