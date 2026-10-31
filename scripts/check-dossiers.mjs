@@ -1115,7 +1115,7 @@ for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed
  * IDs and original href order remain guarded independently above. */
 for (const [page,previousApproved,newApproved,fifteenthReviewed] of [
  ['iol.html','6987710cf3b5b3ef2d974b9a131bb9453c9fad35','f78933d339da81fba478dd0b6b4e2e89e9589221','f38fbc90e2e0324b7f2d6d28541d447546f0c6de'],
- ['usaid.html','b432e50e9fa207528b35b24142823ba59171156c','1fecbe5596c70bdc3d592eaa396a8a1475306c9f']
+ ['usaid.html','b432e50e9fa207528b35b24142823ba59171156c','1fecbe5596c70bdc3d592eaa396a8a1475306c9f','6d052990b237c90fa94a7a790ce1224f4e23cf3f']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
@@ -1136,13 +1136,13 @@ assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding
  * Whole-file identity rejects all other changes; earlier checks separately
  * guard JS/SVG/media/IDs/historic link order. Rooivalk pinned below. */
 for(const [page,priorApproved,newApproved] of [
- ['usaidtonewsroom.html','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff','ef09793df658e12fac744960a2e4d09daf012f34'],
+ ['usaidtonewsroom.html','d8a58616323e7a2f8c38b38b9ec1dda3a25243ff','ef09793df658e12fac744960a2e4d09daf012f34','b2727e68fe652931f57d7c79bf144b4a6ca06964'],
  ['mtn.html','71bf244f7bcd6cb73b22be1319d8336452bdd705','6d2eb0547cb5cdb5b000445032b1d7488da4b2db']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
  assert([priorApproved,newApproved].includes(fromMain),'Unexpected #09-10 main baseline: '+page);
- assert.equal(actual,newApproved,'Unreviewed #09-10 article source/media change: '+page);
+ assert.equal(actual,thirteenthReviewed||newApproved,'Unreviewed #09-10 article source/media change: '+page);
 }
 
 
@@ -1190,4 +1190,12 @@ for (const [page, prior, reviewed, intermediate, earlier, previouslyPublished, p
  assert(wef.includes('1,000 businesses paid as much as CHF 600,000') && wef.includes('UNVERIFIED'),'Unproven WEF per-partner fee not flagged');
  assert(un.includes('21 August') && un.includes('27 August 2026') && un.includes('roughly 50,000'),'Missing 2026 CERD early-warning decision/date evidence');
  assert(un.includes('not an independently audited national victim register'),'CERD incident-count attribution lost');
+}
+
+/* 31 Oct thirteenth-pass #08/#09: documentary scope and subgrant selection wording. */
+{
+  const a=readFileSync('usaid.html','utf8');
+  const b=readFileSync('usaidtonewsroom.html','utf8');
+  assert(a.includes('two open recommendations, $0 questioned costs')&&a.includes('regional mission for Southern Africa')&&a.includes('UNVERIFIED'),'Regional OIG audit denomination/uncertainty changed');
+  assert(b.includes('MVA-APS-001')&&b.includes('both Internews and USAID')&&b.includes('50 first-round independent-media grants')&&b.includes('UNVERIFIED'),'MVA APS approval/ceilings evidence changed');
 }
