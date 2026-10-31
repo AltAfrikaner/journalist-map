@@ -785,6 +785,10 @@ for(const f of batch16){
  // scripts/graphics/source URLs are identical to current main.
  const oct30LifecyclePair=oldHash==='9b080e46ffaf6e70490ae2e6b994a860493c28e0'
   && newHash==='6d68a023f85faf30649a7db18535a88ebf95f5c2';
+ // 31 Oct: source-year reconciliation of Africa Check row 2 with primary 2023 disclosure;
+ // exact entire-file pair approved, other 107 grant rows and all renderer logic preserved.
+ const oct31AfricaCheckPair=oldHash==='6d68a023f85faf30649a7db18535a88ebf95f5c2'
+  && newHash==='e499ef1ec384fd76b7f87eca0055ea8951b8ec57';
  const oct29Rows=[
   ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],',
    '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Omidyar Network (2014); ONFI (2016)","Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED","2014 announcement; Jan-2016 award","YES","VERIFIED"],'],
@@ -797,6 +801,7 @@ for(const f of batch16){
   ['  [69,"Centre for Child Law (CCL)","centreforchildlaw.co.za","Legal / Academic","Pretoria (UP)","STACKED","CF R700K + OSF R750K (2016 simultaneously)","VERIFIED"],',
    '  [69,"Centre for Child Law (CCL)","centreforchildlaw.co.za","Legal / Academic","Pretoria (UP)","STACKED","2016: CF R700K + OSF R750K; 2019: CF R1.5M + OSF R850K (annual reports)","VERIFIED"],']
  ];
+ const oct31AfricaCheckRows=[["  [2,\"Africa Check\",\"africacheck.org\",\"Media / Fact-Checking\",\"Johannesburg (Wits)\",\"STACKED\",\"OSF 12% income\",\"VERIFIED\"],","  [2,\"Africa Check\",\"africacheck.org\",\"Media / Fact-Checking\",\"Johannesburg (Wits)\",\"STACKED\",\"2016 12% (secondary); 2023 3% (Africa Check disclosure); current share UNVERIFIED\",\"UNVERIFIED\"],"]];
  const latestRows=[
   ['  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$500K joint 2017 + ongoing","2012–present","YES","VERIFIED"],',
    '  [1,"Africa Check","africacheck.org","Media / Fact-Checking","Luminate (formerly Omidyar Network)","$352,500 ONFI Jan-2016 award; later total UNVERIFIED","2016 ONFI; later dates UNVERIFIED","YES","VERIFIED"],'],
@@ -828,6 +833,12 @@ for(const f of batch16){
    expectedAtlas=expectedAtlas.replace(before,after);
   }
  }
+ if(oct31AfricaCheckPair){
+  for(const [before,after] of oct31AfricaCheckRows){
+   assert.equal(expectedAtlas.split(before).length,2,'Missing original Africa Check row 2');
+   expectedAtlas=expectedAtlas.replace(before,after);
+  }
+ }
  assert.equal(atlasData(now),expectedAtlas,'Unexpected funding atlas grant-data change');
  const take=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).filter(item=>!item.includes('src="assets/editorial-shell.js"'));
  for(const [label,re] of [
@@ -838,9 +849,9 @@ for(const f of batch16){
   ['original IDs',/\bid=["'][^"']+["']/g]
  ]){
   if(label==='original filter scripts' && reviewedChange)continue;
-  if(label==='original filter scripts' && (approvedRowPair||latestRowPair||oct29RowPair||oct30ChildLawPair)){
+  if(label==='original filter scripts' && (approvedRowPair||latestRowPair||oct29RowPair||oct30ChildLawPair||oct31AfricaCheckPair)){
    const restored=take(now,re).map(block=>{
-    for(const [before,after] of (oct30ChildLawPair?oct30ChildLawRows:approvedRowPair?auditedRows:latestRowPair?latestRows:oct29Rows)){
+    for(const [before,after] of (oct31AfricaCheckPair?oct31AfricaCheckRows:oct30ChildLawPair?oct30ChildLawRows:approvedRowPair?auditedRows:latestRowPair?latestRows:oct29Rows)){
      assert.equal(block.split(after).length===2 || !block.includes(after),true,'Repeated edited row');
      block=block.replace(after,before);
     }
@@ -853,7 +864,7 @@ for(const f of batch16){
  }
  for(const sig of ['data:image','<canvas','<iframe','<table','<tbody','<select'])
   assert.equal(now.split(sig).length,old.split(sig).length,'Changed underlying directory '+sig);
- if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair || oct30ChildLawPair || oct30LifecyclePair){
+ if(reviewedChange || approvedRowPair || latestRowPair || oct29RowPair || oct30ChildLawPair || oct30LifecyclePair || oct31AfricaCheckPair){
   const body=(now.match(/<script>\s*\/\/ ── DATA[\s\S]*?<\/script>/)||[])[0];
   assert(body,'Inline directory renderer missing');
   const js=body.slice(body.indexOf('const OSF_ORGS = ['),body.indexOf('// ── FILTER'));
@@ -866,16 +877,20 @@ for(const f of batch16){
   assert.equal((omid.match(/<tr data-name=/g)||[]).length,35,'Omidyar 35-row directory broken');
   for(const s of ['href="https://issafrica.org"','data-sector="research / think tank"','data-track="osf-d"','<td class="org-sector">Research / Think Tank</td>','<td class="org-amount">$5.1M / 7 grants</td>'])
    assert(osf.includes(s),'OSF mapping/link error: '+s);
-  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+((oct29RowPair||oct30ChildLawPair||oct30LifecyclePair)?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+((oct29RowPair||oct30ChildLawPair||oct30LifecyclePair)?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
+  for(const s of ['href="https://africacheck.org"','data-sector="media / fact-checking"','data-track="'+((oct29RowPair||oct30ChildLawPair||oct30LifecyclePair||oct31AfricaCheckPair)?'omidyar network (2014); onfi (2016)':'luminate (formerly omidyar network)')+'"','<td class="org-sector">Media / Fact-Checking</td>','<td class="org-amount">'+((oct29RowPair||oct30ChildLawPair||oct30LifecyclePair||oct31AfricaCheckPair)?'Up to $250K announced Apr-2014; $352,500 ONFI Jan-2016; total cash UNVERIFIED':latestRowPair?'$352,500 ONFI Jan-2016 award; later total UNVERIFIED':'$500K joint 2017 + ongoing')+'</td>'])
    assert(omid.includes(s),'Omidyar mapping/link error: '+s);
-  if(oct29RowPair||oct30ChildLawPair||oct30LifecyclePair){
+  if(oct29RowPair||oct30ChildLawPair||oct30LifecyclePair||oct31AfricaCheckPair){
    assert(omid.includes('<td class="org-amount">$534,616 Mar-2015 ONFI grant; expended by 2018; $720,664 legacy total UNVERIFIED</td>'),'Livity 2015 grant classification lost');
    assert(omid.includes('data-track="omidyar network fund (pre-2018 luminate)"'),'Livity historical grantmaker lost');
   }
-  if(oct30ChildLawPair||oct30LifecyclePair){
+  if(oct30ChildLawPair||oct30LifecyclePair||oct31AfricaCheckPair){
    assert(now.includes(oct30ChildLawRows[0][1]) && now.includes(oct30ChildLawRows[1][1]),'Child-law legal entity/verification statuses changed');
    assert(osf.includes('<td class="org-amount">2016 CF R700K + OSF R750K pair absent from UCT Institute grant schedule; UNVERIFIED</td>'),'UCT misattributed legacy amount reintroduced');
    assert(osf.includes('<td class="org-amount">2016: CF R700K + OSF R750K; 2019: CF R1.5M + OSF R850K (annual reports)</td>'),'UP original-report donor income missing');
+  }
+  if(oct31AfricaCheckPair){
+   assert(now.includes(oct31AfricaCheckRows[0][1]),'Corrected year-specific Africa Check row absent');
+   assert(osf.includes('2016 12% (secondary); 2023 3% (Africa Check disclosure); current share UNVERIFIED'),'Africa Check percentages or provenance regressed');
   }
   assert(!osf.includes('href="https://N/A"')&&!omid.includes('href="https://Archived"'),'Bad archival links');
   assert(!omid.includes('<td class="org-status">YES</td>'),'Incorrect status column mapping');
@@ -1006,14 +1021,14 @@ for (const [file, original, previous, eighthPass, ninthPass, tenthPass, twelfthP
  * Follow-up main commit 2723f28 moved the intact evidence section/nav above the footer.
  * Its exact resulting published #02 file blob 36d677bfe91785b9b469ba225c4d3c4d9cdf9877 is pinned, not a blanket bypass.
  */
-for (const [file, before, reviewed, latest, newest] of [
- ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73', '17439298b99f908153fac50492ef4c0157a21e0b', '2577662333508427785a11a560a4c844ad9ca11a'],
+for (const [file, before, reviewed, latest, newest, newlyReviewed] of [
+ ['osf.html', '35780cc9eae3c2c138c56f1593ec242763088b30', '986f59333f2c3ec232058f2000d753fb8b625f73', '17439298b99f908153fac50492ef4c0157a21e0b', '2577662333508427785a11a560a4c844ad9ca11a', '6c5c7389f3c1306b6753daa8ea5f06e6fe982afd'],
  ['sa_journalists.html', 'd92bd7a2491b54dca7c9e9c2a6c05f755ccdefa1', '36d677bfe91785b9b469ba225c4d3c4d9cdf9877']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+file],{encoding:'utf8'}).trim();
  const current=execFileSync('git',['hash-object',file],{encoding:'utf8'}).trim();
- const reviewedBlob=newest||latest||reviewed;
- assert([before,reviewed,latest,newest].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
+ const reviewedBlob=newlyReviewed||newest||latest||reviewed;
+ assert([before,reviewed,latest,newest,newlyReviewed].includes(fromMain),'Unexpected origin/main editorial #01-02 baseline: '+file);
  assert.equal(current,reviewedBlob,'Unreviewed #01-02 source change: '+file);
  const original=execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:16*1024*1024});
  const published=readFileSync(file,'utf8');
