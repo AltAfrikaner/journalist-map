@@ -1090,7 +1090,7 @@ for(const [page,baseline,reviewed,published,latestApproved,finalReviewed,oct31Re
  * protect JS, SVG, media, element IDs and all pre-existing links. */
 for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed,fourteenthReviewed,fifteenthReviewed] of [
  ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924',null,'c2f5a13f0122dcc1f843b489ed87f33637d3c2ad','88685fce9953869de489c8b136eb79213fd7a063','771798c96c19e6c6b0fa801ad680d8f2bd76a37b'],
- ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57',null,'f4170886781b2cf2bec82d368377ed143ad695f6','b9a091c1de7b20590f52bf148e6bb94d30b9f417','878b749b34d2401468174bd205c2cdd6ae173b43'],
+ ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57',null,'f4170886781b2cf2bec82d368377ed143ad695f6','b9a091c1de7b20590f52bf148e6bb94d30b9f417','878b749b34d2401468174bd205c2cdd6ae173b43','bf7d988c1c57f33bf58f0b2c695a6a2b8c462c38'],
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
@@ -1098,6 +1098,9 @@ for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed
  assert.equal(actual,fifteenthReviewed||fourteenthReviewed,'Unreviewed #05-06 source change: '+p);
  const html=readFileSync(p,'utf8');
  assert(html.includes('oversightboard.com/decision/pao-007g5zuv/')&&html.includes('UNVERIFIED'),'New country-risk source and case-evidence boundary missing: '+p);
+ if(p==='metasuppression.html') {
+  assert(html.includes('more than 700 complaints')&&html.includes('most concerned posts on')&&html.includes('UNVERIFIED'),'15th-pass IEC denominator and conditional outcome context missing');
+ }
 }
 
 
@@ -1110,14 +1113,18 @@ for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed
 /* 30 October 2026 #07–08 source-led release: main must be the previously
  * reviewed file or the exact new reviewed blob. Scripts, SVG, image tags,
  * IDs and original href order remain guarded independently above. */
-for (const [page,previousApproved,newApproved] of [
- ['iol.html','6987710cf3b5b3ef2d974b9a131bb9453c9fad35','f78933d339da81fba478dd0b6b4e2e89e9589221'],
+for (const [page,previousApproved,newApproved,fifteenthReviewed] of [
+ ['iol.html','6987710cf3b5b3ef2d974b9a131bb9453c9fad35','f78933d339da81fba478dd0b6b4e2e89e9589221','f38fbc90e2e0324b7f2d6d28541d447546f0c6de'],
  ['usaid.html','b432e50e9fa207528b35b24142823ba59171156c','1fecbe5596c70bdc3d592eaa396a8a1475306c9f']
 ]) {
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([previousApproved,newApproved].includes(fromMain),'Unexpected #07–08 main source baseline: '+page);
- assert.equal(actual,newApproved,'Unreviewed #07–08 full file changed: '+page);
+ assert([previousApproved,newApproved,fifteenthReviewed].filter(Boolean).includes(fromMain),'Unexpected #07–08 main source baseline: '+page);
+ assert.equal(actual,fifteenthReviewed||newApproved,'Unreviewed #07–08 full file changed: '+page);
+ if(page==='iol.html') {
+  const html=readFileSync(page,'utf8');
+  assert(html.includes('two R10 million invoices')&&html.includes('prima facie')&&html.includes('December 2024'),'15th-pass Project Wave and Nedbank procedural qualifications missing');
+ }
 }
 assert.equal(execFileSync('git',['hash-object','MTNrooivalkIRAN.html'],{encoding:'utf8'}).trim(),
  '79c93657371ee799d564c07ed5e400bd90ba2690',
