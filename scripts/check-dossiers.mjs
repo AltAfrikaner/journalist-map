@@ -1055,14 +1055,14 @@ for (const [file, before, reviewed, latest, newest, newlyReviewed] of [
  * prose+source-link additions are allowed. No original links or visual
  * data, SVG, media, JS, CSS, IDs or URLs may be changed.
  */
-for(const [page,baseline,reviewed,published,latestApproved,finalReviewed,oct31Reviewed] of [
+for(const [page,baseline,reviewed,published,latestApproved,finalReviewed,oct31Reviewed,oct31Next] of [
  ['africacheck.html','2647f994f6cd3c23bb966c2bd245e441ade85d8f','050015feee680ec5fc305d1422fc55dbaedbebfb','330f6eb917e3d5204c723be1750989f851a04554','4a9502508accd15a09d494b8475d7b2e7055e792','7db2b01964d36cf9855adcc9dd438b46b6b2b116','d7b937f42ea87f70231f28502af4ded18860caef'],
- ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','df9419a5d8425fe1cc3d717f56901c8d862ad26e','b4590228056362fdedcd7806bb2b9571940d11f4','debeee6b6163720bd1b4ea09ad7cfcc3cf9d502c']
+ ['ifcn.html','861930633d2e867e725a6e8d4424060c802ecf5b','f2974999b684bd2955d5c39be47b5dee87c387d4','b4590228056362fdedcd7806bb2b9571940d11f4','debeee6b6163720bd1b4ea09ad7cfcc3cf9d502c',null,'6ad63c5f41196086e6489c1c60670b55dee6986c']
 ]){
  const main=execFileSync('git',['rev-parse','origin/main:'+page],{encoding:'utf8'}).trim();
  const live=execFileSync('git',['hash-object',page],{encoding:'utf8'}).trim();
- assert([baseline,reviewed,published,latestApproved,finalReviewed,oct31Reviewed].filter(Boolean).includes(main),'Unreviewed appeal-review main baseline: '+page);
- assert.equal(live,oct31Reviewed||finalReviewed||latestApproved||published,'Unreviewed appeal-review article blob: '+page);
+ assert([baseline,reviewed,published,latestApproved,finalReviewed,oct31Reviewed,oct31Next].filter(Boolean).includes(main),'Unreviewed appeal-review main baseline: '+page);
+ assert.equal(live,oct31Next||oct31Reviewed||finalReviewed||latestApproved||published,'Unreviewed appeal-review article blob: '+page);
  const html=readFileSync(page,'utf8');
  assert(Buffer.byteLength(html,'utf8')>50000,'Truncated appeal-review dossier: '+page);
  if(main!==published){
@@ -1088,14 +1088,14 @@ for(const [page,baseline,reviewed,published,latestApproved,finalReviewed,oct31Re
 /* 30 October 2026: Oversight Board country-risk and minority-language primary-record review.
  * Exact approved text-only #05-06 blob identities; earlier checks continue to
  * protect JS, SVG, media, element IDs and all pre-existing links. */
-for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed,fourteenthReviewed] of [
- ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924',null,'c2f5a13f0122dcc1f843b489ed87f33637d3c2ad','88685fce9953869de489c8b136eb79213fd7a063'],
+for(const [p,oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed,fourteenthReviewed,fifteenthReviewed] of [
+ ['sixstage.html','a92b414c0cd029764a77d1e2bc374e72a01c20c6','785767f8ee9907dfd3f625c80dff422a7f469da4','88309b7f27e9ef47f3d5397ad53413d6b25b8924',null,'c2f5a13f0122dcc1f843b489ed87f33637d3c2ad','88685fce9953869de489c8b136eb79213fd7a063','771798c96c19e6c6b0fa801ad680d8f2bd76a37b'],
  ['metasuppression.html','3702a2fbd84fe8c7edd72cdccf6a5701226ed930','bf07cee58986171bb85d25e7bcc0026bee86bc57',null,'f4170886781b2cf2bec82d368377ed143ad695f6','b9a091c1de7b20590f52bf148e6bb94d30b9f417','878b749b34d2401468174bd205c2cdd6ae173b43'],
 ]){
  const fromMain=execFileSync('git',['rev-parse','origin/main:'+p],{encoding:'utf8'}).trim();
  const actual=execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim();
- assert([oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed,fourteenthReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
- assert.equal(actual,fourteenthReviewed,'Unreviewed #05-06 source change: '+p);
+ assert([oldBlob,newBlob,eleventhReviewed,twelfthReviewed,thirteenthReviewed,fourteenthReviewed,fifteenthReviewed].filter(Boolean).includes(fromMain),'Unexpected main #05-06 source baseline: '+p);
+ assert.equal(actual,fifteenthReviewed||fourteenthReviewed,'Unreviewed #05-06 source change: '+p);
  const html=readFileSync(p,'utf8');
  assert(html.includes('oversightboard.com/decision/pao-007g5zuv/')&&html.includes('UNVERIFIED'),'New country-risk source and case-evidence boundary missing: '+p);
 }
