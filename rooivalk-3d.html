@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101713">
+<title>Denel Rooivalk | Interactive 3D Technical Study | Alt Afrikaner</title>
+<meta name="description" content="An interactive, research-built 3D exterior study of the South African Denel Rooivalk attack helicopter.">
+<style>
+:root{color-scheme:dark;--bg:#101713;--panel:#17211b;--panel2:#1c2921;--line:#34463a;--gold:#c6a15a;--muted:#aeb9ad;--white:#f2f2e9;--green:#68785a}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{background:radial-gradient(ellipse at 50% 0%,#26352a 0,#101713 58%);min-height:100vh}
+a{color:#e1c27f;text-decoration:none}a:hover{text-decoration:underline}
+.topbar{height:64px;padding:0 clamp(18px,4vw,54px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #35443a;background:#101713e8;letter-spacing:.13em;text-transform:uppercase;font-size:11px}
+.brand{font-weight:800;color:#e8e8dd}.brand span{color:var(--gold);margin-left:8px}
+.toplink{color:#c8d0c4;letter-spacing:.08em}
+main{max-width:1540px;margin:auto;padding:34px clamp(16px,3vw,42px) 58px}
+.eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(36px,5vw,68px);line-height:.98;letter-spacing:-.035em;margin:12px 0 12px}
+.dek{color:#c1cbbf;max-width:760px;line-height:1.65;font-size:15px;margin:0 0 26px}
+.viewer{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:stretch}
+.stage{position:relative;min-height:620px;height:min(72vh,790px);border:1px solid #3a4b3e;border-radius:4px;overflow:hidden;background:linear-gradient(145deg,#202c24,#0c110e 72%);box-shadow:0 28px 70px #0007}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0b100d66 0%,transparent 19%,transparent 72%,#0a100dc9 100%)}
+.stage-top{position:absolute;z-index:2;left:22px;right:22px;top:18px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+.kicker{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#d7c18d}
+.live{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#c6d1c4;border:1px solid #667466;padding:7px 9px;background:#111a14b8}
+.stage-bottom{position:absolute;z-index:2;left:20px;right:20px;bottom:17px;display:flex;justify-content:space-between;align-items:end;gap:12px;pointer-events:none}
+.stage-caption{font-size:11px;color:#d0d8cd;line-height:1.5}
+.controls{display:flex;gap:7px;flex-wrap:wrap;pointer-events:auto}
+button{font:inherit;cursor:pointer}
+.control{background:#18231c;border:1px solid #647364;color:#e7eadf;padding:9px 11px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-radius:2px}
+.control:hover,.control.active{background:#c6a15a;color:#101713;border-color:#c6a15a}
+.side{display:flex;flex-direction:column;gap:12px}
+.panel{border:1px solid var(--line);background:linear-gradient(160deg,#1b2820,#141d17);padding:18px}
+.panel h2{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 14px}
+.panel p{font-size:12px;line-height:1.65;color:#c5cec2;margin:0}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#35463a;border:1px solid #35463a}
+.stat{background:#17221b;padding:12px 11px}
+.stat strong{display:block;font-family:Georgia,serif;font-size:23px;font-weight:400;color:#f0e9d8}
+.stat span{display:block;margin-top:4px;color:#aeb9ad;font-size:9px;letter-spacing:.1em;text-transform:uppercase;line-height:1.4}
+.component-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.component-list button{text-align:left;background:#1b2920;border:1px solid #394b3d;color:#dfe5da;padding:9px;font-size:10px}
+.component-list button:hover,.component-list button.active{border-color:var(--gold);color:#f0d69d;background:#2b3022}
+.detail-title{font-family:Georgia,serif;font-size:22px;color:#f1eadb;margin-bottom:6px}
+.detail-copy{font-size:11px;line-height:1.6;color:#c0cbbf}
+.note{font-size:10px!important;color:#98a697!important}
+.source-list{font-size:10px;line-height:1.8;color:#aeb9ad}
+.source-list a{display:block}
+.footer{border-top:1px solid #344439;margin-top:24px;padding-top:17px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:#9eaa9e;font-size:10px;line-height:1.6}
+.loading{position:absolute;z-index:4;inset:0;display:grid;place-items:center;background:#101713;color:#e3d5b5;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+@media(max-width:1000px){.viewer{grid-template-columns:1fr}.stage{height:65vh;min-height:480px}.side{display:grid;grid-template-columns:1fr 1fr}.side .panel:first-child{grid-column:1/-1}}
+@media(max-width:620px){main{padding-top:25px}.stage{height:62vh;min-height:430px}.side{grid-template-columns:1fr}.side .panel:first-child{grid-column:auto}.stage-bottom{align-items:start;flex-direction:column}.stage-caption{max-width:250px}.topbar{height:56px}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="brand">ALT AFRIKANER <span>TECHNICAL STUDIES</span></div><a class="toplink" href="MTNrooivalkIRAN.html">Return to Rooivalk investigation ↗</a></header>
+<main>
+<div class="eyebrow">South African aerospace engineering · Interactive exterior study</div>
+<h1>Denel Rooivalk</h1>
+<p class="dek">A research-built, interactive exterior model of South Africa’s attack helicopter. Explore the airframe, tandem cockpit, rotor system, engines, weapons stations and landing gear.</p>
+<div class="viewer">
+<section class="stage" aria-label="Interactive 3D Rooivalk model">
+<div class="loading" id="loading">Building the aircraft model…</div>
+<canvas id="scene"></canvas>
+<div class="stage-top"><div class="kicker">CSH-2 / AH-2 · Exterior study</div><div class="live">Interactive 3D · Live model</div></div>
+<div class="stage-bottom"><div class="stage-caption">DRAG TO ORBIT · SCROLL TO ZOOM · SELECT A COMPONENT TO INSPECT</div><div class="controls"><button class="control" data-view="front">Front</button><button class="control" data-view="side">Side</button><button class="control" data-view="top">Top</button><button class="control" data-view="three">3/4 view</button><button class="control active" id="rotorToggle">Rotor: stopped</button></div></div>
+</section>
+<aside class="side">
+<section class="panel">
+<h2>Verified dimensions</h2>
+<div class="statgrid">
+<div class="stat"><strong>15.58 m</strong><span>Main rotor diameter</span></div>
+<div class="stat"><strong>16.39 m</strong><span>Fuselage length</span></div>
+<div class="stat"><strong>18.74 m</strong><span>Overall length</span></div>
+<div class="stat"><strong>5.19 m</strong><span>Overall height</span></div>
+</div>
+</section>
+<section class="panel">
+<h2>Explore the aircraft</h2>
+<div class="component-list">
+<button data-part="airframe" class="active">Airframe</button><button data-part="cockpit">Tandem cockpit</button>
+<button data-part="rotor">Main rotor</button><button data-part="engines">Engines</button>
+<button data-part="wings">Stub wings</button><button data-part="weapons">Weapons stations</button>
+<button data-part="tail">Tail assembly</button><button data-part="gear">Landing gear</button>
+</div>
+</section>
+<section class="panel">
+<h2 id="detailHeading">Airframe</h2>
+<div class="detail-copy" id="detailCopy">The Rooivalk was developed as a dedicated attack helicopter. Its narrow fuselage, stepped tandem cockpit, stub wings and tail rotor define its recognisable profile.</div>
+</section>
+<section class="panel">
+<h2>Research note</h2>
+<p class="note">This is an original, procedural 3D reconstruction built for this page from published dimensions and photographic references. It is not Denel CAD data or a factory digital twin. External proportions are research-led; hidden structures and internal mechanisms are not represented as verified engineering.</p>
+</section>
+<section class="panel">
+<h2>Reference sources</h2>
+<div class="source-list">
+<a href="https://www.saairforce.co.za/the-airforce/aircraft/57/rooivalk" target="_blank" rel="noopener">South African Air Force reference · aircraft data ↗</a>
+<a href="https://defenceweb.co.za/resources/fact-files/fact-file-denel-csh2-rooivalk/" target="_blank" rel="noopener">DefenceWeb · Rooivalk fact file ↗</a>
+<a href="https://commons.wikimedia.org/wiki/Category:Rooivalk_of_SAAF" target="_blank" rel="noopener">Wikimedia Commons · Rooivalk photo reference index ↗</a>
+</div>
+</section>
+</aside>
+</div>
+<div class="footer"><span>ALT AFRIKANER · RESEARCH AND TECHNICAL VISUALISATION</span><span>Model authored for this page. No paid 3D assets or marketplace files used.</span></div>
+</main>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
+
+const canvas=document.querySelector('#scene');
+const stage=canvas.parentElement;
+const loading=document.querySelector('#loading');
+const scene=new THREE.Scene();
+scene.background=new THREE.Color('#17221c');
+scene.fog=new THREE.Fog('#17221c',24,62);
+const camera=new THREE.PerspectiveCamera(36,1,.1,180);
+camera.position.set(-16,10,17);
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.12;
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;controls.dampingFactor=.055;controls.target.set(.2,2.3,0);
+controls.minDistance=8;controls.maxDistance=38;controls.maxPolarAngle=Math.PI*.49;
+scene.add(new THREE.HemisphereLight(0xd9e3d4,0x1a211a,2.05));
+const key=new THREE.DirectionalLight(0xffedcf,3.1);key.position.set(-8,16,9);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-18;key.shadow.camera.right=18;key.shadow.camera.top=18;key.shadow.camera.bottom=-18;scene.add(key);
+const rim=new THREE.DirectionalLight(0x9cb8c8,2.1);rim.position.set(9,9,-12);scene.add(rim);
+const fill=new THREE.PointLight(0xc6a15a,36,36);fill.position.set(-10,4,-8);scene.add(fill);
+
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(180,180),new THREE.MeshStandardMaterial({color:0x151d18,roughness:.96,metalness:.05}));
+ground.rotation.x=-Math.PI/2;ground.position.y=-.12;ground.receiveShadow=true;scene.add(ground);
+const grid=new THREE.GridHelper(90,90,0x435347,0x28352c);grid.position.y=-.105;grid.material.transparent=true;grid.material.opacity=.23;scene.add(grid);
+
+function camoTexture(){
+ const c=document.createElement('canvas');c.width=1024;c.height=512;const ctx=c.getContext('2d');
+ ctx.fillStyle='#58654a';ctx.fillRect(0,0,c.width,c.height);
+ let seed=92817;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+ const colors=['#3c4938','#46533e','#6c684b','#303b32','#5b6245'];
+ for(let i=0;i<115;i++){ctx.save();ctx.translate(rand()*1024,rand()*512);ctx.rotate(rand()*Math.PI);ctx.fillStyle=colors[Math.floor(rand()*colors.length)];ctx.beginPath();ctx.ellipse(0,0,22+rand()*74,9+rand()*32,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+ for(let i=0;i<9000;i++){const v=rand();ctx.fillStyle=v>.5?'rgba(220,220,190,.035)':'rgba(0,0,0,.045)';ctx.fillRect(rand()*1024,rand()*512,1+rand()*2,1+rand()*2)}
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=8;return t;
+}
+const paint=new THREE.MeshStandardMaterial({map:camoTexture(),roughness:.82,metalness:.12});
+const darkPaint=new THREE.MeshStandardMaterial({color:0x333e32,roughness:.88,metalness:.15});
+const metal=new THREE.MeshStandardMaterial({color:0x343c3a,roughness:.38,metalness:.78});
+const blackMetal=new THREE.MeshStandardMaterial({color:0x151b19,roughness:.58,metalness:.55});
+const glass=new THREE.MeshPhysicalMaterial({color:0x15242a,metalness:.42,roughness:.13,clearcoat:1,clearcoatRoughness:.08,transparent:true,opacity:.9});
+const rubber=new THREE.MeshStandardMaterial({color:0x111311,roughness:.96});
+const rotorMat=new THREE.MeshStandardMaterial({color:0x252c28,roughness:.76,metalness:.18});
+const goldMat=new THREE.MeshStandardMaterial({color:0xb48b48,roughness:.46,metalness:.65});
+const model=new THREE.Group();scene.add(model);
+const groups={airframe:new THREE.Group(),cockpit:new THREE.Group(),rotor:new THREE.Group(),engines:new THREE.Group(),wings:new THREE.Group(),weapons:new THREE.Group(),tail:new THREE.Group(),gear:new THREE.Group()};
+Object.values(groups).forEach(g=>model.add(g));
+function mesh(geo,mat,group,name){const m=new THREE.Mesh(geo,mat);m.name=name||'Aircraft component';m.castShadow=true;m.receiveShadow=true;group.add(m);return m}
+function ellipsoid(group,name,pos,scale,mat){const m=mesh(new THREE.SphereGeometry(1,36,24),mat,group,name);m.position.set(...pos);m.scale.set(...scale);return m}
+function cylinderBetween(group,name,a,b,r1,r2,mat,segments=24){
+ const A=new THREE.Vector3(...a),B=new THREE.Vector3(...b),d=B.clone().sub(A);
+ const m=mesh(new THREE.CylinderGeometry(r2,r1,d.length(),segments,1),mat,group,name);
+ m.position.copy(A.add(B).multiplyScalar(.5));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return m;
+}
+function loftBody(){
+ const stations=[
+ [-8.18,.04,.05,2.18],[-7.75,.22,.24,2.2],[-7.1,.48,.43,2.22],[-6.3,.68,.58,2.24],[-5.4,.82,.68,2.25],[-4.4,.86,.72,2.27],[-3.2,.91,.76,2.27],[-2,.94,.78,2.23],[-.5,.9,.79,2.16],[1,.82,.76,2.1],[2.5,.68,.68,2.04],[4,.53,.55,2.0],[5.4,.42,.43,2.02],[6.8,.3,.31,2.05],[8.18,.18,.19,2.1]
+ ];
+ const verts=[],uv=[],idx=[],n=48;
+ stations.forEach((s,i)=>{for(let j=0;j<=n;j++){const a=j/n*Math.PI*2;const y=s[3]+Math.sin(a)*s[1];const z=Math.cos(a)*s[2];verts.push(s[0],y,z);uv.push(i/(stations.length-1),j/n)}});
+ for(let i=0;i<stations.length-1;i++)for(let j=0;j<n;j++){const a=i*(n+1)+j,b=a+n+1;idx.push(a,b,a+1,b,b+1,a+1)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();return g;
+}
+mesh(loftBody(),paint,groups.airframe,'Main fuselage');
+ellipsoid(groups.airframe,'Nose sensor turret',[-7.25,1.75,0],[.47,.34,.44],blackMetal);
+ellipsoid(groups.airframe,'Optical sensor window',[-7.48,1.8,.12],[.2,.16,.19],glass);
+cylinderBetween(groups.airframe,'20 mm cannon barrel',[-6.75,1.6,0],[-5.6,1.48,0],.085,.065,metal,20);
+ellipsoid(groups.airframe,'Cannon fairing',[-6.72,1.62,0],[.42,.22,.22],darkPaint);
+for(let side of [-1,1]){
+ // stepped tandem cockpit glazing, lower front position and raised rear position
+ const c1=ellipsoid(groups.cockpit,'Forward weapon systems cockpit',[-5.05,3.03,side*.0],[1.08,.54,.58],glass);
+ const c2=ellipsoid(groups.cockpit,'Raised pilot cockpit',[-3.15,3.22,0],[1.12,.66,.62],glass);
+ // canopy frames and side sill
+ cylinderBetween(groups.cockpit,'Cockpit sill',[-6.05,2.72,side*.54],[-2.0,2.78,side*.6],.045,.045,metal,12);
+ // subtle framing bands on canopy
+ for(const x of [-5.95,-4.05,-2.05]){
+   cylinderBetween(groups.cockpit,'Canopy frame', [x,2.76,side*.48],[x+.04,3.45,side*.35],.028,.028,blackMetal,10);
+ }
+}
+// engine housings above rear fuselage
+for(const side of [-1,1]){
+ ellipsoid(groups.engines,'Makila engine nacelle',[.1,3.12,side*.63],[2.0,.48,.42],paint);
+ ellipsoid(groups.engines,'Engine intake rim',[-1.42,3.18,side*.63],[.22,.35,.36],metal);
+ ellipsoid(groups.engines,'Dark engine intake',[-1.53,3.18,side*.63],[.12,.27,.28],blackMetal);
+ ellipsoid(groups.engines,'Exhaust housing',[1.82,3.2,side*.62],[.34,.32,.3],darkPaint);
+ cylinderBetween(groups.engines,'Exhaust nozzle',[1.92,3.2,side*.62],[2.3,3.2,side*.62],.22,.18,metal);
+}
+// tail boom
+cylinderBetween(groups.tail,'Tapered tail boom',[1.8,2.55,0],[8.25,2.48,0],.46,.17,paint,32);
+ellipsoid(groups.tail,'Tail boom root fairing',[2.1,2.53,0],[.72,.45,.45],darkPaint);
+// vertical fin, custom tapered shape
+function extrudedShape(points,depth,mat,group,name,rotation=[0,0,0],position=[0,0,0]){
+ const s=new THREE.Shape();s.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)s.lineTo(points[i][0],points[i][1]);s.closePath();
+ const g=new THREE.ExtrudeGeometry(s,{depth,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.035,bevelThickness:.035,curveSegments:8});
+ const m=mesh(g,mat,group,name);m.rotation.set(...rotation);m.position.set(...position);return m;
+}
+extrudedShape([[7.2,2.4],[8.7,2.45],[9.35,4.65],[8.8,4.5],[8.2,3.1]],.22,paint,groups.tail,'Vertical tail fin',[Math.PI/2,0,0],[0,0,.11]);
+extrudedShape([[5.6,2.35],[7.4,2.45],[7.1,2.7],[5.5,2.55]],.18,paint,groups.tail,'Horizontal stabiliser',[Math.PI/2,0,0],[0,0,.09]);
+// main rotor mast and hub
+cylinderBetween(groups.rotor,'Main rotor mast',[-.2,3.0,0],[-.2,4.75,0],.16,.13,metal,28);
+ellipsoid(groups.rotor,'Rotor hub',[-.2,4.75,0],[.42,.24,.42],metal);
+for(let i=0;i<4;i++){
+ const bladeShape=new THREE.Shape();bladeShape.moveTo(-.25,.52);bladeShape.lineTo(.27,.55);bladeShape.lineTo(.21,7.78);bladeShape.lineTo(-.11,7.78);bladeShape.lineTo(-.23,2.1);bladeShape.closePath();
+ const geo=new THREE.ExtrudeGeometry(bladeShape,{depth:.065,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.018,bevelThickness:.018});
+ geo.rotateX(Math.PI/2);
+ const blade=mesh(geo,rotorMat,groups.rotor,'Four-blade main rotor blade');blade.position.set(-.2,4.79,0);blade.rotation.y=i*Math.PI/2;
+ cylinderBetween(groups.rotor,'Rotor pitch link',[-.2,4.72,0],[-.2,4.55,.34],.035,.025,goldMat,10);
+}
+// rotor head details
+for(let i=0;i<4;i++){const a=i*Math.PI/2;const x=-.2+Math.cos(a)*.36,z=Math.sin(a)*.36;ellipsoid(groups.rotor,'Rotor blade grip',[x,4.75,z],[.28,.1,.12],metal)}
+// stub wings, symmetric
+for(const side of [-1,1]){
+ const wing=extrudedShape([[.15,.48],[2.5,.58],[3.2,2.9],[1.15,2.48]],.22,paint,groups.wings,'Rooivalk stub wing',[Math.PI/2,0,0],[0,2.13,side*.0]);
+ wing.scale.z=side;
+ // pylon and fairing
+ cylinderBetween(groups.weapons,'Outer weapons pylon',[2.55,1.98,side*2.5],[2.55,1.15,side*2.5],.12,.1,metal,16);
+ cylinderBetween(groups.weapons,'Inner weapons pylon',[1.25,1.98,side*1.35],[1.25,1.2,side*1.35],.13,.1,metal,16);
+ // weapon stores as smooth tapered cylinders
+ for(const z of [side*1.45,side*2.55]){
+   cylinderBetween(groups.weapons,'External stores / missile representation',[2.45,1.12,z],[3.45,1.12,z],.105,.075,darkPaint,18);
+   ellipsoid(groups.weapons,'Store nose',[3.45,1.12,z],[.18,.075,.075],metal);
+ }
+}
+// tail rotor, five blades on port side
+const tailHub=new THREE.Group();tailHub.position.set(9.15,2.85,-.38);groups.tail.add(tailHub);
+cylinderBetween(groups.tail,'Tail rotor axle',[9.15,2.85,-.05],[9.15,2.85,-.68],.12,.1,metal,20);
+ellipsoid(groups.tail,'Tail rotor hub',[9.15,2.85,-.72],[.2,.2,.12],metal);
+for(let i=0;i<5;i++){
+ const blade=new THREE.Mesh(new THREE.BoxGeometry(.16,1.36,.055),rotorMat);blade.name='Five-blade tail rotor';blade.position.set(0,.78,-.74);blade.rotation.z=i*Math.PI*2/5;blade.castShadow=true;tailHub.add(blade);
+}
+// landing gear, nose wheel and two main wheel legs
+for(const side of [-1,1]){
+ cylinderBetween(groups.gear,'Main landing gear strut',[1.8,2.0,side*.62],[2.0,.55,side*1.35],.095,.07,metal);
+ cylinderBetween(groups.gear,'Main wheel axle',[1.88,.48,side*1.35],[2.18,.48,side*1.35],.08,.08,metal);
+ const wheel=mesh(new THREE.CylinderGeometry(.36,.36,.2,32),rubber,groups.gear,'Main landing gear tyre');wheel.rotation.z=Math.PI/2;wheel.position.set(2.03,.42,side*1.42);
+ const hub=mesh(new THREE.CylinderGeometry(.15,.15,.215,24),metal,groups.gear,'Main wheel hub');hub.rotation.z=Math.PI/2;hub.position.copy(wheel.position);
+}
+cylinderBetween(groups.gear,'Nose gear strut',[-5.2,1.9,0],[-5.65,.48,0],.085,.065,metal);
+const nw=mesh(new THREE.CylinderGeometry(.24,.24,.17,28),rubber,groups.gear,'Nose wheel');nw.rotation.z=Math.PI/2;nw.position.set(-5.65,.28,0);
+const nh=mesh(new THREE.CylinderGeometry(.1,.1,.18,20),metal,groups.gear,'Nose wheel hub');nh.rotation.z=Math.PI/2;nh.position.copy(nw.position);
+// surface details: access panels, antennas, lights, vents
+for(const side of [-1,1]){
+ for(let i=0;i<4;i++){const v=ellipsoid(groups.airframe,'Fuselage access panel',[-.6+i*.62,2.53,side*.76],[.18,.025,.018],darkPaint);v.rotation.y=side*.2}
+ ellipsoid(groups.airframe,'Navigation light',[5.7,2.12,side*.36],[.07,.07,.07],side>0?new THREE.MeshStandardMaterial({color:0xb92e24,emissive:0x3b0905}):new THREE.MeshStandardMaterial({color:0x2b65a4,emissive:0x061c3b}));
+}
+cylinderBetween(groups.airframe,'Aerial antenna',[2.9,2.82,0],[3.0,3.18,0],.025,.012,blackMetal,10);
+cylinderBetween(groups.airframe,'Rear aerial',[5.8,2.56,0],[6.1,2.9,0],.02,.012,blackMetal,10);
+
+// pickable mesh registry and selection
+const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
+const descriptions={
+ airframe:['Airframe','The central fuselage carries the tandem crew station, propulsion installation, transmission area and mission equipment. The body shape is reconstructed from published dimensions and visual references.'],
+ cockpit:['Stepped tandem cockpit','The Rooivalk uses a two-person stepped tandem arrangement. The forward station is for the weapon systems officer; the raised rear station is for the pilot. The glazing here is a visual reconstruction, not a cockpit interior model.'],
+ rotor:['Four-blade main rotor','The published aircraft data identifies a four-blade main rotor with a 15.58 m diameter. The blades and hub in this study are simplified exterior geometry.'],
+ engines:['Twin Makila turboshaft installation','The Rooivalk is powered by two Turbomeca Makila 1K2 turboshaft engines. External nacelles are represented; the internal engine and transmission geometry is not modelled.'],
+ wings:['Stub wings','The short wings carry external stores stations. Their outline is represented as an exterior feature; exact local profiles and pylons vary by configuration.'],
+ weapons:['External stores and cannon','The aircraft is associated with a 20 mm F2 cannon and external weapons options. The small store shapes shown here are illustrative placeholders, not a verified loadout or weapon-specific 3D model.'],
+ tail:['Tail boom, fin and tail rotor','The tail assembly carries the tail rotor and stabilising surfaces. Published fact-file dimensions list a five-blade tail rotor with a 3.051 m diameter.'],
+ gear:['Landing gear','The model shows the tricycle landing-gear arrangement in simplified form. Wheel, strut and fairing details are not claimed as production drawings.']
+};
+function selectPart(key){
+ const d=descriptions[key]||descriptions.airframe;
+ document.querySelector('#detailHeading').textContent=d[0];
+ document.querySelector('#detailCopy').textContent=d[1];
+ document.querySelectorAll('[data-part]').forEach(b=>b.classList.toggle('active',b.dataset.part===key));
+ const g=groups[key];if(g){const target=new THREE.Box3().setFromObject(g).getCenter(new THREE.Vector3());controls.target.lerp(target,.25)}
+}
+document.querySelectorAll('[data-part]').forEach(b=>b.addEventListener('click',()=>selectPart(b.dataset.part)));
+canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(model.children.flatMap(g=>g.children),true);if(hits.length){const name=hits[0].object.name.toLowerCase();let key='airframe';if(name.includes('cockpit')||name.includes('canopy'))key='cockpit';else if(name.includes('rotor')||name.includes('blade grip'))key='rotor';else if(name.includes('engine')||name.includes('intake')||name.includes('exhaust'))key='engines';else if(name.includes('wing'))key='wings';else if(name.includes('weapon')||name.includes('store')||name.includes('pylon')||name.includes('cannon'))key='weapons';else if(name.includes('tail')||name.includes('boom')||name.includes('stabiliser')||name.includes('fin'))key='tail';else if(name.includes('wheel')||name.includes('gear')||name.includes('strut'))key='gear';selectPart(key)}});
+const views={front:[-19,5,0],side:[0,5,21],top:[-.1,25,.1],three:[-16,10,17]};
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{const p=views[b.dataset.view];camera.position.set(...p);controls.target.set(.2,2.3,0);controls.update();document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x===b))}));
+let spinning=false;
+document.querySelector('#rotorToggle').addEventListener('click',e=>{spinning=!spinning;e.currentTarget.textContent='Rotor: '+(spinning?'turning':'stopped');e.currentTarget.classList.toggle('active',spinning)});
+const rotorPivot=new THREE.Group();rotorPivot.position.set(-.2,4.79,0);groups.rotor.add(rotorPivot);
+// Rotor group is built with blade geometry in world coords. Animate all rotor children around the mast by rotating the group around its pivot.
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}
+new ResizeObserver(resize).observe(stage);resize();
+loading.style.display='none';
+const clock=new THREE.Clock();
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(spinning){groups.rotor.rotation.y+=dt*1.7;tailHub.rotation.z+=dt*2.7}controls.update();renderer.render(scene,camera)}
+animate();
+</script>
+</body>
+</html>
