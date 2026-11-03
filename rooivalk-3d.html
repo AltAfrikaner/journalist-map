@@ -52,9 +52,9 @@ button{font:inherit;cursor:pointer}
 .loading{position:absolute;z-index:4;inset:0;display:grid;place-items:center;background:#101713;color:#e3d5b5;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 @media(max-width:1000px){.viewer{grid-template-columns:1fr}.stage{height:65vh;min-height:480px}.side{display:grid;grid-template-columns:1fr 1fr}.side .panel:first-child{grid-column:1/-1}}
 @media(max-width:620px){main{padding-top:25px}.stage{height:62vh;min-height:430px}.side{grid-template-columns:1fr}.side .panel:first-child{grid-column:auto}.stage-bottom{align-items:start;flex-direction:column}.stage-caption{max-width:250px}.topbar{height:56px}}
-</style>
+body.embed-mode .topbar,body.embed-mode main>.eyebrow,body.embed-mode main>h1,body.embed-mode main>.dek,body.embed-mode .footer{display:none}body.embed-mode main{max-width:none;padding:0}body.embed-mode .viewer{grid-template-columns:minmax(0,1fr) 285px;gap:9px}body.embed-mode .stage{height:730px;min-height:650px;border-radius:0}body.embed-mode .side{gap:8px}body.embed-mode .panel{padding:13px}body.embed-mode .stat strong{font-size:20px}@media(max-width:760px){body.embed-mode .viewer{grid-template-columns:1fr}body.embed-mode .stage{height:590px;min-height:540px}body.embed-mode .side{display:grid;grid-template-columns:1fr 1fr}body.embed-mode .side .panel:first-child{grid-column:1/-1}}\n</style>
 </head>
-<body>
+<body>\n<script>if(new URLSearchParams(location.search).has('embed'))document.body.classList.add('embed-mode');</script>
 <header class="topbar"><div class="brand">ALT AFRIKANER <span>TECHNICAL STUDIES</span></div><a class="toplink" href="MTNrooivalkIRAN.html">Return to Rooivalk investigation ↗</a></header>
 <main>
 <div class="eyebrow">South African aerospace engineering · Interactive exterior study</div>
