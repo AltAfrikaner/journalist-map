@@ -157,6 +157,7 @@ const goldMat=new THREE.MeshStandardMaterial({color:0xb48b48,roughness:.46,metal
 const model=new THREE.Group();scene.add(model);
 const groups={airframe:new THREE.Group(),cockpit:new THREE.Group(),rotor:new THREE.Group(),engines:new THREE.Group(),wings:new THREE.Group(),weapons:new THREE.Group(),tail:new THREE.Group(),gear:new THREE.Group()};
 Object.values(groups).forEach(g=>model.add(g));
+const rotorSpin=new THREE.Group();rotorSpin.position.set(-.2,4.79,0);groups.rotor.add(rotorSpin);
 function mesh(geo,mat,group,name){const m=new THREE.Mesh(geo,mat);m.name=name||'Aircraft component';m.castShadow=true;m.receiveShadow=true;group.add(m);return m}
 function ellipsoid(group,name,pos,scale,mat){const m=mesh(new THREE.SphereGeometry(1,36,24),mat,group,name);m.position.set(...pos);m.scale.set(...scale);return m}
 function cylinderBetween(group,name,a,b,r1,r2,mat,segments=24){
@@ -215,7 +216,7 @@ for(let i=0;i<4;i++){
  const bladeShape=new THREE.Shape();bladeShape.moveTo(-.25,.52);bladeShape.lineTo(.27,.55);bladeShape.lineTo(.21,7.78);bladeShape.lineTo(-.11,7.78);bladeShape.lineTo(-.23,2.1);bladeShape.closePath();
  const geo=new THREE.ExtrudeGeometry(bladeShape,{depth:.065,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.018,bevelThickness:.018});
  geo.rotateX(Math.PI/2);
- const blade=mesh(geo,rotorMat,groups.rotor,'Four-blade main rotor blade');blade.position.set(-.2,4.79,0);blade.rotation.y=i*Math.PI/2;
+ const blade=mesh(geo,rotorMat,rotorSpin,'Four-blade main rotor blade');blade.rotation.y=i*Math.PI/2;
  cylinderBetween(groups.rotor,'Rotor pitch link',[-.2,4.72,0],[-.2,4.55,.34],.035,.025,goldMat,10);
 }
 // rotor head details
@@ -283,13 +284,12 @@ const views={front:[-19,5,0],side:[0,5,21],top:[-.1,25,.1],three:[-16,10,17]};
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{const p=views[b.dataset.view];camera.position.set(...p);controls.target.set(.2,2.3,0);controls.update();document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x===b))}));
 let spinning=false;
 document.querySelector('#rotorToggle').addEventListener('click',e=>{spinning=!spinning;e.currentTarget.textContent='Rotor: '+(spinning?'turning':'stopped');e.currentTarget.classList.toggle('active',spinning)});
-const rotorPivot=new THREE.Group();rotorPivot.position.set(-.2,4.79,0);groups.rotor.add(rotorPivot);
-// Rotor group is built with blade geometry in world coords. Animate all rotor children around the mast by rotating the group around its pivot.
+// Main rotor blades are parented to a pivot located at the rotor mast.
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}
 new ResizeObserver(resize).observe(stage);resize();
 loading.style.display='none';
 const clock=new THREE.Clock();
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(spinning){groups.rotor.rotation.y+=dt*1.7;tailHub.rotation.z+=dt*2.7}controls.update();renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(spinning){rotorSpin.rotation.y+=dt*1.7;tailHub.rotation.z+=dt*2.7}controls.update();renderer.render(scene,camera)}
 animate();
 </script>
 </body>
