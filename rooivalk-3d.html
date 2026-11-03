@@ -106,8 +106,9 @@ body.embed-mode .topbar,body.embed-mode main>.eyebrow,body.embed-mode main>h1,bo
 </div>
 <div class="footer"><span>ALT AFRIKANER · RESEARCH AND TECHNICAL VISUALISATION</span><span>Model authored for this page. No paid 3D assets or marketplace files used.</span></div>
 </main>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js"}}</script>
 <script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
+import * as THREE from 'three';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
 
 const canvas=document.querySelector('#scene');
@@ -239,7 +240,7 @@ const tailHub=new THREE.Group();tailHub.position.set(9.15,2.85,-.38);groups.tail
 cylinderBetween(groups.tail,'Tail rotor axle',[9.15,2.85,-.05],[9.15,2.85,-.68],.12,.1,metal,20);
 ellipsoid(groups.tail,'Tail rotor hub',[9.15,2.85,-.72],[.2,.2,.12],metal);
 for(let i=0;i<5;i++){
- const blade=new THREE.Mesh(new THREE.BoxGeometry(.16,1.36,.055),rotorMat);blade.name='Five-blade tail rotor';blade.position.set(0,.78,-.74);blade.rotation.z=i*Math.PI*2/5;blade.castShadow=true;tailHub.add(blade);
+ const blade=new THREE.Mesh(new THREE.BoxGeometry(.16,1.525,.055),rotorMat);blade.name='Five-blade tail rotor';blade.position.set(0,.7625,-.74);blade.rotation.z=i*Math.PI*2/5;blade.castShadow=true;tailHub.add(blade);
 }
 // landing gear, nose wheel and two main wheel legs
 for(const side of [-1,1]){
